@@ -228,10 +228,6 @@ graph TD
 
 ---
 
-## Research
-
-This is part of an **M.Sc. thesis** at **National Forensic Sciences University**, supervised by **Ms. Reet Chauhan**.
-
 ### Evaluation
 
 - **306 Android APKs** from 49 malware families across 4 sources (AndroZoo, MalwareBazaar, Pendrive, Modern Eval)
