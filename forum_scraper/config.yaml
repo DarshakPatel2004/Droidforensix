@@ -26,6 +26,8 @@ github:
 
 linking:
   min_confidence: 0.7
+  max_links_per_repo: 0   # Cap GitHub links per repo (0 = unlimited); prevents
+                          # one dataset repo from dominating the output
   exclude_domains:
     - github.com
     - reddit.com

@@ -48,6 +48,7 @@ python -m forum_scraper.main \
 | `--config` | package `config.yaml` | Alternate config path |
 | `--min-confidence` | config value (0.7) | Link confidence floor |
 | `--c2-min-confidence` | `0.0` (all) | Skip pipeline C2s below this confidence |
+| `--max-links-per-repo` | config value (`0` = unlimited) | Cap GitHub links per repo; any C2 that would lose *all* its links is rescued |
 | `--no-dedup` | off | Skip deduplication |
 
 ### C2 file formats

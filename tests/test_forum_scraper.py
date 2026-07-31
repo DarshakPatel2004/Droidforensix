@@ -15,7 +15,7 @@ from forum_scraper.linker import (
     make_snippet,
     match_indicator,
 )
-from forum_scraper.main import load_c2_indicators
+from forum_scraper.main import cap_links_per_repo, load_c2_indicators, repo_of
 
 
 def indicator(value: str, confidence: float = 1.0) -> C2Indicator:
@@ -231,3 +231,53 @@ class TestLoadC2Indicators:
         )
         indicators = load_c2_indicators(str(c2_file))
         assert indicators[0].confidence == 1.0
+
+
+class TestPerRepoCap:
+    def test_repo_of_extracts_owner_repo(self):
+        url = "https://github.com/bhpiamnothing/AndroTruth-Dataset/blob/abc/path.py#L5"
+        assert repo_of(url) == "bhpiamnothing/AndroTruth-Dataset"
+
+    def test_repo_of_none_for_non_github(self):
+        assert repo_of("https://www.reddit.com/r/malware/comments/1a/") is None
+
+    def test_cap_limits_github_links_per_repo(self):
+        links = [
+            {"forum_url": "https://github.com/a/repo/blob/x#L1", "c2_indicator": "c2-a.example.com"},
+            {"forum_url": "https://github.com/a/repo/blob/x#L2", "c2_indicator": "c2-a.example.com"},
+            {"forum_url": "https://github.com/a/repo/blob/x#L3", "c2_indicator": "c2-a.example.com"},
+            {"forum_url": "https://github.com/a/repo/blob/x#L4", "c2_indicator": "c2-a.example.com"},
+            {"forum_url": "https://www.reddit.com/r/malware/comments/1a/", "c2_indicator": "c2-a.example.com"},
+        ]
+        capped = cap_links_per_repo(links, max_per_repo=3)
+        assert len(capped) == 4  # 3 from the repo + 1 reddit
+        assert all(link["forum_url"].startswith("https://github.com") for link in capped[:3])
+
+    def test_cap_rescues_c2s_that_lose_all_links(self):
+        # Three C2s, each ONLY present in the same repo: the cap must not
+        # strip any C2 of its only evidence.
+        links = []
+        for c2 in ("c2-a.example.com", "c2-b.example.com", "c2-c.example.com"):
+            for i in range(3):
+                links.append(
+                    {"forum_url": f"https://github.com/dataset/repo/blob/x#L{i}", "c2_indicator": c2}
+                )
+        capped = cap_links_per_repo(links, max_per_repo=1)
+        assert len(capped) == 3  # one link per C2, all rescued
+        assert {link["c2_indicator"] for link in capped} == {
+            "c2-a.example.com",
+            "c2-b.example.com",
+            "c2-c.example.com",
+        }
+
+    def test_cap_zero_is_unlimited(self):
+        links = [{"forum_url": f"https://github.com/a/repo/blob/x#L{i}"} for i in range(5)]
+        assert len(cap_links_per_repo(links, max_per_repo=0)) == 5
+
+    def test_cap_keeps_first_occurrences(self):
+        links = [
+            {"forum_url": "https://github.com/a/repo/blob/x#L1", "c2_indicator": "first.example.com"},
+            {"forum_url": "https://github.com/a/repo/blob/x#L2", "c2_indicator": "second.example.com"},
+        ]
+        capped = cap_links_per_repo(links, max_per_repo=1)
+        assert capped[0]["c2_indicator"] == "first.example.com"

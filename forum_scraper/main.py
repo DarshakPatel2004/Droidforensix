@@ -17,6 +17,8 @@ import sys
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
+from urllib.parse import urlparse
+
 import yaml
 
 from .dedup import deduplicate
@@ -202,6 +204,47 @@ def _record_date(record: Dict[str, Any]) -> str:
     return record.get("date") or record.get("created") or ""
 
 
+def repo_of(url: str) -> Optional[str]:
+    """Extract 'owner/repo' from a GitHub URL; None for non-GitHub links."""
+    parts = urlparse(url)
+    if parts.netloc != "github.com":
+        return None
+    segments = [s for s in parts.path.split("/") if s]
+    return "/".join(segments[:2]) if len(segments) >= 2 else None
+
+
+def cap_links_per_repo(links: List[Dict[str, Any]], max_per_repo: int = 0) -> List[Dict[str, Any]]:
+    """Limit how many links a single repo can contribute (0 = unlimited).
+
+    Two passes: (1) enforce the per-repo cap, (2) rescue any C2 indicator
+    that would otherwise lose ALL of its links — coverage beats diversity.
+    Reddit links are unaffected.
+    """
+    if max_per_repo <= 0:
+        return links
+    counts: Dict[str, int] = {}
+    kept: List[Dict[str, Any]] = []
+    for link in links:
+        repo = repo_of(link["forum_url"])
+        if repo is None:
+            kept.append(link)
+            continue
+        count = counts.get(repo, 0)
+        if count >= max_per_repo:
+            continue
+        counts[repo] = count + 1
+        kept.append(link)
+
+    # Rescue: C2s whose only links were dropped by the cap keep their first.
+    kept_c2s = {link.get("c2_indicator") for link in kept}
+    for link in links:
+        c2 = link.get("c2_indicator")
+        if c2 and c2 not in kept_c2s:
+            kept_c2s.add(c2)
+            kept.append(link)
+    return kept
+
+
 def export_csv(links: List[Dict[str, Any]], output_path: str) -> None:
     path = Path(output_path)
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -231,6 +274,12 @@ def build_argument_parser() -> argparse.ArgumentParser:
         type=float,
         default=0.0,
         help="Skip pipeline C2 indicators below this confidence (default: 0.0 = all)",
+    )
+    parser.add_argument(
+        "--max-links-per-repo",
+        type=int,
+        default=None,
+        help="Cap GitHub links per repo (default: config linking.max_links_per_repo, 0 = unlimited)",
     )
     parser.add_argument("--no-dedup", action="store_true", help="Skip deduplication step")
     return parser
@@ -291,6 +340,13 @@ def main(argv: Optional[List[str]] = None) -> int:
 
     if not args.no_dedup:
         links = deduplicate(links)
+
+    max_per_repo = (
+        args.max_links_per_repo
+        if args.max_links_per_repo is not None
+        else config.get("linking", {}).get("max_links_per_repo", 0)
+    )
+    links = cap_links_per_repo(links, max_per_repo)
 
     storage.store_results(links)
     export_csv(links, args.output)
