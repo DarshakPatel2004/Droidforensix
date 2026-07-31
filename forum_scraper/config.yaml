@@ -1,0 +1,40 @@
+# DroidForensix forum scraper configuration.
+# API credentials are read from environment variables, never from this file:
+#   REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USER_AGENT, GITHUB_TOKEN
+
+reddit:
+  subreddits:
+    - malware
+    - cybersecurity
+    - netsec
+    - IDA_Pro
+    - AskNetsec
+    - Malware_Analysis
+    - security
+  min_score: 1        # Upvotes required for a post/comment to count
+  max_age_days: 180   # Skip posts older than this (archived content)
+  max_posts_per_query: 25
+
+github:
+  keywords:
+    - malware
+    - c2
+    - indicator
+    - IOC
+  min_stars: 10       # Filter low-signal repos
+  max_results_per_query: 10
+
+linking:
+  min_confidence: 0.7
+  exclude_domains:
+    - github.com
+    - reddit.com
+    - stackoverflow.com
+    - pastebin.com
+    - imgur.com
+    - google.com
+    - youtube.com
+
+storage:
+  db_path: forum_scraper.db
+  export_csv: c2_forum_links.csv

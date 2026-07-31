@@ -171,3 +171,6 @@ backend/analysis/logs/
 logs/
 
 gstack/
+# Forum scraper artifacts
+forum_scraper.db
+c2_forum_links.csv
