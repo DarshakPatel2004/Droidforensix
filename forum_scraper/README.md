@@ -96,7 +96,9 @@ main.py ──> reddit_scraper (PRAW, official API)
 - **GitHub:** issues via GraphQL search; code/README mentions via the REST
   code search (code search is not exposed in GraphQL). Only repos whose
   name/description/topics match `malware|c2|indicator|ioc` pass the
-  keyword gate. Code search is throttled to ~10 req/min.
+  keyword gate. `min_stars` applies to issue results (GraphQL exposes
+  star counts); code-search results omit star counts, so they get the
+  keyword gate only. Code search is throttled to ~10 req/min.
 - **Caching:** every API response is stored in SQLite (`forum_scraper.db`),
   so re-runs take minutes, not hours. Delete the cache rows to force a
   fresh scrape.

@@ -15,7 +15,7 @@ logger = logging.getLogger(__name__)
 
 API_BASE = "https://api.github.com"
 GRAPHQL_ENDPOINT = f"{API_BASE}/graphql"
-CACHE_VERSION = 1
+CACHE_VERSION = 2
 CODE_SEARCH_INTERVAL_SECONDS = 7  # code search: 10 req/min for authenticated
 
 ISSUES_QUERY = """
@@ -28,7 +28,13 @@ query($q: String!, $n: Int!) {
         createdAt
         body
         author { login }
-        repository { nameWithOwner url description stargazerCount topics }
+        repository {
+          nameWithOwner
+          url
+          description
+          stargazerCount
+          repositoryTopics(first: 10) { nodes { topic { name } } }
+        }
       }
     }
   }
@@ -62,7 +68,9 @@ class GitHubScraper:
         self.session.headers.update(
             {
                 "Authorization": f"Bearer {token}",
-                "Accept": "application/vnd.github+json",
+                # text-match media type: code search returns match fragments
+                # with char indices, needed for snippets and line numbers
+                "Accept": "application/vnd.github.text-match+json",
             }
         )
 
@@ -98,21 +106,39 @@ class GitHubScraper:
         resp.raise_for_status()
         return resp.json()
 
-    def _repo_is_relevant(self, repo: Dict[str, Any]) -> bool:
+    def _repo_is_relevant(self, repo: Dict[str, Any], enforce_min_stars: bool = True) -> bool:
         """Keyword gate: only malware/security repos carry attribution value."""
-        if repo.get("stargazerCount", 0) < self.min_stars:
+        if enforce_min_stars and repo.get("stargazerCount", 0) < self.min_stars:
             return False
         haystack = " ".join(
             [
                 str(repo.get("nameWithOwner", "")),
                 str(repo.get("description", "") or ""),
-                " ".join(repo.get("topics", []) or []),
+                " ".join(self._topic_names(repo.get("topics") or [])),
             ]
         ).lower()
         return any(keyword in haystack for keyword in self.keywords)
 
+    @staticmethod
+    def _topic_names(topics: List[Any]) -> List[str]:
+        """Accept both GraphQL (dicts with topic.name) and string topic lists."""
+        names = []
+        for topic in topics:
+            if isinstance(topic, str):
+                names.append(topic)
+            elif isinstance(topic, dict):
+                nested = topic.get("topic")
+                if isinstance(nested, dict):
+                    names.append(str(nested.get("name", "")))
+                elif nested:
+                    names.append(str(nested))
+        return names
+
     def _search_issues(self, indicator: str) -> List[Dict[str, Any]]:
-        query = f'"{indicator}" in:title,body malware'
+        # Search the indicator alone; relevance is enforced by the repo
+        # keyword gate below (GitHub search terms are AND-ed, so adding
+        # "malware" here would match almost nothing).
+        query = f'"{indicator}" in:title,body'
         payload = self._query_graphql(
             ISSUES_QUERY,
             {"q": query, "n": self.max_results},
@@ -138,9 +164,9 @@ class GitHubScraper:
         return records
 
     def _search_code(self, indicator: str) -> List[Dict[str, Any]]:
-        keyword_terms = " ".join(f"{kw}" for kw in self.keywords)
+        # Indicator-only query; the repo keyword gate is applied to results.
         params = {
-            "q": f'"{indicator}" {keyword_terms}',
+            "q": f'"{indicator}"',
             "per_page": self.max_results,
         }
         payload = self._query_rest("/search/code", params)
@@ -150,21 +176,13 @@ class GitHubScraper:
             repo_info = {
                 "nameWithOwner": repo.get("full_name", ""),
                 "description": repo.get("description", ""),
-                "stargazerCount": repo.get("stargazers_count", 0),
                 "url": repo.get("html_url", ""),
             }
-            if not self._repo_is_relevant(repo_info):
+            # Code-search results omit stargazer counts; enforce the keyword
+            # gate only (min_stars applies to issue results via GraphQL).
+            if not self._repo_is_relevant(repo_info, enforce_min_stars=False):
                 continue
-            line_number = 1
-            snippet = ""
-            text_matches = item.get("text_matches") or []
-            for match in text_matches:
-                for fragment in match.get("fragments", []):
-                    snippet = fragment.get("fragment", "")
-                    if fragment.get("matches"):
-                        line_number = (
-                            fragment["matches"][0].get("line_number") or 1
-                        )
+            line_number, snippet = self._match_fragment(item)
             records.append(
                 {
                     "url": f"{item.get('html_url', '')}#L{line_number}",
@@ -177,6 +195,20 @@ class GitHubScraper:
                 }
             )
         return records
+
+    @staticmethod
+    def _match_fragment(item: Dict[str, Any]) -> tuple:
+        """Extract (line_number, snippet) from a code-search text match."""
+        line_number, snippet = 1, ""
+        for match in item.get("text_matches") or []:
+            fragment = match.get("fragment", "")
+            for fragment_match in match.get("matches", []):
+                indices = fragment_match.get("indices") or [0, len(fragment)]
+                start = max(0, indices[0])
+                line_number = fragment.count("\n", 0, start) + 1
+                snippet = fragment[max(0, start - 80) : start + 80]
+                return line_number, snippet.replace("\n", " ").strip()
+        return line_number, snippet
 
     def scrape_indicator(self, indicator: str) -> Iterator[Dict[str, Any]]:
         """Yield raw records for an indicator (issues then code, both cached)."""
