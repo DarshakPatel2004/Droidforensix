@@ -234,6 +234,27 @@ graph TD
 - **Top families:** Cerberus (16), Hydra (11), TeaBot (11), Ermac (10), SpyNote (8), Anubis (6), Flubot (6)
 - Full metadata in `sample_metadata.csv`
 
+### Reproducibility (359-sample family validation)
+
+All family-identification metrics are recomputed from committed inputs with one command:
+
+```bash
+python evaluation/metrics_recompute.py --verbose
+```
+
+Generated from `ground_truth_all.csv` + `evaluation/validation_359_full/predictions.json`;
+outputs land in `evaluation/metrics/` (`metrics.json`, `per_source_accuracy.csv`, `per_family_breakdown.csv`).
+Locked 2026-08-12 at commit `a333958` and cross-checked against `validation_report.json` (87 families, 4 sources — zero mismatches).
+
+Headline metrics (exact-match family accuracy):
+
+| Metric | Value |
+|--------|-------|
+| Overall | 31.2% (112/359) |
+| Specific families only (non-catch-all) | 50.8% (90/177) |
+| High-confidence specific labels | 54.3% (82/151) |
+| Unknown-refusal (GT = `unknown`) | 91.7% (22/24) |
+
 ### Validation Status
 
 | Criterion | Status |
