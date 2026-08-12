@@ -18,6 +18,7 @@ import io
 import ipaddress
 import json
 import logging
+import os
 import socket
 import time
 from collections import defaultdict
@@ -519,11 +520,15 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
 
         if has_changes:
             try:
-                # 1. Update pipeline_result.json
+                # 1. Update pipeline_result.json (atomic tmp+replace: concurrent
+                #    build_threat_intel calls for the same sample would otherwise
+                #    truncate each other's writes and corrupt the file)
                 result_path = settings.WORK_DIR / sample_id / "pipeline_result.json"
                 if result_path.exists():
-                    with open(result_path, "w", encoding="utf-8") as f:
+                    tmp_result_path = result_path.with_name("pipeline_result.json.tmp")
+                    with open(tmp_result_path, "w", encoding="utf-8") as f:
                         json.dump(result, f, indent=2, default=str)
+                    os.replace(tmp_result_path, result_path)
 
                 # 2. Update step5_c2s.json
                 step5_path = settings.WORK_DIR / sample_id / "step5_c2s.json"
@@ -540,8 +545,10 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
                                 'live_dns': c.get('live_dns'),
                                 'status': c.get('status')
                             })
-                    with open(step5_path, "w", encoding="utf-8") as f:
+                    tmp_step5_path = step5_path.with_name("step5_c2s.json.tmp")
+                    with open(tmp_step5_path, "w", encoding="utf-8") as f:
                         json.dump(step5_data, f, indent=2, default=str)
+                    os.replace(tmp_step5_path, step5_path)
             except Exception as e:
                 print(f"[WARN] Failed to save enriched threat intel for {sample_id}: {e}")
 

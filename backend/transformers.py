@@ -9,6 +9,7 @@ Converts pipeline_result.json into frontend-friendly formats:
 
 import hashlib
 import json
+import logging
 import math
 import time
 from functools import lru_cache
@@ -16,6 +17,8 @@ from pathlib import Path
 from typing import Dict, List, Any, Optional
 
 from backend.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 WORK_DIR = settings.WORK_DIR
@@ -83,8 +86,14 @@ def load_result(sample_id: str) -> Optional[Dict[str, Any]]:
     path = WORK_DIR / sample_id / "pipeline_result.json"
     if not path.exists():
         return None
-    with open(path, "r", encoding="utf-8") as f:
-        result = json.load(f)
+    try:
+        with open(path, "r", encoding="utf-8") as f:
+            result = json.load(f)
+    except (json.JSONDecodeError, UnicodeDecodeError, OSError):
+        # Corrupt/truncated result (e.g. interrupted write): treat as not found
+        # so callers degrade to 404 instead of crashing with 500.
+        logger.warning("Skipping corrupt pipeline result: %s", path)
+        return None
 
     # Strip lone surrogates so Pydantic/JSON serialization never fails
     result = _strip_surrogates(result)
@@ -119,8 +128,12 @@ def load_all_results() -> List[Dict[str, Any]]:
     for sample_dir in WORK_DIR.iterdir():
         result_path = sample_dir / "pipeline_result.json"
         if result_path.exists():
-            with open(result_path, "r", encoding="utf-8") as f:
-                results.append(_strip_surrogates(json.load(f)))
+            try:
+                with open(result_path, "r", encoding="utf-8") as f:
+                    results.append(_strip_surrogates(json.load(f)))
+            except (json.JSONDecodeError, UnicodeDecodeError, OSError):
+                # One corrupt file must not take down every consumer of the corpus.
+                logger.warning("Skipping corrupt pipeline result: %s", result_path)
     _ALL_RESULTS_CACHE = results
     _ALL_RESULTS_MTIME = now
     return results

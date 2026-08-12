@@ -1,0 +1,612 @@
+{
+  "generated_at": "2026-08-07T10:33:48.613089+00:00",
+  "total_samples": 22,
+  "total_indicators": 380,
+  "malicious_count": 9,
+  "suspicious_count": 111,
+  "benign_count": 260,
+  "malicious_indicators": [
+    {
+      "indicator": "color.xyz",
+      "family": "SpyNote",
+      "reason": "suspicious TLD: .xyz; unusual protocol: unknown"
+    },
+    {
+      "indicator": "color.xyz",
+      "family": "unknown",
+      "reason": "suspicious TLD: .xyz; unusual protocol: unknown"
+    },
+    {
+      "indicator": "4.0.4.android",
+      "family": "DroidDream",
+      "reason": "unusual protocol: unknown; NXDOMAIN"
+    },
+    {
+      "indicator": "rect.top",
+      "family": "BankBot",
+      "reason": "suspicious TLD: .top; unusual protocol: unknown"
+    },
+    {
+      "indicator": "rect.top",
+      "family": "SpyNote",
+      "reason": "suspicious TLD: .top; unusual protocol: unknown; NXDOMAIN"
+    },
+    {
+      "indicator": "staging.api.id.mipay.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown; NXDOMAIN"
+    },
+    {
+      "indicator": "fr-resolver-msg-global-xiaomi-n-916220403.eu-central-1.elb.amazonaws.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown; NXDOMAIN"
+    },
+    {
+      "indicator": "resolver-msg-xiaomi-net-665721575.ap-south-1.elb.amazonaws.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown; NXDOMAIN"
+    },
+    {
+      "indicator": "result.top",
+      "family": "SpyNote",
+      "reason": "suspicious TLD: .top; unusual protocol: unknown; NXDOMAIN"
+    }
+  ],
+  "suspicious_indicators": [
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "532400393339-ngqeegmv0enk0sdk01h7cub251663ne8.apps.googleusercontent.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "1095475153550-iljbnfrb0caaa3vm6mhbjn9jf9lqberh.apps.googleusercontent.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "osbridge.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "basic-utilities.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "basic-android-system.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "cpu-arch-detect.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "android-system.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "monodroid-glue.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug-constants.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "embedded-assemblies.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "embedded-assemblies-zip.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "globals.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "logger.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "shared-constants.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "timezones.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-mono.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-util.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-dlfcn.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "mono-log-adapter.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "string.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "terminate.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "vector.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "monodroid-networkinfo.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "xa-internal-api.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "disabled-by-default-skia.gpu.cache",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "www.srgb.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "1.6.38.git",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "internal-pinvoke-api.cc",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "assemblies.x86.blob",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "family": "GinMaster",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "979220042171-iic5ro6j355488qega8lntg3efiijhc3.apps.googleusercontent.com",
+      "family": "GinMaster",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "room-runtime-2.2.5.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "sqlite-2.1.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "sqlite-framework-2.1.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "browser-1.0.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "cameraviewplus-0.9.5.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "firebase-components-16.0.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "firebase-common-19.3.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "consent-library-1.0.8.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "firebase-auth-19.3.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "firebase-auth-interop-19.0.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "play-services-auth-19.0.0.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "firebase-ui-firestore-6.2.1.aar",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "rendezvous.niotron.com",
+      "family": "SpyMax",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "android-system.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "basic-utilities.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "embedded-assemblies.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "embedded-assemblies-zip.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "monodroid-glue.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "monodroid-networkinfo.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "basic-android-system.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "cpu-arch-detect.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug-constants.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "external-api.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "logger.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "osbridge.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "shared-constants.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "timezones.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-mono.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-util.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "globals.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "android-system.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "basic-utilities.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "embedded-assemblies.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "embedded-assemblies-zip.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "basic-android-system.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "cpu-arch-detect.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug-constants.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "logger.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "monodroid-glue.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "xa-internal-api.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "osbridge.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "shared-constants.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "timezones.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-mono.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-util.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "java-interop-dlfcn.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "monodroid-networkinfo.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "rzn7sx.8sxnysz.zszn",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "disabled-by-default-skia.gpu.cache",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "www.srgb.com",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "internal-pinvoke-api.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "globals.cc",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "environment.armeabi-v7a.armeabi",
+      "family": "unknown",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "i.ytimg.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "i1.ytimg.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "i2.ytimg.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "i3.ytimg.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "i4.ytimg.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "appyet.video",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "www.assoc-amazon.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "fontawesome-webfont-4.3.0.ttf",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "532954079176-lm25onmjrtlbuv396irnegnbg2mj1vr1.apps.googleusercontent.com",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "wappaygw.alipay.com",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "www.hpplay.com.cn",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "254.169.in-addr.arpa",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "8.e.f.ip6.arpa",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "9.e.f.ip6.arpa",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "mobile.opensdk.com",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "bili-location.sdk.manager.downgrade",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "bili-location.sdk.manager.request",
+      "family": "BankBot",
+      "reason": "unusual protocol: unknown"
+    },
+    {
+      "indicator": "youtu.be",
+      "family": "SpyNote",
+      "reason": "unusual protocol: unknown"
+    }
+  ]
+}
