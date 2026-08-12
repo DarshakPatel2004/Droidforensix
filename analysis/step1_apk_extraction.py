@@ -13,6 +13,7 @@ import os
 import re
 import shutil
 import subprocess
+import zipfile
 from pathlib import Path
 from typing import Optional
 
@@ -154,7 +155,7 @@ def run_androguard(apk_path: str) -> dict:
     """Extract DEX-level info using Androguard (fast, pure Python)."""
     result = {
         "success": False, "class_count": 0, "dex_strings": [],
-        "error": None, "dex_parse_errors": [],
+        "error": None, "dex_parse_errors": [], "crypter_stub": False,
     }
     try:
         from androguard.core.apk import APK
@@ -177,6 +178,16 @@ def run_androguard(apk_path: str) -> dict:
         result["success"] = True
         result["class_count"] = class_count
         result["dex_strings"] = sorted(dex_strings)
+        # Crypter stub detection: a 0-byte classes.dex means the APK is a
+        # packer shell (e.g. SpyNote crypter) with no extractable code.
+        try:
+            with zipfile.ZipFile(str(apk_path)) as zf:
+                result["crypter_stub"] = any(
+                    info.filename.lower().endswith(".dex") and info.file_size == 0
+                    for info in zf.infolist()
+                )
+        except zipfile.BadZipFile:
+            result["crypter_stub"] = False
     except ImportError:
         result["error"] = (
             "Androguard not installed or missing dependencies.\n\n"
@@ -204,6 +215,88 @@ def run_androguard(apk_path: str) -> dict:
                 f"Try verifying the file: python -c \"import zipfile; z = zipfile.ZipFile('{apk_path}'); print(len(z.namelist()), 'entries OK')\""
             )
     return result
+
+
+# Size (bytes) above which a single ZIP entry is treated as a crypter padding
+# file ("dummy file" used to bloat the APK past AV size limits).
+DUMMY_FILE_SIZE_THRESHOLD = 50 * 1024 * 1024  # 50 MB
+
+
+# ---------------------------------------------------------------------------
+# Extraction-status classification
+#
+# Samples that yield classes=0 / strings=0 self-diagnose instead of silently
+# failing. Status is one of:
+#   "ok"               - code was extracted normally
+#   "crypter_stub"     - 0-byte classes.dex or >50MB padding file (packer shell)
+#   "nested_apk"       - real code ships inside assets/*.apk (dynamic loader)
+#   "corrupted_zip"    - not a valid ZIP archive (corrupted download/header)
+#   "empty_extraction" - no code and no known anti-analysis pattern
+# ---------------------------------------------------------------------------
+
+
+def _has_large_dummy_file(apk_path: str) -> bool:
+    """True if any ZIP entry is larger than DUMMY_FILE_SIZE_THRESHOLD.
+
+    Crypter stubs pad APKs with a single huge file to evade AV size limits;
+    a >50MB entry in an otherwise-tiny app is a strong anti-analysis signal.
+    """
+    try:
+        with zipfile.ZipFile(str(apk_path)) as zf:
+            return any(
+                info.file_size > DUMMY_FILE_SIZE_THRESHOLD
+                for info in zf.infolist()
+            )
+    except (zipfile.BadZipFile, OSError):
+        return False
+
+
+def _has_nested_apk(apk_path: str) -> bool:
+    """True if the APK bundles a payload APK under assets/ (e.g. assets/base.apk).
+
+    Packers/droppers ship the real code as a nested APK that static DEX
+    analysis never sees, so classes=0 is expected rather than a failure.
+    """
+    try:
+        with zipfile.ZipFile(str(apk_path)) as zf:
+            return any(
+                info.filename.lower().startswith("assets/") and info.filename.lower().endswith(".apk")
+                for info in zf.infolist()
+            )
+    except (zipfile.BadZipFile, OSError):
+        return False
+
+
+def _is_corrupted_zip(apk_path: str) -> bool:
+    """True if the file cannot be opened as a valid ZIP archive.
+
+    Note: ``testzip()`` decompresses every entry, so this is only worth the
+    cost on samples that already produced zero classes/strings (the >50MB
+    dummy-file short-circuit above usually fires first).
+    """
+    try:
+        with zipfile.ZipFile(str(apk_path)) as zf:
+            return zf.testzip() is not None  # first bad CRC entry, if any
+    except (zipfile.BadZipFile, OSError):
+        return True
+
+
+def classify_extraction_status(result: dict, apk_path: str) -> str:
+    """Classify why an extraction produced no code, for diagnostics.
+
+    Order matters: a crypter stub may also embed a nested APK, so the most
+    specific anti-analysis label wins. Returns "ok" whenever classes or
+    strings were extracted at all.
+    """
+    if result.get("decompiled_classes", 0) > 0 or result.get("dex_strings_count", 0) > 0:
+        return "ok"
+    if result.get("crypter_stub") or _has_large_dummy_file(apk_path):
+        return "crypter_stub"
+    if _has_nested_apk(apk_path):
+        return "nested_apk"
+    if _is_corrupted_zip(apk_path):
+        return "corrupted_zip"
+    return "empty_extraction"
 
 
 def _extract_printable_strings(data: bytes, min_len: int = 6) -> list:
@@ -474,8 +567,10 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
         "native_strings": native_strings,
         "dex_strings_count": len(dex_strings),
         "dex_strings": dex_strings,
+        "crypter_stub": androguard_result.get("crypter_stub", False),
         "errors": [],
     }
+    result["extraction_status"] = classify_extraction_status(result, str(apk_path))
 
     if not apktool_result["success"]:
         result["errors"].append(apktool_result["error"])
@@ -483,6 +578,10 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
         result["errors"].append(jadx_result["error"])
     if not androguard_result["success"]:
         result["errors"].append(androguard_result["error"])
+    # Surface DEX-level parse failures (e.g. 0-byte classes.dex in crypter
+    # stubs) instead of silently dropping them.
+    for dex_err in androguard_result.get("dex_parse_errors", []):
+        result["errors"].append(dex_err)
 
     # Save intermediate result
     result_path = sample_work / "step1_extraction.json"

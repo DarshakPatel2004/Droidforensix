@@ -80,8 +80,8 @@ STEP_NAMES = {
 }
 
 STEP_TIMEOUTS = {
-    1: 120, 2: 120, 3: 120, 4: 60, 5: 120,
-    6: 60, 7: 60, 8: 180, 9: 30,
+    1: 120, 2: 120, 3: 120, 4: 60, 5: 300,
+    6: 60, 7: 180, 8: 300, 9: 90,
     10: 60, 11: 60, 12: 60, 13: 60, 14: 60,
     15: 30, 16: 30, 17: 30, 18: 30,
 }
@@ -547,6 +547,8 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             "errors": extraction.get("errors", []),
             "native_libs_found": extraction["native_libs_found"],
             "decompiled_classes": extraction["decompiled_classes"],
+            "crypter_stub": extraction.get("crypter_stub", False),
+            "extraction_status": extraction.get("extraction_status", "ok"),
             "total_strings_extracted": strings_result["total_strings"],
         },
         "manifest": {
@@ -626,7 +628,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     # Step 13: Native ELF Analysis
     native_elf_result, timeline["step13"] = _run_step(
         13, sample_id, apk_size, global_start, event_emitter, work_dir,
-        analyze_native_libraries_from_apk, apk_path, extraction.get("extracted_path")
+        analyze_native_libraries_from_apk, apk_path, extraction.get("apktool_output_dir")
     )
 
     # Step 14: Network Protocol Analysis
@@ -702,6 +704,18 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         "family_clustering": family_cluster_result,
         "threat_synthesis": synthesis_result,
     })
+
+    # Flag for manual review: family matched but LLM risk is low
+    family_name = (result.get("family_identification") or {}).get("family", "unknown")
+    risk_score = (result.get("llm_assessment") or {}).get("risk_score", 0)
+    llm_method = (result.get("llm_assessment") or {}).get("method", "")
+    if family_name != "unknown" and risk_score < 50 and llm_method == "heuristic_benign_skip":
+        result["needs_manual_review"] = True
+        result["manual_review_reason"] = f"Family={family_name} but risk_score={risk_score} (benign verdict skipped LLM)"
+    else:
+        result["needs_manual_review"] = result.get("llm_assessment", {}).get("needs_manual_review", False)
+        if result["needs_manual_review"]:
+            result["manual_review_reason"] = "Suspicious static features (reflection + dynamic loading / packing / low-conf C2)"
 
     # Save full result (strip lone surrogates so Pydantic serialization never fails)
     from backend.transformers import _strip_surrogates
