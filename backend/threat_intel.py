@@ -283,7 +283,14 @@ _JUNK_DOMAIN_WORDS = frozenset({
 
 
 def _is_junk_domain(domain: str) -> bool:
-    """Return True if domain looks like a sentence fragment or code identifier."""
+    """Return True if domain looks like a sentence fragment or code identifier.
+
+    Conservative by design: when in doubt return False and let classify_c2's
+    reasons-based logic (suspicious TLD/port/path, NXDOMAIN, ...) decide.
+    Over-broad heuristics here mislabel *real* C2 infrastructure as benign
+    junk — which drops those indicators from YARA/CSV exports and hides them
+    in the UI.
+    """
     if not domain:
         return True
     domain = domain.rstrip('.')
@@ -293,18 +300,20 @@ def _is_junk_domain(domain: str) -> bool:
     if any(c in domain for c in ' ;(){}[]'):
         return True
 
-    # Single-part: check if it's a known junk word or a bare English word
+    # Single-part: bare words / numbers never resolve as hostnames
     if len(parts) == 1:
         word = parts[0].lower()
         if word in _JUNK_DOMAIN_WORDS:
             return True
-        # Bare alphabetic word (no dots, no digits) — not a real domain
         if word.isalpha() and len(word) >= 4:
             return True
-        # Pure numeric (version-like: "2.0.0.0")
-        if all(p.isdigit() for p in word.split('.')):
+        if word.isdigit():
             return True
-    # Multi-part: check if SLD is a junk word with a real TLD
+
+    # Two-part: SLD is a curated junk word (English word / code identifier)
+    # with a common TLD — e.g. "applicationslink.com", "system.net".
+    # Deliberately NOT any alphabetic SLD: that blanket rule flagged real C2
+    # like telegram.org / smsreplier.net / searchmobileonline.com.
     if len(parts) == 2:
         sld = parts[0].lower()
         if sld.startswith('www'):
@@ -316,20 +325,10 @@ def _is_junk_domain(domain: str) -> bool:
                      'fr', 'au', 'ca', 'cn', 'in', 'ru', 'br', 'kr', 'it', 'es'}
         if sld in _JUNK_DOMAIN_WORDS and tld in real_tlds:
             return True
-        # SLD is a single English word with a real TLD — likely not C2
-        if sld.isalpha() and len(sld) >= 4 and tld in real_tlds:
-            return True
-    # 3+ parts: check for known API endpoints that aren't C2
-    if len(parts) >= 3:
-        sld = parts[0].lower()
-        if sld.startswith('www'):
-            sld = sld[3:]
-        # Known API subdomains of legitimate services
-        known_api_subdomains = {'api', 'app', 'live', 'www', 'cdn', 'static', 'img',
-                                'image', 'video', 'media', 'content', 'data', 'graph',
-                                'connect', 'auth', 'login', 'oauth', 'upload', 'download'}
-        if sld in known_api_subdomains:
-            return True
+
+    # NOTE: no 3+ part rule. api./app./cdn./live. prefixes are used by real C2
+    # (e.g. api.go108.cn) as often as by legitimate services; legitimate ones
+    # are already whitelisted via BENIGN_SDK_DOMAINS before this is reached.
     return False
 
 
