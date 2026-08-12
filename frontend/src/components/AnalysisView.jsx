@@ -271,10 +271,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
               <span className="metric-value">
                 {fullResult.threat_synthesis.zero_day_risk_score ?? 0}
                 {' '}
-                <span
-                  className={`badge ${riskLevelBadgeClass(fullResult.threat_synthesis.risk_level)}`}
-                  className="badge-xs align-middle">
-                >
+                <span className={`badge badge-xs align-middle ${riskLevelBadgeClass(fullResult.threat_synthesis.risk_level)}`}>
                   {fullResult.threat_synthesis.risk_level?.toUpperCase() || 'NONE'}
                 </span>
               </span>
@@ -413,6 +410,7 @@ const LLMSummaryTab = memo(({ result }) => {
             Suspicious Methods ({methods.length})
           </h3>
           <div className="scroll-400">
+              {methods.map((method, i) => (
               <div key={i} className="code-block">
                 <div className="code-block-header">
                   {method.method_name || method}

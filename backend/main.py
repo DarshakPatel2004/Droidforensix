@@ -799,7 +799,7 @@ def _find_related_samples(sample_id: str, family: str, result: dict) -> List[dic
     Two tiers, so matching works even when family identification failed:
     1. Same-family samples (family identification is the strongest signal).
     2. Cross-family similarity (permissions, C2, package name, size, native
-       libs) ΓÇö used for unknown families and to surface lookalikes.
+       libs) — used for unknown families and to surface lookalikes.
 
     Returns up to 10 samples ranked by similarity, each enriched with its
     family and package name for display.
@@ -825,7 +825,7 @@ def _find_related_samples(sample_id: str, family: str, result: dict) -> List[dic
             "package_name": (other.get("metadata", {}) or {}).get("package_name", ""),
         }
         if family_lower != "unknown" and other_family == family_lower:
-            # Same family is definitionally related ΓÇö similarity floors at 0.5
+            # Same family is definitionally related — similarity floors at 0.5
             entry["similarity"] = max(similarity, 0.5)
             same_family.append(entry)
         elif similarity >= 0.2:
@@ -1543,9 +1543,9 @@ async def api_analyze_upload(upload_id: str) -> dict:
             raise
 
     async def run_analysis_async():
-        task = asyncio.create_task(loop.run_in_executor(None, run_analysis))
+        future = loop.run_in_executor(None, run_analysis)
         try:
-            return await asyncio.wait_for(task, timeout=300)
+            return await asyncio.wait_for(future, timeout=300)
         except asyncio.TimeoutError:
             sample_status[upload_id] = {"status": "error", "sample_id": None, "error": "pipeline timed out"}
             raise

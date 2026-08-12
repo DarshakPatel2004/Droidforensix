@@ -190,6 +190,15 @@ BENIGN_SDK_DOMAINS = {
     'material.io', 'mapstyle.withgoogle.com',
     # Android library author websites
     'mikepenz.com',
+    # Bilibili (Chinese video platform, commonly embedded in apps)
+    'bilibili.com', 'app.bilibili.com', 'live.bilibili.com', 'api.bilibili.com',
+    'www.bilibili.com', 'm.bilibili.com', 'passport.bilibili.com',
+    # Other Chinese services
+    'lovequiz.us',
+    # Additional ad/analytics networks
+    'mopub.com', 'www.mopub.com',
+    # .NET framework namespaces (common in Xamarin/Mono Android apps)
+    'system.net', 'system.io', 'system.web', 'system.data', 'system.core',
 }
 
 SUSPICIOUS_TLDS = {'.tk', '.ml', '.ga', '.cf', '.gq', '.xyz', '.top', '.club',
@@ -199,6 +208,129 @@ SUSPICIOUS_PORTS = {8080, 8443, 444, 6666, 6667, 6668, 6669, 7000, 7070, 8888,
 
 SUSPICIOUS_PATH_KEYWORDS = ['/admin', '/panel', '/gate', '/command', '/shell',
                             '/exec', '/c2', '/bot', '/callback']
+
+# Single English words and common code identifiers that appear as "domains"
+# in DEX strings but are never real C2 infrastructure.
+_JUNK_DOMAIN_WORDS = frozenset({
+    'descriptionrelatively', 'applicationslink', 'navigation', 'interested',
+    'familiar', 'whether', 'interpreted', 'according', 'addeventlistenerresponsible',
+    'applications', 'description', 'relatively', 'responsible', 'event',
+    'listener', 'addEventListener', 'function', 'return', 'callback',
+    'handler', 'trigger', 'execute', 'process', 'request', 'response',
+    'success', 'failure', 'error', 'warning', 'debug', 'info', 'log',
+    'message', 'notification', 'alert', 'confirm', 'prompt', 'input',
+    'output', 'result', 'data', 'value', 'text', 'string', 'number',
+    'boolean', 'object', 'array', 'list', 'map', 'set', 'item',
+    'index', 'count', 'total', 'sum', 'min', 'max', 'average',
+    'start', 'stop', 'begin', 'end', 'first', 'last', 'next', 'prev',
+    'current', 'previous', 'new', 'old', 'temp', 'tmp', 'test',
+    'default', 'custom', 'standard', 'normal', 'basic', 'advanced',
+    'simple', 'complex', 'main', 'primary', 'secondary', 'alternate',
+    'original', 'copy', 'clone', 'base', 'core', 'common', 'shared',
+    'local', 'remote', 'internal', 'external', 'public', 'private',
+    'global', 'static', 'dynamic', 'final', 'const', 'variable',
+    'parameter', 'argument', 'option', 'setting', 'configuration',
+    'property', 'attribute', 'field', 'member', 'element', 'component',
+    'module', 'package', 'library', 'framework', 'platform', 'system',
+    'service', 'manager', 'controller', 'handler', 'provider', 'factory',
+    'builder', 'creator', 'generator', 'parser', 'formatter', 'converter',
+    'validator', 'checker', 'matcher', 'comparator', 'iterator', 'enumerator',
+    'collection', 'container', 'wrapper', 'proxy', 'adapter', 'bridge',
+    'facade', 'decorator', 'observer', 'listener', 'subscriber', 'publisher',
+    'event', 'action', 'operation', 'task', 'job', 'work', 'process',
+    'thread', 'routine', 'procedure', 'method', 'routine', 'logic',
+    'algorithm', 'pattern', 'structure', 'model', 'view', 'template',
+    'instance', 'reference', 'pointer', 'handle', 'identifier', 'key',
+    'name', 'title', 'label', 'tag', 'category', 'type', 'kind', 'sort',
+    'group', 'class', 'family', 'series', 'version', 'edition', 'release',
+    'build', 'revision', 'update', 'upgrade', 'patch', 'fix', 'change',
+    'add', 'remove', 'delete', 'insert', 'update', 'replace', 'swap',
+    'move', 'copy', 'clone', 'merge', 'split', 'join', 'connect',
+    'disconnect', 'open', 'close', 'read', 'write', 'load', 'save',
+    'fetch', 'send', 'receive', 'get', 'set', 'put', 'post', 'create',
+    'destroy', 'init', 'setup', 'configure', 'initialize', 'reset',
+    'clear', 'clean', 'refresh', 'reload', 'restart', 'resume', 'pause',
+    'cancel', 'abort', 'skip', 'ignore', 'reject', 'accept', 'approve',
+    'confirm', 'verify', 'validate', 'check', 'test', 'debug', 'trace',
+    'log', 'record', 'track', 'monitor', 'watch', 'observe', 'detect',
+    'find', 'search', 'lookup', 'query', 'select', 'filter', 'sort',
+    'order', 'arrange', 'organize', 'group', 'merge', 'combine', 'split',
+    'divide', 'separate', 'extract', 'parse', 'format', 'convert',
+    'transform', 'translate', 'encode', 'decode', 'compress', 'decompress',
+    'encrypt', 'decrypt', 'hash', 'sign', 'verify', 'authenticate',
+    'authorize', 'login', 'logout', 'register', 'subscribe', 'unsubscribe',
+    'follow', 'unfollow', 'like', 'unlike', 'share', 'comment', 'rate',
+    'review', 'feedback', 'support', 'help', 'info', 'about', 'contact',
+    'privacy', 'terms', 'conditions', 'policy', 'legal', 'copyright',
+    'license', 'permission', 'access', 'right', 'role', 'status', 'state',
+    'mode', 'style', 'theme', 'layout', 'design', 'format', 'structure',
+    'content', 'context', 'environment', 'setting', 'preference', 'option',
+    'feature', 'functionality', 'capability', 'capacity', 'limit', 'bound',
+    'range', 'scope', 'domain', 'zone', 'region', 'area', 'location',
+    'position', 'place', 'point', 'spot', 'site', 'address', 'url',
+    'link', 'reference', 'source', 'origin', 'destination', 'target',
+    'goal', 'objective', 'purpose', 'intent', 'reason', 'cause', 'effect',
+    'result', 'outcome', 'consequence', 'impact', 'influence', 'factor',
+    'aspect', 'element', 'part', 'piece', 'segment', 'section', 'portion',
+    'fraction', 'percentage', 'ratio', 'rate', 'speed', 'velocity',
+    'frequency', 'period', 'duration', 'interval', 'delay', 'timeout',
+    'threshold', 'boundary', 'margin', 'padding', 'spacing', 'gap',
+    'width', 'height', 'depth', 'length', 'size', 'scale', 'dimension',
+    'weight', 'mass', 'volume', 'density', 'intensity', 'strength',
+    'force', 'power', 'energy', 'work', 'effort', 'attempt', 'try',
+    'success', 'failure', 'error', 'warning', 'notice', 'alert',
+})
+
+
+def _is_junk_domain(domain: str) -> bool:
+    """Return True if domain looks like a sentence fragment or code identifier."""
+    if not domain:
+        return True
+    domain = domain.rstrip('.')
+    parts = domain.split('.')
+
+    # Contains semicolons, spaces, or other non-domain characters
+    if any(c in domain for c in ' ;(){}[]'):
+        return True
+
+    # Single-part: check if it's a known junk word or a bare English word
+    if len(parts) == 1:
+        word = parts[0].lower()
+        if word in _JUNK_DOMAIN_WORDS:
+            return True
+        # Bare alphabetic word (no dots, no digits) — not a real domain
+        if word.isalpha() and len(word) >= 4:
+            return True
+        # Pure numeric (version-like: "2.0.0.0")
+        if all(p.isdigit() for p in word.split('.')):
+            return True
+    # Multi-part: check if SLD is a junk word with a real TLD
+    if len(parts) == 2:
+        sld = parts[0].lower()
+        if sld.startswith('www'):
+            sld = sld[3:]
+        if not sld:
+            return True
+        tld = parts[-1].lower()
+        real_tlds = {'com', 'org', 'net', 'edu', 'gov', 'io', 'co', 'uk', 'de', 'jp',
+                     'fr', 'au', 'ca', 'cn', 'in', 'ru', 'br', 'kr', 'it', 'es'}
+        if sld in _JUNK_DOMAIN_WORDS and tld in real_tlds:
+            return True
+        # SLD is a single English word with a real TLD — likely not C2
+        if sld.isalpha() and len(sld) >= 4 and tld in real_tlds:
+            return True
+    # 3+ parts: check for known API endpoints that aren't C2
+    if len(parts) >= 3:
+        sld = parts[0].lower()
+        if sld.startswith('www'):
+            sld = sld[3:]
+        # Known API subdomains of legitimate services
+        known_api_subdomains = {'api', 'app', 'live', 'www', 'cdn', 'static', 'img',
+                                'image', 'video', 'media', 'content', 'data', 'graph',
+                                'connect', 'auth', 'login', 'oauth', 'upload', 'download'}
+        if sld in known_api_subdomains:
+            return True
+    return False
 
 
 def _result_package(result: Dict[str, Any]) -> str:
@@ -227,6 +359,9 @@ def classify_c2(c2: Dict[str, Any]) -> Tuple[str, str]:
 
     if '%' in domain or domain.startswith('__'):
         return 'malicious', 'template/obfuscated domain'
+
+    if _is_junk_domain(domain):
+        return 'benign', 'junk domain (code fragment or sentence)'
 
     for tld in SUSPICIOUS_TLDS:
         if domain.endswith(tld):
