@@ -8,6 +8,8 @@
 [![Tests](https://github.com/DarshakPatel2004/DroidForensix/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/DroidForensix/actions/workflows/test.yml)
 
 > **63x speedup** over manual analysis. **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers.
+>
+> **Read this before citing headline numbers:** validation shows exact-match family identification at **32.0%** and only **2.4% of raw extracted indicators confirmed as genuine C2** — see [Evaluation & Validation](#evaluation). Raw counts above reflect extraction coverage, not verified accuracy.
 
 ---
 
@@ -65,6 +67,8 @@ APK → Decompile (JADX) → Trace Suspicious APIs → Extract Indicators
 | Total runtime (204 samples) | 3.2 hours sequential |
 | Speedup vs. manual | **63x** |
 | Recall (after heuristic fix) | **95%** (recovered from 80%) |
+| Family-ID accuracy (exact match, 359 GT) | **32.0%** (115/359); **52.5%** on specific families |
+| Indicator precision (validated, 380 indicators) | **2.4%** confirmed malicious; **68%** clearly benign |
 
 ### What I Got Wrong (And Fixed)
 
@@ -234,20 +238,40 @@ graph TD
 - **Top families:** Cerberus (16), Hydra (11), TeaBot (11), Ermac (10), SpyNote (8), Anubis (6), Flubot (6)
 - Full metadata in `sample_metadata.csv`
 
+### Indicator False-Positive Validation (Aug 2026)
+
+Every indicator the pipeline auto-extracted from 22 malware samples (380 total) was manually reviewed:
+
+| Classification | Count | Share |
+|----------------|-------|-------|
+| Confirmed malicious (C2 / exfiltration endpoint) | 9 | 2.4% |
+| Suspicious but unverified | 111 | 29% |
+| Clearly benign (Firebase, Google OAuth, CDNs, Mono runtime paths) | 260 | **68%** |
+
+An automated pass over 21 samples (439 indicators) produced the same split: **299 benign (68%), 129 suspicious, 11 malicious**. A domain-legitimacy check of 285 domains landed **68 junk / 134 benign / 75 suspicious / 8 malicious**.
+
+**What this means:** indicator extraction is high-recall, low-precision. The headline "1,711 C2 indicators" is an *extraction* count — only a low single-digit percent survives manual review as genuine C2. Most false positives come from:
+- Legitimate Google infrastructure (Firebase analytics, OAuth client IDs, `*.googleusercontent.com`)
+- CDN/content domains (`i.ytimg.com`, `www.srgb.com`, assoc-amazon)
+- Mono/.NET runtime paths (`*.cc` files) flagged by the "unusual protocol" heuristic
+- `.top`/`.xyz` TLD heuristics hitting parked or sinkholed domains
+
+Raw review data is committed in `evaluation_results/`: `fp_final_report.json`, `fp_validation_auto.json`, `legitimacy_check.json`, `indicators_extracted.json`, `fp_validation_results.json`.
+
+### Family-Identification Accuracy (359-sample validation)
+
+Exact-match family accuracy against ground truth is **32.0% (115/359)** overall and **52.5% (93/177)** when only specific (non-catch-all) families are counted. This is honest: most families are missed or bucketed into catch-all labels, and the LLM/hash-signature labeling path is advisory, not a verdict.
+
 ### Reproducibility (359-sample family validation)
 
-All family-identification metrics are recomputed from committed inputs with one command:
+The locked validation metrics are committed under `evaluation_results/` — raw review data and summaries, no re-computation needed:
 
 ```bash
-python evaluation/metrics_recompute.py --verbose
+# Indicator-level FP validation (22 samples, 380 indicators)
+python -c "import json; s=json.load(open('evaluation_results/fp_final_report.json')); print(s['malicious_count'], s['suspicious_count'], s['benign_count'])"
 ```
 
-Generated from `ground_truth_all.csv` + `evaluation/validation_359_fixed/predictions.json`
-(the fixed-signature run; baseline `validation_359_full/predictions.json` is retained);
-outputs land in `evaluation/metrics/` (`metrics.json`, `per_source_accuracy.csv`, `per_family_breakdown.csv`).
-Locked 2026-08-12 at commit `a333958`, re-locked after the signature fixes
-(Iconosys/Plankton/SpyMax, see `git log`) — cross-checked against `validation_report.json`
-(87 families, 4 sources — zero mismatches).
+Inputs (`ground_truth_all.csv` + fixed-signature predictions; baseline retained in git history) and the tooling used to derive them were removed in 2026-08 cleanup — the committed JSONs remain the canonical results.
 
 Headline metrics (exact-match family accuracy):
 
@@ -268,15 +292,17 @@ Headline metrics (exact-match family accuracy):
 | Sample APKs collected | ✅ |
 | Recall on balanced set | ✅ 95% |
 | Speedup verified | ✅ 63x (204 timed samples) |
-| FP rate validation | ⏳ ~10-15% estimated (50-indicator validation underway) |
+| Family-ID accuracy vs ground truth | ✅ measured: 32.0% exact-match (359 samples) |
+| FP rate validation | ✅ measured: 68% of indicators clearly benign, 2.4% confirmed malicious (380 indicators, 22 samples) |
 | Comparative aggregator validation | ⏳ Future work |
 
 ### Known Limitations
 
+- **Indicator precision is low**: 68% of auto-extracted indicators are clearly benign strings; only 2.4% were confirmed as genuine C2 in manual review (see [validation](#evaluation)). Heuristics favor recall over precision by design.
+- **Family identification is weak**: 32.0% exact-match accuracy on 359-sample ground truth — families are missed or bucketed into catch-all labels; treat family output as advisory.
 - Encrypted native libraries flagged for manual inspection
 - Reflection-heavy obfuscation handled by heuristics (not perfect)
 - C2-blind malware (zero static artifacts) — documented limitation
-- False positive rate: ~10-15% estimated
 
 ### Future Work
 
@@ -313,7 +339,7 @@ frontend/         — React dashboard (Leaflet C2 maps, FamilySignalsCard, threa
 analysis/         — 9-step pipeline (extraction → decoding → correlation → report)
 scripts/          — Batch analysis, data collection utilities
 data/             — GeoIP databases, YARA rules
-evaluation/       — Validation metrics, ground truth, FP analysis
+evaluation_results/ — Committed validation results (FP review, family-ID metrics)
 tests/            — Python backend tests (pytest)
 docs/             — Dashboard guide, codebase reference, superpower plans
 ```
