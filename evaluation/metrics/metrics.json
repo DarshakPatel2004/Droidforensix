@@ -1,27 +1,27 @@
 {
   "ground_truth": "D:\\DroidForensix\\ground_truth_all.csv",
-  "predictions": "D:\\DroidForensix\\evaluation\\validation_359_full\\predictions.json",
-  "generated_at": "2026-08-12T03:08:53.560463+00:00",
+  "predictions": "evaluation\\validation_359_fixed\\predictions.json",
+  "generated_at": "2026-08-12T03:48:28.119400+00:00",
   "total_samples": 359,
   "catch_all_label_count": 24,
   "overall": {
     "evaluated": 359,
     "errors": 0,
-    "correct": 112,
-    "accuracy": 0.312,
-    "precision_macro": 0.1608,
-    "recall_macro": 0.2124
+    "correct": 115,
+    "accuracy": 0.3203,
+    "precision_macro": 0.1708,
+    "recall_macro": 0.2166
   },
   "subset_metrics": {
     "specific_families": {
       "total": 177,
-      "correct": 90,
-      "accuracy": 0.5085
+      "correct": 93,
+      "accuracy": 0.5254
     },
     "high_confidence_specific": {
       "total": 151,
-      "correct": 82,
-      "accuracy": 0.543
+      "correct": 84,
+      "accuracy": 0.5563
     },
     "unknown_refusal": {
       "total": 24,
@@ -38,11 +38,11 @@
       "catch_all_pct": 22.8,
       "specific_count": 115,
       "specific_pct": 77.2,
-      "accuracy_overall": 0.443,
-      "accuracy_specific": 0.5739,
+      "accuracy_overall": 0.4497,
+      "accuracy_specific": 0.5826,
       "accuracy_catch_all": 0.0,
-      "overall_correct": 66,
-      "specific_correct": 66
+      "overall_correct": 67,
+      "specific_correct": 67
     },
     {
       "source": "abusech",
@@ -51,11 +51,11 @@
       "catch_all_pct": 81.0,
       "specific_count": 23,
       "specific_pct": 19.0,
-      "accuracy_overall": 0.0992,
-      "accuracy_specific": 0.3913,
+      "accuracy_overall": 0.1074,
+      "accuracy_specific": 0.4348,
       "accuracy_catch_all": 0.0306,
-      "overall_correct": 12,
-      "specific_correct": 9
+      "overall_correct": 13,
+      "specific_correct": 10
     },
     {
       "source": "modern_eval",
@@ -64,11 +64,11 @@
       "catch_all_pct": 55.6,
       "specific_count": 28,
       "specific_pct": 44.4,
-      "accuracy_overall": 0.4444,
-      "accuracy_specific": 0.3214,
+      "accuracy_overall": 0.4603,
+      "accuracy_specific": 0.3571,
       "accuracy_catch_all": 0.5429,
-      "overall_correct": 28,
-      "specific_correct": 9
+      "overall_correct": 29,
+      "specific_correct": 10
     },
     {
       "source": "AndroZoo",
@@ -196,8 +196,8 @@
     {
       "family": "SpyNote",
       "gt_count": 9,
-      "correct": 1,
-      "accuracy": 0.1111,
+      "correct": 3,
+      "accuracy": 0.3333,
       "sources": "abusech;modern_eval",
       "confidence": "high:2; medium:7",
       "catch_all": false
@@ -214,8 +214,8 @@
     {
       "family": "BaseBridge",
       "gt_count": 7,
-      "correct": 4,
-      "accuracy": 0.5714,
+      "correct": 5,
+      "accuracy": 0.7143,
       "sources": "androzoo_drebin",
       "confidence": "high:7",
       "catch_all": false

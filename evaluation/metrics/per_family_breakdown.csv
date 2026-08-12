@@ -11,9 +11,9 @@ GinMaster,12,12,1.0,AndroZoo;androzoo_drebin,high:12,False
 Adware,10,0,0.0,AndroZoo;androzoo_drebin,high:10,True
 FakeInstaller,9,3,0.3333,androzoo_drebin,high:9,False
 Plankton,9,8,0.8889,androzoo_drebin,high:9,False
-SpyNote,9,1,0.1111,abusech;modern_eval,high:2; medium:7,False
+SpyNote,9,3,0.3333,abusech;modern_eval,high:2; medium:7,False
 Backdoor,7,0,0.0,androzoo_drebin,high:7,True
-BaseBridge,7,4,0.5714,androzoo_drebin,high:7,False
+BaseBridge,7,5,0.7143,androzoo_drebin,high:7,False
 DroidKungFu,6,6,1.0,androzoo_drebin,high:6,False
 FantasyHub,6,6,1.0,modern_eval,medium:6,False
 Linux,6,0,0.0,AndroZoo;androzoo_drebin;modern_eval,high:6,True
