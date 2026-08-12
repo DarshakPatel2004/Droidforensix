@@ -312,12 +312,13 @@ def decode_payloads(encodings_result: dict) -> dict:
             continue
 
         try:
-            decoded_text = decoded_bytes.decode("utf-8")
+            decoded_text = decoded_bytes.decode("utf-8", errors="replace")
         except UnicodeDecodeError:
             try:
                 decoded_text = decoded_bytes.decode("latin-1")
             except Exception:
                 decoded_text = decoded_bytes.hex()
+        decoded_text = decoded_text.encode("utf-8", errors="replace").decode("utf-8")
 
         artifacts = extract_artifacts(decoded_bytes, enc_type)
 

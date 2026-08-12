@@ -34,6 +34,12 @@ logger = logging.getLogger(__name__)
 
 C2_FALLBACK_CONFIDENCE_THRESHOLD = 0.3
 
+# Bounds for optional CIRCL enrichment: cap the number of records enriched and
+# the total wall-clock budget so a slow/unreachable CIRCL service cannot stall
+# the pipeline step past its timeout.
+C2_ENRICHMENT_MAX_RECORDS = 30
+C2_ENRICHMENT_BUDGET_SECONDS = 60.0
+
 
 # ---------------------------------------------------------------------------
 # Patterns and constants
@@ -802,6 +808,8 @@ CODE_PACKAGE_PREFIXES = (
     "okhttp3.", "okio.", "retrofit2.", "rx.", "reactivestreams.",
     "butterknife.", "dagger.", "hilt.", "junit.", "io.flutter.",
     "org.jetbrains.", "org.intellij.",
+    # .NET framework namespaces
+    "system.", "microsoft.", "net.", "windows.",
 )
 
 
@@ -879,6 +887,15 @@ def _is_code_reference(domain: str) -> bool:
     # Android resource references
     if domain.startswith("com.yourpackage.") or domain.endswith(".R$") or domain.endswith(".R"):
         return True
+
+    # .NET namespace pattern: 2-part where SLD is a common .NET namespace word
+    # e.g., "system.net", "system.io", "system.web" — not real C2 domains
+    _DOTNET_NAMESPACE_WORDS = frozenset({
+        "system", "net", "windows", "microsoft", "mscorlib",
+    })
+    if len(parts) == 2 and parts[0].lower() in _DOTNET_NAMESPACE_WORDS and parts[-1] in REAL_TLDS:
+        return True
+
     return False
 
 
@@ -905,7 +922,11 @@ def _is_likely_junk_domain(domain: str) -> bool:
     if not domain or '%' in domain:
         return True
     parts = domain.split('.')
-    tld = parts[-1].lower()
+    tld = parts[-1].lower().rstrip('.')
+
+    # Empty TLD (trailing dot) — "books.google." — never a real domain
+    if not tld:
+        return True
 
     # File paths masquerading as domains (.so, .apk, .jar, .dex, .png, etc.)
     if tld in ('so', 'apk', 'jar', 'dex', 'png', 'jpg', 'jpeg', 'gif', 'xml', 'json', 'svg', 'ico', 'css', 'js', 'ts'):
@@ -921,6 +942,15 @@ def _is_likely_junk_domain(domain: str) -> bool:
         sld = parts[0].lower()
         if sld in _COMMON_ENGLISH_WORDS and tld in ('com', 'org', 'net', 'info', 'biz', 'world', 'site', 'live', 'online'):
             return True
+
+    # Short 2-letter TLD with short SLD: "l.ie", "p1.p2.cl" — likely code noise
+    if len(parts) == 2 and len(tld) <= 2 and len(parts[0]) <= 3:
+        return True
+
+    # Single-part domains with no dots (bare words) — already filtered by DOMAIN_RE
+    # but catch truncated forms like "books.google." where TLD is empty
+    if len(parts) >= 2 and all(len(p) <= 3 for p in parts) and not any(p.isdigit() for p in parts):
+        return True
 
     return False
 
@@ -1055,7 +1085,9 @@ def enrich_with_circl(c2_records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     Optionally enrich C2 records with CIRCL pSSL/pDNS data.
 
     Returns the records unmodified if CIRCL is not configured or the
-    enrichment fails.
+    enrichment fails. Enrichment is bounded by C2_ENRICHMENT_MAX_RECORDS and
+    C2_ENRICHMENT_BUDGET_SECONDS so a slow/unreachable CIRCL service cannot
+    stall the pipeline step.
     """
     if not CIRCL_AVAILABLE:
         return c2_records
@@ -1077,7 +1109,11 @@ def enrich_with_circl(c2_records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         })
 
     try:
-        enriched = client.enrich_c2_infrastructure(enrichment_input)
+        enriched = client.enrich_c2_infrastructure(
+            enrichment_input,
+            max_records=C2_ENRICHMENT_MAX_RECORDS,
+            time_budget=C2_ENRICHMENT_BUDGET_SECONDS,
+        )
     except CIRCLClientError:
         return c2_records
 

@@ -708,7 +708,7 @@ def generate_report(results, prev_fp_rate=None, auto_stats=None):
     max_count = max((c[1] for c in counts), default=1)
     for label, count, col in counts:
         bar_len = int(count / max_count * bar_max) if max_count else 0
-        bar = color("█" * bar_len, col)
+        bar = color("#" * bar_len, col)
         pct = (count / total * 100) if total else 0
         print(f"  {label:<12} {count:>6} ({pct:5.1f}%) {bar}")
 

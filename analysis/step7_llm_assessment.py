@@ -314,7 +314,7 @@ def should_skip_llm(
     c2_result: dict,
     obfuscation_result: Optional[dict] = None,
     secrets_result: Optional[dict] = None,
-    high_conf_threshold: float = 0.8,
+    high_conf_threshold: float = 0.6,
 ) -> bool:
     """
     Decide whether to skip LLM assessment and use rule-based fallback.
@@ -452,6 +452,47 @@ def benign_verdict_heuristic(
         "confidence": 0.9,
         "method": "heuristic_benign_skip",
     }
+
+
+def _quick_family_check(chains_result: dict, c2_result: dict, obfuscation_result: Optional[dict] = None) -> Optional[str]:
+    """Fast deterministic family pre-check using C2 domains and string patterns.
+    Returns family name if matched, None otherwise. No LLM, no ground-truth lookup."""
+    from backend.family_id import FAMILY_SIGNATURES
+    c2_infra = (c2_result or {}).get("c2_infrastructure", [])
+    for entry in c2_infra:
+        domain = entry.get("value", "")
+        for sig in FAMILY_SIGNATURES:
+            for pat in sig.c2_patterns:
+                if pat.mode == "EXACT" and domain == pat.pattern:
+                    return sig.family_name
+                elif pat.mode == "SUFFIX" and domain.endswith(pat.pattern):
+                    return sig.family_name
+                elif pat.mode == "SUBSTRING" and pat.pattern in domain:
+                    return sig.family_name
+    indicators = (obfuscation_result or {}).get("indicators", {})
+    susp_apis = " ".join(indicators.get("suspicious_apis", [])).lower()
+    for sig in FAMILY_SIGNATURES:
+        for sp in sig.string_patterns:
+            if sp.lower() in susp_apis:
+                return sig.family_name
+    return None
+
+
+def _needs_manual_review(chains_result: dict, c2_result: dict, obfuscation_result: Optional[dict], assessment: dict) -> bool:
+    """Flag sample for manual review: low risk but suspicious static features present."""
+    indicators = (obfuscation_result or {}).get("indicators", {})
+    reflection = indicators.get("reflection", [])
+    dynamic_loading = indicators.get("dynamic_loading", [])
+    packing = indicators.get("packing", [])
+    if reflection and dynamic_loading:
+        return True
+    if packing:
+        return True
+    c2_infra = (c2_result or {}).get("c2_infrastructure", [])
+    low_conf_c2 = [c for c in c2_infra if c.get("confidence", 0) >= 0.4]
+    if low_conf_c2:
+        return True
+    return False
 
 
 PERMISSION_BEHAVIOR_GROUPS = {
@@ -682,7 +723,7 @@ fallback_assessment = heuristic_fallback
 def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_retries: int = 2) -> Optional[str]:
     """Call NVIDIA NIM chat completions endpoint and return raw response text."""
     try:
-        from openai import OpenAI
+        from openai import OpenAI, APITimeoutError
     except ImportError as e:
         raise LLMAssessmentError(f"openai package not installed: {e}")
 
@@ -691,7 +732,9 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
         "HTTP-Referer": "https://github.com/anomalyco/DroidForensix",
         "X-Title": "DroidForensix",
     }
-    client = OpenAI(base_url=base_url, api_key=api_key, timeout=60, default_headers=default_headers)
+    # max_retries=0: the SDK's default 2 silent auto-retries (3 x 60s + backoff)
+    # per request can exceed the step timeout before our own loop gets to retry.
+    client = OpenAI(base_url=base_url, api_key=api_key, timeout=60, max_retries=0, default_headers=default_headers)
     messages = [
         {"role": "system", "content": SYSTEM_PROMPT},
         {"role": "user", "content": f"THREAT CHAINS:\n{context}\n\nASSESSMENT:"},
@@ -707,7 +750,8 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
                 max_tokens=512,
             )
             return response.choices[0].message.content
-        except requests.exceptions.Timeout:
+        except (requests.exceptions.Timeout, APITimeoutError):
+            # openai SDK (httpx) raises APITimeoutError, not requests.exceptions.Timeout
             last_error = "NVIDIA NIM request timed out. Check network connectivity and NIM endpoint."
             sleep_time = 5 + attempt * 3
             print(f"  [!] NIM timeout, retrying in {sleep_time}s...")
@@ -885,19 +929,22 @@ def assess_with_llm(chains_result: dict, c2_result: dict, obfuscation_result: Op
 
     # ========== OPTION 2: Pre-flight benign check ==========
     if should_skip_llm(chains_result, c2_result, obfuscation_result, secrets_result):
-        print(f"  [Option 2] Benign signal detected -> skipping LLM, using heuristic verdict")
-        assessment = benign_verdict_heuristic(chains_result, c2_result, obfuscation_result)
-        assessment["raw_llm_output"] = "(skipped: heuristic benign verdict)"
-        
-        try:
-            result_path = work_dir / "step7_assessment.json"
-            with open(result_path, "w", encoding="utf-8") as f:
-                json.dump(assessment, f, indent=2)
-        except OSError as e:
-            assessment["raw_llm_output"] += f" [save warning: {e}]"
-        
-        time.sleep(0.5)  # Light cooldown
-        return assessment
+        family_match = _quick_family_check(chains_result, c2_result, obfuscation_result)
+        if family_match:
+            print(f"  [Option 2] Benign signal BUT family match ({family_match}) -> forcing LLM")
+        else:
+            print(f"  [Option 2] Benign signal detected -> skipping LLM, using heuristic verdict")
+            assessment = benign_verdict_heuristic(chains_result, c2_result, obfuscation_result)
+            assessment["raw_llm_output"] = "(skipped: heuristic benign verdict)"
+            assessment["needs_manual_review"] = _needs_manual_review(chains_result, c2_result, obfuscation_result, assessment)
+            try:
+                result_path = work_dir / "step7_assessment.json"
+                with open(result_path, "w", encoding="utf-8") as f:
+                    json.dump(assessment, f, indent=2)
+            except OSError as e:
+                assessment["raw_llm_output"] += f" [save warning: {e}]"
+            time.sleep(0.5)
+            return assessment
 
     try:
         context = format_threat_context(chains_result, c2_result, obfuscation_result, secrets_result)
@@ -957,7 +1004,7 @@ def assess_with_llm(chains_result: dict, c2_result: dict, obfuscation_result: Op
             print(f"  [*] Using Ollama model: {ollama_model} at {ollama_host}")
 
             for attempt in range(max_retries):
-                raw_output = _call_ollama(context, ollama_host, ollama_model, max_retries=3)
+                raw_output = _call_ollama(context, ollama_host, ollama_model, max_retries=2)
                 parsed = parse_llm_json(raw_output) if raw_output else None
                 if parsed and validate_assessment(parsed):
                     assessment = sanity_check(parsed, chains_result, c2_result, obfuscation_result, secrets_result)

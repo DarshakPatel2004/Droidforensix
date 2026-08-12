@@ -304,6 +304,8 @@ class CIRCLClient:
         pdns_paginate_count: Optional[int] = 100,
         pdns_auto_paginate: bool = True,
         pdns_max_pages: int = 10,
+        max_records: Optional[int] = None,
+        time_budget: Optional[float] = None,
     ) -> List[Dict[str, Any]]:
         """
         Enrich a list of C2 indicators with CIRCL pSSL/pDNS data.
@@ -313,9 +315,21 @@ class CIRCLClient:
         pDNS defaults are tuned for C2 lookups: A-records only, 100 records per
         page, auto-paginate up to 10 pages. This avoids the large responses and
         timeouts that plague unfiltered pDNS queries for popular domains.
+
+        max_records: hard cap on the number of items enriched (enrich the
+            first N in list order). Defaults to unlimited.
+        time_budget: overall wall-clock budget in seconds, checked between
+            records; enrichment stops when exceeded (items are skipped, never
+            failed). Defaults to unlimited. Use this so a slow/unreachable
+            CIRCL service cannot stall callers indefinitely.
         """
         enriched = []
-        for c2 in c2_list:
+        start_time = time.time()
+        for idx, c2 in enumerate(c2_list):
+            if max_records is not None and idx >= max_records:
+                break
+            if time_budget is not None and time.time() - start_time >= time_budget:
+                break
             c2 = dict(c2)
             circl_data: Dict[str, Any] = {}
 

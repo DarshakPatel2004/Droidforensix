@@ -44,8 +44,5 @@ geoip2
 # Encrypted / AES-ZIP extraction (MalwareBazaar passworded samples)
 pyzipper
 
-# Forum scraper (C2-to-forum attribution links; official Reddit/GitHub APIs)
-praw
-tldextract
 PyYAML
 

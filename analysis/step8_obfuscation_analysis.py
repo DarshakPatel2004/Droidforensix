@@ -687,19 +687,7 @@ def calculate_obfuscation_score(indicators: Dict[str, Any], dex_entropy: List[Di
     return round(min(100, score), 2)
 
 
-def analyze_obfuscation(apk_path: str, work_dir: Optional[str] = None, sample_id: Optional[str] = None) -> Dict[str, Any]:
-    """
-    Full Step 8: Advanced obfuscation analysis.
-
-    Args:
-        apk_path: Path to APK file.
-        work_dir: Working directory for intermediate outputs. Defaults to
-            settings.WORK_DIR.
-        sample_id: Optional sample identifier; falls back to APK filename stem.
-
-    Returns:
-        dict with obfuscation indicators, native strings, DEX entropy, and score.
-    """
+def _analyze_obfuscation_inner(apk_path: str, work_dir: Optional[str] = None, sample_id: Optional[str] = None) -> Dict[str, Any]:
     apk_path = Path(apk_path)
     if sample_id is None:
         sample_id = apk_path.stem
@@ -772,6 +760,51 @@ def analyze_obfuscation(apk_path: str, work_dir: Optional[str] = None, sample_id
         json.dump(result, f, indent=2, default=str)
 
     return result
+
+
+def analyze_obfuscation(apk_path: str, work_dir: Optional[str] = None, sample_id: Optional[str] = None) -> Dict[str, Any]:
+    """
+    Full Step 8: Advanced obfuscation analysis.
+
+    Args:
+        apk_path: Path to APK file.
+        work_dir: Working directory for intermediate outputs. Defaults to
+            settings.WORK_DIR.
+        sample_id: Optional sample identifier; falls back to APK filename stem.
+
+    Returns:
+        dict with obfuscation indicators, native strings, DEX entropy, and score.
+    """
+    import threading
+    result_holder = {}
+    exception_holder = {}
+
+    def _worker():
+        try:
+            result_holder["result"] = _analyze_obfuscation_inner(apk_path, work_dir, sample_id)
+        except Exception as e:
+            exception_holder["exception"] = e
+
+    thread = threading.Thread(target=_worker, daemon=True)
+    thread.start()
+    thread.join(timeout=180)
+
+    if thread.is_alive():
+        logger.warning("Step 8 timed out after 180s for %s, returning partial result", apk_path)
+        return {
+            "sample_id": sample_id or Path(apk_path).stem,
+            "obfuscation_score": 0.0,
+            "obfuscation_level": "low",
+            "indicators": {},
+            "dex_entropy": [],
+            "native_library_artifacts": [],
+            "notes": ["Step 8 timed out after 180s - analysis skipped"],
+        }
+
+    if "exception" in exception_holder:
+        raise exception_holder["exception"]
+
+    return result_holder.get("result", {})
 
 
 if __name__ == "__main__":

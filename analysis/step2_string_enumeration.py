@@ -71,7 +71,7 @@ NOISE_PATTERNS = [
 
 def is_noisy_string(value: str) -> bool:
     """Return True if a string literal is likely framework/SDK boilerplate or noise."""
-    if not value or len(value) < 6:
+    if not value or len(value) < 8:
         return True
     lowered = value.lower().strip()
     if lowered in NOISE_STRINGS:
@@ -81,6 +81,10 @@ def is_noisy_string(value: str) -> bool:
     for pat in NOISE_PATTERNS:
         if pat.match(value):
             return True
+    # Filter single-word strings that look like English words or code identifiers
+    # (no dots, no slashes, just alphanumeric) — these are never C2 domains
+    if "." not in value and "/" not in value and value.replace("_", "").replace("-", "").isalnum():
+        return True
     return False
 
 

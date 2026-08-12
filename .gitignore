@@ -9,6 +9,9 @@
 keys.txt
 setenv.sh
 
+# Kaggle bundle artifacts (rebuilt via kaggle/build_bundle.py)
+kaggle/*.zip
+
 # IDE & Editor files
 .vscode/
 .idea/

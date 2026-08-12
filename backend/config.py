@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     # Ollama / LLM inference (local Windows service)
     OLLAMA_HOST: str = "http://localhost:11434"
     # Default model; override via the OLLAMA_MODEL environment variable or .env
-    OLLAMA_MODEL: str = "mistral:7b-instruct-q4_K_M"
+    OLLAMA_MODEL: str = "qwen2.5:3b-instruct-q4_K_M"
     OLLAMA_TIMEOUT: int = 120
 
     # NVIDIA NIM (optional, for future expansion)

@@ -22,10 +22,9 @@ DEFAULT_CERT_DB_PATH = Path(__file__).resolve().parent.parent / "data" / "known_
 _cert_cache: Optional[Dict[str, str]] = None
 
 SUSPICIOUS_ISSUERS = [
-    "CN=Android Debug", "O=Android", "O=Google Inc.", "CN=Android",
-    "CN=Android Debug Key", "CN=Android Debuggable",
-    "CN=Android AOSP", "OU=Android", "CN=Android-Supervised",
-    "CN=Android Platform",
+    "CN=Android Debug",
+    "CN=Android Debug Key",
+    "CN=Android Debuggable",
 ]
 
 

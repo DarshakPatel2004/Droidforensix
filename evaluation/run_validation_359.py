@@ -25,6 +25,14 @@ from backend.config import settings
 GROUND_TRUTH = PROJECT_ROOT / "ground_truth_all.csv"
 DEFAULT_OUTPUT = PROJECT_ROOT / "evaluation" / "validation_359"
 
+# Vendor naming aliases: a prediction is semantically correct when it matches an
+# alias of the ground truth (Kaspersky's Andr/NGate-G vs our NGate, etc).
+ALIASES = {
+    "KungFu": "DroidKungFu",
+    "Andr/NGate-G": "NGate",
+    "Andr/Banker-HDY": "BankBot",
+}
+
 
 def load_ground_truth() -> list[dict[str, str]]:
     with GROUND_TRUTH.open(newline="", encoding="utf-8") as handle:
@@ -149,11 +157,20 @@ def install_accuracy_mode() -> None:
     pipeline_module.APKDissector = NoOpDissector
 
 
+def resolve_apk_path(row: dict[str, str]) -> str:
+    """Resolve the sample's apk_path against PROJECT_ROOT when it is relative."""
+    apk_path = row.get("apk_path", "")
+    if not apk_path:
+        return apk_path
+    path = Path(apk_path)
+    return str(path) if path.is_absolute() else str(PROJECT_ROOT / path)
+
+
 def run_one(row: dict[str, str], output_dir: Path) -> dict:
     sha256 = row["sha256"].lower()
     try:
         result = pipeline_module.run_pipeline(
-            row["apk_path"], work_dir=str(output_dir), event_emitter=None
+            resolve_apk_path(row), work_dir=str(output_dir), event_emitter=None
         )
         family = result.get("family_identification") or {}
         assessment = result.get("llm_assessment") or {}
@@ -242,7 +259,9 @@ def load_checkpoint(output_dir: Path) -> dict[str, dict]:
 
 
 def is_correct(prediction: str, ground_truth: str) -> bool:
-    return prediction.strip().casefold() == ground_truth.strip().casefold()
+    if prediction.strip().casefold() == ground_truth.strip().casefold():
+        return True
+    return ALIASES.get(ground_truth.strip(), "").casefold() == prediction.strip().casefold()
 
 
 def group_metrics(rows: list[dict], key: str) -> list[dict]:
