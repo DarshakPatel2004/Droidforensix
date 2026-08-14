@@ -32,10 +32,16 @@ MIN_SAMPLES      = 2   # include families with ≥2 samples for completeness
 
 
 def extract_cert_issuer(apk_path: str) -> str | None:
-    """Return the signing cert issuer string, or None on failure."""
+    """Return the signing cert issuer string, or None on failure.
+
+    Uses androguard's APK() zip/manifest reader only — no DEX parsing.
+    AnalyzeAPK would build the full Dalvik cross-reference graph per sample
+    (20-90s each); the signing cert is read from META-INF/*.RSA and needs
+    none of that. This path takes milliseconds per APK.
+    """
     try:
-        from androguard.misc import AnalyzeAPK
-        a, _, _ = AnalyzeAPK(apk_path)
+        from androguard.core.apk import APK
+        a = APK(apk_path)
         certs = a.get_certificates()
         if certs:
             return certs[0].issuer.human_friendly
