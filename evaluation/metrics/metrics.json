@@ -1,27 +1,27 @@
 {
   "ground_truth": "ground_truth_all.csv",
-  "predictions": "evaluation\\validation_359_fixed2\\predictions.json",
-  "generated_at": "2026-08-14T11:43:35.074697+00:00",
+  "predictions": "evaluation\\validation_359_fixed3\\predictions.json",
+  "generated_at": "2026-08-14T13:23:45.651416+00:00",
   "total_samples": 359,
   "catch_all_label_count": 24,
   "overall": {
-    "evaluated": 358,
-    "errors": 1,
-    "correct": 125,
-    "accuracy": 0.3482,
-    "precision_macro": 0.2719,
-    "recall_macro": 0.3169
+    "evaluated": 356,
+    "errors": 3,
+    "correct": 128,
+    "accuracy": 0.3565,
+    "precision_macro": 0.3025,
+    "recall_macro": 0.3435
   },
   "subset_metrics": {
     "specific_families": {
       "total": 177,
-      "correct": 103,
-      "accuracy": 0.5819
+      "correct": 106,
+      "accuracy": 0.5989
     },
     "high_confidence_specific": {
       "total": 151,
-      "correct": 94,
-      "accuracy": 0.6225
+      "correct": 97,
+      "accuracy": 0.6424
     },
     "unknown_refusal": {
       "total": 24,
@@ -38,11 +38,11 @@
       "catch_all_pct": 22.8,
       "specific_count": 115,
       "specific_pct": 77.2,
-      "accuracy_overall": 0.5101,
-      "accuracy_specific": 0.6609,
+      "accuracy_overall": 0.5235,
+      "accuracy_specific": 0.6783,
       "accuracy_catch_all": 0.0,
-      "overall_correct": 76,
-      "specific_correct": 76
+      "overall_correct": 78,
+      "specific_correct": 78
     },
     {
       "source": "abusech",
@@ -77,11 +77,11 @@
       "catch_all_pct": 57.7,
       "specific_count": 11,
       "specific_pct": 42.3,
-      "accuracy_overall": 0.2308,
-      "accuracy_specific": 0.5455,
+      "accuracy_overall": 0.2692,
+      "accuracy_specific": 0.6364,
       "accuracy_catch_all": 0.0,
-      "overall_correct": 6,
-      "specific_correct": 6
+      "overall_correct": 7,
+      "specific_correct": 7
     }
   ],
   "per_family_breakdown": [
@@ -196,8 +196,8 @@
     {
       "family": "SpyNote",
       "gt_count": 9,
-      "correct": 3,
-      "accuracy": 0.3333,
+      "correct": 2,
+      "accuracy": 0.2222,
       "sources": "abusech;modern_eval",
       "confidence": "high:2; medium:7",
       "catch_all": false
@@ -214,8 +214,8 @@
     {
       "family": "BaseBridge",
       "gt_count": 7,
-      "correct": 6,
-      "accuracy": 0.8571,
+      "correct": 7,
+      "accuracy": 1.0,
       "sources": "androzoo_drebin",
       "confidence": "high:7",
       "catch_all": false
@@ -313,8 +313,8 @@
     {
       "family": "BankBot",
       "gt_count": 3,
-      "correct": 0,
-      "accuracy": 0.0,
+      "correct": 1,
+      "accuracy": 0.3333,
       "sources": "abusech",
       "confidence": "high:2; medium:1",
       "catch_all": false
@@ -556,8 +556,8 @@
     {
       "family": "Cnzz",
       "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
+      "correct": 1,
+      "accuracy": 1.0,
       "sources": "AndroZoo",
       "confidence": "high:1",
       "catch_all": false
@@ -700,8 +700,8 @@
     {
       "family": "Nandrobox",
       "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
+      "correct": 1,
+      "accuracy": 1.0,
       "sources": "androzoo_drebin",
       "confidence": "high:1",
       "catch_all": false

@@ -131,9 +131,12 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # BaseBridge — Chinese SMS trojan (placed before DroidKungFu so its specific
     # native API signal — libandroidterm.so with fork/ioctl — wins tiebreaks
     # over DroidKungFu's generic getprop/native-lib match on BaseBridge samples).
+    # Discriminators mined from 359-sample corpus (fp < 1%): androidterm,
+    # createsubprocess, setptywindowsize are unique to BaseBridge's terminal-exec
+    # native layer and absent from DroidDream/DroidKungFu.
     FamilySignature(
         family_name="BaseBridge",
-        string_patterns=["basebridge"],
+        string_patterns=["basebridge", "androidterm", "createsubprocess", "setptywindowsize"],
         c2_patterns=[
             C2Pattern("wap.soso.com", C2MatchMode.SUBSTRING),
             C2Pattern("mobile.91.com", C2MatchMode.SUBSTRING),
@@ -149,6 +152,28 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=700,
         has_native_libs=True,
         min_matches=3, confidence=0.80,
+    ),
+
+    # KungFu — early Chinese botnet, distinct from DroidKungFu despite sharing
+    # the same adwo.com C2 infrastructure. isafterdate is a date-validation
+    # utility unique to KungFu's obfuscated codebase (fp=0 across 359 corpus);
+    # datautil.java is a secondary discriminator (fp=0.008). Placed before
+    # DroidKungFu so its unique string signal wins the tiebreak.
+    FamilySignature(
+        family_name="KungFu",
+        string_patterns=["isafterdate", "datautil.java"],
+        c2_patterns=[
+            C2Pattern("adwo.com", C2MatchMode.SUBSTRING),
+            C2Pattern("waps.cn", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("INTERNET", 1.0),
+            PermissionSig("READ_PHONE_STATE", 0.95),
+            PermissionSig("ACCESS_WIFI_STATE", 0.85),
+        ],
+        class_count_min=50, class_count_max=300,
+        has_native_libs=True,
+        min_matches=4, confidence=0.90,
     ),
 
     # 1. DroidKungFu — Chinese root exploit + botnet
@@ -316,11 +341,12 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # FakeRun — Premium SMS / fake app.
     # min_matches=4 is deliberate: without a string hit this signature can reach at
     # most 3 signals (perms + class range + native:no), all of which are generic.
-    # Requiring 4 forces the "fakerun" string to be present, which stops this
-    # signature from acting as a catch-all for any small SMS app.
+    # Requiring 4 forces a family string to be present. Discriminators added from
+    # corpus mining (fp=0): secureconnection and lbjsinterface are present in all
+    # FakeRun samples and absent from Plankton (its main beater family).
     FamilySignature(
         family_name="FakeRun",
-        string_patterns=["fakerun", "fake run"],
+        string_patterns=["fakerun", "fake run", "secureconnection", "lbjsinterface"],
         c2_patterns=[],
         permission_sigs=[
             PermissionSig("SEND_SMS", 0.90),
@@ -374,9 +400,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # 100-800 class range is shared with GinMaster and generic Chinese adware, and
     # already reached min_matches on its own. Demanding a Dowgin C2 hit keeps the
     # signature on its own evidence instead of absorbing GinMaster samples.
+    # Discriminator added from corpus mining (fp=0.003): sensorevent is present
+    # in all Dowgin samples and absent from GinMaster.
     FamilySignature(
         family_name="Dowgin",
-        string_patterns=["dowgin"],
+        string_patterns=["dowgin", "sensorevent"],
         c2_patterns=[
             C2Pattern("api.box.appmob.cn", C2MatchMode.SUBSTRING),
             C2Pattern("frame.top", C2MatchMode.EXACT),
@@ -520,9 +548,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # tie on signal count for GinMaster samples, which list order then awarded to
     # Plankton. Plankton still wins its own samples on its distinctive airpush /
     # leadbolt C2, which adds a signal GinMaster cannot match.
+    # Discriminators added from corpus mining (fp < 0.6%): ico_url and soft_id
+    # are unique to GinMaster's ad-SDK configuration strings.
     FamilySignature(
         family_name="GinMaster",
-        string_patterns=["ginmaster"],
+        string_patterns=["ginmaster", "ico_url", "soft_id"],
         c2_patterns=[
             C2Pattern("mobclix.com", C2MatchMode.SUBSTRING),
             C2Pattern("guohead.com", C2MatchMode.SUBSTRING),
@@ -546,9 +576,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # forces it (perms + class + native:no cap at 3 generic signals), mirroring
     # the FakeRun/Zsone pattern. Overlap with Airpush/Adware-family apps that
     # embed the same SDK remains and is not statically separable.
+    # Discriminators added from corpus mining (fp < 3%): sababa and m_server_url
+    # are Plankton ad-SDK config strings absent from GinMaster.
     FamilySignature(
         family_name="Plankton",
-        string_patterns=["airpush", "leadbolt", "searchmobileonline"],
+        string_patterns=["airpush", "leadbolt", "searchmobileonline", "sababa", "m_server_url"],
         c2_patterns=[
             C2Pattern("api.airpush.com", C2MatchMode.EXACT),
             C2Pattern("beta.airpush.com", C2MatchMode.EXACT),
@@ -633,6 +665,9 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # SpyNote — Commercial RAT (broad catch-all, placed late for tiebreak priority)
+    # Oppo/OnePlus-specific permissions added as discriminators (fp=1.4%):
+    # present in 2/3 outcompeted SpyNote samples that were stolen by Opfake/FakeInst;
+    # absent from both those families.
     FamilySignature(
         family_name="SpyNote",
         string_patterns=[],
@@ -646,6 +681,8 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
             PermissionSig("FOREGROUND_SERVICE", 0.70),
             PermissionSig("SEND_SMS", 0.60),
             PermissionSig("READ_SMS", 0.60),
+            PermissionSig("OPLUS_COMPONENT_SAFE", 0.50),
+            PermissionSig("OPPO_COMPONENT_SAFE", 0.50),
         ],
         class_count_min=None, class_count_max=None,
         has_native_libs=False,
@@ -661,9 +698,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # accessibility-abuse cluster can satisfy the permission signal; generic SMS
     # trojans no longer qualify. min_matches=3 then makes that cluster mandatory,
     # since class range and native:no are the only other reachable signals.
+    # Discriminator added from corpus mining (fp=0.003): auctionid is present
+    # in 2/3 BankBot samples and absent from Kmin and SpyNote (its beater families).
     FamilySignature(
         family_name="BankBot",
-        string_patterns=[],
+        string_patterns=["auctionid"],
         c2_patterns=[],
         permission_sigs=[
             PermissionSig("BIND_ACCESSIBILITY_SERVICE", 1.0),
@@ -859,6 +898,87 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         has_native_libs=False,
         require_c2=True,
         min_matches=2, confidence=0.65,
+    ),
+
+    # ------------------------------------------------------------------
+    # Singleton discriminator signatures (1 GT sample each).
+    # Each rests on strings present only in that family across the 359
+    # corpus (fp=0). Placed last; existing signatures win all ties.
+    # ------------------------------------------------------------------
+
+    # Bian — SpyMax beater. Tencent KuiKly / TDF strings are unique.
+    FamilySignature(
+        family_name="Bian",
+        string_patterns=["key_cloud_sink", "lcom/tencent/kuikly/core/views/pagviewattr;"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("RECEIVE_SMS", 0.9),
+            PermissionSig("SEND_SMS", 0.9),
+        ],
+        class_count_min=1000, class_count_max=10000,
+        has_native_libs=False,
+        min_matches=3, confidence=0.70,
+    ),
+
+    # Cnzz — GinMaster beater. CNZZ analytics SDK class is unique.
+    FamilySignature(
+        family_name="Cnzz",
+        string_patterns=["lcom/cnzz/mobile/android/sdk/mobileprobe;", "readimagewidth"],
+        c2_patterns=[
+            C2Pattern("collector.mobile.cnzz.com", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("INTERNET", 0.9),
+            PermissionSig("READ_PHONE_STATE", 0.8),
+        ],
+        class_count_min=100, class_count_max=1000,
+        has_native_libs=False,
+        min_matches=3, confidence=0.70,
+    ),
+
+    # Nandrobox — GinMaster beater. Chinese game strings unique to this sample.
+    FamilySignature(
+        family_name="Nandrobox",
+        string_patterns=["string_feevalue", "lcom/a/a/e/e;"],
+        c2_patterns=[
+            C2Pattern("mobilehotdog.com", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 0.9),
+            PermissionSig("READ_LOGS", 0.8),
+        ],
+        class_count_min=400, class_count_max=2000,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=3, confidence=0.65,
+    ),
+
+    # SMSreg — SpyNote beater. Umeng analytics pro class is unique (fp=0).
+    FamilySignature(
+        family_name="SMSreg",
+        string_patterns=["lcom/umeng/analytics/pro/bl$d;", "no_dex_path"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 0.9),
+            PermissionSig("READ_PHONE_STATE", 0.8),
+        ],
+        class_count_min=500, class_count_max=5000,
+        has_native_libs=False,
+        min_matches=3, confidence=0.65,
+    ),
+
+    # SmsSend — Kmin beater. GameBox activity class is unique (fp=0.003).
+    FamilySignature(
+        family_name="SmsSend",
+        string_patterns=["lcom/gamebox/activitys/forgotactivity$2;", "notificationcompatapi21impl"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 1.0),
+            PermissionSig("READ_PHONE_STATE", 0.8),
+        ],
+        class_count_min=500, class_count_max=5000,
+        has_native_libs=False,
+        min_matches=3, confidence=0.65,
     ),
 ]
 

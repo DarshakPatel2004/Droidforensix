@@ -1,0 +1,5566 @@
+{
+  "summary": {
+    "total_outcompeted_families": 18,
+    "total_outcompeted_samples": 33,
+    "families_with_discriminator": 13,
+    "families_without_discriminator": 5,
+    "thresholds": {
+      "target_coverage_min": 0.5,
+      "corpus_fp_max": 0.05,
+      "string_min_len": 4
+    }
+  },
+  "families": [
+    {
+      "gt_family": "Andr/NGate-G",
+      "target_count": 1,
+      "beater_families": [
+        "NGate"
+      ],
+      "beater_count": 4,
+      "has_discriminator": false,
+      "commit_ready_count": 0,
+      "candidates": {
+        "strings": [],
+        "permissions": [],
+        "domains": []
+      },
+      "top_commit_ready": []
+    },
+    {
+      "gt_family": "BankBot",
+      "target_count": 3,
+      "beater_families": [
+        "Kmin",
+        "SpyNote"
+      ],
+      "beater_count": 13,
+      "has_discriminator": true,
+      "commit_ready_count": 9,
+      "candidates": {
+        "strings": [
+          {
+            "token": "auctionid",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 1,
+            "corpus_total": 356,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "access$1308",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 5,
+            "corpus_total": 356,
+            "fp_rate": 0.014,
+            "commit_ready": true
+          },
+          {
+            "token": "firstentry",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 6,
+            "corpus_total": 356,
+            "fp_rate": 0.0169,
+            "commit_ready": true
+          },
+          {
+            "token": "seteventid",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 8,
+            "corpus_total": 356,
+            "fp_rate": 0.0225,
+            "commit_ready": true
+          },
+          {
+            "token": "onlog",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 10,
+            "corpus_total": 356,
+            "fp_rate": 0.0281,
+            "commit_ready": true
+          },
+          {
+            "token": "geteventid",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 12,
+            "corpus_total": 356,
+            "fp_rate": 0.0337,
+            "commit_ready": true
+          },
+          {
+            "token": ">;>;)z",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 15,
+            "corpus_total": 356,
+            "fp_rate": 0.0421,
+            "commit_ready": true
+          },
+          {
+            "token": "mappkey",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 16,
+            "corpus_total": 356,
+            "fp_rate": 0.0449,
+            "commit_ready": true
+          },
+          {
+            "token": "ljava/util/vector<",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 17,
+            "corpus_total": 356,
+            "fp_rate": 0.0478,
+            "commit_ready": true
+          },
+          {
+            "token": "muserid",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 19,
+            "corpus_total": 356,
+            "fp_rate": 0.0534,
+            "commit_ready": false
+          },
+          {
+            "token": "setvalid",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 20,
+            "corpus_total": 356,
+            "fp_rate": 0.0562,
+            "commit_ready": false
+          },
+          {
+            "token": ">;j)z",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 20,
+            "corpus_total": 356,
+            "fp_rate": 0.0562,
+            "commit_ready": false
+          },
+          {
+            "token": "bitrate",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 21,
+            "corpus_total": 356,
+            "fp_rate": 0.059,
+            "commit_ready": false
+          },
+          {
+            "token": "*>;)[",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 24,
+            "corpus_total": 356,
+            "fp_rate": 0.0674,
+            "commit_ready": false
+          },
+          {
+            "token": "mtimer",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 25,
+            "corpus_total": 356,
+            "fp_rate": 0.0702,
+            "commit_ready": false
+          },
+          {
+            "token": "tobyte",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 28,
+            "corpus_total": 356,
+            "fp_rate": 0.0787,
+            "commit_ready": false
+          },
+          {
+            "token": "java",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 30,
+            "corpus_total": 356,
+            "fp_rate": 0.0843,
+            "commit_ready": false
+          },
+          {
+            "token": "newdecoder",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 30,
+            "corpus_total": 356,
+            "fp_rate": 0.0843,
+            "commit_ready": false
+          },
+          {
+            "token": "eventid",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 32,
+            "corpus_total": 356,
+            "fp_rate": 0.0899,
+            "commit_ready": false
+          },
+          {
+            "token": "toint",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 2,
+            "target_total": 3,
+            "corpus_hits": 32,
+            "corpus_total": 356,
+            "fp_rate": 0.0899,
+            "commit_ready": false
+          }
+        ],
+        "permissions": [],
+        "domains": []
+      },
+      "top_commit_ready": [
+        {
+          "token": "auctionid",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 1,
+          "corpus_total": 356,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "access$1308",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 5,
+          "corpus_total": 356,
+          "fp_rate": 0.014,
+          "commit_ready": true
+        },
+        {
+          "token": "firstentry",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 6,
+          "corpus_total": 356,
+          "fp_rate": 0.0169,
+          "commit_ready": true
+        },
+        {
+          "token": "seteventid",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 8,
+          "corpus_total": 356,
+          "fp_rate": 0.0225,
+          "commit_ready": true
+        },
+        {
+          "token": "onlog",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 10,
+          "corpus_total": 356,
+          "fp_rate": 0.0281,
+          "commit_ready": true
+        },
+        {
+          "token": "geteventid",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 12,
+          "corpus_total": 356,
+          "fp_rate": 0.0337,
+          "commit_ready": true
+        },
+        {
+          "token": ">;>;)z",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 15,
+          "corpus_total": 356,
+          "fp_rate": 0.0421,
+          "commit_ready": true
+        },
+        {
+          "token": "mappkey",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 16,
+          "corpus_total": 356,
+          "fp_rate": 0.0449,
+          "commit_ready": true
+        },
+        {
+          "token": "ljava/util/vector<",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 2,
+          "target_total": 3,
+          "corpus_hits": 17,
+          "corpus_total": 356,
+          "fp_rate": 0.0478,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "BaseBridge",
+      "target_count": 7,
+      "beater_families": [
+        "DroidDream",
+        "DroidKungFu"
+      ],
+      "beater_count": 7,
+      "has_discriminator": true,
+      "commit_ready_count": 197,
+      "candidates": {
+        "strings": [
+          {
+            "token": "tocharsstring",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 7,
+            "target_total": 7,
+            "corpus_hits": 32,
+            "corpus_total": 352,
+            "fp_rate": 0.0909,
+            "commit_ready": false
+          },
+          {
+            "token": "signatures",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 7,
+            "target_total": 7,
+            "corpus_hits": 112,
+            "corpus_total": 352,
+            "fp_rate": 0.3182,
+            "commit_ready": false
+          },
+          {
+            "token": "[landroid/content/pm/signature;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 7,
+            "target_total": 7,
+            "corpus_hits": 113,
+            "corpus_total": 352,
+            "fp_rate": 0.321,
+            "commit_ready": false
+          },
+          {
+            "token": "landroid/content/pm/signature;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 7,
+            "target_total": 7,
+            "corpus_hits": 115,
+            "corpus_total": 352,
+            "fp_rate": 0.3267,
+            "commit_ready": false
+          },
+          {
+            "token": "createsubprocess",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 2,
+            "corpus_total": 352,
+            "fp_rate": 0.0057,
+            "commit_ready": true
+          },
+          {
+            "token": "setptywindowsize",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 2,
+            "corpus_total": 352,
+            "fp_rate": 0.0057,
+            "commit_ready": true
+          },
+          {
+            "token": "androidterm",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 2,
+            "corpus_total": 352,
+            "fp_rate": 0.0057,
+            "commit_ready": true
+          },
+          {
+            "token": "ljackpal/androidterm/exec;",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 2,
+            "corpus_total": 352,
+            "fp_rate": 0.0057,
+            "commit_ready": true
+          },
+          {
+            "token": "first_app_perferences",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 3,
+            "corpus_total": 352,
+            "fp_rate": 0.0085,
+            "commit_ready": true
+          },
+          {
+            "token": "ljava/nio/channels/filechannel;",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 118,
+            "corpus_total": 352,
+            "fp_rate": 0.3352,
+            "commit_ready": false
+          },
+          {
+            "token": "getchannel",
+            "kind": "string",
+            "target_coverage": 0.857,
+            "target_hits": 6,
+            "target_total": 7,
+            "corpus_hits": 118,
+            "corpus_total": 352,
+            "fp_rate": 0.3352,
+            "commit_ready": false
+          },
+          {
+            "token": "global_b_version_id",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 1,
+            "corpus_total": 352,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "anserverb",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 1,
+            "corpus_total": 352,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "3082025d308201c6a00302010202044d897c75300d06092a864886f70d010105050030723111300f060355040613086b656a696b656a693111300f060355040813086b656a696b656a693111300f060355040713086b656a696b656a693111300f060355040a13086b656a696b656a693111300f060355040b13086b656a696b656a693111300f060355040313086b656a696b656a693020170d3131303332333034353230355a180f32313232303232343034353230355a30723111300f060355040613086b656a696b656a693111300f060355040813086b656a696b656a693111300f060355040713086b656a696b656a693111300f060355040a13086b656a696b656a693111300f060355040b13086b656a696b656a693111300f060355040313086b656a696b656a6930819f300d06092a864886f70d010101050003818d0030818902818100d34ddbffcfddc3141adb261b3dafb9fe6d513a4d138bc0d0321b6c7382dfa211968635d4631cac126283cc160a6f6f1c77c0013ba571886b92634cbdf41027f0ea457a8524119e4338c0301b9dd791d68f80a17713302be71bd65d75b3538fdc8459444778523c16b21d0353b5a82d29ddb1c28c88309a1003da9f7d481833290203010001300d06092a864886f70d010105050003818100045fb886447a0bf61c462cc66870c5c8b3cd01d43fa9232316c31c0859c30682f7e6f41a7ae50a019ace281e56c8bd48a3568774e7334f1f18ab83ceff448761df7b94d013911d8c46b2271f69c96e2b2416babf48d306787e38806c2193e126b94e709617ffc5b0b0c3544deb27ec219946c4303baced5eac7643510bbebd93",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 1,
+            "corpus_total": 352,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "com.android.battery",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 1,
+            "corpus_total": 352,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "stvjjktovfz9f0pglicqy3xk7zh8ruxdn5wwdrieb1umegohys2nplc4qba6am+/",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 3,
+            "corpus_total": 352,
+            "fp_rate": 0.0085,
+            "commit_ready": true
+          },
+          {
+            "token": "ascii is not supported!",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 3,
+            "corpus_total": 352,
+            "fp_rate": 0.0085,
+            "commit_ready": true
+          },
+          {
+            "token": "main2",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 6,
+            "corpus_total": 352,
+            "fp_rate": 0.017,
+            "commit_ready": true
+          },
+          {
+            "token": "unexpected i/o error",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 9,
+            "corpus_total": 352,
+            "fp_rate": 0.0256,
+            "commit_ready": true
+          },
+          {
+            "token": "bad base64 stream",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 5,
+            "target_total": 7,
+            "corpus_hits": 9,
+            "corpus_total": 352,
+            "fp_rate": 0.0256,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [],
+        "domains": []
+      },
+      "top_commit_ready": [
+        {
+          "token": "createsubprocess",
+          "kind": "string",
+          "target_coverage": 0.857,
+          "target_hits": 6,
+          "target_total": 7,
+          "corpus_hits": 2,
+          "corpus_total": 352,
+          "fp_rate": 0.0057,
+          "commit_ready": true
+        },
+        {
+          "token": "setptywindowsize",
+          "kind": "string",
+          "target_coverage": 0.857,
+          "target_hits": 6,
+          "target_total": 7,
+          "corpus_hits": 2,
+          "corpus_total": 352,
+          "fp_rate": 0.0057,
+          "commit_ready": true
+        },
+        {
+          "token": "androidterm",
+          "kind": "string",
+          "target_coverage": 0.857,
+          "target_hits": 6,
+          "target_total": 7,
+          "corpus_hits": 2,
+          "corpus_total": 352,
+          "fp_rate": 0.0057,
+          "commit_ready": true
+        },
+        {
+          "token": "ljackpal/androidterm/exec;",
+          "kind": "string",
+          "target_coverage": 0.857,
+          "target_hits": 6,
+          "target_total": 7,
+          "corpus_hits": 2,
+          "corpus_total": 352,
+          "fp_rate": 0.0057,
+          "commit_ready": true
+        },
+        {
+          "token": "first_app_perferences",
+          "kind": "string",
+          "target_coverage": 0.857,
+          "target_hits": 6,
+          "target_total": 7,
+          "corpus_hits": 3,
+          "corpus_total": 352,
+          "fp_rate": 0.0085,
+          "commit_ready": true
+        },
+        {
+          "token": "global_b_version_id",
+          "kind": "string",
+          "target_coverage": 0.714,
+          "target_hits": 5,
+          "target_total": 7,
+          "corpus_hits": 1,
+          "corpus_total": 352,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "anserverb",
+          "kind": "string",
+          "target_coverage": 0.714,
+          "target_hits": 5,
+          "target_total": 7,
+          "corpus_hits": 1,
+          "corpus_total": 352,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "3082025d308201c6a00302010202044d897c75300d06092a864886f70d010105050030723111300f060355040613086b656a696b656a693111300f060355040813086b656a696b656a693111300f060355040713086b656a696b656a693111300f060355040a13086b656a696b656a693111300f060355040b13086b656a696b656a693111300f060355040313086b656a696b656a693020170d3131303332333034353230355a180f32313232303232343034353230355a30723111300f060355040613086b656a696b656a693111300f060355040813086b656a696b656a693111300f060355040713086b656a696b656a693111300f060355040a13086b656a696b656a693111300f060355040b13086b656a696b656a693111300f060355040313086b656a696b656a6930819f300d06092a864886f70d010101050003818d0030818902818100d34ddbffcfddc3141adb261b3dafb9fe6d513a4d138bc0d0321b6c7382dfa211968635d4631cac126283cc160a6f6f1c77c0013ba571886b92634cbdf41027f0ea457a8524119e4338c0301b9dd791d68f80a17713302be71bd65d75b3538fdc8459444778523c16b21d0353b5a82d29ddb1c28c88309a1003da9f7d481833290203010001300d06092a864886f70d010105050003818100045fb886447a0bf61c462cc66870c5c8b3cd01d43fa9232316c31c0859c30682f7e6f41a7ae50a019ace281e56c8bd48a3568774e7334f1f18ab83ceff448761df7b94d013911d8c46b2271f69c96e2b2416babf48d306787e38806c2193e126b94e709617ffc5b0b0c3544deb27ec219946c4303baced5eac7643510bbebd93",
+          "kind": "string",
+          "target_coverage": 0.714,
+          "target_hits": 5,
+          "target_total": 7,
+          "corpus_hits": 1,
+          "corpus_total": 352,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "com.android.battery",
+          "kind": "string",
+          "target_coverage": 0.714,
+          "target_hits": 5,
+          "target_total": 7,
+          "corpus_hits": 1,
+          "corpus_total": 352,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "stvjjktovfz9f0pglicqy3xk7zh8ruxdn5wwdrieb1umegohys2nplc4qba6am+/",
+          "kind": "string",
+          "target_coverage": 0.714,
+          "target_hits": 5,
+          "target_total": 7,
+          "corpus_hits": 3,
+          "corpus_total": 352,
+          "fp_rate": 0.0085,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "Bian",
+      "target_count": 1,
+      "beater_families": [
+        "SpyMax"
+      ],
+      "beater_count": 6,
+      "has_discriminator": true,
+      "commit_ready_count": 26240,
+      "candidates": {
+        "strings": [
+          {
+            "token": "key_cloud_sink",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/tencent/kuikly/core/views/pagviewattr;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/tencent/tdf/module/tdfmodulemanager;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "access$gettfe$p",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/sogou/imskit/feature/vpa/v5/network/bean/gptagentresponse;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/qihoo360/mobilesafe/svcmanager/b;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "setpolicycancellistener",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "tr;>;itr;)v",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/tencent/kuikly/core/render/android/expand/kuiklyrenderviewdelegator$registermodule$1$9;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001j\"\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u00052\b\u0010\u0007\u001a\u0004\u0018\u00010\bh\u0016¨\u0006",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "ime_function_switch_photograph",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "isremoveoperation",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/sohu/inputmethod/foreign/keyboard/deleterestoregesture$1;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "[lcom/sogou/bu/hardkeyboard/common/page/nesthardkeyboardpageinfo;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "isbeginapplyattrproperty",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/sogou/base/ui/tablayout$c;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "prefs_threshold_in_commit",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/huawei/updatesdk/service/a/b;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "line_break_margin",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "com/tencent/kuikly/core/views/compose/buttonview$attr$1$1$1",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "CAPTURE_VIDEO_OUTPUT",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 13,
+            "corpus_total": 358,
+            "fp_rate": 0.0363,
+            "commit_ready": true
+          },
+          {
+            "token": "ACCESS_NOTIFICATION_POLICY",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 15,
+            "corpus_total": 358,
+            "fp_rate": 0.0419,
+            "commit_ready": true
+          },
+          {
+            "token": "ACTION_MANAGE_OVERLAY_PERMISSION",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 25,
+            "corpus_total": 358,
+            "fp_rate": 0.0698,
+            "commit_ready": false
+          },
+          {
+            "token": "REORDER_TASKS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 26,
+            "corpus_total": 358,
+            "fp_rate": 0.0726,
+            "commit_ready": false
+          },
+          {
+            "token": "READ_PHONE_NUMBERS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 33,
+            "corpus_total": 358,
+            "fp_rate": 0.0922,
+            "commit_ready": false
+          },
+          {
+            "token": "MODIFY_AUDIO_SETTINGS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 44,
+            "corpus_total": 358,
+            "fp_rate": 0.1229,
+            "commit_ready": false
+          },
+          {
+            "token": "WRITE_SETTINGS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 52,
+            "corpus_total": 358,
+            "fp_rate": 0.1453,
+            "commit_ready": false
+          },
+          {
+            "token": "QUERY_ALL_PACKAGES",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 70,
+            "corpus_total": 358,
+            "fp_rate": 0.1955,
+            "commit_ready": false
+          },
+          {
+            "token": "WRITE_SMS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 71,
+            "corpus_total": 358,
+            "fp_rate": 0.1983,
+            "commit_ready": false
+          }
+        ],
+        "domains": [
+          {
+            "token": "account-v6.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "bf-v6.pinyin.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "img06.sogoucdn.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "vpa-cdn.shouji.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "business-cdn-v6.shouji.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "android.profile2.pinyin.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "qs.shouji.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "breaklog.android.shouji.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "h5api-v6.shouji.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "worldwide.sogou.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "key_cloud_sink",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/tencent/kuikly/core/views/pagviewattr;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/tencent/tdf/module/tdfmodulemanager;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "access$gettfe$p",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/sogou/imskit/feature/vpa/v5/network/bean/gptagentresponse;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/qihoo360/mobilesafe/svcmanager/b;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "setpolicycancellistener",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "tr;>;itr;)v",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/tencent/kuikly/core/render/android/expand/kuiklyrenderviewdelegator$registermodule$1$9;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "\u0000\u001e\n\u0002\u0018\u0002\n\u0002\u0010\u0000\n\u0000\n\u0002\u0010\u0002\n\u0000\n\u0002\u0010\b\n\u0002\b\u0002\n\u0002\u0018\u0002\n\u0000\bf\u0018\u00002\u00020\u0001j\"\u0010\u0002\u001a\u00020\u00032\u0006\u0010\u0004\u001a\u00020\u00052\u0006\u0010\u0006\u001a\u00020\u00052\b\u0010\u0007\u001a\u0004\u0018\u00010\bh\u0016¨\u0006",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "Cnzz",
+      "target_count": 1,
+      "beater_families": [
+        "GinMaster"
+      ],
+      "beater_count": 12,
+      "has_discriminator": true,
+      "commit_ready_count": 1415,
+      "candidates": {
+        "strings": [
+          {
+            "token": "readimagewidth",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "belowtext2",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/cnzz/mobile/android/sdk/mobileprobe;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "imagetimertask",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/dksmdz/model/searchactivity;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "cnzz",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "new_image25",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/cnzz/mobile/android/sdk/p;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "亲，求评价！",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "images_ga",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "inew",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "imageview4",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/dksmdz/model/r$style;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lastversion",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "apknameup",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "radiusbut3",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/dksmdz/model/r$id;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "tabradio3",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/dksmdz/model/bgactivity;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/dksmdz/common/dealasc;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "MOUNT_UNMOUNT_FILESYSTEMS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 24,
+            "corpus_total": 358,
+            "fp_rate": 0.067,
+            "commit_ready": false
+          }
+        ],
+        "domains": [
+          {
+            "token": "collector.mobile.cnzz.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "readimagewidth",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "belowtext2",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/cnzz/mobile/android/sdk/mobileprobe;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "imagetimertask",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/dksmdz/model/searchactivity;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "cnzz",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "new_image25",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/cnzz/mobile/android/sdk/p;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "亲，求评价！",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "images_ga",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "Dowgin",
+      "target_count": 2,
+      "beater_families": [
+        "GinMaster"
+      ],
+      "beater_count": 12,
+      "has_discriminator": true,
+      "commit_ready_count": 5791,
+      "candidates": {
+        "strings": [
+          {
+            "token": "sensorevent",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "drawtime",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 2,
+            "corpus_total": 357,
+            "fp_rate": 0.0056,
+            "commit_ready": true
+          },
+          {
+            "token": "getsprite",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 4,
+            "corpus_total": 357,
+            "fp_rate": 0.0112,
+            "commit_ready": true
+          },
+          {
+            "token": "targetapi.java",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 6,
+            "corpus_total": 357,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "suppresslint.java",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 6,
+            "corpus_total": 357,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "fontmetrics",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 13,
+            "corpus_total": 357,
+            "fp_rate": 0.0364,
+            "commit_ready": true
+          },
+          {
+            "token": "getvolume",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 17,
+            "corpus_total": 357,
+            "fp_rate": 0.0476,
+            "commit_ready": true
+          },
+          {
+            "token": "[landroid/content/pm/activityinfo;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 18,
+            "corpus_total": 357,
+            "fp_rate": 0.0504,
+            "commit_ready": false
+          },
+          {
+            "token": "setfontsize",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 20,
+            "corpus_total": 357,
+            "fp_rate": 0.056,
+            "commit_ready": false
+          },
+          {
+            "token": "setdatabasepath",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 22,
+            "corpus_total": 357,
+            "fp_rate": 0.0616,
+            "commit_ready": false
+          },
+          {
+            "token": "getbasestationid",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 24,
+            "corpus_total": 357,
+            "fp_rate": 0.0672,
+            "commit_ready": false
+          },
+          {
+            "token": "landroid/telephony/cdma/cdmacelllocation;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 24,
+            "corpus_total": 357,
+            "fp_rate": 0.0672,
+            "commit_ready": false
+          },
+          {
+            "token": "getnetworkid",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 26,
+            "corpus_total": 357,
+            "fp_rate": 0.0728,
+            "commit_ready": false
+          },
+          {
+            "token": "vlllij",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 29,
+            "corpus_total": 357,
+            "fp_rate": 0.0812,
+            "commit_ready": false
+          },
+          {
+            "token": "fontsize",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 30,
+            "corpus_total": 357,
+            "fp_rate": 0.084,
+            "commit_ready": false
+          },
+          {
+            "token": "indither",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 34,
+            "corpus_total": 357,
+            "fp_rate": 0.0952,
+            "commit_ready": false
+          },
+          {
+            "token": "setsocketbuffersize",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 35,
+            "corpus_total": 357,
+            "fp_rate": 0.098,
+            "commit_ready": false
+          },
+          {
+            "token": "nativeorder",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 35,
+            "corpus_total": 357,
+            "fp_rate": 0.098,
+            "commit_ready": false
+          },
+          {
+            "token": "setredirecting",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 36,
+            "corpus_total": 357,
+            "fp_rate": 0.1008,
+            "commit_ready": false
+          },
+          {
+            "token": "volume",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 36,
+            "corpus_total": 357,
+            "fp_rate": 0.1008,
+            "commit_ready": false
+          }
+        ],
+        "permissions": [
+          {
+            "token": "MOUNT_UNMOUNT_FILESYSTEMS",
+            "kind": "permission",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 24,
+            "corpus_total": 357,
+            "fp_rate": 0.0672,
+            "commit_ready": false
+          },
+          {
+            "token": "RESTART_PACKAGES",
+            "kind": "permission",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 27,
+            "corpus_total": 357,
+            "fp_rate": 0.0756,
+            "commit_ready": false
+          }
+        ],
+        "domains": [
+          {
+            "token": "appdriver.jp",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.turbofly3d.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.osaris.net",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "gyro.appdriver.jp",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "sandbox.appdriver.jp",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "badad.googleplex.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "frame.top",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.scoreloop.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "community.scoreloop.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "api.scoreloop.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "sensorevent",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 1,
+          "corpus_total": 357,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "drawtime",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 2,
+          "corpus_total": 357,
+          "fp_rate": 0.0056,
+          "commit_ready": true
+        },
+        {
+          "token": "getsprite",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 4,
+          "corpus_total": 357,
+          "fp_rate": 0.0112,
+          "commit_ready": true
+        },
+        {
+          "token": "targetapi.java",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 6,
+          "corpus_total": 357,
+          "fp_rate": 0.0168,
+          "commit_ready": true
+        },
+        {
+          "token": "suppresslint.java",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 6,
+          "corpus_total": 357,
+          "fp_rate": 0.0168,
+          "commit_ready": true
+        },
+        {
+          "token": "fontmetrics",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 13,
+          "corpus_total": 357,
+          "fp_rate": 0.0364,
+          "commit_ready": true
+        },
+        {
+          "token": "getvolume",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 17,
+          "corpus_total": 357,
+          "fp_rate": 0.0476,
+          "commit_ready": true
+        },
+        {
+          "token": "currentlvl",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "texture2",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "ennemihitid",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "FakeInst",
+      "target_count": 17,
+      "beater_families": [
+        "FakeInstaller"
+      ],
+      "beater_count": 9,
+      "has_discriminator": false,
+      "commit_ready_count": 0,
+      "candidates": {
+        "strings": [],
+        "permissions": [],
+        "domains": []
+      },
+      "top_commit_ready": []
+    },
+    {
+      "gt_family": "FakeInstaller",
+      "target_count": 9,
+      "beater_families": [
+        "FakeInst"
+      ],
+      "beater_count": 17,
+      "has_discriminator": false,
+      "commit_ready_count": 0,
+      "candidates": {
+        "strings": [],
+        "permissions": [],
+        "domains": []
+      },
+      "top_commit_ready": []
+    },
+    {
+      "gt_family": "FakeRun",
+      "target_count": 2,
+      "beater_families": [
+        "Plankton"
+      ],
+      "beater_count": 9,
+      "has_discriminator": true,
+      "commit_ready_count": 8956,
+      "candidates": {
+        "strings": [
+          {
+            "token": "a_tabwidgetactivity.java",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "secureconnection",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lbjsinterface",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "noresults",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/leadbolt/adcontroller$12;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "setsecuremode",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "currenttoast",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "music_menu_share_twitter",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "access$40",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "isconnectedtotheinternet",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "http://www.android-supermarket.com?product=",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "music_menu_exit",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "_togglenoresults",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "access$42",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "1325999484911551339",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "website_menu",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "cool apps",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "access$41",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "results -",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "menu_home",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "PROCESS_OUTGOING_CALLS",
+            "kind": "permission",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 8,
+            "corpus_total": 357,
+            "fp_rate": 0.0224,
+            "commit_ready": true
+          }
+        ],
+        "domains": [
+          {
+            "token": "www.droidsettings.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "api.mixpanel.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "www.android-supermarket.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "urlsnotfound",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "urlsfound",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "prod.sellaring.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": ";https",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.jp-droidsettings.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "www.uk-droidsettings.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "a_tabwidgetactivity.java",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "secureconnection",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lbjsinterface",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "noresults",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/leadbolt/adcontroller$12;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "setsecuremode",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "currenttoast",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "music_menu_share_twitter",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "access$40",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "isconnectedtotheinternet",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "GinMaster",
+      "target_count": 12,
+      "beater_families": [
+        "DroidKungFu"
+      ],
+      "beater_count": 6,
+      "has_discriminator": true,
+      "commit_ready_count": 156,
+      "candidates": {
+        "strings": [
+          {
+            "token": "ico_url",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 1,
+            "corpus_total": 347,
+            "fp_rate": 0.0029,
+            "commit_ready": true
+          },
+          {
+            "token": "detail_flag",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 1,
+            "corpus_total": 347,
+            "fp_rate": 0.0029,
+            "commit_ready": true
+          },
+          {
+            "token": "soft_id",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 1,
+            "corpus_total": 347,
+            "fp_rate": 0.0029,
+            "commit_ready": true
+          },
+          {
+            "token": "softid",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 2,
+            "corpus_total": 347,
+            "fp_rate": 0.0058,
+            "commit_ready": true
+          },
+          {
+            "token": "telnum",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 2,
+            "corpus_total": 347,
+            "fp_rate": 0.0058,
+            "commit_ready": true
+          },
+          {
+            "token": "simnum",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 2,
+            "corpus_total": 347,
+            "fp_rate": 0.0058,
+            "commit_ready": true
+          },
+          {
+            "token": "versionrelease",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 19,
+            "corpus_total": 347,
+            "fp_rate": 0.0548,
+            "commit_ready": false
+          },
+          {
+            "token": "length of base64 encoded input string is not a multiple of 4.",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 24,
+            "corpus_total": 347,
+            "fp_rate": 0.0692,
+            "commit_ready": false
+          },
+          {
+            "token": "illegal character in base64 encoded data.",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 24,
+            "corpus_total": 347,
+            "fp_rate": 0.0692,
+            "commit_ready": false
+          },
+          {
+            "token": "directory_downloads",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 26,
+            "corpus_total": 347,
+            "fp_rate": 0.0749,
+            "commit_ready": false
+          },
+          {
+            "token": "0000000000000000",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 28,
+            "corpus_total": 347,
+            "fp_rate": 0.0807,
+            "commit_ready": false
+          },
+          {
+            "token": "getexternalstoragepublicdirectory",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 33,
+            "corpus_total": 347,
+            "fp_rate": 0.0951,
+            "commit_ready": false
+          },
+          {
+            "token": "setseed",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 42,
+            "corpus_total": 347,
+            "fp_rate": 0.121,
+            "commit_ready": false
+          },
+          {
+            "token": "serial",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 51,
+            "corpus_total": 347,
+            "fp_rate": 0.147,
+            "commit_ready": false
+          },
+          {
+            "token": "imsi",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 55,
+            "corpus_total": 347,
+            "fp_rate": 0.1585,
+            "commit_ready": false
+          },
+          {
+            "token": "android.os.systemproperties",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 66,
+            "corpus_total": 347,
+            "fp_rate": 0.1902,
+            "commit_ready": false
+          },
+          {
+            "token": "package_name",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 66,
+            "corpus_total": 347,
+            "fp_rate": 0.1902,
+            "commit_ready": false
+          },
+          {
+            "token": "ljava/io/filereader;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 89,
+            "corpus_total": 347,
+            "fp_rate": 0.2565,
+            "commit_ready": false
+          },
+          {
+            "token": "getcachedir",
+            "kind": "string",
+            "target_coverage": 0.75,
+            "target_hits": 9,
+            "target_total": 12,
+            "corpus_hits": 152,
+            "corpus_total": 347,
+            "fp_rate": 0.438,
+            "commit_ready": false
+          },
+          {
+            "token": "notice_data",
+            "kind": "string",
+            "target_coverage": 0.667,
+            "target_hits": 8,
+            "target_total": 12,
+            "corpus_hits": 1,
+            "corpus_total": 347,
+            "fp_rate": 0.0029,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "INSTALL_SHORTCUT",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 12,
+            "target_total": 12,
+            "corpus_hits": 52,
+            "corpus_total": 347,
+            "fp_rate": 0.1499,
+            "commit_ready": false
+          },
+          {
+            "token": "UNINSTALL_SHORTCUT",
+            "kind": "permission",
+            "target_coverage": 0.583,
+            "target_hits": 7,
+            "target_total": 12,
+            "corpus_hits": 26,
+            "corpus_total": 347,
+            "fp_rate": 0.0749,
+            "commit_ready": false
+          }
+        ],
+        "domains": []
+      },
+      "top_commit_ready": [
+        {
+          "token": "ico_url",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 12,
+          "target_total": 12,
+          "corpus_hits": 1,
+          "corpus_total": 347,
+          "fp_rate": 0.0029,
+          "commit_ready": true
+        },
+        {
+          "token": "detail_flag",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 12,
+          "target_total": 12,
+          "corpus_hits": 1,
+          "corpus_total": 347,
+          "fp_rate": 0.0029,
+          "commit_ready": true
+        },
+        {
+          "token": "soft_id",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 12,
+          "target_total": 12,
+          "corpus_hits": 1,
+          "corpus_total": 347,
+          "fp_rate": 0.0029,
+          "commit_ready": true
+        },
+        {
+          "token": "softid",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 12,
+          "target_total": 12,
+          "corpus_hits": 2,
+          "corpus_total": 347,
+          "fp_rate": 0.0058,
+          "commit_ready": true
+        },
+        {
+          "token": "telnum",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 12,
+          "target_total": 12,
+          "corpus_hits": 2,
+          "corpus_total": 347,
+          "fp_rate": 0.0058,
+          "commit_ready": true
+        },
+        {
+          "token": "simnum",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 12,
+          "target_total": 12,
+          "corpus_hits": 2,
+          "corpus_total": 347,
+          "fp_rate": 0.0058,
+          "commit_ready": true
+        },
+        {
+          "token": "notice_data",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 8,
+          "target_total": 12,
+          "corpus_hits": 1,
+          "corpus_total": 347,
+          "fp_rate": 0.0029,
+          "commit_ready": true
+        },
+        {
+          "token": "apkurl",
+          "kind": "string",
+          "target_coverage": 0.667,
+          "target_hits": 8,
+          "target_total": 12,
+          "corpus_hits": 10,
+          "corpus_total": 347,
+          "fp_rate": 0.0288,
+          "commit_ready": true
+        },
+        {
+          "token": "dotimergetconfig",
+          "kind": "string",
+          "target_coverage": 0.583,
+          "target_hits": 7,
+          "target_total": 12,
+          "corpus_hits": 0,
+          "corpus_total": 347,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "/icons/icons_",
+          "kind": "string",
+          "target_coverage": 0.583,
+          "target_hits": 7,
+          "target_total": 12,
+          "corpus_hits": 0,
+          "corpus_total": 347,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "KungFu",
+      "target_count": 2,
+      "beater_families": [
+        "DroidKungFu"
+      ],
+      "beater_count": 6,
+      "has_discriminator": true,
+      "commit_ready_count": 958,
+      "candidates": {
+        "strings": [
+          {
+            "token": "isafterdate",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "datautil.java",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 3,
+            "corpus_total": 357,
+            "fp_rate": 0.0084,
+            "commit_ready": true
+          },
+          {
+            "token": "starty",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 60,
+            "corpus_total": 357,
+            "fp_rate": 0.1681,
+            "commit_ready": false
+          },
+          {
+            "token": "startx",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 2,
+            "target_total": 2,
+            "corpus_hits": 75,
+            "corpus_total": 357,
+            "fp_rate": 0.2101,
+            "commit_ready": false
+          },
+          {
+            "token": "外出就餐",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "bgshader",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "xychart.java",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "preenddate",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "gettimechartview",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "getpieviewwidth",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "isapplybackgroundcolor",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "tabbar_friend",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "history_account_activity",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "setlegendtextsize",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/ps/keepaccount/tabbar/buttondemo$1$2;",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "bottom_bar_highlight",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "shirt",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "[lorg/achartengine/renderer/simpleseriesrenderer;",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "queryaccountlist",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "action_change_tab",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 0,
+            "corpus_total": 357,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [],
+        "domains": [
+          {
+            "token": "ads.wapx.cn",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "app.wapx.cn",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 1,
+            "corpus_total": 357,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "gmail.com",
+            "kind": "domain",
+            "target_coverage": 0.5,
+            "target_hits": 1,
+            "target_total": 2,
+            "corpus_hits": 7,
+            "corpus_total": 357,
+            "fp_rate": 0.0196,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "isafterdate",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "datautil.java",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 2,
+          "target_total": 2,
+          "corpus_hits": 3,
+          "corpus_total": 357,
+          "fp_rate": 0.0084,
+          "commit_ready": true
+        },
+        {
+          "token": "外出就餐",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "bgshader",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "xychart.java",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "preenddate",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "gettimechartview",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "getpieviewwidth",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "isapplybackgroundcolor",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "tabbar_friend",
+          "kind": "string",
+          "target_coverage": 0.5,
+          "target_hits": 1,
+          "target_total": 2,
+          "corpus_hits": 0,
+          "corpus_total": 357,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "Nandrobox",
+      "target_count": 1,
+      "beater_families": [
+        "GinMaster"
+      ],
+      "beater_count": 12,
+      "has_discriminator": true,
+      "commit_ready_count": 2557,
+      "candidates": {
+        "strings": [
+          {
+            "token": "<version>",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/a/a/e/e;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "按5号键跳过",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "可以恢复少量生命值",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "string_feevalue",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/a/a/d/z;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "并且等级加3",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/a/a/d/h;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "billing fail.",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "<data>",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/a/a/k/i;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "最近\"净化\"在大陆各地的行动越发地激烈跟难以控制，他们甚至对那些身体上并没有出现变异的正常人出手，原因只是出于\"怀疑\"。望着这个我一手成立的组织走向憎恨与屠杀的深渊，我觉得我必须对这一切负责。在跟米娜辗转旅行的时候，遇到那些疯狂的\"净化\"仪式，我都会出手救下那些无辜的人，但这最终暴露了我的身份与行踪。面对以往的同伴，我很平静地对他们说他们是错的。一味地消灭正在发生变异的人们并不会最终拯救这个世界。因为消灭与拯救是意义完全相反的两个词。",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "list_element",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "screen.width",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/casee/apptrack/a;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "防御力6。西方骑士的高级头盔",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "vssbb",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lorg/meteoroid/plugin/device/midpdevice$g$a;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "string_sendednum",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "type_ushort_1555_argb",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "FULL_SCREEN",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "CHANGE_WIFI_STATE",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 65,
+            "corpus_total": 358,
+            "fp_rate": 0.1816,
+            "commit_ready": false
+          },
+          {
+            "token": "WRITE_SMS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 71,
+            "corpus_total": 358,
+            "fp_rate": 0.1983,
+            "commit_ready": false
+          },
+          {
+            "token": "RECEIVE_SMS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 127,
+            "corpus_total": 358,
+            "fp_rate": 0.3547,
+            "commit_ready": false
+          },
+          {
+            "token": "READ_SMS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 129,
+            "corpus_total": 358,
+            "fp_rate": 0.3603,
+            "commit_ready": false
+          },
+          {
+            "token": "SEND_SMS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 161,
+            "corpus_total": 358,
+            "fp_rate": 0.4497,
+            "commit_ready": false
+          }
+        ],
+        "domains": [
+          {
+            "token": "wapgame.189.cn",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.mobilehotdog.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.casee.cn",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 2,
+            "corpus_total": 358,
+            "fp_rate": 0.0056,
+            "commit_ready": true
+          },
+          {
+            "token": "wap.casee.cn",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 3,
+            "corpus_total": 358,
+            "fp_rate": 0.0084,
+            "commit_ready": true
+          },
+          {
+            "token": "d.wiyun.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "<version>",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/a/a/e/e;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "按5号键跳过",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "可以恢复少量生命值",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "string_feevalue",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/a/a/d/z;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "并且等级加3",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/a/a/d/h;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "billing fail.",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "<data>",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "Opfake",
+      "target_count": 14,
+      "beater_families": [
+        "FakeInst",
+        "FakeInstaller"
+      ],
+      "beater_count": 26,
+      "has_discriminator": false,
+      "commit_ready_count": 0,
+      "candidates": {
+        "strings": [
+          {
+            "token": "shouldoverrideurlloading",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 10,
+            "target_total": 14,
+            "corpus_hits": 149,
+            "corpus_total": 345,
+            "fp_rate": 0.4319,
+            "commit_ready": false
+          },
+          {
+            "token": "landroid/webkit/webviewclient;",
+            "kind": "string",
+            "target_coverage": 0.714,
+            "target_hits": 10,
+            "target_total": 14,
+            "corpus_hits": 176,
+            "corpus_total": 345,
+            "fp_rate": 0.5101,
+            "commit_ready": false
+          },
+          {
+            "token": "onprepareoptionsmenu",
+            "kind": "string",
+            "target_coverage": 0.5,
+            "target_hits": 7,
+            "target_total": 14,
+            "corpus_hits": 68,
+            "corpus_total": 345,
+            "fp_rate": 0.1971,
+            "commit_ready": false
+          }
+        ],
+        "permissions": [
+          {
+            "token": "SET_ALARM",
+            "kind": "permission",
+            "target_coverage": 0.5,
+            "target_hits": 7,
+            "target_total": 14,
+            "corpus_hits": 22,
+            "corpus_total": 345,
+            "fp_rate": 0.0638,
+            "commit_ready": false
+          },
+          {
+            "token": "SYSTEM_ALERT_WINDOW",
+            "kind": "permission",
+            "target_coverage": 0.5,
+            "target_hits": 7,
+            "target_total": 14,
+            "corpus_hits": 97,
+            "corpus_total": 345,
+            "fp_rate": 0.2812,
+            "commit_ready": false
+          }
+        ],
+        "domains": []
+      },
+      "top_commit_ready": []
+    },
+    {
+      "gt_family": "Plankton",
+      "target_count": 9,
+      "beater_families": [
+        "GinMaster"
+      ],
+      "beater_count": 12,
+      "has_discriminator": true,
+      "commit_ready_count": 5085,
+      "candidates": {
+        "strings": [
+          {
+            "token": "sababa",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 8,
+            "corpus_total": 350,
+            "fp_rate": 0.0229,
+            "commit_ready": true
+          },
+          {
+            "token": "m_server_url",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 9,
+            "corpus_total": 350,
+            "fp_rate": 0.0257,
+            "commit_ready": true
+          },
+          {
+            "token": "#nl#",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 9,
+            "corpus_total": 350,
+            "fp_rate": 0.0257,
+            "commit_ready": true
+          },
+          {
+            "token": "kaka",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 9,
+            "corpus_total": 350,
+            "fp_rate": 0.0257,
+            "commit_ready": true
+          },
+          {
+            "token": "developer_id",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 10,
+            "corpus_total": 350,
+            "fp_rate": 0.0286,
+            "commit_ready": true
+          },
+          {
+            "token": "developerid",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 10,
+            "corpus_total": 350,
+            "fp_rate": 0.0286,
+            "commit_ready": true
+          },
+          {
+            "token": "application_id",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 72,
+            "corpus_total": 350,
+            "fp_rate": 0.2057,
+            "commit_ready": false
+          },
+          {
+            "token": "[ljava/lang/void;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 92,
+            "corpus_total": 350,
+            "fp_rate": 0.2629,
+            "commit_ready": false
+          },
+          {
+            "token": "parameters",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 97,
+            "corpus_total": 350,
+            "fp_rate": 0.2771,
+            "commit_ready": false
+          },
+          {
+            "token": "ljava/lang/short;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 115,
+            "corpus_total": 350,
+            "fp_rate": 0.3286,
+            "commit_ready": false
+          },
+          {
+            "token": "sdk_int",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 175,
+            "corpus_total": 350,
+            "fp_rate": 0.5,
+            "commit_ready": false
+          },
+          {
+            "token": "exception!!!",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 6,
+            "corpus_total": 350,
+            "fp_rate": 0.0171,
+            "commit_ready": true
+          },
+          {
+            "token": "tgeubgacea==",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "address = [",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "androidactivationdma.java",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "status code is",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "could not read json, object=[",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "and.provider",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "tg0lhwiickoaghurgwc=",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          },
+          {
+            "token": "dump_log",
+            "kind": "string",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 7,
+            "corpus_total": 350,
+            "fp_rate": 0.02,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "READ_SETTINGS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 21,
+            "corpus_total": 350,
+            "fp_rate": 0.06,
+            "commit_ready": false
+          },
+          {
+            "token": "WRITE_HISTORY_BOOKMARKS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 22,
+            "corpus_total": 350,
+            "fp_rate": 0.0629,
+            "commit_ready": false
+          },
+          {
+            "token": "READ_HISTORY_BOOKMARKS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 25,
+            "corpus_total": 350,
+            "fp_rate": 0.0714,
+            "commit_ready": false
+          }
+        ],
+        "domains": []
+      },
+      "top_commit_ready": [
+        {
+          "token": "sababa",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 9,
+          "target_total": 9,
+          "corpus_hits": 8,
+          "corpus_total": 350,
+          "fp_rate": 0.0229,
+          "commit_ready": true
+        },
+        {
+          "token": "m_server_url",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 9,
+          "target_total": 9,
+          "corpus_hits": 9,
+          "corpus_total": 350,
+          "fp_rate": 0.0257,
+          "commit_ready": true
+        },
+        {
+          "token": "#nl#",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 9,
+          "target_total": 9,
+          "corpus_hits": 9,
+          "corpus_total": 350,
+          "fp_rate": 0.0257,
+          "commit_ready": true
+        },
+        {
+          "token": "kaka",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 9,
+          "target_total": 9,
+          "corpus_hits": 9,
+          "corpus_total": 350,
+          "fp_rate": 0.0257,
+          "commit_ready": true
+        },
+        {
+          "token": "developer_id",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 9,
+          "target_total": 9,
+          "corpus_hits": 10,
+          "corpus_total": 350,
+          "fp_rate": 0.0286,
+          "commit_ready": true
+        },
+        {
+          "token": "developerid",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 9,
+          "target_total": 9,
+          "corpus_hits": 10,
+          "corpus_total": 350,
+          "fp_rate": 0.0286,
+          "commit_ready": true
+        },
+        {
+          "token": "exception!!!",
+          "kind": "string",
+          "target_coverage": 0.889,
+          "target_hits": 8,
+          "target_total": 9,
+          "corpus_hits": 6,
+          "corpus_total": 350,
+          "fp_rate": 0.0171,
+          "commit_ready": true
+        },
+        {
+          "token": "tgeubgacea==",
+          "kind": "string",
+          "target_coverage": 0.889,
+          "target_hits": 8,
+          "target_total": 9,
+          "corpus_hits": 7,
+          "corpus_total": 350,
+          "fp_rate": 0.02,
+          "commit_ready": true
+        },
+        {
+          "token": "address = [",
+          "kind": "string",
+          "target_coverage": 0.889,
+          "target_hits": 8,
+          "target_total": 9,
+          "corpus_hits": 7,
+          "corpus_total": 350,
+          "fp_rate": 0.02,
+          "commit_ready": true
+        },
+        {
+          "token": "androidactivationdma.java",
+          "kind": "string",
+          "target_coverage": 0.889,
+          "target_hits": 8,
+          "target_total": 9,
+          "corpus_hits": 7,
+          "corpus_total": 350,
+          "fp_rate": 0.02,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "SMSreg",
+      "target_count": 1,
+      "beater_families": [
+        "SpyNote"
+      ],
+      "beater_count": 9,
+      "has_discriminator": true,
+      "commit_ready_count": 16588,
+      "candidates": {
+        "strings": [
+          {
+            "token": "lcom/umeng/analytics/pro/bl$d;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "no_dex_path",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcz/msebera/android/httpclient/conn/params/connrouteparams;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcz/msebera/android/httpclient/impl/conn/tsccm/basicpoolentry;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "storedcookienames",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "updatekeys",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "respdate",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/tencent/smtt/sdk/z$b;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "start init...",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "sns_user",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcz/msebera/android/httpclient/auth/invalidcredentialsexception;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "defaultbackoffstrategy.java",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "starting offset is negative, cannot copy file",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "removefilesifexists",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "activitycompat23.java",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcz/msebera/android/httpclient/client/circularredirectexception;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "revalidationresponseistooold",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "input parameters is null, cannot write local file header",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "currentpluginactivity",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/lequ/bldld/util/sdkhelper$10;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "KILL_BACKGROUND_PROCESSES",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 18,
+            "corpus_total": 358,
+            "fp_rate": 0.0503,
+            "commit_ready": false
+          },
+          {
+            "token": "READ_SETTINGS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 29,
+            "corpus_total": 358,
+            "fp_rate": 0.081,
+            "commit_ready": false
+          },
+          {
+            "token": "GET_TASKS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 59,
+            "corpus_total": 358,
+            "fp_rate": 0.1648,
+            "commit_ready": false
+          }
+        ],
+        "domains": [
+          {
+            "token": "uop.umeng.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "sdk.muzhiwan.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "0.1.php",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "cmnsguider.yunos.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "h.lequ.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "www.lequ.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "lequ.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "alog.umengcloud.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 0,
+            "corpus_total": 358,
+            "fp_rate": 0.0,
+            "commit_ready": true
+          },
+          {
+            "token": "x5.oversea.tbs.org",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "x5.tbs.temp",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "lcom/umeng/analytics/pro/bl$d;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "no_dex_path",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcz/msebera/android/httpclient/conn/params/connrouteparams;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcz/msebera/android/httpclient/impl/conn/tsccm/basicpoolentry;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "storedcookienames",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "updatekeys",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "respdate",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/tencent/smtt/sdk/z$b;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "start init...",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        },
+        {
+          "token": "sns_user",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 0,
+          "corpus_total": 358,
+          "fp_rate": 0.0,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "SmsSend",
+      "target_count": 1,
+      "beater_families": [
+        "Kmin"
+      ],
+      "beater_count": 4,
+      "has_discriminator": true,
+      "commit_ready_count": 40878,
+      "candidates": {
+        "strings": [
+          {
+            "token": "notificationcompatapi21impl",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/forgotactivity$2;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/views/benavior/appbarstatechangelistener;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "landroid/support/v4/util/objectscompat$implapi19;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/views/widgets/sbtheadview$1;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/views/adpaters/gbgameopenserviceadapter;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/bindphone2activity_viewbinding$2;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/mygiftactivity_viewbinding;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/bindphoneactivity_viewbinding$1;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/fullbaseactivity_viewbinding",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/goodlistactivity_viewbinding;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "targetscroll",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/utils/acache;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/views/adpaters/gbgoodtypeadapter$onitemclicklistener;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/core/db/greendao/dao/goodlistdao;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "api26viewcompatimpl",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/engin/chosenengin$1;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/core/db/greendao/dao/choseninfodao;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/activitys/mygiftactivity;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          },
+          {
+            "token": "lcom/gamebox/views/widgets/gbactionbar7_viewbinding<tt;>;",
+            "kind": "string",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 1,
+            "corpus_total": 358,
+            "fp_rate": 0.0028,
+            "commit_ready": true
+          }
+        ],
+        "permissions": [
+          {
+            "token": "autofocus",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "RECORD_VIDEO",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "PLUGIN",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 7,
+            "corpus_total": 358,
+            "fp_rate": 0.0196,
+            "commit_ready": true
+          },
+          {
+            "token": "RECEIVE_USER_PRESENT",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 11,
+            "corpus_total": 358,
+            "fp_rate": 0.0307,
+            "commit_ready": true
+          },
+          {
+            "token": "JPUSH_MESSAGE",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 11,
+            "corpus_total": 358,
+            "fp_rate": 0.0307,
+            "commit_ready": true
+          },
+          {
+            "token": "ACCESS_LOCATION_EXTRA_COMMANDS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 28,
+            "corpus_total": 358,
+            "fp_rate": 0.0782,
+            "commit_ready": false
+          },
+          {
+            "token": "CAMERA",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 52,
+            "corpus_total": 358,
+            "fp_rate": 0.1453,
+            "commit_ready": false
+          },
+          {
+            "token": "GET_TASKS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 59,
+            "corpus_total": 358,
+            "fp_rate": 0.1648,
+            "commit_ready": false
+          },
+          {
+            "token": "CHANGE_WIFI_STATE",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 65,
+            "corpus_total": 358,
+            "fp_rate": 0.1816,
+            "commit_ready": false
+          },
+          {
+            "token": "CALL_PHONE",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 82,
+            "corpus_total": 358,
+            "fp_rate": 0.2291,
+            "commit_ready": false
+          }
+        ],
+        "domains": [
+          {
+            "token": "api.box.6071.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "box.6071.m",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "www.slf4j.org",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "aliusergw-1-64.test.alipay.net",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "pay.ipaynow.cn",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "alog.umeng.co",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "p.ipaynow.cn",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "aliusergw.alipay.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 6,
+            "corpus_total": 358,
+            "fp_rate": 0.0168,
+            "commit_ready": true
+          },
+          {
+            "token": "umeng.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 7,
+            "corpus_total": 358,
+            "fp_rate": 0.0196,
+            "commit_ready": true
+          },
+          {
+            "token": "alog.umeng.com",
+            "kind": "domain",
+            "target_coverage": 1.0,
+            "target_hits": 1,
+            "target_total": 1,
+            "corpus_hits": 7,
+            "corpus_total": 358,
+            "fp_rate": 0.0196,
+            "commit_ready": true
+          }
+        ]
+      },
+      "top_commit_ready": [
+        {
+          "token": "notificationcompatapi21impl",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/activitys/forgotactivity$2;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/views/benavior/appbarstatechangelistener;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "landroid/support/v4/util/objectscompat$implapi19;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/views/widgets/sbtheadview$1;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/views/adpaters/gbgameopenserviceadapter;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/activitys/bindphone2activity_viewbinding$2;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/activitys/mygiftactivity_viewbinding;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/activitys/bindphoneactivity_viewbinding$1;",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        },
+        {
+          "token": "lcom/gamebox/activitys/fullbaseactivity_viewbinding",
+          "kind": "string",
+          "target_coverage": 1.0,
+          "target_hits": 1,
+          "target_total": 1,
+          "corpus_hits": 1,
+          "corpus_total": 358,
+          "fp_rate": 0.0028,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "SpyNote",
+      "target_count": 9,
+      "beater_families": [
+        "FakeInst",
+        "Opfake"
+      ],
+      "beater_count": 31,
+      "has_discriminator": true,
+      "commit_ready_count": 5,
+      "candidates": {
+        "strings": [],
+        "permissions": [
+          {
+            "token": "REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 86,
+            "corpus_total": 350,
+            "fp_rate": 0.2457,
+            "commit_ready": false
+          },
+          {
+            "token": "FOREGROUND_SERVICE",
+            "kind": "permission",
+            "target_coverage": 1.0,
+            "target_hits": 9,
+            "target_total": 9,
+            "corpus_hits": 109,
+            "corpus_total": 350,
+            "fp_rate": 0.3114,
+            "commit_ready": false
+          },
+          {
+            "token": "REQUEST_INSTALL_PACKAGES",
+            "kind": "permission",
+            "target_coverage": 0.889,
+            "target_hits": 8,
+            "target_total": 9,
+            "corpus_hits": 61,
+            "corpus_total": 350,
+            "fp_rate": 0.1743,
+            "commit_ready": false
+          },
+          {
+            "token": "USE_FULL_SCREEN_INTENT",
+            "kind": "permission",
+            "target_coverage": 0.778,
+            "target_hits": 7,
+            "target_total": 9,
+            "corpus_hits": 25,
+            "corpus_total": 350,
+            "fp_rate": 0.0714,
+            "commit_ready": false
+          },
+          {
+            "token": "SET_WALLPAPER",
+            "kind": "permission",
+            "target_coverage": 0.778,
+            "target_hits": 7,
+            "target_total": 9,
+            "corpus_hits": 29,
+            "corpus_total": 350,
+            "fp_rate": 0.0829,
+            "commit_ready": false
+          },
+          {
+            "token": "CAMERA",
+            "kind": "permission",
+            "target_coverage": 0.778,
+            "target_hits": 7,
+            "target_total": 9,
+            "corpus_hits": 46,
+            "corpus_total": 350,
+            "fp_rate": 0.1314,
+            "commit_ready": false
+          },
+          {
+            "token": "REQUEST_DELETE_PACKAGES",
+            "kind": "permission",
+            "target_coverage": 0.778,
+            "target_hits": 7,
+            "target_total": 9,
+            "corpus_hits": 55,
+            "corpus_total": 350,
+            "fp_rate": 0.1571,
+            "commit_ready": false
+          },
+          {
+            "token": "OPLUS_COMPONENT_SAFE",
+            "kind": "permission",
+            "target_coverage": 0.667,
+            "target_hits": 6,
+            "target_total": 9,
+            "corpus_hits": 5,
+            "corpus_total": 350,
+            "fp_rate": 0.0143,
+            "commit_ready": true
+          },
+          {
+            "token": "OPPO_COMPONENT_SAFE",
+            "kind": "permission",
+            "target_coverage": 0.667,
+            "target_hits": 6,
+            "target_total": 9,
+            "corpus_hits": 5,
+            "corpus_total": 350,
+            "fp_rate": 0.0143,
+            "commit_ready": true
+          },
+          {
+            "token": "USE_COMPONENT",
+            "kind": "permission",
+            "target_coverage": 0.667,
+            "target_hits": 6,
+            "target_total": 9,
+            "corpus_hits": 5,
+            "corpus_total": 350,
+            "fp_rate": 0.0143,
+            "commit_ready": true
+          }
+        ],
+        "domains": []
+      },
+      "top_commit_ready": [
+        {
+          "token": "OPLUS_COMPONENT_SAFE",
+          "kind": "permission",
+          "target_coverage": 0.667,
+          "target_hits": 6,
+          "target_total": 9,
+          "corpus_hits": 5,
+          "corpus_total": 350,
+          "fp_rate": 0.0143,
+          "commit_ready": true
+        },
+        {
+          "token": "OPPO_COMPONENT_SAFE",
+          "kind": "permission",
+          "target_coverage": 0.667,
+          "target_hits": 6,
+          "target_total": 9,
+          "corpus_hits": 5,
+          "corpus_total": 350,
+          "fp_rate": 0.0143,
+          "commit_ready": true
+        },
+        {
+          "token": "USE_COMPONENT",
+          "kind": "permission",
+          "target_coverage": 0.667,
+          "target_hits": 6,
+          "target_total": 9,
+          "corpus_hits": 5,
+          "corpus_total": 350,
+          "fp_rate": 0.0143,
+          "commit_ready": true
+        },
+        {
+          "token": "MANAGE_EXTERNAL_STORAGE",
+          "kind": "permission",
+          "target_coverage": 0.667,
+          "target_hits": 6,
+          "target_total": 9,
+          "corpus_hits": 13,
+          "corpus_total": 350,
+          "fp_rate": 0.0371,
+          "commit_ready": true
+        },
+        {
+          "token": "READ_MEDIA_VISUAL_USER_SELECTED",
+          "kind": "permission",
+          "target_coverage": 0.556,
+          "target_hits": 5,
+          "target_total": 9,
+          "corpus_hits": 8,
+          "corpus_total": 350,
+          "fp_rate": 0.0229,
+          "commit_ready": true
+        }
+      ]
+    },
+    {
+      "gt_family": "UKP",
+      "target_count": 1,
+      "beater_families": [
+        "SpyNote"
+      ],
+      "beater_count": 9,
+      "has_discriminator": false,
+      "commit_ready_count": 0,
+      "candidates": {
+        "strings": [],
+        "permissions": [],
+        "domains": []
+      },
+      "top_commit_ready": []
+    }
+  ]
+}

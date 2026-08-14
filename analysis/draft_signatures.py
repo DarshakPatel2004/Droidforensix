@@ -43,6 +43,8 @@ from backend.family_id import C2MatchMode, C2Pattern, FamilySignature, Permissio
 COMMITTED_FAMILIES = {
     "Secapk", "Adsms", "FaceNiff", "SmForw", "Typstu",
     "NickiSpy", "Boogr", "Hamob", "SpyHasb", "Dougalek",
+    # Discriminator-string commit (Option A):
+    "KungFu", "Bian", "Cnzz", "Nandrobox", "SMSreg", "SmsSend",
 }
 
 
