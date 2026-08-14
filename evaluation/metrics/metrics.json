@@ -1,0 +1,872 @@
+{
+  "ground_truth": "ground_truth_all.csv",
+  "predictions": "evaluation\\validation_359_fixed2\\predictions.json",
+  "generated_at": "2026-08-14T11:43:35.074697+00:00",
+  "total_samples": 359,
+  "catch_all_label_count": 24,
+  "overall": {
+    "evaluated": 358,
+    "errors": 1,
+    "correct": 125,
+    "accuracy": 0.3482,
+    "precision_macro": 0.2719,
+    "recall_macro": 0.3169
+  },
+  "subset_metrics": {
+    "specific_families": {
+      "total": 177,
+      "correct": 103,
+      "accuracy": 0.5819
+    },
+    "high_confidence_specific": {
+      "total": 151,
+      "correct": 94,
+      "accuracy": 0.6225
+    },
+    "unknown_refusal": {
+      "total": 24,
+      "correct": 22,
+      "refused_correctly": 22,
+      "accuracy": 0.9167
+    }
+  },
+  "per_source_accuracy": [
+    {
+      "source": "androzoo_drebin",
+      "total": 149,
+      "catch_all_count": 34,
+      "catch_all_pct": 22.8,
+      "specific_count": 115,
+      "specific_pct": 77.2,
+      "accuracy_overall": 0.5101,
+      "accuracy_specific": 0.6609,
+      "accuracy_catch_all": 0.0,
+      "overall_correct": 76,
+      "specific_correct": 76
+    },
+    {
+      "source": "abusech",
+      "total": 121,
+      "catch_all_count": 98,
+      "catch_all_pct": 81.0,
+      "specific_count": 23,
+      "specific_pct": 19.0,
+      "accuracy_overall": 0.1157,
+      "accuracy_specific": 0.4783,
+      "accuracy_catch_all": 0.0306,
+      "overall_correct": 14,
+      "specific_correct": 11
+    },
+    {
+      "source": "modern_eval",
+      "total": 63,
+      "catch_all_count": 35,
+      "catch_all_pct": 55.6,
+      "specific_count": 28,
+      "specific_pct": 44.4,
+      "accuracy_overall": 0.4603,
+      "accuracy_specific": 0.3571,
+      "accuracy_catch_all": 0.5429,
+      "overall_correct": 29,
+      "specific_correct": 10
+    },
+    {
+      "source": "AndroZoo",
+      "total": 26,
+      "catch_all_count": 15,
+      "catch_all_pct": 57.7,
+      "specific_count": 11,
+      "specific_pct": 42.3,
+      "accuracy_overall": 0.2308,
+      "accuracy_specific": 0.5455,
+      "accuracy_catch_all": 0.0,
+      "overall_correct": 6,
+      "specific_correct": 6
+    }
+  ],
+  "per_family_breakdown": [
+    {
+      "family": "AndroidOS",
+      "gt_count": 53,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo;abusech;androzoo_drebin;modern_eval",
+      "confidence": "high:51; medium:2",
+      "catch_all": true
+    },
+    {
+      "family": "unknown",
+      "gt_count": 24,
+      "correct": 22,
+      "accuracy": 0.9167,
+      "sources": "abusech;modern_eval",
+      "confidence": "medium:21; low:3",
+      "catch_all": true
+    },
+    {
+      "family": "GenericKD",
+      "gt_count": 19,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:19",
+      "catch_all": true
+    },
+    {
+      "family": "FakeInst",
+      "gt_count": 17,
+      "correct": 11,
+      "accuracy": 0.6471,
+      "sources": "AndroZoo;androzoo_drebin",
+      "confidence": "high:17",
+      "catch_all": false
+    },
+    {
+      "family": "Agent",
+      "gt_count": 15,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo;abusech;androzoo_drebin",
+      "confidence": "high:14; medium:1",
+      "catch_all": true
+    },
+    {
+      "family": "Opfake",
+      "gt_count": 14,
+      "correct": 2,
+      "accuracy": 0.1429,
+      "sources": "androzoo_drebin",
+      "confidence": "high:14",
+      "catch_all": false
+    },
+    {
+      "family": "Banker",
+      "gt_count": 13,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:13",
+      "catch_all": true
+    },
+    {
+      "family": "Gen",
+      "gt_count": 12,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech;androzoo_drebin;modern_eval",
+      "confidence": "high:12",
+      "catch_all": true
+    },
+    {
+      "family": "GinMaster",
+      "gt_count": 12,
+      "correct": 12,
+      "accuracy": 1.0,
+      "sources": "AndroZoo;androzoo_drebin",
+      "confidence": "high:12",
+      "catch_all": false
+    },
+    {
+      "family": "Adware",
+      "gt_count": 10,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo;androzoo_drebin",
+      "confidence": "high:10",
+      "catch_all": true
+    },
+    {
+      "family": "FakeInstaller",
+      "gt_count": 9,
+      "correct": 3,
+      "accuracy": 0.3333,
+      "sources": "androzoo_drebin",
+      "confidence": "high:9",
+      "catch_all": false
+    },
+    {
+      "family": "Plankton",
+      "gt_count": 9,
+      "correct": 8,
+      "accuracy": 0.8889,
+      "sources": "androzoo_drebin",
+      "confidence": "high:9",
+      "catch_all": false
+    },
+    {
+      "family": "SpyNote",
+      "gt_count": 9,
+      "correct": 3,
+      "accuracy": 0.3333,
+      "sources": "abusech;modern_eval",
+      "confidence": "high:2; medium:7",
+      "catch_all": false
+    },
+    {
+      "family": "Backdoor",
+      "gt_count": 7,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:7",
+      "catch_all": true
+    },
+    {
+      "family": "BaseBridge",
+      "gt_count": 7,
+      "correct": 6,
+      "accuracy": 0.8571,
+      "sources": "androzoo_drebin",
+      "confidence": "high:7",
+      "catch_all": false
+    },
+    {
+      "family": "DroidKungFu",
+      "gt_count": 6,
+      "correct": 6,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:6",
+      "catch_all": false
+    },
+    {
+      "family": "FantasyHub",
+      "gt_count": 6,
+      "correct": 6,
+      "accuracy": 1.0,
+      "sources": "modern_eval",
+      "confidence": "medium:6",
+      "catch_all": false
+    },
+    {
+      "family": "Linux",
+      "gt_count": 6,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo;androzoo_drebin;modern_eval",
+      "confidence": "high:6",
+      "catch_all": true
+    },
+    {
+      "family": "SpyMax",
+      "gt_count": 6,
+      "correct": 5,
+      "accuracy": 0.8333,
+      "sources": "abusech",
+      "confidence": "high:5; low:1",
+      "catch_all": false
+    },
+    {
+      "family": "GhostBat",
+      "gt_count": 4,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "medium:4",
+      "catch_all": false
+    },
+    {
+      "family": "Imlog",
+      "gt_count": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:4",
+      "catch_all": false
+    },
+    {
+      "family": "Kmin",
+      "gt_count": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:4",
+      "catch_all": false
+    },
+    {
+      "family": "NGate",
+      "gt_count": 4,
+      "correct": 3,
+      "accuracy": 0.75,
+      "sources": "abusech",
+      "confidence": "high:4",
+      "catch_all": false
+    },
+    {
+      "family": "a",
+      "gt_count": 4,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:4",
+      "catch_all": true
+    },
+    {
+      "family": "Andr/Banker-HDY",
+      "gt_count": 3,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:3",
+      "catch_all": false
+    },
+    {
+      "family": "BankBot",
+      "gt_count": 3,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:2; medium:1",
+      "catch_all": false
+    },
+    {
+      "family": "Iconosys",
+      "gt_count": 3,
+      "correct": 3,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:3",
+      "catch_all": false
+    },
+    {
+      "family": "Jiagu",
+      "gt_count": 3,
+      "correct": 3,
+      "accuracy": 1.0,
+      "sources": "AndroZoo",
+      "confidence": "high:1; medium:2",
+      "catch_all": false
+    },
+    {
+      "family": "MobileTx",
+      "gt_count": 3,
+      "correct": 3,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:3",
+      "catch_all": false
+    },
+    {
+      "family": "Adrd",
+      "gt_count": 2,
+      "correct": 1,
+      "accuracy": 0.5,
+      "sources": "androzoo_drebin",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "Andr/Xgen2-AYJ",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "Android/Agent",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech;modern_eval",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "AppRisk",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo;abusech",
+      "confidence": "medium:2",
+      "catch_all": false
+    },
+    {
+      "family": "Dowgin",
+      "gt_count": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "AndroZoo",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "Dropper",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:2",
+      "catch_all": true
+    },
+    {
+      "family": "FakeDoc",
+      "gt_count": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "FakeRun",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "General",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech;modern_eval",
+      "confidence": "medium:2",
+      "catch_all": true
+    },
+    {
+      "family": "HyPay",
+      "gt_count": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "modern_eval",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "KungFu",
+      "gt_count": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "Secapk",
+      "gt_count": 2,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "33107585",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "40094400",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "A",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "AdLibrary",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "medium:1",
+      "catch_all": false
+    },
+    {
+      "family": "Adsms",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Airpush",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Andr/NGate-G",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Android/Packed",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Application",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Bian",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Boogr",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Cnzz",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "CraxsRAT",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "medium:1",
+      "catch_all": false
+    },
+    {
+      "family": "Detected",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo",
+      "confidence": "low:1",
+      "catch_all": true
+    },
+    {
+      "family": "Dougalek",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "DroidDream",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Evo-gen [Trj]",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Exploit",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "FaceNiff",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "FakeApp",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "FakeTimer",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Geinimi",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "HEUR",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "medium:1",
+      "catch_all": true
+    },
+    {
+      "family": "Hacktool",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Hamob",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Lemon",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Mirax",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "medium:1",
+      "catch_all": false
+    },
+    {
+      "family": "Nandrobox",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "NickiSpy",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Nisev",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "SMSreg",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "SendPay",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "SmForw",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "SmsSend",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Spitmo",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "SpyHasb",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Stiniter",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Trojan ( 0001140e1 )",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo",
+      "confidence": "medium:1",
+      "catch_all": true
+    },
+    {
+      "family": "Trojan ( 005cbb901 )",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Trojan ( 005cf1d81 )",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Trojan-Banker",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Trojan-Dropper",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
+      "confidence": "high:1",
+      "catch_all": true
+    },
+    {
+      "family": "Typstu",
+      "gt_count": 1,
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "UKP",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Wooboo",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Zsone",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "androzoo_drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    }
+  ]
+}

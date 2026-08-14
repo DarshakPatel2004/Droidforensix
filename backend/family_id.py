@@ -673,6 +673,193 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         has_native_libs=False,
         min_matches=3, confidence=0.75,
     ),
+
+    # ------------------------------------------------------------------
+    # Gap-recovery signatures (operationalized from analysis/draft_signatures.py).
+    # Validated over the full 359-sample corpus (analysis/test_draft_signatures.py):
+    # the 8 below have zero false positives in isolation; Secapk/Dougalek were
+    # tuned (see their notes) until they reached zero. Appended after all
+    # pre-existing signatures so the established ones win tie-breaks.
+    # ------------------------------------------------------------------
+
+    # Secapk — Chinese APK packer. Strings are SecAPK build markers;
+    # "addprovider" and "chmod 755" were dropped after validation: both are
+    # generic dex-loading/packer strings that fired on unrelated samples.
+    # min_matches=4 makes a SecAPK string mandatory (perms + class + native
+    # cap out at 3 generic signals without one).
+    FamilySignature(
+        family_name="Secapk",
+        string_patterns=["classesjarfile", "jarfilename"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("SYSTEM_ALERT_WINDOW", 0.8),
+            PermissionSig("READ_PHONE_STATE", 0.7),
+        ],
+        class_count_min=1, class_count_max=60,
+        has_native_libs=True,
+        min_matches=4, confidence=0.75,
+    ),
+
+    # Adsms — DREBIN-era SMS/ad trojan; every recovered C2 domain starts
+    # with "adsms." (adsms.itodo.cn, adsms.yywo.cn, adsms.1oo86.net).
+    FamilySignature(
+        family_name="Adsms",
+        string_patterns=[],
+        c2_patterns=[
+            C2Pattern("adsms.", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 0.9),
+            PermissionSig("RECEIVE_SMS", 0.85),
+            PermissionSig("WRITE_APN_SETTINGS", 0.8),
+        ],
+        class_count_min=1, class_count_max=80,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=2, confidence=0.80,
+    ),
+
+    # FaceNiff — session-hijacking tool; the app literally contains
+    # the string "faceniff".
+    FamilySignature(
+        family_name="FaceNiff",
+        string_patterns=["faceniff"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("INTERNET", 0.9),
+            PermissionSig("ACCESS_WIFI_STATE", 0.9),
+            PermissionSig("WAKE_LOCK", 0.6),
+        ],
+        class_count_min=10, class_count_max=100,
+        has_native_libs=False,
+        min_matches=4, confidence=0.80,
+    ),
+
+    # SmForw — SMS forwarder trial; "smsforwarder" product strings.
+    FamilySignature(
+        family_name="SmForw",
+        string_patterns=["smsforwarder"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 1.0),
+            PermissionSig("RECEIVE_SMS", 0.9),
+            PermissionSig("READ_SMS", 0.8),
+        ],
+        class_count_min=1, class_count_max=30,
+        has_native_libs=False,
+        min_matches=4, confidence=0.75,
+    ),
+
+    # Typstu — Typ3Studios repackaged apps; "typ3studios" strings plus
+    # pixeltrack66.com tracking URLs.
+    FamilySignature(
+        family_name="Typstu",
+        string_patterns=["typ3studios", "pixeltrack66"],
+        c2_patterns=[
+            C2Pattern("pixeltrack66.com", C2MatchMode.SUBSTRING),
+            C2Pattern("typ3studios.com", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("INTERNET", 0.9),
+            PermissionSig("READ_PHONE_STATE", 0.7),
+        ],
+        class_count_min=5, class_count_max=60,
+        has_native_libs=False,
+        min_matches=4, confidence=0.75,
+    ),
+
+    # NickiSpy — audio-recording spyware; dynamic C2 (jin.56mo.com) plus
+    # recorder string cluster and RECORD_AUDIO.
+    FamilySignature(
+        family_name="NickiSpy",
+        string_patterns=["recordlen", "issms", "smstype"],
+        c2_patterns=[
+            C2Pattern("jin.56mo.com", C2MatchMode.EXACT),
+        ],
+        permission_sigs=[
+            PermissionSig("RECORD_AUDIO", 1.0),
+            PermissionSig("PROCESS_OUTGOING_CALLS", 0.8),
+            PermissionSig("READ_SMS", 0.7),
+        ],
+        class_count_min=10, class_count_max=100,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=2, confidence=0.70,
+    ),
+
+    # Boogr — tunneling C2 malware; C2 rides a Cloudflare quick-tunnel
+    # (*.trycloudflare.com) plus ru.whoosh.app.
+    FamilySignature(
+        family_name="Boogr",
+        string_patterns=[],
+        c2_patterns=[
+            C2Pattern("trycloudflare.com", C2MatchMode.SUBSTRING),
+            C2Pattern("whoosh.app", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("INTERNET", 0.9),
+            PermissionSig("QUERY_ALL_PACKAGES", 0.7),
+        ],
+        class_count_min=500, class_count_max=4000,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=3, confidence=0.65,
+    ),
+
+    # Hamob — GCM-driven SMS stealer; "application mode" toggle strings
+    # (appmode / applicationmode) plus unusual C2D_MESSAGE+PLUGIN perms.
+    FamilySignature(
+        family_name="Hamob",
+        string_patterns=["applicationmode", "appmode"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("C2D_MESSAGE", 0.9),
+            PermissionSig("PLUGIN", 0.8),
+            PermissionSig("INTERNET", 0.6),
+        ],
+        class_count_min=50, class_count_max=250,
+        has_native_libs=False,
+        min_matches=4, confidence=0.65,
+    ),
+
+    # SpyHasb — dynamic-DNS spyware; C2 on appserver3l.no-ip.biz (no-ip
+    # dynamic DNS is the classic mobile-spyware C2 pattern).
+    FamilySignature(
+        family_name="SpyHasb",
+        string_patterns=[],
+        c2_patterns=[
+            C2Pattern("no-ip.biz", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("INTERNET", 0.9),
+            PermissionSig("ACCESS_COARSE_LOCATION", 0.8),
+        ],
+        class_count_min=1, class_count_max=60,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=2, confidence=0.65,
+    ),
+
+    # Dougalek — Japanese SMS trojan; "gamedouga" package plus C2
+    # depot.bulks.jp. require_c2 was added after validation: the
+    # READ_CONTACTS+READ_PHONE_STATE+INTERNET trio is near-universal and
+    # let the signature fire on 68 unrelated samples without it.
+    FamilySignature(
+        family_name="Dougalek",
+        string_patterns=["gamedouga"],
+        c2_patterns=[
+            C2Pattern("depot.bulks.jp", C2MatchMode.EXACT),
+        ],
+        permission_sigs=[
+            PermissionSig("READ_CONTACTS", 0.8),
+            PermissionSig("READ_PHONE_STATE", 0.7),
+            PermissionSig("INTERNET", 0.6),
+        ],
+        class_count_min=1, class_count_max=40,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=2, confidence=0.65,
+    ),
 ]
 
 # ---------------------------------------------------------------------------
