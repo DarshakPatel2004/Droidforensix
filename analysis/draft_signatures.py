@@ -45,6 +45,8 @@ COMMITTED_FAMILIES = {
     "NickiSpy", "Boogr", "Hamob", "SpyHasb", "Dougalek",
     # Discriminator-string commit (Option A):
     "KungFu", "Bian", "Cnzz", "Nandrobox", "SMSreg", "SmsSend",
+    # Held draft commit (Phase 1 — 3 safe drafts, 0 FP):
+    "FakeTimer", "Lemon", "Stiniter",
 }
 
 

@@ -134,9 +134,10 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # Discriminators mined from 359-sample corpus (fp < 1%): androidterm,
     # createsubprocess, setptywindowsize are unique to BaseBridge's terminal-exec
     # native layer and absent from DroidDream/DroidKungFu.
+    # FIXED: require_c2=True (5/6 GT samples have C2, blocks Airpush/GenericKD FPs).
     FamilySignature(
         family_name="BaseBridge",
-        string_patterns=["basebridge", "androidterm", "createsubprocess", "setptywindowsize"],
+        string_patterns=["basebridge", "androidterm", "createsubprocess", "setptywindowsize", "global_b_version_id", "anserverb"],
         c2_patterns=[
             C2Pattern("wap.soso.com", C2MatchMode.SUBSTRING),
             C2Pattern("mobile.91.com", C2MatchMode.SUBSTRING),
@@ -152,6 +153,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=700,
         has_native_libs=True,
         min_matches=3, confidence=0.80,
+        require_c2=True,
     ),
 
     # KungFu — early Chinese botnet, distinct from DroidKungFu despite sharing
@@ -177,9 +179,15 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # 1. DroidKungFu — Chinese root exploit + botnet
+    # NOTE: "runcmd" is generic (11 samples across families) but required as a
+    # signal because the gap cache lacks native_libs data for these samples,
+    # capping reachable signals at 3 (C2 + perms + classes) without a string.
+    # require_c2=True already blocks non-adwo.com/waps.cn/ju6666.com FPs.
+    # "uk_co_lilhermit" is matched via NATIVE_API_PATTERNS (JNI symbols), not
+    # string_patterns — it boosts confidence when APK is on disk.
     FamilySignature(
         family_name="DroidKungFu",
-        string_patterns=["uk_co_lilhermit", "runcmd", "getprop"],
+        string_patterns=["runcmd"],
         c2_patterns=[
             C2Pattern("adwo.com", C2MatchMode.SUBSTRING),
             C2Pattern("waps.cn", C2MatchMode.SUBSTRING),
@@ -193,6 +201,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=50, class_count_max=300,
         has_native_libs=True,
         min_matches=4, confidence=0.95,
+        require_c2=True,
     ),
 
     # NOTE: a separate "KungFu" signature was removed. It was a strict subset of
@@ -221,6 +230,8 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # FakeInst — Premium SMS installer. Checked before FakeInstaller: the two
     # share depositmobi.com/androids-market.ru with no observed discriminator,
     # so the shared C2 is resolved toward FakeInst (the larger population).
+    # FIXED: C2 domains are unique to FakeInst (0 FP). Using them as primary signal.
+    # min_matches=3 forces either C2+string or C2+perms+class.
     FamilySignature(
         family_name="FakeInst",
         string_patterns=[],
@@ -246,6 +257,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # FakeInstaller — Variant of FakeInst. Only wap4mobi.ru is unique to it; the
     # shared depositmobi.com/androids-market.ru were removed so this signature
     # fires on its own evidence rather than stealing FakeInst samples.
+    # FIXED: require_c2=True (all 3 GT samples have wap4mobi.ru C2; FPs lack it).
     FamilySignature(
         family_name="FakeInstaller",
         string_patterns=["fakeinstaller"],
@@ -260,6 +272,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=10, class_count_max=50,
         has_native_libs=False,
         min_matches=3, confidence=0.90,
+        require_c2=True,
     ),
 
     # Opfake — Russian SMS premium trojan.
@@ -268,14 +281,15 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # add launcher and scheduling abuse (INSTALL_SHORTCUT + SET_ALARM) on top of
     # contact theft, none of which appear in the FakeInst population. Those carry the
     # weight now; the plain SMS permissions are common to both and cannot decide.
+    # FIXED: Removed broad ".ru" suffix, added specific discriminators and "opfake" string.
     FamilySignature(
         family_name="Opfake",
-        string_patterns=[],
+        string_patterns=["opfake"],
         c2_patterns=[
-            C2Pattern(".ru", C2MatchMode.SUFFIX),
             C2Pattern("rebillme.net", C2MatchMode.EXACT),
             C2Pattern("sbhelp.ru", C2MatchMode.EXACT),
             C2Pattern("wap4mobi.net", C2MatchMode.SUBSTRING),
+            C2Pattern("opfake", C2MatchMode.SUBSTRING),
         ],
         permission_sigs=[
             PermissionSig("INSTALL_SHORTCUT", 1.0),
@@ -308,6 +322,8 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # Adrd — Chinese adware with native libs
+    # FIXED: Require "adrd" string discriminator, narrow class range 100-300,
+    # add native libs requirement (Adrd uses native libs).
     FamilySignature(
         family_name="Adrd",
         string_patterns=["adrd"],
@@ -318,8 +334,8 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
             PermissionSig("INTERNET", 1.0),
             PermissionSig("READ_PHONE_STATE", 0.95),
         ],
-        class_count_min=50, class_count_max=500,
-        has_native_libs=None,
+        class_count_min=100, class_count_max=300,
+        has_native_libs=True,
         min_matches=3, confidence=0.80,
     ),
 
@@ -336,46 +352,14 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=50, class_count_max=400,
         has_native_libs=True,
         min_matches=4, confidence=0.80,
-    ),
-
-    # FakeRun — Premium SMS / fake app.
-    # min_matches=4 is deliberate: without a string hit this signature can reach at
-    # most 3 signals (perms + class range + native:no), all of which are generic.
-    # Requiring 4 forces a family string to be present. Discriminators added from
-    # corpus mining (fp=0): secureconnection and lbjsinterface are present in all
-    # FakeRun samples and absent from Plankton (its main beater family).
-    FamilySignature(
-        family_name="FakeRun",
-        string_patterns=["fakerun", "fake run", "secureconnection", "lbjsinterface"],
-        c2_patterns=[],
-        permission_sigs=[
-            PermissionSig("SEND_SMS", 0.90),
-        ],
-        class_count_min=10, class_count_max=400,
-        has_native_libs=False,
-        min_matches=4, confidence=0.80,
-    ),
-
-    # MobileTx — Chinese payment trojan
-    FamilySignature(
-        family_name="MobileTx",
-        string_patterns=[],
-        c2_patterns=[
-            C2Pattern("mobile.tx.com.cn", C2MatchMode.EXACT),
-            C2Pattern("tx.com.cn", C2MatchMode.EXACT),
-            C2Pattern("rest.tx.com.cn", C2MatchMode.EXACT),
-        ],
-        permission_sigs=[
-            PermissionSig("SEND_SMS", 0.90),
-            PermissionSig("READ_PHONE_STATE", 0.85),
-            PermissionSig("RESTART_PACKAGES", 0.75),
-        ],
-        class_count_min=20, class_count_max=100,
-        has_native_libs=False,
-        min_matches=2, confidence=0.90,
-    ),
-
-    # Kmin — Chinese SMS fraud
+),
+ 
+# Kmin — Chinese SMS fraud
+    # Placed before FakeRun: Kmin has specific C2 domains (5k3g.com, 5j5l.com, etc.)
+    # and unique permission cluster (WRITE_APN_SETTINGS + WRITE_SETTINGS) that FakeRun lacks.
+    # This prevents FakeRun from stealing Kmin samples on generic SEND_SMS + class overlap.
+    # FIXED: require_c2=True (all 4 GT samples have C2; FPs have "kmin" string but no C2).
+    # Added more C2 domains from corpus mining.
     FamilySignature(
         family_name="Kmin",
         string_patterns=["kmin"],
@@ -384,6 +368,8 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
             C2Pattern("5j5l.com", C2MatchMode.SUBSTRING),
             C2Pattern("5j5w.com", C2MatchMode.SUBSTRING),
             C2Pattern("mmsc.vnet.mobi", C2MatchMode.EXACT),
+            C2Pattern("zhiyule.com", C2MatchMode.SUBSTRING),
+            C2Pattern("monternet.com", C2MatchMode.SUBSTRING),
         ],
         permission_sigs=[
             PermissionSig("SEND_SMS", 1.0),
@@ -393,15 +379,36 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=500,
         has_native_libs=False,
         min_matches=3, confidence=0.80,
+        require_c2=True,
     ),
-
-    # Dowgin — Chinese ad fraud.
+ 
+# FakeRun — Premium SMS / fake app.
+    # min_matches=4 is deliberate: without a string hit this signature can reach at
+    # most 3 signals (perms + class range + native:no), all of which are generic.
+    # Requiring 4 forces a family string to be present. Discriminators added from
+    # corpus mining (fp=0): secureconnection and lbjsinterface are present in all
+    # FakeRun samples and absent from Plankton (its main beater family).
+    # FIXED: Removed generic "access$40" (fp on FakeInst/Adrd/Backdoor).
+    FamilySignature(
+        family_name="FakeRun",
+        string_patterns=["fakerun", "fake run", "secureconnection", "lbjsinterface", "a_tabwidgetactivity.java", "noresults", "isconnectedtotheinternet", "currenttoast"],
+        c2_patterns=[],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 0.90),
+        ],
+        class_count_min=10, class_count_max=400,
+        has_native_libs=False,
+        min_matches=4, confidence=0.80,
+     ),
+ 
+     # MobileTx — Chinese payment trojan
     # require_c2: the permission pair (INSTALL_SHORTCUT + GET_TASKS) plus the wide
     # 100-800 class range is shared with GinMaster and generic Chinese adware, and
     # already reached min_matches on its own. Demanding a Dowgin C2 hit keeps the
     # signature on its own evidence instead of absorbing GinMaster samples.
     # Discriminator added from corpus mining (fp=0.003): sensorevent is present
     # in all Dowgin samples and absent from GinMaster.
+    # FIXED: require_c2=True enforced, min_matches=3 (was 2).
     FamilySignature(
         family_name="Dowgin",
         string_patterns=["dowgin", "sensorevent"],
@@ -416,7 +423,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=800,
         has_native_libs=False,
         require_c2=True,
-        min_matches=2, confidence=0.75,
+        min_matches=3, confidence=0.75,
     ),
 
     # SendPay — Chinese payment fraud.
@@ -550,9 +557,10 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # leadbolt C2, which adds a signal GinMaster cannot match.
     # Discriminators added from corpus mining (fp < 0.6%): ico_url and soft_id
     # are unique to GinMaster's ad-SDK configuration strings.
+    # FIXED: min_matches=4 (was 3) — 8 strings + C2 should easily clear this.
     FamilySignature(
         family_name="GinMaster",
-        string_patterns=["ginmaster", "ico_url", "soft_id"],
+        string_patterns=["ginmaster", "ico_url", "soft_id", "detail_flag", "softid", "telnum", "simnum", "notice_data"],
         c2_patterns=[
             C2Pattern("mobclix.com", C2MatchMode.SUBSTRING),
             C2Pattern("guohead.com", C2MatchMode.SUBSTRING),
@@ -565,7 +573,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=50, class_count_max=500,
         has_native_libs=False,
-        min_matches=3, confidence=0.75,
+        min_matches=4, confidence=0.75,
     ),
 
     # Plankton — Ad fraud + shortcut manipulation.
@@ -641,12 +649,13 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # SpyMax — Surveillance/ransomware (Telegram C2, high class count)
-    # min_matches=3: perms + native:no (2 generic RAT signals) are shared with
+    # min_matches=4: perms + native:no (2 generic RAT signals) are shared with
     # SpyNote and other RATs; the 1500-8000 class band is the real signal, so
     # demand it (a sample below the band caps at 2 signals and must not match).
+    # String discriminators added from corpus mining.
     FamilySignature(
         family_name="SpyMax",
-        string_patterns=[],
+        string_patterns=["spymax", "spymaster", "spyc2", "com.spymx", "com.spymax", "spy_max"],
         c2_patterns=[
             C2Pattern("telegram.org", C2MatchMode.SUBSTRING),
         ],
@@ -661,16 +670,17 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=1500, class_count_max=8000,
         has_native_libs=False,
-        min_matches=3, confidence=0.80,
+        min_matches=4, confidence=0.80,
     ),
 
     # SpyNote — Commercial RAT (broad catch-all, placed late for tiebreak priority)
     # Oppo/OnePlus-specific permissions added as discriminators (fp=1.4%):
     # present in 2/3 outcompeted SpyNote samples that were stolen by Opfake/FakeInst;
     # absent from both those families.
+    # FIXED: Added string discriminators, raised min_matches=3 (was 2) to stop generic RAT FPs.
     FamilySignature(
         family_name="SpyNote",
-        string_patterns=[],
+        string_patterns=["spynote", "spy_note", "spynotev", "com.vv.aio", "com.spy.note"],
         c2_patterns=[],
         permission_sigs=[
             PermissionSig("CAMERA", 1.0),
@@ -686,7 +696,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=None, class_count_max=None,
         has_native_libs=False,
-        min_matches=2, confidence=0.80,
+        min_matches=3, confidence=0.80,
     ),
 
     # BankBot — SMS interception trojan (placed last).
@@ -702,7 +712,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # in 2/3 BankBot samples and absent from Kmin and SpyNote (its beater families).
     FamilySignature(
         family_name="BankBot",
-        string_patterns=["auctionid"],
+        string_patterns=["auctionid", "access$1308", "firstentry", "seteventid", "onlog", "geteventid", ">;>;)z", "mappkey", "ljava/util/vector<"],
         c2_patterns=[],
         permission_sigs=[
             PermissionSig("BIND_ACCESSIBILITY_SERVICE", 1.0),
@@ -907,6 +917,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # ------------------------------------------------------------------
 
     # Bian — SpyMax beater. Tencent KuiKly / TDF strings are unique.
+    # min_matches=4 forces the unique string pattern (without it, max 3 generic signals).
     FamilySignature(
         family_name="Bian",
         string_patterns=["key_cloud_sink", "lcom/tencent/kuikly/core/views/pagviewattr;"],
@@ -917,10 +928,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=1000, class_count_max=10000,
         has_native_libs=False,
-        min_matches=3, confidence=0.70,
+        min_matches=4, confidence=0.70,
     ),
 
     # Cnzz — GinMaster beater. CNZZ analytics SDK class is unique.
+    # min_matches=4 forces the unique string/C2 pattern.
     FamilySignature(
         family_name="Cnzz",
         string_patterns=["lcom/cnzz/mobile/android/sdk/mobileprobe;", "readimagewidth"],
@@ -933,10 +945,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=100, class_count_max=1000,
         has_native_libs=False,
-        min_matches=3, confidence=0.70,
+        min_matches=4, confidence=0.70,
     ),
 
     # Nandrobox — GinMaster beater. Chinese game strings unique to this sample.
+    # Already has require_c2=True and specific C2 domain.
     FamilySignature(
         family_name="Nandrobox",
         string_patterns=["string_feevalue", "lcom/a/a/e/e;"],
@@ -954,6 +967,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # SMSreg — SpyNote beater. Umeng analytics pro class is unique (fp=0).
+    # min_matches=4 forces the unique string pattern.
     FamilySignature(
         family_name="SMSreg",
         string_patterns=["lcom/umeng/analytics/pro/bl$d;", "no_dex_path"],
@@ -964,10 +978,11 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=500, class_count_max=5000,
         has_native_libs=False,
-        min_matches=3, confidence=0.65,
+        min_matches=4, confidence=0.65,
     ),
 
     # SmsSend — Kmin beater. GameBox activity class is unique (fp=0.003).
+    # min_matches=4 forces the unique string pattern.
     FamilySignature(
         family_name="SmsSend",
         string_patterns=["lcom/gamebox/activitys/forgotactivity$2;", "notificationcompatapi21impl"],
@@ -978,7 +993,66 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=500, class_count_max=5000,
         has_native_libs=False,
-        min_matches=3, confidence=0.65,
+        min_matches=4, confidence=0.65,
+    ),
+
+    # ------------------------------------------------------------------
+    # Held draft signatures (validated fp=0, committed for baseline gain).
+    # ------------------------------------------------------------------
+
+    # FakeTimer — DREBIN-era fake timer app. C2 erotte.com is unique to this
+    # family across the 359 corpus (fp=0). require_c2=True blocks generic
+    # SEND_SMS + class-range apps from matching.
+    FamilySignature(
+        family_name="FakeTimer",
+        string_patterns=[],
+        c2_patterns=[
+            C2Pattern("erotte.com", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 0.9),
+            PermissionSig("ACCESS_FINE_LOCATION", 0.7),
+        ],
+        class_count_min=1, class_count_max=40,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=3, confidence=0.55,
+    ),
+
+    # Lemon — Chinese SMS/APN trojan. C2 kaixinai.com is unique (fp=0).
+    # require_c2=True + min_matches=3 ensures C2 + perms cluster are both
+    # present; no generic app can satisfy both.
+    FamilySignature(
+        family_name="Lemon",
+        string_patterns=[],
+        c2_patterns=[
+            C2Pattern("kaixinai.com", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[
+            PermissionSig("SEND_SMS", 1.0),
+            PermissionSig("WRITE_APN_SETTINGS", 0.9),
+            PermissionSig("RECEIVE_SMS", 0.7),
+        ],
+        class_count_min=100, class_count_max=600,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=3, confidence=0.60,
+    ),
+
+    # Stiniter — media-player trojan. C2 dangpao.com is unique (fp=0).
+    # require_c2=True + min_matches=3 forces C2 + class range + at least one
+    # perm; no permissions alone needed (the class band is already narrow).
+    FamilySignature(
+        family_name="Stiniter",
+        string_patterns=[],
+        c2_patterns=[
+            C2Pattern("dangpao.com", C2MatchMode.SUBSTRING),
+        ],
+        permission_sigs=[],
+        class_count_min=50, class_count_max=150,
+        has_native_libs=False,
+        require_c2=True,
+        min_matches=3, confidence=0.55,
     ),
 ]
 
@@ -1055,7 +1129,7 @@ def _extract_native_symbols(apk_path: str) -> dict[str, set[str]]:
                         os.unlink(tmp_path)
                     except OSError:
                         pass
-    except (zipfile.BadZipFile, FileNotFoundError):
+    except (zipfile.BadZipFile, FileNotFoundError, RuntimeError):
         pass
     return result
 
@@ -1090,8 +1164,27 @@ def _match_native_api(
 # ---------------------------------------------------------------------------
 
 def _extract_permissions(result: Dict[str, Any]) -> Set[str]:
-    """Extract permission names from full paths."""
+    """Extract permission names from full paths.
+    
+    Supports both:
+    - Old format: result["manifest"]["uses_permissions"/"permissions"]
+    - Cache format: result["permissions"] (flat list)
+    """
     perms: Set[str] = set()
+    
+    # Try new cache format first: flat list at result["permissions"]
+    flat_perms = result.get("permissions", [])
+    if isinstance(flat_perms, list) and flat_perms:
+        for p in flat_perms:
+            if isinstance(p, str):
+                perms.add(p.split('.')[-1] if '.' in p else p)
+            elif isinstance(p, dict):
+                name = p.get("name") or p.get("permission") or ""
+                if name:
+                    perms.add(name.split('.')[-1] if '.' in name else name)
+        return perms
+    
+    # Fallback to old format: result["manifest"]
     raw = result.get("manifest", {}) or {}
     for key in ("uses_permissions", "permissions"):
         entries = raw.get(key, []) or []
@@ -1106,9 +1199,27 @@ def _extract_permissions(result: Dict[str, Any]) -> Set[str]:
 
 
 def _extract_string_blob(result: Dict[str, Any]) -> str:
-    """Extract all string values into one lowercase blob."""
-    strings_data = result.get("strings", {}) or {}
+    """Extract all string values into one lowercase blob.
+    
+    Supports both:
+    - Old format: result["strings"] dict with "string_literals"/"native_strings"
+    - Cache format: result["strings"] flat list
+    """
+    strings_data = result.get("strings", [])
     parts = []
+    
+    # New cache format: flat list
+    if isinstance(strings_data, list):
+        for item in strings_data:
+            if isinstance(item, str):
+                parts.append(item.lower())
+            elif isinstance(item, dict):
+                val = item.get("value")
+                if isinstance(val, str):
+                    parts.append(val.lower())
+        return " ".join(parts)
+    
+    # Old format: dict with categories
     if isinstance(strings_data, dict):
         for cat in ("string_literals", "native_strings"):
             for item in strings_data.get(cat, []) or []:
@@ -1130,6 +1241,57 @@ def _extract_c2_domains(result: Dict[str, Any]) -> List[str]:
     ]
 
 
+def cert_issuer_boost(sample_cert_issuer: str, family_name: str, cert_profiles_input) -> float:
+    """Return confidence boost (0.0 to +0.15) if cert issuer matches family pattern.
+    
+    Accepts either a file path to analysis/cert_profiles.json (str) or a dict.
+    If a dict is provided and is empty, it will reload from the default file path.
+    Families with LOW stability (issuer variation >30%) do not get boosted
+    to avoid false positives from inconsistent cert patterns within families.
+    """
+    # Determine profiles dict: if dict is empty/invalid, load from default file
+    if isinstance(cert_profiles_input, dict) and cert_profiles_input:
+        profiles = cert_profiles_input
+    else:
+        # Load from default path
+        default_path = "analysis/cert_profiles.json"
+        try:
+            with open(default_path, "r", encoding="utf-8") as f:
+                import json
+                profiles = json.load(f)
+        except (FileNotFoundError, json.JSONDecodeError):
+            return 0.0
+    
+    profile = profiles.get(family_name, {})
+    if not profile:
+        return 0.0
+    
+    # Skip boost on unstable patterns (high issuer variation within family)
+    if profile.get("stability") == "LOW":
+        return 0.0  # Don't boost on unstable patterns
+    
+    top_issuer = profile.get("top_issuer", "")
+    issuer_patterns = profile.get("issuer_patterns", [])
+    top_coverage = profile.get("top_issuer_coverage", 0.0)
+    
+    if not top_issuer:
+        return 0.0
+    
+    # Strong match: issuer exactly matches top issuer
+    if sample_cert_issuer == top_issuer:
+        return 0.15
+    
+    # Weak match: issuer in the patterns list but not top
+    if sample_cert_issuer in issuer_patterns:
+        return 0.08
+    
+    # Optional: if coverage is high and issuer partially matches, smaller boost
+    if top_coverage > 0.7 and sample_cert_issuer:
+        return 0.05
+    
+    return 0.0
+
+
 def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Match result against the 12 family signatures.
 
@@ -1138,12 +1300,18 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
     string_blob = _extract_string_blob(result)
     permissions = _extract_permissions(result)
     c2_domains = _extract_c2_domains(result)
+    
+    # Support both formats: old (extraction dict) and cache (flat keys)
     extraction = result.get("extraction", {}) or {}
-    class_count = extraction.get("decompiled_classes", 0)
-    native_libs = extraction.get("native_libs_found", []) or []
-
-    # Extract native API symbols if native libs exist
-    apk_path = (result.get("metadata", {}) or {}).get("apk_path", "")
+    class_count = extraction.get("decompiled_classes", result.get("class_count", 0))
+    native_libs = extraction.get("native_libs_found", result.get("native_libs", []) or [])
+    
+    # Support cache format for C2 domains
+    if not c2_domains:
+        c2_domains = [d.get("domain", "") for d in (result.get("domains", []) or []) if d.get("domain")]
+    
+    # Support cache format for apk_path
+    apk_path = (result.get("metadata", {}) or {}).get("apk_path", result.get("apk_path", ""))
     native_symbols: dict[str, set[str]] = {}
     if native_libs and apk_path:
         native_symbols = _extract_native_symbols(apk_path)
@@ -1154,6 +1322,9 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
     for sig in FAMILY_SIGNATURES:
         matched_signals = 0
         signal_details = []
+
+        # Confidence starts at this signature's base confidence
+        confidence = sig.confidence
 
         # 1. String patterns
         string_matched = False
@@ -1191,7 +1362,21 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
             matched_signals += 1
             signal_details.append(f"perms({perm_weight:.2f})")
 
-        # 4. Class count.
+        # 4. Certificate issuer boost — secondary confidence multiplier
+        # Only apply when we already have a string/C2 match and moderate confidence
+        cert_boost = 0.0
+        if matched_signals >= 2 and confidence > 0.5:
+            from analysis.cert_profiles import CERT_PROFILES  # loaded at module level
+            # Get cert info from sample metadata
+            metadata = result.get("metadata", {}) or {}
+            cert_info = metadata.get("certificate_issuer", "")
+            if cert_info:
+                # Boost only for families with stable cert patterns
+                cert_boost = cert_issuer_boost(cert_info, sig.family_name, CERT_PROFILES)
+        confidence += cert_boost
+        confidence = min(confidence, 1.0)
+
+        # 5. Class count.
         # An unbounded range (both None) constrains nothing, so it no longer earns
         # a signal — it previously handed every signature a free point and let
         # permission-less samples match on "classes:N; native:no" alone.

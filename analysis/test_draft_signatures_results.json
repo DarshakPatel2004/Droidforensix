@@ -1,22 +1,22 @@
 {
   "summary": {
     "total_samples": 359,
-    "drafts_tested": 3,
-    "baseline_correct": 120,
-    "combined_correct": 123,
-    "new_correct": 3,
+    "drafts_tested": 0,
+    "baseline_correct": 117,
+    "combined_correct": 117,
+    "new_correct": 0,
     "new_fps": 0,
     "baseline_counts": {
-      "correct": 120,
-      "fp": 126,
-      "gap": 46,
-      "abstention": 67
+      "correct": 117,
+      "fp": 62,
+      "gap": 66,
+      "abstention": 114
     },
     "combined_counts": {
-      "correct": 123,
-      "fp": 125,
-      "gap": 44,
-      "abstention": 67
+      "correct": 117,
+      "fp": 62,
+      "gap": 66,
+      "abstention": 114
     },
     "by_status": {
       "STRONG": {
@@ -32,55 +32,21 @@
         "commit_ready": []
       },
       "WEAK": {
-        "drafts": 3,
-        "combined_correct": 3,
+        "drafts": 0,
+        "combined_correct": 0,
         "combined_fps": 0,
         "commit_ready": []
       }
     },
     "diagnosis_counts": {
       "below_threshold": 0,
-      "outcompeted": 28,
-      "insufficient_signal": 24,
-      "signature_gap": 22
+      "outcompeted": 18,
+      "insufficient_signal": 41,
+      "signature_gap": 25
     },
     "note": "isolated = draft scored alone over all 359 samples (FP risk of the draft itself); combined = drafts appended after current signatures (current wins ties, drafts only win when stronger)"
   },
-  "per_family": {
-    "Lemon": {
-      "status": "WEAK",
-      "gt_count": 1,
-      "combined_matches": 1,
-      "combined_correct": 1,
-      "combined_fps": 0,
-      "isolated_matches": 1,
-      "isolated_correct": 1,
-      "isolated_fps": 0,
-      "commit": false
-    },
-    "Stiniter": {
-      "status": "WEAK",
-      "gt_count": 1,
-      "combined_matches": 1,
-      "combined_correct": 1,
-      "combined_fps": 0,
-      "isolated_matches": 1,
-      "isolated_correct": 1,
-      "isolated_fps": 0,
-      "commit": false
-    },
-    "FakeTimer": {
-      "status": "WEAK",
-      "gt_count": 1,
-      "combined_matches": 1,
-      "combined_correct": 1,
-      "combined_fps": 0,
-      "isolated_matches": 1,
-      "isolated_correct": 1,
-      "isolated_fps": 0,
-      "commit": false
-    }
-  },
+  "per_family": {},
   "samples": [
     {
       "sha256": "00001f58c32e40376f64cc88b70f8fad2fda054e0863abd5e41f4c6f18a65da2",
@@ -196,17 +162,13 @@
     {
       "sha256": "00005be947a8f108382b59ced7d1e95871a68539c00ff53fd3e1d93c58e2ba6c",
       "gt_family": "Dowgin",
-      "matched_family": "GinMaster",
-      "confidence": 0.75,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:163",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "GinMaster",
-      "baseline_confidence": 0.75
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
@@ -227,18 +189,18 @@
     {
       "sha256": "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
       "gt_family": "AndroidOS",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "DroidDream",
+      "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
-        "string:\"getprop\"",
+        "string:\"root\"",
         "perms(2.80)",
         "classes:232",
         "native:yes"
       ],
       "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "baseline_family": "DroidDream",
+      "baseline_confidence": 0.8
     },
     {
       "sha256": "0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465",
@@ -336,17 +298,6 @@
       "baseline_confidence": 0.7
     },
     {
-      "sha256": "0000d4ba8d3decb4403a8e3bc94347552469aa761e34763da22602da891619f5",
-      "gt_family": "Linux",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "0000bbe0733122b3872576fb080df7fded864325f193b36acf0fcb9e0a74c5d8",
       "gt_family": "Dowgin",
       "matched_family": "Dowgin",
@@ -415,17 +366,18 @@
     {
       "sha256": "016ab069253276cbface350265f0a2d5f10f38e3c7888dcc976698216c2bdeea",
       "gt_family": "Backdoor",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "Kmin",
+      "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
-        "perms(1.70)",
+        "c2:monternet.com",
+        "perms(1.00)",
         "classes:172",
         "native:no"
       ],
       "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "baseline_family": "Kmin",
+      "baseline_confidence": 0.8
     },
     {
       "sha256": "022c88f2397b59ef6394db385163b1ed44c5a4b720f667ca3b91983b04f89433",
@@ -444,17 +396,6 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "03818f12d9e7676c30efceb7b4815106406a4dc7507bb3e12c05a37f7879e183",
-      "gt_family": "Android/Agent",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "03385b42f9dffe697a883aac40042188e658145e8d67e0dab9d665501d7e02aa",
       "gt_family": "Opfake",
       "matched_family": "unknown",
@@ -466,48 +407,22 @@
       "baseline_confidence": 0.0
     },
     {
-      "sha256": "0400c00cbcc6834ade203f8d515f5932972a3861256a9a7ca0a46638eec2a83e",
-      "gt_family": "Gen",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "050d91cde706f7c981f90878dbd50d92038caeedd38852a10e018e57f188e79b",
-      "gt_family": "AndroidOS",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "0000bbba321e673b89da37baf825c9e28c66ba72535fb42d11f8b5c35ae53abb",
       "gt_family": "Adware",
-      "matched_family": "SMSreg",
-      "confidence": 0.65,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:1072",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SMSreg",
-      "baseline_confidence": 0.65
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "0526cff3ebb1fbfa493cf982fcba85409ae692157b25f9046469576bf58e8c4d",
       "gt_family": "FakeTimer",
       "matched_family": "FakeTimer",
       "confidence": 0.55,
-      "via_draft": true,
+      "via_draft": false,
       "fired_signals": [
         "c2:erotte.com",
         "perms(0.70)",
@@ -515,8 +430,8 @@
         "native:no"
       ],
       "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
+      "baseline_family": "FakeTimer",
+      "baseline_confidence": 0.55
     },
     {
       "sha256": "07e47fbf43c585155ddcdae49c3330c00ceceedf6c9f98432cf631769a21b206",
@@ -558,20 +473,6 @@
       ],
       "status": "correct",
       "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "05a2da9df1b4aed78e16349c17443ccd83cb48ed9e38e38d0c0b6ce808a9c2a8",
-      "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(7.50)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
       "baseline_confidence": 0.8
     },
     {
@@ -630,20 +531,6 @@
       "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "0bc98459a42d1d0108a882671f4496f214f8a68400810b9e034cdd7212f5a4fa",
-      "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(7.50)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
     },
     {
       "sha256": "091870b3f90c9a98000e0d14a67be2db5891ce98a0b1e24b721e3d96241620a5",
@@ -782,40 +669,13 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "126012e515b74d7ceb3f21535a4bac4730fc990b1ab87ab22355809da0f5eb70",
-      "gt_family": "Application",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "11172b2f0ccaa49ab486b313bb61cfb8900126b15541540acf42ad73cf096133",
       "gt_family": "Airpush",
-      "matched_family": "BaseBridge",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "string:\"androidterm\"",
-        "perms(0.75)",
-        "classes:684",
-        "native:yes"
-      ],
-      "status": "fp",
-      "baseline_family": "BaseBridge",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "1370ba86f4c12ff1a8a0dd987b2be79a6ed13f7765e05b9711c544a7a2f288ea",
-      "gt_family": "Banker",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
       "fired_signals": [],
-      "status": "abstention",
+      "status": "gap",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
@@ -909,17 +769,13 @@
     {
       "sha256": "14b005352c07490b3689ac4eb187eb68d2b50cd135e57e1bca2f3469b10e2dd5",
       "gt_family": "AndroidOS",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "0000636f9c57d0adad87ffcfb4aa0ad71aefea915b4cd6267ee5de15e2de15a9",
@@ -946,17 +802,13 @@
     {
       "sha256": "14bafc31ee9bce174bca7df1c35d3b0ec11c573a1b0e3ecb1d5001409de1aeb5",
       "gt_family": "AndroidOS",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "1dd0ccbb47e46144a5e68afc619098730f561741618d89200ac9c06c460bf6e4",
@@ -975,33 +827,8 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "1f30b62c19be5de98456ec6915f1618da92cab68f20bf36cf91473788437f87a",
-      "gt_family": "unknown",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(4.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
       "sha256": "0e9cb2bb3435c2f4e5893b5a28982337f96621b11ddc48cb73c14ce7910f825a",
       "gt_family": "AndroidOS",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "208e85cc66f2ee482dce1c6ee5f1ea45592e9fc9980c1b04b5157975d127dcf1",
-      "gt_family": "GenericKD",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
@@ -1024,17 +851,13 @@
     {
       "sha256": "21ea92178eccae3f448345dcab84d98f21a6b32ea412265d858665973874b5df",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInstaller",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.65)",
-        "classes:23",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInstaller",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "1e7276097313eb4ede32eba76886e42696ecd2de41a1a7aeac5536ce717319c0",
@@ -1142,17 +965,6 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "2ab29825e9454a4b87d661dfc55842943e30b86600d2848796d96241e92307c2",
-      "gt_family": "Agent",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "269a98c5a2e16675eacd3490f382ac08d894737e629b92c1a69070cc471eed36",
       "gt_family": "NGate",
       "matched_family": "NGate",
@@ -1165,17 +977,6 @@
       "status": "correct",
       "baseline_family": "NGate",
       "baseline_confidence": 0.85
-    },
-    {
-      "sha256": "2cc755a2c9dae64ea5914bd32aa6824a3bc1f0e3be1f2d03c116ffc68f7772d0",
-      "gt_family": "GhostBat",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
     },
     {
       "sha256": "3063914cc10de86a689070151a61172fc17619e71d1bd643a3d0cf94b84e10a8",
@@ -1222,17 +1023,13 @@
     {
       "sha256": "1c2d4a388c3109001751caf2cee1d27516286f4d1ff51dbf271e85dfc069ce98",
       "gt_family": "SmsSend",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "328ff57e39148daf440359709e92989aad445f1b41b3f33135238a9343317d85",
@@ -1265,17 +1062,13 @@
     {
       "sha256": "32e4dee58ea17addc5df4ffb862ab3a8df1697598cb6437f92de4075665812c2",
       "gt_family": "Banker",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(5.05)",
-        "classes:2628",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "1d6640a63db2d4909aa9d1f8f6d4698abd89f2171c33240f0c821e2a94e0cec7",
@@ -1291,32 +1084,24 @@
     {
       "sha256": "3502fa570ada49eaeeaa4785bb1897ed91dfadaa76c5e8626c5b8e944d8f5f01",
       "gt_family": "Dropper",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:255",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "2211e5b751634ef3681bff599b25d57f47f1593bc27aeb83273ee63a64d62e25",
       "gt_family": "Agent",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "352e2e2b57138099966a3a558f9eb3d6a88c27fa6d401f767b36e5cf3440f06a",
@@ -1364,18 +1149,13 @@
     {
       "sha256": "36c25d77e5097eaec3b3b7fe879533d093e8cd40bce16aff601102838eb2a211",
       "gt_family": "MobileTx",
-      "matched_family": "MobileTx",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:mobile.tx.com.cn",
-        "perms(2.50)",
-        "classes:25",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "MobileTx",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "3779e67d696ba3ef4ba4b38ba10e07301620a45f1d89f004da5ae64f050dfdb4",
@@ -1406,58 +1186,17 @@
     {
       "sha256": "3504d9f2a2fdf021a382be4e2603acbdb5550ac2ddf26f62da1c2227b1f7f400",
       "gt_family": "GenericKD",
-      "matched_family": "BaseBridge",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(3.55)",
-        "classes:553",
-        "native:yes"
-      ],
-      "status": "fp",
-      "baseline_family": "BaseBridge",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "388d7fd938e51455ad9ba27eae9ce01fcbadff8ab88d5a7e9e742cb28402f1e8",
-      "gt_family": "unknown",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
       "fired_signals": [],
-      "status": "correct",
+      "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
     {
       "sha256": "2c74efb0e8304948e56f4ccb1ced6c05734842ecdc95628decacfa74d06baf6c",
       "gt_family": "AndroidOS",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(2.50)",
-        "classes:7414",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "3a03b35a4c614d651954f8298d5bb75abe33223e0791bdc1b9bdb2af69d3009b",
-      "gt_family": "unknown",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "3a6d53616484183e4c582b82ac147f05a0d08e86836be59bad03470d9605eded",
-      "gt_family": "Linux",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
@@ -1482,20 +1221,6 @@
       "status": "correct",
       "baseline_family": "Nandrobox",
       "baseline_confidence": 0.65
-    },
-    {
-      "sha256": "3c0edd3c80f917d0045ac51d177e9a4768df5a66517005b0f7944423aa54b089",
-      "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(2.60)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
     },
     {
       "sha256": "2bda9042eef834886047cb07ea1fe44844bd5d373c96afe96ec8a39e487d2bb7",
@@ -1626,17 +1351,13 @@
     {
       "sha256": "45d2031af6420768aef7c0d4a0b08063939abe88c27e0344cf9c787f73eb8f3e",
       "gt_family": "AndroidOS",
-      "matched_family": "Opfake",
-      "confidence": 0.85,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:.ru",
-        "classes:36",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Opfake",
-      "baseline_confidence": 0.85
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "3cb4b373a24afb10b8003762e763e6b44008bdf9a58d0a9a2b80a5de68308ecd",
@@ -1655,17 +1376,13 @@
     {
       "sha256": "47a4aff5aaac505f213fb058e22cb5fecd03791c3f60ff9529b9f9befcbc2012",
       "gt_family": "BaseBridge",
-      "matched_family": "BaseBridge",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"androidterm\"",
-        "classes:659",
-        "native:yes"
-      ],
-      "status": "correct",
-      "baseline_family": "BaseBridge",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "4067054f202cc8e87557915783d4468b54985c5cc7b0b57df98ffbb106475196",
@@ -1717,17 +1434,6 @@
       "baseline_confidence": 0.0
     },
     {
-      "sha256": "4eb2ac595b1a17ddde607d55dc41d93896eeca3a01cd440b8953159bca3a418d",
-      "gt_family": "AndroidOS",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "4f181b3a42657a4c18a898d84108f7500baf243a2ac710adec1c5938cf0adb57",
       "gt_family": "AndroidOS",
       "matched_family": "unknown",
@@ -1741,17 +1447,13 @@
     {
       "sha256": "4ccf02c87de6c0bf718d9f8cdf6c61a9edc909fab1cdd7d497572e30fea1f580",
       "gt_family": "GenericKD",
-      "matched_family": "Bian",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:1326",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "5010f34461e309ea1bc5539bb24fccc320576ce6d677a29604f5568c0a5e6315",
@@ -1772,17 +1474,6 @@
       "via_draft": false,
       "fired_signals": [],
       "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "518f5438a21e9aa9a91f0dd589088e443fda111d8ada5ea67d1cf14d6645974c",
-      "gt_family": "unknown",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "correct",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
@@ -1838,17 +1529,13 @@
     {
       "sha256": "36158735c5442bb6a2f5432226403905551f360d7ce99fa51e9d2b54b7cd02e7",
       "gt_family": "GenericKD",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.50)",
-        "classes:7414",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "536a6084656a2d58e81a88ecfe0a0d050a4a5794f65cbc09170646c3e4c0dc0c",
@@ -1896,18 +1583,18 @@
     {
       "sha256": "54f2a636e000c55bb725d7e552a22117837c1676fb4b96decd135ae10e6f7049",
       "gt_family": "BaseBridge",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "DroidDream",
+      "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
-        "string:\"getprop\"",
+        "string:\"rageagainstthecage\"",
         "perms(1.00)",
         "classes:247",
         "native:yes"
       ],
       "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "baseline_family": "DroidDream",
+      "baseline_confidence": 0.8
     },
     {
       "sha256": "5606655728a5e64d3c2229deb831d087605a1362fd545dc5d7a93961bf1c7825",
@@ -1919,20 +1606,6 @@
       "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "537f08755139d0199fb1751068eb49a92b68e0d1dcadaf03758837c3832f99c5",
-      "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(7.50)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
     },
     {
       "sha256": "562c92478e7cf5790e6bd8d706c51d9178ea1bd58537575f03edbbb427f54fc9",
@@ -1968,17 +1641,6 @@
       "baseline_confidence": 0.8
     },
     {
-      "sha256": "58cc948bd809292143e604c3e03735c9517f94b37dd35299ca5e81d7b902d620",
-      "gt_family": "Evo-gen [Trj]",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "51f9c37c3eec0b6f8325aa1c8fe64a0615ab920584042df557426473b1270b40",
       "gt_family": "BankBot",
       "matched_family": "BankBot",
@@ -1996,17 +1658,17 @@
     {
       "sha256": "5b6f0757e98303cf337d10b6f8c7378bdfd4de30dea624545207dd01a85b6c37",
       "gt_family": "BaseBridge",
-      "matched_family": "BaseBridge",
+      "matched_family": "DroidDream",
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
-        "string:\"androidterm\"",
-        "perms(4.25)",
+        "string:\"root\"",
+        "perms(2.80)",
         "classes:221",
         "native:yes"
       ],
-      "status": "correct",
-      "baseline_family": "BaseBridge",
+      "status": "fp",
+      "baseline_family": "DroidDream",
       "baseline_confidence": 0.8
     },
     {
@@ -2028,17 +1690,13 @@
     {
       "sha256": "5e7116ea24dee71abac470b432a62c41e0fd680663162a486ab2b6fe25ccf367",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInstaller",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.65)",
-        "classes:18",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInstaller",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "5af77b5f5d014162cd3bf43314ebb91f39658c5be335c1efff7c9564e298e719",
@@ -2074,17 +1732,6 @@
       "baseline_confidence": 0.0
     },
     {
-      "sha256": "5f94e59c132a7ed0e35b60146d973a728ab9f390c8291f9547cee26c56427738",
-      "gt_family": "CraxsRAT",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "5e82d73a3b2d4df192d674729f9578c4081d5096d5e3641bf8b233e1bee248d4",
       "gt_family": "Adrd",
       "matched_family": "Adrd",
@@ -2100,17 +1747,6 @@
       "baseline_confidence": 0.8
     },
     {
-      "sha256": "62545321423f75c0f4774c868a1677087399353adda0fb361cd3884d2680dcc2",
-      "gt_family": "FantasyHub",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "61d4518fac40db1cef72d8b6f9a14080d93ef53a6f6e55605ee12da87978a14f",
       "gt_family": "Andr/Xgen2-AYJ",
       "matched_family": "unknown",
@@ -2124,17 +1760,13 @@
     {
       "sha256": "6376bcd8faa57aac7437116b184967a588025e2bf96318272cdcf51ff2f8dfdd",
       "gt_family": "Dropper",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:255",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "5494db78d03c9b3061c780520fc6713fa16cc8469c18ec9acb3d8eddff91964a",
@@ -2166,22 +1798,6 @@
     {
       "sha256": "64ab7a8e612d8d60c1c4cc8ce1b4ace4aafcec7e1f5239894f2b214b094fa1b1",
       "gt_family": "a",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
-      "via_draft": false,
-      "fired_signals": [
-        "string:\"getprop\"",
-        "c2:adwo.com",
-        "perms(2.80)",
-        "classes:158"
-      ],
-      "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
-    },
-    {
-      "sha256": "669b75fd2620fa990bb982c07f5233f5b3e98aff65d9d8ffb9683aaae6cb98c1",
-      "gt_family": "Trojan-Banker",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
@@ -2251,17 +1867,13 @@
     {
       "sha256": "47bb7f855cdf116c62499240089fa1b7a69585e8b7f639e192b9d038da4094cd",
       "gt_family": "GenericKD",
-      "matched_family": "Bian",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:6436",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "6832234c4eae7a57be4f68271b7eecb056c4cd8352c67d2273d676208118871d",
@@ -2326,18 +1938,18 @@
     {
       "sha256": "6a02832c97ad6c0f2ddb813acb52ef002ef616be2a7ded5a0a69b7dbdf2f7aff",
       "gt_family": "GinMaster",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "DroidDream",
+      "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
-        "string:\"getprop\"",
-        "perms(2.80)",
+        "string:\"root\"",
+        "perms(1.95)",
         "classes:296",
         "native:yes"
       ],
       "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "baseline_family": "DroidDream",
+      "baseline_confidence": 0.8
     },
     {
       "sha256": "6c1ed581a3843a9cbe7a864bff72cf2ad914733dc90fea105f66ab5c6e24b2c8",
@@ -2384,17 +1996,13 @@
     {
       "sha256": "692e7b0f657ac34635e0dcd633f9c73b37d0258457d161ec6dbee26820cb72dd",
       "gt_family": "Banker",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(5.05)",
-        "classes:2640",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "6e9848008c42128623d1077f0cc75c0861e2b3d0fb76e68c5fc9ec8f69361572",
@@ -2413,8 +2021,8 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "7365190230042fa2f8aba13d39cfecaa52b029750331760bcd114bafb01cb6db",
-      "gt_family": "AndroidOS",
+      "sha256": "554e71b4e5d2a172707b51edc8e0e22cba40858b69884e75228c12718c47e1ef",
+      "gt_family": "GenericKD",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
@@ -2424,34 +2032,15 @@
       "baseline_confidence": 0.0
     },
     {
-      "sha256": "554e71b4e5d2a172707b51edc8e0e22cba40858b69884e75228c12718c47e1ef",
-      "gt_family": "GenericKD",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
-    },
-    {
       "sha256": "64a9263148d49bbabaf13b68fc461c93275d5d7f852288ccf00d1b25e39069d3",
       "gt_family": "Gen",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:telegram.org",
-        "classes:4749",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "74611134257de9e9f549d445d19d465afeb1af34399683ff04303a11ecf643fc",
@@ -2468,20 +2057,6 @@
       "status": "correct",
       "baseline_family": "SmForw",
       "baseline_confidence": 0.75
-    },
-    {
-      "sha256": "72f18d019123393ae610dd73b25e5f30a4945430f6f835700d6bdee19f566a30",
-      "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(7.50)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
     },
     {
       "sha256": "73b2fd2dfb5860f0701b16002832987d5edcfe059df454d30548aa4fa45bebe6",
@@ -2513,17 +2088,6 @@
       "status": "fp",
       "baseline_family": "Plankton",
       "baseline_confidence": 0.85
-    },
-    {
-      "sha256": "77eef34639c4d2d244ba407c6e0a1b9b5ec0187e73de1ae3acb0f71f3906f595",
-      "gt_family": "unknown",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
     },
     {
       "sha256": "789d04c93488adf85d8d7988c0d050648cd91ad469f9e63e04d290523dfb1d93",
@@ -2558,17 +2122,13 @@
     {
       "sha256": "7a4238fc6f5d3c7731c2eb33911298eaa36986040858af56e76628c5dc83e265",
       "gt_family": "AndroidOS",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:643",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "752f3cacdad6753d4c02bb8e40ef3e0990b55466c18a7b80ec6fa7b9706e40ab",
@@ -2587,32 +2147,24 @@
     {
       "sha256": "767c218be4e7d2c99ee9c8b36128ac932d2dac0e3792ce638b804083f75e1096",
       "gt_family": "GenericKD",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:746",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "5f113715e47ddce3f72f9ff69b1aa07ee09225eaf6b501a7b106fa893779a931",
       "gt_family": "AndroidOS",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "80ae30136ea55e936c66cd61cbf1de428d8d20d76fec06c1e4c0217472e6e089",
@@ -2648,17 +2200,13 @@
     {
       "sha256": "6e3499a5e63209b34ccc787a7ea57953ff5436b51ca4325ea0da4a958f44ea7b",
       "gt_family": "AndroidOS",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "818e8917650bff20ef5d3440d2c33739f973d4e7f41af7d7767502dac5a0580c",
@@ -2704,31 +2252,6 @@
       "baseline_confidence": 0.8
     },
     {
-      "sha256": "84ddfdd7862e3c3481ae65b64d9087ab7c5c29355a29e9e7c3a4011a631f7387",
-      "gt_family": "unknown",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(4.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "85a44fd5134cf1d317a7637f1fb47dcf570a93e925c365b2e8f103a0fa459290",
-      "gt_family": "unknown",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "7e8693dfed67a88db885ac0ffd94b73351d1f910cafc6425e8f1b4ab0e24c2a8",
       "gt_family": "Gen",
       "matched_family": "Adrd",
@@ -2737,7 +2260,7 @@
       "fired_signals": [
         "string:\"adrd\"",
         "perms(1.00)",
-        "classes:460"
+        "native:yes"
       ],
       "status": "fp",
       "baseline_family": "Adrd",
@@ -2762,19 +2285,18 @@
     {
       "sha256": "85cafe005c7f893cae65fa0a5ebf1c103eca579529ebd5d531c672408acdb9d0",
       "gt_family": "Linux",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "KungFu",
+      "confidence": 0.9,
       "via_draft": false,
       "fired_signals": [
-        "string:\"getprop\"",
         "c2:adwo.com",
         "perms(2.80)",
         "classes:128",
         "native:yes"
       ],
       "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "baseline_family": "KungFu",
+      "baseline_confidence": 0.9
     },
     {
       "sha256": "877ab7dbbef2267a39513d1ad777b5c469f76f2a110be547100cb339d76a3f1f",
@@ -2796,17 +2318,13 @@
     {
       "sha256": "87def7f445734b4b9b57b97cd4af8d22b2684dd4dd3e7ae8d07a120efa3b1814",
       "gt_family": "SpyNote",
-      "matched_family": "Opfake",
-      "confidence": 0.85,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:.ru",
-        "perms(3.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Opfake",
-      "baseline_confidence": 0.85
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "68b9c7ae6b51f211ecd0cfdd656bc3b14840627adc7073faf9504acdb0e52dae",
@@ -2822,17 +2340,13 @@
     {
       "sha256": "810926f89430144fd258ed4a95f1d77215f657a4e7dac2ce0c410bcffbdca99e",
       "gt_family": "Banker",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "8fdd17e520f7c2ac1924ef3806d85aadf3e969418578ff0b7ea245af93a16315",
@@ -2875,17 +2389,13 @@
     {
       "sha256": "7e7ee5b11fe1ca56f0f8416638964bec68b9ef90b25426f06d1330222b1dcf3d",
       "gt_family": "Banker",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "9508ff9b7bdc06a220ba132eecf2d35bee47072ed9bff82fb24bc0e110ab1652",
@@ -2932,17 +2442,13 @@
     {
       "sha256": "831334e1e49ec7a25375562688543ee75b2b3cc7352afc019856342def52476b",
       "gt_family": "AndroidOS",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "97b0f46920e69a0aa5abe2284fe1e7bf9d2efa7ecfb4a29a7ba9b8a92e92c0c9",
@@ -2962,17 +2468,6 @@
       "baseline_confidence": 0.95
     },
     {
-      "sha256": "9904bb103fae65ab3dd712f6b9ff361d3f3cb3a4cc814b69f0af3e2f1a837ecd",
-      "gt_family": "Gen",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "9a7534768302bdafa51f7abc698639eb23bb38a8c41a362f41b182ae9171969a",
       "gt_family": "Imlog",
       "matched_family": "Imlog",
@@ -2989,50 +2484,13 @@
       "baseline_confidence": 0.8
     },
     {
-      "sha256": "9a836ef59a4fb8cae0543fed24ca8c53015bee86d6b0ead0086917681c7576d4",
-      "gt_family": "FantasyHub",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "9b5905a253141d4f64394de73775541a7bb16714cff8d18684e24ae887c97fc2",
-      "gt_family": "BankBot",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "8856ac19f179461c4008249c342c8dadbd17118f80f43ce0229ddb1cda33bd67",
       "gt_family": "GenericKD",
-      "matched_family": "Bian",
-      "confidence": 0.7,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:6436",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
-    },
-    {
-      "sha256": "9c23c73a7fa3b1b3df8a61866dc36d263aa0754a0bb194e0d164a4773f4537f2",
-      "gt_family": "FantasyHub",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
       "fired_signals": [],
-      "status": "gap",
+      "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
@@ -3094,48 +2552,31 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "9f42721255d8d62b4595b9040a9a7d742c8fe2a5ff17745c8e250cd04928c480",
-      "gt_family": "unknown",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(1.90)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
       "sha256": "93880cd38abffa10e753c17ae7c14f0833356cba601bd1a3d3998859f47c900f",
       "gt_family": "GenericKD",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
       "gt_family": "Adrd",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "GinMaster",
+      "confidence": 0.75,
       "via_draft": false,
       "fired_signals": [
-        "perms(1.70)",
+        "string:\"softid\"",
+        "perms(0.80)",
         "classes:408",
         "native:no"
       ],
       "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "baseline_family": "GinMaster",
+      "baseline_confidence": 0.75
     },
     {
       "sha256": "918eb87af81e92709d872621ea8ed0c086e38fbdf48a5e5ebdcab190f41bd07b",
@@ -3230,17 +2671,13 @@
     {
       "sha256": "9f2d916b1e0ee486f5a49e3e9887eae59dbdca0a554139ae9a4dc8edc2f12de0",
       "gt_family": "BankBot",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "557c02b5e9ca8103e6ad5413df1b447fae5c9ce086a0b5330bf9c79a578585df",
@@ -3250,17 +2687,6 @@
       "via_draft": false,
       "fired_signals": [],
       "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "a3ade4b9e03e459a5955d68c52f8dbf893ce0c2bfb56c1c8b7415ecfb7ec9246",
-      "gt_family": "Mirax",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
@@ -3299,17 +2725,13 @@
     {
       "sha256": "9cf1ad53db4a31e4be0cfba7bf15f1e414cdf12327063a419be6cdea4700adfd",
       "gt_family": "Banker",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "a945198c086ad3fe0c5dbbce5ef410ea12986c9c160295d76be881c5f8ae0880",
@@ -3330,17 +2752,13 @@
     {
       "sha256": "a9d1561ed0d23a5473d68069337e2f8e7862f7b72b74251eb63ccc883ba9459f",
       "gt_family": "GenericKD",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(6.05)",
-        "classes:1708",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "aa8127463312dac0158e74d56a3e3c2f50d9cf98c09942a27cf95081348874a3",
@@ -3359,28 +2777,6 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "abf62033c4b913bf8368de607fdc4dd2677f9441541db3c2a9375dd9130ff9bb",
-      "gt_family": "Trojan ( 005cbb901 )",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "ad9f39e6166a47ae16359777b607055198cda23f004d9d7b066e22c0d0cf1e6d",
-      "gt_family": "Agent",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "a93d66a127091d11090f544514d7e677c24db69d361008e60fffc5200331a1fe",
       "gt_family": "Agent",
       "matched_family": "unknown",
@@ -3394,17 +2790,13 @@
     {
       "sha256": "a778818cc08d213d1f66db5fa8b34aabc862569ecb99fd1aea37ff6ccab48400",
       "gt_family": "GenericKD",
-      "matched_family": "Opfake",
-      "confidence": 0.85,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:.ru",
-        "perms(1.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Opfake",
-      "baseline_confidence": 0.85
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "b0861e7d9dbcd63679ccef606b67ad0ef0283f4a7cb14efe14716fbad328cf5b",
@@ -3463,17 +2855,13 @@
     {
       "sha256": "ae502f67782e9cc2a6e33b868f14467f3dabf126e868a8e10a68aa2ddd4092e1",
       "gt_family": "Banker",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(5.05)",
-        "classes:2628",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "b634c8c0ec3a4d682630eed6ac1cc8d5e2b0481110121990edcb4e0df9867698",
@@ -3527,17 +2915,13 @@
     {
       "sha256": "a959108ec8f93ee4c71e588236788d17372f9d61b8f71a509a776f097889f36b",
       "gt_family": "AndroidOS",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "b8ed964e21a6f480dccb593f85854b835f0693472c5857d52af3efa5a4cc244b",
@@ -3559,26 +2943,11 @@
     {
       "sha256": "b74b65f68641feb46d22fddb595fff57cba53f5e3d4d780f4b1bf9b2682a9230",
       "gt_family": "Gen",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.00)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "bb990fe92faff97b2e3e606ca0eeac34253c471d9e84da98111e1c81cfd0a960",
-      "gt_family": "FantasyHub",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
       "fired_signals": [],
-      "status": "gap",
+      "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
@@ -3638,18 +3007,18 @@
     {
       "sha256": "be4ada35dec3ef666681ddcf440be04f370067ee588734cabf630295742d1fd9",
       "gt_family": "Linux",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "DroidDream",
+      "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
-        "string:\"runcmd\"",
+        "string:\"root\"",
         "perms(2.80)",
         "classes:97",
         "native:yes"
       ],
       "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "baseline_family": "DroidDream",
+      "baseline_confidence": 0.8
     },
     {
       "sha256": "beeeb3cafc0ea246cc6dd82d82489621414d6cab9ceb50e70fd9835f5733178c",
@@ -3678,20 +3047,6 @@
       "status": "correct",
       "baseline_family": "DroidKungFu",
       "baseline_confidence": 0.95
-    },
-    {
-      "sha256": "bf586ec8ce8528d26ec491fa5864dc590cefae88da176246296bb849e226a0c8",
-      "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(7.50)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
     },
     {
       "sha256": "bfd3204c603ef403a2f9bcc172a368764b7b87e7d72e3dfd1d3dfb53f77215ad",
@@ -3727,6 +3082,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"global_b_version_id\"",
         "c2:wap.soso.com",
         "perms(4.25)",
         "classes:177"
@@ -3738,17 +3094,13 @@
     {
       "sha256": "b88e7421bc61f4ce20c0694418fc97c1e77cfd3f2053857f87cc47512a55c3d3",
       "gt_family": "GenericKD",
-      "matched_family": "Bian",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:4194",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "c525bb9b2f30926c971e1ac68100871d2aa82bad87ee05a1fe2e6e83a1dce1fd",
@@ -3765,17 +3117,6 @@
       "status": "correct",
       "baseline_family": "Kmin",
       "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "c5544517f1be9d5a721a951d906b26f9ad11adf4a06c3660a75e89f07dabb8aa",
-      "gt_family": "Gen",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
     },
     {
       "sha256": "c565f4b9b3c6bb095c6ce62ab02c5cc8a84502231f4facdddb6f3d7af2321b5e",
@@ -3806,17 +3147,13 @@
     {
       "sha256": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
       "gt_family": "DroidDream",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:218",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "bf06df823a0a0b1b4618ee736f5f0bd508b315ea3c6b96a16d2a0d0e58906346",
@@ -3837,17 +3174,13 @@
     {
       "sha256": "bb5c794018995f39d831214c479d96dad7d51bf34471b0613ea69489e5fc4fd5",
       "gt_family": "Banker",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "c8bb60d2a82e7f1991fb2ad3e5797cf53117e0d36f64e9ca49dd1682654ec735",
@@ -3861,73 +3194,26 @@
       "baseline_confidence": 0.0
     },
     {
-      "sha256": "cb0a4a758877e3f18a85fe307c6d4a7baf9924aab93bcbcb41f81eb13d9ac0f6",
-      "gt_family": "unknown",
+      "sha256": "c3c7df127552aa2594ad335d7cc955cb1274cc322455a89b1856a2adf9f83ded",
+      "gt_family": "GenericKD",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
       "fired_signals": [],
-      "status": "correct",
+      "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
     },
     {
-      "sha256": "ca9ae76de194548709966263c227709d5c57c8e57f07f50d1532cf52fc5f438d",
-      "gt_family": "unknown",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(4.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
-      "sha256": "c3c7df127552aa2594ad335d7cc955cb1274cc322455a89b1856a2adf9f83ded",
-      "gt_family": "GenericKD",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:730",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
-    },
-    {
-      "sha256": "cb7744fe6345dd0e4f15f1acdde23ecb6d484b3c8a6ce8792628a6a1453eefa4",
-      "gt_family": "unknown",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(4.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
       "sha256": "c5996e7a701f1154b48f962d01d457f9b7e95d9c3dd9bbd6a8e083865d563622",
       "gt_family": "GenericKD",
-      "matched_family": "Bian",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:1371",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "c7944bdac5ce3255a56e77c6f2a83917f4b8a909646396669d408f207e751772",
@@ -3953,17 +3239,6 @@
       "status": "fp",
       "baseline_family": "NGate",
       "baseline_confidence": 0.85
-    },
-    {
-      "sha256": "cbc71b0bd3f94cb163a8ab106242aa7638aced10e7b8c4d6179bc7fc5ba649f2",
-      "gt_family": "unknown",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
     },
     {
       "sha256": "ccb7b86f0563408816e3ceaedc0b79cf8d48977fcf77c389e4d0db9be8cd28f1",
@@ -3994,18 +3269,18 @@
     {
       "sha256": "ce312487b225fbd0ed8216bdc75058fd6032e60b74e8c0334e0d8d3c01e975c1",
       "gt_family": "Lemon",
-      "matched_family": "Lemon",
-      "confidence": 0.6,
-      "via_draft": true,
+      "matched_family": "Kmin",
+      "confidence": 0.8,
+      "via_draft": false,
       "fired_signals": [
-        "c2:kaixinai.com",
-        "perms(2.60)",
+        "c2:monternet.com",
+        "perms(1.95)",
         "classes:283",
         "native:no"
       ],
-      "status": "correct",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "status": "fp",
+      "baseline_family": "Kmin",
+      "baseline_confidence": 0.8
     },
     {
       "sha256": "ceb48e4b9d82b2ab7b486393048cdc78c6dfaf88799521e63677b06975f707cd",
@@ -4072,15 +3347,15 @@
       "gt_family": "Stiniter",
       "matched_family": "Stiniter",
       "confidence": 0.55,
-      "via_draft": true,
+      "via_draft": false,
       "fired_signals": [
         "c2:dangpao.com",
         "classes:82",
         "native:no"
       ],
       "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
+      "baseline_family": "Stiniter",
+      "baseline_confidence": 0.55
     },
     {
       "sha256": "d472e114361dd2c6ebafb60daa72ba2db09752de5b243538f0fee18410ad6a25",
@@ -4114,50 +3389,31 @@
       "baseline_confidence": 0.65
     },
     {
-      "sha256": "d6d1f2dd6db3177ccbde0fe17170cc4fa81078d1a9a900f1f5dd73ddce5f06e6",
-      "gt_family": "unknown",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(4.50)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
       "sha256": "d65ae353ce5d975cea85bb0fab578590a90061173657ba2e1a0c1110d9b8eb91",
       "gt_family": "Agent",
-      "matched_family": "Cnzz",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.70)",
-        "classes:516",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Cnzz",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "d7233e269b529198362c29b5f8a15f09e7e4e282c8e35eb68b45b57978f63dd2",
       "gt_family": "AndroidOS",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "KungFu",
+      "confidence": 0.9,
       "via_draft": false,
       "fired_signals": [
-        "string:\"getprop\"",
         "c2:adwo.com",
         "perms(2.80)",
         "classes:137",
         "native:yes"
       ],
       "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "baseline_family": "KungFu",
+      "baseline_confidence": 0.9
     },
     {
       "sha256": "ce462b41ab7480dce4f290a9921fca51ba40e502d480a348d50770607e3d02b9",
@@ -4218,18 +3474,13 @@
     {
       "sha256": "d8882d6a246da7bbdda1ae82c0328601c4dc6cf368e3c0227e6b19a9e1042374",
       "gt_family": "MobileTx",
-      "matched_family": "MobileTx",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:mobile.tx.com.cn",
-        "perms(2.50)",
-        "classes:60",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "MobileTx",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "d5624c7f869504a65986278f6b7921726aa08355d1f203beaee6e6a8869505f4",
@@ -4284,33 +3535,15 @@
       "baseline_confidence": 0.85
     },
     {
-      "sha256": "d8b3327efe0c98be433a7a73591facb031fadcad747ad99e4ac3ccd0e6751290",
-      "gt_family": "UKP",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(2.60)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
-    },
-    {
       "sha256": "d5ca7ba75cfb8fd76929c1b8f6547780d8305a6654b6423124d380ff59b0d1c9",
       "gt_family": "Banker",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(5.05)",
-        "classes:2640",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "dd11c105ec8bb3c851f5955fa53eebb91b7dc46bef4d919ee4b099e825c56325",
@@ -4348,32 +3581,24 @@
     {
       "sha256": "dcb44dcc682dfe8ac8582125fb201c583809c12f578e70eafd6c37de3cf06f86",
       "gt_family": "Gen",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(4.25)",
-        "classes:1907",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "dceebf2ce1186b22f60b7ee064670db88347761767ea8610a35e50e568b348b3",
       "gt_family": "unknown",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:telegram.org",
-        "perms(1.60)",
-        "classes:3874"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "de1d599dce6596fb6b5ed9aea4654e98e477877d6029e173a39a0dbd9db86f5c",
@@ -4405,33 +3630,24 @@
     {
       "sha256": "ce480d22d9936bc469d46abbcd51bdb74dc201216c29a97ba21c40e0299335bc",
       "gt_family": "Banker",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"kmin\"",
-        "perms(1.80)",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "e07e7771124f0c5a9a7342e072e27a9cbad6e5ab4bf7fb6b85fc8f4e4495e652",
       "gt_family": "AndroidOS",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"getprop\"",
-        "c2:adwo.com",
-        "perms(2.80)",
-        "classes:79"
-      ],
-      "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "e09615bfdc10f44d5250edeb3a0d032f83177737a15352e9c1e552543f5f756d",
@@ -4513,17 +3729,6 @@
       "baseline_confidence": 0.9
     },
     {
-      "sha256": "e763dd5e7ae6b2d1436f7f659dd4511e4bef24c5823fd0739dd1c9ec5154a4c0",
-      "gt_family": "AndroidOS",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
       "sha256": "e7d07c08a826520ef71bd4a5bfb8c6bc7b907c4f94f18631208cf6037bd88f2d",
       "gt_family": "DroidKungFu",
       "matched_family": "DroidKungFu",
@@ -4587,18 +3792,13 @@
     {
       "sha256": "ea342fa78264a135f081e3c2be4c50b8f03c1a3b314910c89a42da98b98c7ebd",
       "gt_family": "MobileTx",
-      "matched_family": "MobileTx",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:mobile.tx.com.cn",
-        "perms(2.50)",
-        "classes:25",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "MobileTx",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "e6e736df1923c47f6624dab18bf6a341995b5e756395256aa0b3f4c43594481a",
@@ -4614,32 +3814,24 @@
     {
       "sha256": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
       "gt_family": "GenericKD",
-      "matched_family": "Bian",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:6943",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "eb1bcca87ab55bd0fe0cf1ec27753fddcd35b6030633da559eee42977279b8db",
       "gt_family": "FakeInstaller",
-      "matched_family": "FakeInstaller",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.65)",
-        "classes:18",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "FakeInstaller",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "ecf9c8520e13054bcc1b1a18cc335810f7eb97bdbe75fc204ad050228f805216",
@@ -4648,6 +3840,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"global_b_version_id\"",
         "c2:wap.soso.com",
         "perms(4.25)",
         "classes:177"
@@ -4724,16 +3917,13 @@
     {
       "sha256": "dea110082d57d210d746c7d9fe791d8e297de82ccd5e48c2813c615a45913e8e",
       "gt_family": "SpyNote",
-      "matched_family": "SpyNote",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(3.20)",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "SpyNote",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "f07deea7b1b1053728c0079d30240d92c07853e3e37c86fa32540ee5e638d941",
@@ -4753,18 +3943,13 @@
     {
       "sha256": "f157946d3868fbe013ec23b14f1097bb727654b4f3926322f035e86e3f5f637e",
       "gt_family": "AndroidOS",
-      "matched_family": "DroidKungFu",
-      "confidence": 0.95,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"getprop\"",
-        "c2:adwo.com",
-        "perms(2.80)",
-        "native:yes"
-      ],
-      "status": "fp",
-      "baseline_family": "DroidKungFu",
-      "baseline_confidence": 0.95
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "f1c8b34879b04dc94f0a13d33c1e1272bdf9141e56e19da62c1a1b27af128604",
@@ -4785,43 +3970,17 @@
     {
       "sha256": "f2305198a4789bc0f74afb7627bf998c2739d00d754eaff51aa2f538ab0329b4",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInstaller",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.65)",
-        "classes:18",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInstaller",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "ec3ac26dc88851ddd209ca93eb156b721ebe4d4dce45188394fe65a8df95c457",
       "gt_family": "Banker",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "abstention",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "f5b84a261a19b8066cb609124d97bc52df08f08f564d32358a15aaf511caf5e4",
-      "gt_family": "unknown",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "correct",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "f73771a1b9887ebe85ce70b6dc459e0ce05ff6f71ba5833b5385a9e0a81af3df",
-      "gt_family": "Trojan ( 005cf1d81 )",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
@@ -4902,28 +4061,17 @@
     {
       "sha256": "fd743672c95ad558086c799c249811c57463b4cd5b7d2c3610302d68fd6b5b7b",
       "gt_family": "Opfake",
-      "matched_family": "FakeInstaller",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.65)",
+        "perms(2.60)",
         "classes:33",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInstaller",
-      "baseline_confidence": 0.9
-    },
-    {
-      "sha256": "fca210ed8b28a9544d0db5a8387fe75c26091003041220a9d28cb445e8169aad",
-      "gt_family": "GhostBat",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "f03514da7d38e1a378429296a8d4405368aaad131dc069f513164eff569f7fca",
@@ -4961,17 +4109,13 @@
     {
       "sha256": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
       "gt_family": "Agent",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.50)",
-        "classes:7414",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "decf0f2e6d42f5da6ef5f77954115e5cbbb8d68edab7151cf34d28a6d49cb9f8",
@@ -4987,47 +4131,35 @@
     {
       "sha256": "fe1be052250f53b52017499744451c614e4771a392efa37afeb1b4774d861df0",
       "gt_family": "Banker",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(5.05)",
-        "classes:2628",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "fe329c93c8a90149e50f48acaa77702e071290aa58203fc886fead002ff46094",
       "gt_family": "Agent",
-      "matched_family": "Bian",
-      "confidence": 0.7,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(1.80)",
-        "classes:1382",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Bian",
-      "baseline_confidence": 0.7
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "ea6776fac45c8844242fdb566a17e70569813298235567bbe9fa0dd062f1160b",
       "gt_family": "AndroidOS",
-      "matched_family": "SpyMax",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.50)",
-        "classes:6598",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "SpyMax",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "fb61404d33ac0737ff718c80082abdbf5bd9883ac5683c9f50dd71728d1805e3",
@@ -5055,6 +4187,545 @@
       "status": "abstention",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "0000d4ba8d3decb4403a8e3bc94347552469aa761e34763da22602da891619f5",
+      "gt_family": "Linux",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "03818f12d9e7676c30efceb7b4815106406a4dc7507bb3e12c05a37f7879e183",
+      "gt_family": "Android/Agent",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "0400c00cbcc6834ade203f8d515f5932972a3861256a9a7ca0a46638eec2a83e",
+      "gt_family": "Gen",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "126012e515b74d7ceb3f21535a4bac4730fc990b1ab87ab22355809da0f5eb70",
+      "gt_family": "Application",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "1370ba86f4c12ff1a8a0dd987b2be79a6ed13f7765e05b9711c544a7a2f288ea",
+      "gt_family": "Banker",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "050d91cde706f7c981f90878dbd50d92038caeedd38852a10e018e57f188e79b",
+      "gt_family": "AndroidOS",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "208e85cc66f2ee482dce1c6ee5f1ea45592e9fc9980c1b04b5157975d127dcf1",
+      "gt_family": "GenericKD",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "2ab29825e9454a4b87d661dfc55842943e30b86600d2848796d96241e92307c2",
+      "gt_family": "Agent",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "2cc755a2c9dae64ea5914bd32aa6824a3bc1f0e3be1f2d03c116ffc68f7772d0",
+      "gt_family": "GhostBat",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "05a2da9df1b4aed78e16349c17443ccd83cb48ed9e38e38d0c0b6ce808a9c2a8",
+      "gt_family": "SpyNote",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "0bc98459a42d1d0108a882671f4496f214f8a68400810b9e034cdd7212f5a4fa",
+      "gt_family": "SpyNote",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "3a6d53616484183e4c582b82ac147f05a0d08e86836be59bad03470d9605eded",
+      "gt_family": "Linux",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "388d7fd938e51455ad9ba27eae9ce01fcbadff8ab88d5a7e9e742cb28402f1e8",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "4eb2ac595b1a17ddde607d55dc41d93896eeca3a01cd440b8953159bca3a418d",
+      "gt_family": "AndroidOS",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "3a03b35a4c614d651954f8298d5bb75abe33223e0791bdc1b9bdb2af69d3009b",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "1f30b62c19be5de98456ec6915f1618da92cab68f20bf36cf91473788437f87a",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "518f5438a21e9aa9a91f0dd589088e443fda111d8ada5ea67d1cf14d6645974c",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "58cc948bd809292143e604c3e03735c9517f94b37dd35299ca5e81d7b902d620",
+      "gt_family": "Evo-gen [Trj]",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "5f94e59c132a7ed0e35b60146d973a728ab9f390c8291f9547cee26c56427738",
+      "gt_family": "CraxsRAT",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "669b75fd2620fa990bb982c07f5233f5b3e98aff65d9d8ffb9683aaae6cb98c1",
+      "gt_family": "Trojan-Banker",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "3c0edd3c80f917d0045ac51d177e9a4768df5a66517005b0f7944423aa54b089",
+      "gt_family": "SpyNote",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "7365190230042fa2f8aba13d39cfecaa52b029750331760bcd114bafb01cb6db",
+      "gt_family": "AndroidOS",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "77eef34639c4d2d244ba407c6e0a1b9b5ec0187e73de1ae3acb0f71f3906f595",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "537f08755139d0199fb1751068eb49a92b68e0d1dcadaf03758837c3832f99c5",
+      "gt_family": "SpyNote",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "85a44fd5134cf1d317a7637f1fb47dcf570a93e925c365b2e8f103a0fa459290",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "72f18d019123393ae610dd73b25e5f30a4945430f6f835700d6bdee19f566a30",
+      "gt_family": "SpyNote",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "84ddfdd7862e3c3481ae65b64d9087ab7c5c29355a29e9e7c3a4011a631f7387",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "9b5905a253141d4f64394de73775541a7bb16714cff8d18684e24ae887c97fc2",
+      "gt_family": "BankBot",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "9904bb103fae65ab3dd712f6b9ff361d3f3cb3a4cc814b69f0af3e2f1a837ecd",
+      "gt_family": "Gen",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "9f42721255d8d62b4595b9040a9a7d742c8fe2a5ff17745c8e250cd04928c480",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "62545321423f75c0f4774c868a1677087399353adda0fb361cd3884d2680dcc2",
+      "gt_family": "FantasyHub",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "abf62033c4b913bf8368de607fdc4dd2677f9441541db3c2a9375dd9130ff9bb",
+      "gt_family": "Trojan ( 005cbb901 )",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "ad9f39e6166a47ae16359777b607055198cda23f004d9d7b066e22c0d0cf1e6d",
+      "gt_family": "Agent",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "9a836ef59a4fb8cae0543fed24ca8c53015bee86d6b0ead0086917681c7576d4",
+      "gt_family": "FantasyHub",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "a3ade4b9e03e459a5955d68c52f8dbf893ce0c2bfb56c1c8b7415ecfb7ec9246",
+      "gt_family": "Mirax",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "9c23c73a7fa3b1b3df8a61866dc36d263aa0754a0bb194e0d164a4773f4537f2",
+      "gt_family": "FantasyHub",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "c5544517f1be9d5a721a951d906b26f9ad11adf4a06c3660a75e89f07dabb8aa",
+      "gt_family": "Gen",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "cb0a4a758877e3f18a85fe307c6d4a7baf9924aab93bcbcb41f81eb13d9ac0f6",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "bb990fe92faff97b2e3e606ca0eeac34253c471d9e84da98111e1c81cfd0a960",
+      "gt_family": "FantasyHub",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "ca9ae76de194548709966263c227709d5c57c8e57f07f50d1532cf52fc5f438d",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "bf586ec8ce8528d26ec491fa5864dc590cefae88da176246296bb849e226a0c8",
+      "gt_family": "SpyNote",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "cbc71b0bd3f94cb163a8ab106242aa7638aced10e7b8c4d6179bc7fc5ba649f2",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "e763dd5e7ae6b2d1436f7f659dd4511e4bef24c5823fd0739dd1c9ec5154a4c0",
+      "gt_family": "AndroidOS",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "cb7744fe6345dd0e4f15f1acdde23ecb6d484b3c8a6ce8792628a6a1453eefa4",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "f5b84a261a19b8066cb609124d97bc52df08f08f564d32358a15aaf511caf5e4",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "d6d1f2dd6db3177ccbde0fe17170cc4fa81078d1a9a900f1f5dd73ddce5f06e6",
+      "gt_family": "unknown",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "correct",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "d8b3327efe0c98be433a7a73591facb031fadcad747ad99e4ac3ccd0e6751290",
+      "gt_family": "UKP",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "fca210ed8b28a9544d0db5a8387fe75c26091003041220a9d28cb445e8169aad",
+      "gt_family": "GhostBat",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "f73771a1b9887ebe85ce70b6dc459e0ce05ff6f71ba5833b5385a9e0a81af3df",
+      "gt_family": "Trojan ( 005cf1d81 )",
+      "matched_family": "unknown",
+      "confidence": 0.0,
+      "via_draft": false,
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     }
   ],
   "diagnosis_misses": [
@@ -5071,12 +4742,12 @@
     {
       "sha256": "00005be947a8f108382b59ced7d1e95871a68539c00ff53fd3e1d93c58e2ba6c",
       "gt_family": "Dowgin",
-      "baseline_match": "GinMaster",
-      "baseline_confidence": 0.75,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: GinMaster @ 0.75 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Dowgin signature (currently 2 strings, 2 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['dowgin', 'sensorevent'], c2=['api.box.appmob.cn', 'frame.top']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "00696116790f5c398de19e9184da0b32ac011bc30e9c18e14ca8ffd2c3dec7b8",
@@ -5089,34 +4760,14 @@
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
-      "sha256": "03818f12d9e7676c30efceb7b4815106406a4dc7507bb3e12c05a37f7879e183",
-      "gt_family": "Android/Agent",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "signature_gap",
-      "reason": "no signature exists for the family",
-      "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
       "sha256": "03385b42f9dffe697a883aac40042188e658145e8d67e0dab9d665501d7e02aa",
       "gt_family": "Opfake",
       "baseline_match": "unknown",
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['.ru', 'rebillme.net', 'sbhelp.ru', 'wap4mobi.net']",
+      "reason": "signature exists but its evidence is absent: strings=['opfake'], c2=['rebillme.net', 'sbhelp.ru', 'wap4mobi.net', 'opfake']",
       "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
-      "sha256": "0526cff3ebb1fbfa493cf982fcba85409ae692157b25f9046469576bf58e8c4d",
-      "gt_family": "FakeTimer",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "signature_gap",
-      "reason": "no signature exists for the family",
-      "fix": "candidate for the draft signature list, or unsignable"
     },
     {
       "sha256": "07e47fbf43c585155ddcdae49c3330c00ceceedf6c9f98432cf631769a21b206",
@@ -5126,7 +4777,7 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "1035296bb576144475b684a9f703fc0220e8c0107a9e7e87c4bf76f72496b6c4",
@@ -5141,12 +4792,12 @@
     {
       "sha256": "11172b2f0ccaa49ab486b313bb61cfb8900126b15541540acf42ad73cf096133",
       "gt_family": "Airpush",
-      "baseline_match": "BaseBridge",
-      "baseline_confidence": 0.8,
-      "baseline_signals": 4,
-      "category": "outcompeted",
-      "reason": "wrong family won: BaseBridge @ 0.80 with 4 signals",
-      "fix": "no signature exists for Airpush"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
     },
     {
       "sha256": "10c902a0bb9645ee71ae95528fe90580120e628db17dcdefe8bf7ad4b4bbfc01",
@@ -5181,26 +4832,16 @@
     {
       "sha256": "21ea92178eccae3f448345dcab84d98f21a6b32ea412265d858665973874b5df",
       "gt_family": "FakeInst",
-      "baseline_match": "FakeInstaller",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInstaller @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the FakeInst signature (currently 0 strings, 7 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "255eae7859b0855b15de30e5405a2714837ac556c238bc009ac74c5bfa69714a",
       "gt_family": "Nisev",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "signature_gap",
-      "reason": "no signature exists for the family",
-      "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
-      "sha256": "2cc755a2c9dae64ea5914bd32aa6824a3bc1f0e3be1f2d03c116ffc68f7772d0",
-      "gt_family": "GhostBat",
       "baseline_match": "unknown",
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
@@ -5216,17 +4857,17 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "1c2d4a388c3109001751caf2cee1d27516286f4d1ff51dbf271e85dfc069ce98",
       "gt_family": "SmsSend",
-      "baseline_match": "Kmin",
-      "baseline_confidence": 0.8,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: Kmin @ 0.80 with 3 signals",
-      "fix": "add a discriminator string/C2 to the SmsSend signature (currently 2 strings, 0 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['lcom/gamebox/activitys/forgotactivity$2;', 'notificationcompatapi21impl'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "1d6640a63db2d4909aa9d1f8f6d4698abd89f2171c33240f0c821e2a94e0cec7",
@@ -5237,6 +4878,16 @@
       "category": "insufficient_signal",
       "reason": "signature exists but its evidence is absent: strings=[], c2=['huosdk.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "36c25d77e5097eaec3b3b7fe879533d093e8cd40bce16aff601102838eb2a211",
+      "gt_family": "MobileTx",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
     },
     {
       "sha256": "2bda9042eef834886047cb07ea1fe44844bd5d373c96afe96ec8a39e487d2bb7",
@@ -5269,13 +4920,23 @@
       "fix": "candidate for the draft signature list, or unsignable"
     },
     {
+      "sha256": "47a4aff5aaac505f213fb058e22cb5fecd03791c3f60ff9529b9f9befcbc2012",
+      "gt_family": "BaseBridge",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['basebridge', 'androidterm', 'createsubprocess', 'setptywindowsize', 'global_b_version_id', 'anserverb'], c2=['wap.soso.com', 'mobile.91.com', 'sanweiyu.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
       "sha256": "4e355df8f0843afc4a7bfc294ee4b1db9e9b896269c754c2d57dcb647dcd3efb",
       "gt_family": "Opfake",
       "baseline_match": "unknown",
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['.ru', 'rebillme.net', 'sbhelp.ru', 'wap4mobi.net']",
+      "reason": "signature exists but its evidence is absent: strings=['opfake'], c2=['rebillme.net', 'sbhelp.ru', 'wap4mobi.net', 'opfake']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5285,7 +4946,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['.ru', 'rebillme.net', 'sbhelp.ru', 'wap4mobi.net']",
+      "reason": "signature exists but its evidence is absent: strings=['opfake'], c2=['rebillme.net', 'sbhelp.ru', 'wap4mobi.net', 'opfake']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5295,7 +4956,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['.ru', 'rebillme.net', 'sbhelp.ru', 'wap4mobi.net']",
+      "reason": "signature exists but its evidence is absent: strings=['opfake'], c2=['rebillme.net', 'sbhelp.ru', 'wap4mobi.net', 'opfake']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5315,28 +4976,38 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['telegram.org']",
+      "reason": "signature exists but its evidence is absent: strings=['spymax', 'spymaster', 'spyc2', 'com.spymx', 'com.spymax', 'spy_max'], c2=['telegram.org']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "54f2a636e000c55bb725d7e552a22117837c1676fb4b96decd135ae10e6f7049",
       "gt_family": "BaseBridge",
-      "baseline_match": "DroidKungFu",
-      "baseline_confidence": 0.95,
+      "baseline_match": "DroidDream",
+      "baseline_confidence": 0.8,
       "baseline_signals": 4,
       "category": "outcompeted",
-      "reason": "wrong family won: DroidKungFu @ 0.95 with 4 signals",
-      "fix": "add a discriminator string/C2 to the BaseBridge signature (currently 4 strings, 3 C2 patterns)"
+      "reason": "wrong family won: DroidDream @ 0.80 with 4 signals",
+      "fix": "add a discriminator string/C2 to the BaseBridge signature (currently 6 strings, 3 C2 patterns)"
+    },
+    {
+      "sha256": "5b6f0757e98303cf337d10b6f8c7378bdfd4de30dea624545207dd01a85b6c37",
+      "gt_family": "BaseBridge",
+      "baseline_match": "DroidDream",
+      "baseline_confidence": 0.8,
+      "baseline_signals": 4,
+      "category": "outcompeted",
+      "reason": "wrong family won: DroidDream @ 0.80 with 4 signals",
+      "fix": "add a discriminator string/C2 to the BaseBridge signature (currently 6 strings, 3 C2 patterns)"
     },
     {
       "sha256": "5e7116ea24dee71abac470b432a62c41e0fd680663162a486ab2b6fe25ccf367",
       "gt_family": "FakeInst",
-      "baseline_match": "FakeInstaller",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInstaller @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the FakeInst signature (currently 0 strings, 7 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "5af77b5f5d014162cd3bf43314ebb91f39658c5be335c1efff7c9564e298e719",
@@ -5359,26 +5030,6 @@
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
-      "sha256": "5f94e59c132a7ed0e35b60146d973a728ab9f390c8291f9547cee26c56427738",
-      "gt_family": "CraxsRAT",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "signature_gap",
-      "reason": "no signature exists for the family",
-      "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
-      "sha256": "62545321423f75c0f4774c868a1677087399353adda0fb361cd3884d2680dcc2",
-      "gt_family": "FantasyHub",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
       "sha256": "61d4518fac40db1cef72d8b6f9a14080d93ef53a6f6e55605ee12da87978a14f",
       "gt_family": "Andr/Xgen2-AYJ",
       "baseline_match": "unknown",
@@ -5396,7 +5047,7 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "399f5bddd1e30bb612522c9c770e073f5e304165df170c4668550de34f34f7c1",
@@ -5421,12 +5072,12 @@
     {
       "sha256": "6a02832c97ad6c0f2ddb813acb52ef002ef616be2a7ded5a0a69b7dbdf2f7aff",
       "gt_family": "GinMaster",
-      "baseline_match": "DroidKungFu",
-      "baseline_confidence": 0.95,
+      "baseline_match": "DroidDream",
+      "baseline_confidence": 0.8,
       "baseline_signals": 4,
       "category": "outcompeted",
-      "reason": "wrong family won: DroidKungFu @ 0.95 with 4 signals",
-      "fix": "add a discriminator string/C2 to the GinMaster signature (currently 3 strings, 2 C2 patterns)"
+      "reason": "wrong family won: DroidDream @ 0.80 with 4 signals",
+      "fix": "add a discriminator string/C2 to the GinMaster signature (currently 8 strings, 2 C2 patterns)"
     },
     {
       "sha256": "6e9848008c42128623d1077f0cc75c0861e2b3d0fb76e68c5fc9ec8f69361572",
@@ -5436,7 +5087,7 @@
       "baseline_signals": 4,
       "category": "outcompeted",
       "reason": "wrong family won: Plankton @ 0.85 with 4 signals",
-      "fix": "add a discriminator string/C2 to the FakeRun signature (currently 4 strings, 0 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the FakeRun signature (currently 8 strings, 0 C2 patterns)"
     },
     {
       "sha256": "73b2fd2dfb5860f0701b16002832987d5edcfe059df454d30548aa4fa45bebe6",
@@ -5446,7 +5097,7 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "752f3cacdad6753d4c02bb8e40ef3e0990b55466c18a7b80ec6fa7b9706e40ab",
@@ -5461,12 +5112,12 @@
     {
       "sha256": "87def7f445734b4b9b57b97cd4af8d22b2684dd4dd3e7ae8d07a120efa3b1814",
       "gt_family": "SpyNote",
-      "baseline_match": "Opfake",
-      "baseline_confidence": 0.85,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: Opfake @ 0.85 with 3 signals",
-      "fix": "add a discriminator string/C2 to the SpyNote signature (currently 0 strings, 0 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "68b9c7ae6b51f211ecd0cfdd656bc3b14840627adc7073faf9504acdb0e52dae",
@@ -5499,43 +5150,13 @@
       "fix": "candidate for the draft signature list, or unsignable"
     },
     {
-      "sha256": "9a836ef59a4fb8cae0543fed24ca8c53015bee86d6b0ead0086917681c7576d4",
-      "gt_family": "FantasyHub",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
-      "sha256": "9b5905a253141d4f64394de73775541a7bb16714cff8d18684e24ae887c97fc2",
-      "gt_family": "BankBot",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=['auctionid'], c2=[]",
-      "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
-      "sha256": "9c23c73a7fa3b1b3df8a61866dc36d263aa0754a0bb194e0d164a4773f4537f2",
-      "gt_family": "FantasyHub",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
       "sha256": "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
       "gt_family": "Adrd",
-      "baseline_match": "Cnzz",
-      "baseline_confidence": 0.7,
-      "baseline_signals": 3,
+      "baseline_match": "GinMaster",
+      "baseline_confidence": 0.75,
+      "baseline_signals": 4,
       "category": "outcompeted",
-      "reason": "wrong family won: Cnzz @ 0.70 with 3 signals",
+      "reason": "wrong family won: GinMaster @ 0.75 with 4 signals",
       "fix": "add a discriminator string/C2 to the Adrd signature (currently 1 strings, 0 C2 patterns)"
     },
     {
@@ -5546,27 +5167,17 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "9f2d916b1e0ee486f5a49e3e9887eae59dbdca0a554139ae9a4dc8edc2f12de0",
       "gt_family": "BankBot",
-      "baseline_match": "Kmin",
-      "baseline_confidence": 0.8,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: Kmin @ 0.80 with 3 signals",
-      "fix": "add a discriminator string/C2 to the BankBot signature (currently 1 strings, 0 C2 patterns)"
-    },
-    {
-      "sha256": "a3ade4b9e03e459a5955d68c52f8dbf893ce0c2bfb56c1c8b7415ecfb7ec9246",
-      "gt_family": "Mirax",
       "baseline_match": "unknown",
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
-      "category": "signature_gap",
-      "reason": "no signature exists for the family",
-      "fix": "candidate for the draft signature list, or unsignable"
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['auctionid', 'access$1308', 'firstentry', 'seteventid', 'onlog', 'geteventid', '>;>;)z', 'mappkey', 'ljava/util/vector<'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "a945198c086ad3fe0c5dbbce5ef410ea12986c9c160295d76be881c5f8ae0880",
@@ -5576,7 +5187,7 @@
       "baseline_signals": 4,
       "category": "outcompeted",
       "reason": "wrong family won: Plankton @ 0.85 with 4 signals",
-      "fix": "add a discriminator string/C2 to the FakeRun signature (currently 4 strings, 0 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the FakeRun signature (currently 8 strings, 0 C2 patterns)"
     },
     {
       "sha256": "b459673b77209ff89a2833977b4de341a529722f1e4662451b514df220e13afc",
@@ -5587,16 +5198,6 @@
       "category": "signature_gap",
       "reason": "no signature exists for the family",
       "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
-      "sha256": "bb990fe92faff97b2e3e606ca0eeac34253c471d9e84da98111e1c81cfd0a960",
-      "gt_family": "FantasyHub",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "bcf129023a712e3ab8a8f6d67e74e7914550ffa8e718b0939b7d5238d8b69863",
@@ -5621,12 +5222,12 @@
     {
       "sha256": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
       "gt_family": "DroidDream",
-      "baseline_match": "Cnzz",
-      "baseline_confidence": 0.7,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: Cnzz @ 0.70 with 3 signals",
-      "fix": "add a discriminator string/C2 to the DroidDream signature (currently 3 strings, 0 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['rageagainstthecage', 'exploit', 'root'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "c8bb60d2a82e7f1991fb2ad3e5797cf53117e0d36f64e9ca49dd1682654ec735",
@@ -5656,17 +5257,17 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "ce312487b225fbd0ed8216bdc75058fd6032e60b74e8c0334e0d8d3c01e975c1",
       "gt_family": "Lemon",
-      "baseline_match": "Cnzz",
-      "baseline_confidence": 0.7,
-      "baseline_signals": 3,
+      "baseline_match": "Kmin",
+      "baseline_confidence": 0.8,
+      "baseline_signals": 4,
       "category": "outcompeted",
-      "reason": "wrong family won: Cnzz @ 0.70 with 3 signals",
-      "fix": "no signature exists for Lemon"
+      "reason": "wrong family won: Kmin @ 0.80 with 4 signals",
+      "fix": "add a discriminator string/C2 to the Lemon signature (currently 0 strings, 1 C2 patterns)"
     },
     {
       "sha256": "d44d9cef26adf2c20c4bdb0d950e13507f8fad0bed8c10812d99e2463e563d66",
@@ -5676,17 +5277,7 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
-    },
-    {
-      "sha256": "d4b3fa551ff6282287ea8d30b2860a55198f0a8c76cf20ea27bba95113628f69",
-      "gt_family": "Stiniter",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "signature_gap",
-      "reason": "no signature exists for the family",
-      "fix": "candidate for the draft signature list, or unsignable"
+      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "d472e114361dd2c6ebafb60daa72ba2db09752de5b243538f0fee18410ad6a25",
@@ -5696,17 +5287,17 @@
       "baseline_signals": 3,
       "category": "outcompeted",
       "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the SpyNote signature (currently 0 strings, 0 C2 patterns)"
+      "fix": "add a discriminator string/C2 to the SpyNote signature (currently 5 strings, 0 C2 patterns)"
     },
     {
-      "sha256": "d8b3327efe0c98be433a7a73591facb031fadcad747ad99e4ac3ccd0e6751290",
-      "gt_family": "UKP",
-      "baseline_match": "SpyNote",
-      "baseline_confidence": 0.8,
-      "baseline_signals": 2,
-      "category": "outcompeted",
-      "reason": "wrong family won: SpyNote @ 0.80 with 2 signals",
-      "fix": "no signature exists for UKP"
+      "sha256": "d8882d6a246da7bbdda1ae82c0328601c4dc6cf368e3c0227e6b19a9e1042374",
+      "gt_family": "MobileTx",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
     },
     {
       "sha256": "de1d599dce6596fb6b5ed9aea4654e98e477877d6029e173a39a0dbd9db86f5c",
@@ -5736,6 +5327,26 @@
       "baseline_signals": 0,
       "category": "insufficient_signal",
       "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "ea342fa78264a135f081e3c2be4c50b8f03c1a3b314910c89a42da98b98c7ebd",
+      "gt_family": "MobileTx",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
+    },
+    {
+      "sha256": "eb1bcca87ab55bd0fe0cf1ec27753fddcd35b6030633da559eee42977279b8db",
+      "gt_family": "FakeInstaller",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fakeinstaller'], c2=['wap4mobi.ru']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5769,24 +5380,184 @@
       "fix": "candidate for the draft signature list, or unsignable"
     },
     {
-      "sha256": "f2305198a4789bc0f74afb7627bf998c2739d00d754eaff51aa2f538ab0329b4",
-      "gt_family": "FakeInst",
-      "baseline_match": "FakeInstaller",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInstaller @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the FakeInst signature (currently 0 strings, 7 C2 patterns)"
+      "sha256": "dea110082d57d210d746c7d9fe791d8e297de82ccd5e48c2813c615a45913e8e",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
-      "sha256": "fd743672c95ad558086c799c249811c57463b4cd5b7d2c3610302d68fd6b5b7b",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInstaller",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInstaller @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 0 strings, 4 C2 patterns)"
+      "sha256": "f2305198a4789bc0f74afb7627bf998c2739d00d754eaff51aa2f538ab0329b4",
+      "gt_family": "FakeInst",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "03818f12d9e7676c30efceb7b4815106406a4dc7507bb3e12c05a37f7879e183",
+      "gt_family": "Android/Agent",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
+    },
+    {
+      "sha256": "2cc755a2c9dae64ea5914bd32aa6824a3bc1f0e3be1f2d03c116ffc68f7772d0",
+      "gt_family": "GhostBat",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
+    },
+    {
+      "sha256": "05a2da9df1b4aed78e16349c17443ccd83cb48ed9e38e38d0c0b6ce808a9c2a8",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "0bc98459a42d1d0108a882671f4496f214f8a68400810b9e034cdd7212f5a4fa",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "5f94e59c132a7ed0e35b60146d973a728ab9f390c8291f9547cee26c56427738",
+      "gt_family": "CraxsRAT",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
+    },
+    {
+      "sha256": "3c0edd3c80f917d0045ac51d177e9a4768df5a66517005b0f7944423aa54b089",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "537f08755139d0199fb1751068eb49a92b68e0d1dcadaf03758837c3832f99c5",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "72f18d019123393ae610dd73b25e5f30a4945430f6f835700d6bdee19f566a30",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "9b5905a253141d4f64394de73775541a7bb16714cff8d18684e24ae887c97fc2",
+      "gt_family": "BankBot",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['auctionid', 'access$1308', 'firstentry', 'seteventid', 'onlog', 'geteventid', '>;>;)z', 'mappkey', 'ljava/util/vector<'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "62545321423f75c0f4774c868a1677087399353adda0fb361cd3884d2680dcc2",
+      "gt_family": "FantasyHub",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "9a836ef59a4fb8cae0543fed24ca8c53015bee86d6b0ead0086917681c7576d4",
+      "gt_family": "FantasyHub",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "a3ade4b9e03e459a5955d68c52f8dbf893ce0c2bfb56c1c8b7415ecfb7ec9246",
+      "gt_family": "Mirax",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
+    },
+    {
+      "sha256": "9c23c73a7fa3b1b3df8a61866dc36d263aa0754a0bb194e0d164a4773f4537f2",
+      "gt_family": "FantasyHub",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "bb990fe92faff97b2e3e606ca0eeac34253c471d9e84da98111e1c81cfd0a960",
+      "gt_family": "FantasyHub",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fantasyhub'], c2=['mqtt.pushy.io', 'api.pushy.me', 'pushy.io', 'pushy.me']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "bf586ec8ce8528d26ec491fa5864dc590cefae88da176246296bb849e226a0c8",
+      "gt_family": "SpyNote",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "d8b3327efe0c98be433a7a73591facb031fadcad747ad99e4ac3ccd0e6751290",
+      "gt_family": "UKP",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "signature_gap",
+      "reason": "no signature exists for the family",
+      "fix": "candidate for the draft signature list, or unsignable"
     },
     {
       "sha256": "fca210ed8b28a9544d0db5a8387fe75c26091003041220a9d28cb445e8169aad",
