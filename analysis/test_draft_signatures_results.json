@@ -2,19 +2,19 @@
   "summary": {
     "total_samples": 359,
     "drafts_tested": 0,
-    "baseline_correct": 126,
-    "combined_correct": 126,
+    "baseline_correct": 132,
+    "combined_correct": 132,
     "new_correct": 0,
     "new_fps": 0,
     "baseline_counts": {
-      "correct": 126,
-      "fp": 40,
+      "correct": 132,
+      "fp": 34,
       "gap": 68,
       "abstention": 125
     },
     "combined_counts": {
-      "correct": 126,
-      "fp": 40,
+      "correct": 132,
+      "fp": 34,
       "gap": 68,
       "abstention": 125
     },
@@ -40,7 +40,7 @@
     },
     "diagnosis_counts": {
       "below_threshold": 0,
-      "outcompeted": 7,
+      "outcompeted": 6,
       "insufficient_signal": 43,
       "signature_gap": 25
     },
@@ -50,7 +50,7 @@
   "samples": [
     {
       "sha256": "00001f58c32e40376f64cc88b70f8fad2fda054e0863abd5e41f4c6f18a65da2",
-      "gt_family": "Adware",
+      "gt_family": "GinMaster",
       "matched_family": "GinMaster",
       "confidence": 0.75,
       "via_draft": false,
@@ -61,7 +61,7 @@
         "classes:322",
         "native:no"
       ],
-      "status": "fp",
+      "status": "correct",
       "baseline_family": "GinMaster",
       "baseline_confidence": 0.75
     },
@@ -2321,7 +2321,7 @@
     },
     {
       "sha256": "85cafe005c7f893cae65fa0a5ebf1c103eca579529ebd5d531c672408acdb9d0",
-      "gt_family": "Linux",
+      "gt_family": "KungFu",
       "matched_family": "KungFu",
       "confidence": 0.9,
       "via_draft": false,
@@ -2332,7 +2332,7 @@
         "classes:128",
         "native:yes"
       ],
-      "status": "fp",
+      "status": "correct",
       "baseline_family": "KungFu",
       "baseline_confidence": 0.9
     },
@@ -2612,7 +2612,7 @@
     },
     {
       "sha256": "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
-      "gt_family": "Adrd",
+      "gt_family": "GinMaster",
       "matched_family": "GinMaster",
       "confidence": 0.75,
       "via_draft": false,
@@ -2623,7 +2623,7 @@
         "classes:408",
         "native:no"
       ],
-      "status": "fp",
+      "status": "correct",
       "baseline_family": "GinMaster",
       "baseline_confidence": 0.75
     },
@@ -2672,7 +2672,7 @@
     },
     {
       "sha256": "a023fa166051294fe5a569f26092588fdf24a060de46e5cd5be9a5c5bb3b0204",
-      "gt_family": "Backdoor",
+      "gt_family": "DroidKungFu",
       "matched_family": "DroidKungFu",
       "confidence": 0.95,
       "via_draft": false,
@@ -2683,7 +2683,7 @@
         "class_boost:range",
         "native:yes"
       ],
-      "status": "fp",
+      "status": "correct",
       "baseline_family": "DroidKungFu",
       "baseline_confidence": 0.95
     },
@@ -2819,7 +2819,7 @@
     },
     {
       "sha256": "aa8127463312dac0158e74d56a3e3c2f50d9cf98c09942a27cf95081348874a3",
-      "gt_family": "Adware",
+      "gt_family": "Plankton",
       "matched_family": "Plankton",
       "confidence": 0.85,
       "via_draft": false,
@@ -2830,7 +2830,7 @@
         "classes:985",
         "native:no"
       ],
-      "status": "fp",
+      "status": "correct",
       "baseline_family": "Plankton",
       "baseline_confidence": 0.85
     },
@@ -3472,7 +3472,7 @@
     },
     {
       "sha256": "d7233e269b529198362c29b5f8a15f09e7e4e282c8e35eb68b45b57978f63dd2",
-      "gt_family": "AndroidOS",
+      "gt_family": "KungFu",
       "matched_family": "KungFu",
       "confidence": 0.9,
       "via_draft": false,
@@ -3483,7 +3483,7 @@
         "classes:137",
         "native:yes"
       ],
-      "status": "fp",
+      "status": "correct",
       "baseline_family": "KungFu",
       "baseline_confidence": 0.9
     },
@@ -5187,16 +5187,6 @@
       "category": "signature_gap",
       "reason": "no signature exists for the family",
       "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
-      "sha256": "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
-      "gt_family": "Adrd",
-      "baseline_match": "GinMaster",
-      "baseline_confidence": 0.75,
-      "baseline_signals": 4,
-      "category": "outcompeted",
-      "reason": "wrong family won: GinMaster @ 0.75 with 4 signals",
-      "fix": "add a discriminator string/C2 to the Adrd signature (currently 1 strings, 0 C2 patterns)"
     },
     {
       "sha256": "9f2d916b1e0ee486f5a49e3e9887eae59dbdca0a554139ae9a4dc8edc2f12de0",
