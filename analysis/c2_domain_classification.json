@@ -1,0 +1,580 @@
+{
+  "total_domains": 95,
+  "total_fp_samples": 40,
+  "classifications": {
+    "4.0.4.android": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    ";https": {
+      "category": "garbage",
+      "matched_pattern": "non-URL pattern",
+      "confidence": 0.9
+    },
+    "a.mobclix.com": {
+      "category": "ad_network",
+      "matched_pattern": "mobclix.com",
+      "confidence": 0.9
+    },
+    "ad.gongfu-android.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "ad.imadpush.com": {
+      "category": "unknown",
+      "matched_pattern": "no A record",
+      "confidence": 0.4,
+      "dns_resolves": false
+    },
+    "ad.leadboltads.net": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "64.31.3.238",
+      "dns_resolves": true
+    },
+    "ads": {
+      "category": "garbage",
+      "matched_pattern": "non-URL pattern",
+      "confidence": 0.9
+    },
+    "ads.mobclix.com": {
+      "category": "ad_network",
+      "matched_pattern": "mobclix.com",
+      "confidence": 0.9
+    },
+    "ads.mp.mydas.mobi": {
+      "category": "ad_network",
+      "matched_pattern": "mydas.mobi",
+      "confidence": 0.9
+    },
+    "ads.waps.cn": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "ads.wapx.cn": {
+      "category": "unknown",
+      "matched_pattern": "no A record",
+      "confidence": 0.4,
+      "dns_resolves": false
+    },
+    "amob.acs86.com": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "38.146.219.28",
+      "dns_resolves": true
+    },
+    "androidsdk.ads.mp.mydas.mobi": {
+      "category": "ad_network",
+      "matched_pattern": "mydas.mobi",
+      "confidence": 0.9
+    },
+    "api.go108.cn": {
+      "category": "suspicious",
+      "matched_pattern": "go108\\.",
+      "confidence": 0.8
+    },
+    "api.itunes-game.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "api.mixpanel.com": {
+      "category": "legitimate",
+      "matched_pattern": "mixpanel.com",
+      "confidence": 0.9
+    },
+    "app": {
+      "category": "garbage",
+      "matched_pattern": "non-URL pattern",
+      "confidence": 0.9
+    },
+    "app.waps.cn": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "app.wapx.cn": {
+      "category": "unknown",
+      "matched_pattern": "no A record",
+      "confidence": 0.4,
+      "dns_resolves": false
+    },
+    "appenda.com": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "3.33.130.190",
+      "dns_resolves": true
+    },
+    "bawbaw.icittys.com": {
+      "category": "suspicious",
+      "matched_pattern": "icittys\\.com",
+      "confidence": 0.8
+    },
+    "beta.vpon.com": {
+      "category": "ad_network",
+      "matched_pattern": "vpon.com",
+      "confidence": 0.9
+    },
+    "blk.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "cache.icittys.com": {
+      "category": "suspicious",
+      "matched_pattern": "icittys\\.com",
+      "confidence": 0.8
+    },
+    "cast.ra.imocha.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "cfg.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "clk": {
+      "category": "garbage",
+      "matched_pattern": "non-URL pattern",
+      "confidence": 0.9
+    },
+    "clk.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "clock.isc.org": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "64.62.194.188",
+      "dns_resolves": true
+    },
+    "cloud-rpc-": {
+      "category": "garbage",
+      "matched_pattern": "non-URL pattern",
+      "confidence": 0.9
+    },
+    "cn.ad.adon.vpon.com": {
+      "category": "ad_network",
+      "matched_pattern": "vpon.com",
+      "confidence": 0.9
+    },
+    "coolcode.org": {
+      "category": "suspicious",
+      "matched_pattern": "coolcode\\.org",
+      "confidence": 0.8
+    },
+    "cus.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "cvt.mydas.mobi": {
+      "category": "ad_network",
+      "matched_pattern": "mydas.mobi",
+      "confidence": 0.9
+    },
+    "d.wiyun.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "data.gfan.com": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "117.79.80.5",
+      "dns_resolves": true
+    },
+    "data.mobclix.com": {
+      "category": "ad_network",
+      "matched_pattern": "mobclix.com",
+      "confidence": 0.9
+    },
+    "dd.phonego8.com": {
+      "category": "suspicious",
+      "matched_pattern": "phonego8\\.com",
+      "confidence": 0.8
+    },
+    "ditu.google.cn": {
+      "category": "legitimate",
+      "matched_pattern": "google.cn",
+      "confidence": 0.9
+    },
+    "e.domob.cn": {
+      "category": "ad_network",
+      "matched_pattern": "domob.cn",
+      "confidence": 0.9
+    },
+    "farm.rob.sproutinc.com": {
+      "category": "suspicious",
+      "matched_pattern": "sproutinc\\.com",
+      "confidence": 0.8
+    },
+    "gad.ju6666.com": {
+      "category": "suspicious",
+      "matched_pattern": "ju6666\\.com",
+      "confidence": 0.8
+    },
+    "geekadoo.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "gmail.com": {
+      "category": "legitimate",
+      "matched_pattern": "gmail.com",
+      "confidence": 0.9
+    },
+    "gw.youmi.net": {
+      "category": "ad_network",
+      "matched_pattern": "youmi.net",
+      "confidence": 0.9
+    },
+    "hosting.sproutbuilder.com": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "54.208.89.174",
+      "dns_resolves": true
+    },
+    "hot.icittys.com": {
+      "category": "suspicious",
+      "matched_pattern": "icittys\\.com",
+      "confidence": 0.8
+    },
+    "im.jjdd.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "imp.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "inoxapps.com": {
+      "category": "unknown",
+      "matched_pattern": "no A record",
+      "confidence": 0.4,
+      "dns_resolves": false
+    },
+    "mapi.jjdd.com": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "221.228.203.35",
+      "dns_resolves": true
+    },
+    "maps.google": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "mob.guohead.com": {
+      "category": "suspicious",
+      "matched_pattern": "guohead\\.com",
+      "confidence": 0.8
+    },
+    "mobile.91.com": {
+      "category": "legitimate",
+      "matched_pattern": "91.com",
+      "confidence": 0.9
+    },
+    "my.mobfox.com": {
+      "category": "ad_network",
+      "matched_pattern": "mobfox.com",
+      "confidence": 0.9
+    },
+    "n.wiyun.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "nfck.loseyourip.com": {
+      "category": "suspicious",
+      "matched_pattern": "loseyourip\\.com",
+      "confidence": 0.8
+    },
+    "prod.sellaring.com": {
+      "category": "suspicious",
+      "matched_pattern": "sellaring\\.com",
+      "confidence": 0.8
+    },
+    "proxy.youdraw.cn": {
+      "category": "suspicious",
+      "matched_pattern": "youdraw\\.cn",
+      "confidence": 0.8
+    },
+    "r.domob.cn": {
+      "category": "ad_network",
+      "matched_pattern": "domob.cn",
+      "confidence": 0.9
+    },
+    "r2.adwo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adwo.com",
+      "confidence": 0.9
+    },
+    "req.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "s.domob.cn": {
+      "category": "ad_network",
+      "matched_pattern": "domob.cn",
+      "confidence": 0.9
+    },
+    "search.gongfu-android.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "static.youmi.net": {
+      "category": "ad_network",
+      "matched_pattern": "youmi.net",
+      "confidence": 0.9
+    },
+    "tw.ad.adon.vpon.com": {
+      "category": "ad_network",
+      "matched_pattern": "vpon.com",
+      "confidence": 0.9
+    },
+    "uh.9ria.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "urlsfound": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "urlsnotfound": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "vc.mobclix.com": {
+      "category": "ad_network",
+      "matched_pattern": "mobclix.com",
+      "confidence": 0.9
+    },
+    "vpon.com": {
+      "category": "ad_network",
+      "matched_pattern": "vpon.com",
+      "confidence": 0.9
+    },
+    "w.sandbox.mkhoj.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "wap.soso.com": {
+      "category": "legitimate",
+      "matched_pattern": "soso.com",
+      "confidence": 0.9
+    },
+    "www.9ienglish.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "www.adsmogo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adsmogo.com",
+      "confidence": 0.9
+    },
+    "www.adwo.com": {
+      "category": "ad_network",
+      "matched_pattern": "adwo.com",
+      "confidence": 0.9
+    },
+    "www.android-supermarket.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "www.apperhand.com": {
+      "category": "ad_network",
+      "matched_pattern": "apperhand.com",
+      "confidence": 0.9
+    },
+    "www.coolcode.org": {
+      "category": "suspicious",
+      "matched_pattern": "coolcode\\.org",
+      "confidence": 0.8
+    },
+    "www.droidsettings.com": {
+      "category": "suspicious",
+      "matched_pattern": "droidsettings\\.com",
+      "confidence": 0.8
+    },
+    "www.go108.com.cn": {
+      "category": "suspicious",
+      "matched_pattern": "go108\\.",
+      "confidence": 0.8
+    },
+    "www.google.cn": {
+      "category": "legitimate",
+      "matched_pattern": "google.cn",
+      "confidence": 0.9
+    },
+    "www.guohead.com": {
+      "category": "suspicious",
+      "matched_pattern": "guohead\\.com",
+      "confidence": 0.8
+    },
+    "www.inforbit.it": {
+      "category": "unknown",
+      "matched_pattern": null,
+      "confidence": 0.3,
+      "ip": "31.11.35.205",
+      "dns_resolves": true
+    },
+    "www.jp-droidsettings.com": {
+      "category": "suspicious",
+      "matched_pattern": "droidsettings\\.com",
+      "confidence": 0.8
+    },
+    "www.mobclix.com": {
+      "category": "ad_network",
+      "matched_pattern": "mobclix.com",
+      "confidence": 0.9
+    },
+    "www.uk-droidsettings.com": {
+      "category": "suspicious",
+      "matched_pattern": "droidsettings\\.com",
+      "confidence": 0.8
+    },
+    "www.umeng.co": {
+      "category": "legitimate",
+      "matched_pattern": "umeng.co",
+      "confidence": 0.9
+    },
+    "www.umeng.com": {
+      "category": "legitimate",
+      "matched_pattern": "umeng.co",
+      "confidence": 0.9
+    },
+    "www.vpon.com": {
+      "category": "ad_network",
+      "matched_pattern": "vpon.com",
+      "confidence": 0.9
+    },
+    "www.youmi.net": {
+      "category": "ad_network",
+      "matched_pattern": "youmi.net",
+      "confidence": 0.9
+    },
+    "xxx.huanhaola.com": {
+      "category": "suspicious",
+      "matched_pattern": "huanhaola\\.com",
+      "confidence": 0.8
+    },
+    "zdevl.mapi.jjdd.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "ztest.mapi.jjdd.com": {
+      "category": "unknown",
+      "matched_pattern": "NXDOMAIN (dead)",
+      "confidence": 0.6,
+      "dns_resolves": false
+    },
+    "{0}": {
+      "category": "garbage",
+      "matched_pattern": "non-URL pattern",
+      "confidence": 0.9
+    }
+  },
+  "summary": {
+    "unknown": 32,
+    "garbage": 6,
+    "ad_network": 30,
+    "suspicious": 19,
+    "legitimate": 8
+  },
+  "sample_categories": {
+    "suspicious": [
+      "00001f58c32e40376f64cc88b70f8fad2fda054e0863abd5e41f4c6f18a65da2",
+      "090a30252991830596c75a945885ca3100d7a40edf4a16d78abd5bbfd90ba268",
+      "091870b3f90c9a98000e0d14a67be2db5891ce98a0b1e24b721e3d96241620a5",
+      "21c91c4cb01c7fd286dc8fa6122f6c43a5227677ffbe3566aa37204cd9e494fe",
+      "3c81526bcb801d7dcfaea7f379528471d745a36e3c1bdc41877b4bed34b5dce6",
+      "6e9848008c42128623d1077f0cc75c0861e2b3d0fb76e68c5fc9ec8f69361572",
+      "752f3cacdad6753d4c02bb8e40ef3e0990b55466c18a7b80ec6fa7b9706e40ab",
+      "7fb836c08ff527443b06d1c20afb6a4b0f51eb373013f211e0d3200bf26527b7",
+      "85cafe005c7f893cae65fa0a5ebf1c103eca579529ebd5d531c672408acdb9d0",
+      "908ed30161b44d20bb4e286de7fb8203b2b8a2a807c6638ee9d9830de3a0f913",
+      "9628acabe739b5419f08c5a5c3cd776268bf4a3c25c978341e403bde442e0ece",
+      "9e95912f1a5fdba5050723f095b7031770b7e2f9627fb60544b41adcbb5b3306",
+      "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
+      "a0bffc11168c65beb59c326d88f144f0d750634252a507ffe039c84e354e3704",
+      "a023fa166051294fe5a569f26092588fdf24a060de46e5cd5be9a5c5bb3b0204",
+      "a945198c086ad3fe0c5dbbce5ef410ea12986c9c160295d76be881c5f8ae0880",
+      "aa8127463312dac0158e74d56a3e3c2f50d9cf98c09942a27cf95081348874a3",
+      "cb147e7ce69723523f604da875d78ca4738e5f416d2297910ee179a5067e79fe",
+      "d7233e269b529198362c29b5f8a15f09e7e4e282c8e35eb68b45b57978f63dd2",
+      "d29295f1504676003fd3ccbd3e41a53aabbe80d2025bfb3a6ef9a9fcff97b6cd"
+    ],
+    "no_domains": [
+      "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+      "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+      "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
+      "48f7ecd18cadc12914b89e91336b9885131d4151a9ed1975f6456e7951633583",
+      "75b06872276a85812c28398d125938fc420fa84774576ea8221592db612cb1b2",
+      "7e8693dfed67a88db885ac0ffd94b73351d1f910cafc6425e8f1b4ab0e24c2a8",
+      "a83a003b989c2dcd12fb0f80dfd458a099f33c1a1f052b2c53ece5f719063495",
+      "e09615bfdc10f44d5250edeb3a0d032f83177737a15352e9c1e552543f5f756d"
+    ],
+    "ad_network": [
+      "0ca64e19e09d8af20a7a9269aca259da3406c5fd1c3627f92fb601af2c2d7d9a",
+      "63371a25c79264de99fb9f55dee9f893625b8f2b3e8ea97da43e60518aee8509"
+    ],
+    "unknown": [
+      "13792ea5da63cc800e9c1cb1944d2ed66dedc2a2dfa940dbcd8828aa47c8b6ea",
+      "22670788ea0108e1e205f34e0a039f994bc94f19563b6f09784074b41f61cc53",
+      "54f2a636e000c55bb725d7e552a22117837c1676fb4b96decd135ae10e6f7049",
+      "5b6f0757e98303cf337d10b6f8c7378bdfd4de30dea624545207dd01a85b6c37",
+      "6a02832c97ad6c0f2ddb813acb52ef002ef616be2a7ded5a0a69b7dbdf2f7aff",
+      "be4ada35dec3ef666681ddcf440be04f370067ee588734cabf630295742d1fd9",
+      "c2c1902b3021355c1619b281875da45fe8a3f0dc26f35c4129e44de3fc3ea810",
+      "d5624c7f869504a65986278f6b7921726aa08355d1f203beaee6e6a8869505f4"
+    ],
+    "legitimate": [
+      "877ab7dbbef2267a39513d1ad777b5c469f76f2a110be547100cb339d76a3f1f",
+      "e847ffd29dca357027e2fb59eeb5abbce395ea1c819113c3a4e07c5839a7bded"
+    ]
+  }
+}
