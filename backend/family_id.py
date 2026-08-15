@@ -230,11 +230,15 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # FakeInst — Premium SMS installer. Checked before FakeInstaller: the two
     # share depositmobi.com/androids-market.ru with no observed discriminator,
     # so the shared C2 is resolved toward FakeInst (the larger population).
-    # FIXED: C2 domains are unique to FakeInst (0 FP). Using them as primary signal.
-    # min_matches=3 forces either C2+string or C2+perms+class.
+    # FIXED: Added "browseintent" string discriminator (fp=0 across 359 corpus,
+    # present in 5/17 GT samples). min_matches=4 forces either:
+    #   - browseintent + perms + classes + native:no (4 signals)
+    #   - C2 domain + perms + classes + native:no (4 signals)
+    # Eliminates 18 FPs (Opfake/FakeInstaller/GenericKD) that matched on
+    # perms+classes+native:no alone without any discriminator.
     FamilySignature(
         family_name="FakeInst",
-        string_patterns=[],
+        string_patterns=["browseintent"],
         c2_patterns=[
             C2Pattern("depositmobi.com", C2MatchMode.EXACT),
             C2Pattern("androids-market.ru", C2MatchMode.EXACT),
@@ -251,7 +255,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=10, class_count_max=50,
         has_native_libs=False,
-        min_matches=3, confidence=0.90,
+        min_matches=4, confidence=0.90,
     ),
 
     # FakeInstaller — Variant of FakeInst. Only wap4mobi.ru is unique to it; the
@@ -635,6 +639,8 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # taobao.com / amap.com / autonavi.com removed: legitimate e-commerce and mapping
     # SDK endpoints. They let large packed apps (e.g. HyPay, ~8000 classes) reach
     # min_matches on C2 + permissions alone while failing the class-count check.
+    # min_matches=3: "jiagu" string + class range 8-10 + at least one perm/native:no.
+    # Eliminates 4 FPs that have "jiagu" string but class_count outside 8-10.
     FamilySignature(
         family_name="Jiagu",
         string_patterns=["jiagu"],
@@ -645,17 +651,17 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=8, class_count_max=10,
         has_native_libs=None,
-        min_matches=2, confidence=0.75,
+        min_matches=3, confidence=0.75,
     ),
 
     # SpyMax — Surveillance/ransomware (Telegram C2, high class count)
-    # min_matches=4: perms + native:no (2 generic RAT signals) are shared with
-    # SpyNote and other RATs; the 1500-8000 class band is the real signal, so
-    # demand it (a sample below the band caps at 2 signals and must not match).
-    # String discriminators added from corpus mining.
+    # min_matches=5: Added "stopvpn" discriminator (fp=0, present in 6/6 GT).
+    # Without string, max reachable signals is 4 (c2 + perms + classes + native:no),
+    # which let Telegram-using non-SpyMax apps match. Raising to 5 forces a string
+    # hit. Loses 1 GT sample (class_count=1774, no Telegram C2 in cache).
     FamilySignature(
         family_name="SpyMax",
-        string_patterns=["spymax", "spymaster", "spyc2", "com.spymx", "com.spymax", "spy_max"],
+        string_patterns=["spymax", "spymaster", "spyc2", "com.spymx", "com.spymax", "spy_max", "stopvpn"],
         c2_patterns=[
             C2Pattern("telegram.org", C2MatchMode.SUBSTRING),
         ],
@@ -670,7 +676,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=1500, class_count_max=8000,
         has_native_libs=False,
-        min_matches=4, confidence=0.80,
+        min_matches=5, confidence=0.80,
     ),
 
     # SpyNote — Commercial RAT (broad catch-all, placed late for tiebreak priority)

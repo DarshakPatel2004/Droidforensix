@@ -2,21 +2,21 @@
   "summary": {
     "total_samples": 359,
     "drafts_tested": 0,
-    "baseline_correct": 117,
-    "combined_correct": 117,
+    "baseline_correct": 125,
+    "combined_correct": 125,
     "new_correct": 0,
     "new_fps": 0,
     "baseline_counts": {
-      "correct": 117,
-      "fp": 62,
-      "gap": 66,
-      "abstention": 114
+      "correct": 125,
+      "fp": 42,
+      "gap": 68,
+      "abstention": 124
     },
     "combined_counts": {
-      "correct": 117,
-      "fp": 62,
-      "gap": 66,
-      "abstention": 114
+      "correct": 125,
+      "fp": 42,
+      "gap": 68,
+      "abstention": 124
     },
     "by_status": {
       "STRONG": {
@@ -40,8 +40,8 @@
     },
     "diagnosis_counts": {
       "below_threshold": 0,
-      "outcompeted": 18,
-      "insufficient_signal": 41,
+      "outcompeted": 8,
+      "insufficient_signal": 43,
       "signature_gap": 25
     },
     "note": "isolated = draft scored alone over all 359 samples (FP risk of the draft itself); combined = drafts appended after current signatures (current wins ties, drafts only win when stronger)"
@@ -227,16 +227,13 @@
     {
       "sha256": "0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541",
       "gt_family": "Adware",
-      "matched_family": "Jiagu",
-      "confidence": 0.75,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"jiagu\"",
-        "perms(0.75)"
-      ],
-      "status": "fp",
-      "baseline_family": "Jiagu",
-      "baseline_confidence": 0.75
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3",
@@ -436,17 +433,17 @@
     {
       "sha256": "07e47fbf43c585155ddcdae49c3330c00ceceedf6c9f98432cf631769a21b206",
       "gt_family": "Opfake",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(3.50)",
         "classes:46",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "03a2c97e0ed693d31b8974b2383f2ccb2b3d5a6046042e242085c9817855b1cb",
@@ -609,31 +606,24 @@
     {
       "sha256": "1035296bb576144475b684a9f703fc0220e8c0107a9e7e87c4bf76f72496b6c4",
       "gt_family": "FakeInstaller",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:41",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "0a02bda89021ac18c0c57979ea3c9d82c1054b5c9b375975401e3e21a2f4905a",
       "gt_family": "Linux",
-      "matched_family": "Jiagu",
-      "confidence": 0.75,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"jiagu\"",
-        "perms(1.35)"
-      ],
-      "status": "fp",
-      "baseline_family": "Jiagu",
-      "baseline_confidence": 0.75
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "10f2dcb4f070e9bf8182512e2c3de42d583aceecdcb606298e7e76175430e307",
@@ -862,16 +852,13 @@
     {
       "sha256": "1e7276097313eb4ede32eba76886e42696ecd2de41a1a7aeac5536ce717319c0",
       "gt_family": "Linux",
-      "matched_family": "Jiagu",
-      "confidence": 0.75,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "string:\"jiagu\"",
-        "perms(1.35)"
-      ],
-      "status": "fp",
-      "baseline_family": "Jiagu",
-      "baseline_confidence": 0.75
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "22670788ea0108e1e205f34e0a039f994bc94f19563b6f09784074b41f61cc53",
@@ -992,17 +979,17 @@
     {
       "sha256": "315e29c580f1720dfc0f7ef7d48beeb3321f3bf343646e022420af119ad7a370",
       "gt_family": "Opfake",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(3.50)",
         "classes:46",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "326fc668fbf5dd4812b075fd963994e1378a0533637899eb07e639bcb9ecd733",
@@ -1126,6 +1113,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
         "classes:2661",
@@ -1160,17 +1148,13 @@
     {
       "sha256": "3779e67d696ba3ef4ba4b38ba10e07301620a45f1d89f004da5ae64f050dfdb4",
       "gt_family": "GenericKD",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:33",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "1d132dc563405dbf978a35664780790fd9972de17e5110864f5cbbec0c6ce016",
@@ -1314,21 +1298,6 @@
     {
       "sha256": "412f959e050df1e74d732401f67210595b7db1c3dbd6e27c49fd1ee2bf8031b4",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
-      "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:41",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
-    },
-    {
-      "sha256": "43f62b4cca7597f24772bf7edd005c3929b5e4d1bc821d5097a7d11ff02c0a93",
-      "gt_family": "FakeInst",
       "matched_family": "unknown",
       "confidence": 0.0,
       "via_draft": false,
@@ -1336,6 +1305,22 @@
       "status": "gap",
       "baseline_family": "unknown",
       "baseline_confidence": 0.0
+    },
+    {
+      "sha256": "43f62b4cca7597f24772bf7edd005c3929b5e4d1bc821d5097a7d11ff02c0a93",
+      "gt_family": "FakeInst",
+      "matched_family": "FakeInst",
+      "confidence": 0.9,
+      "via_draft": false,
+      "fired_signals": [
+        "string:\"browseintent\"",
+        "perms(1.95)",
+        "classes:25",
+        "native:no"
+      ],
+      "status": "correct",
+      "baseline_family": "FakeInst",
+      "baseline_confidence": 0.9
     },
     {
       "sha256": "44b5086d35b879afb9278392c230cdd0d16ac9b830cd44e75ece6ccf0fd4952c",
@@ -1826,32 +1811,28 @@
     {
       "sha256": "6725dfc3cb9b8f2103ebb129f0d4816ae836c15103229e8fda0151aa390d33ad",
       "gt_family": "Opfake",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(3.50)",
         "classes:46",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "6827b5683119738e2b75c6640e59ff6d4d51b50618f239f41f1bd86687de573e",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:38",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "399f5bddd1e30bb612522c9c770e073f5e304165df170c4668550de34f34f7c1",
@@ -1894,13 +1875,18 @@
     {
       "sha256": "6a01a9e0fc20d47835fd19d732af97fc4a2d68e1f735f4cdea7d4eeb03fcf582",
       "gt_family": "FakeInst",
-      "matched_family": "unknown",
-      "confidence": 0.0,
+      "matched_family": "FakeInst",
+      "confidence": 0.9,
       "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
+      "fired_signals": [
+        "string:\"browseintent\"",
+        "perms(1.95)",
+        "classes:38",
+        "native:no"
+      ],
+      "status": "correct",
+      "baseline_family": "FakeInst",
+      "baseline_confidence": 0.9
     },
     {
       "sha256": "66ea10f2bc2445ad8ce43dca11ba2ea4968633c1ce21b5a2ac5f1c647db5ffcd",
@@ -2061,17 +2047,17 @@
     {
       "sha256": "73b2fd2dfb5860f0701b16002832987d5edcfe059df454d30548aa4fa45bebe6",
       "gt_family": "Opfake",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(3.50)",
         "classes:42",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "75b06872276a85812c28398d125938fc420fa84774576ea8221592db612cb1b2",
@@ -2092,32 +2078,24 @@
     {
       "sha256": "789d04c93488adf85d8d7988c0d050648cd91ad469f9e63e04d290523dfb1d93",
       "gt_family": "GenericKD",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:33",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "7bebc4b248402dbf988b92eb7d9c86797bb302b983e63ce0d2dba96f0f8a345a",
       "gt_family": "Gen",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:38",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "7a4238fc6f5d3c7731c2eb33911298eaa36986040858af56e76628c5dc83e265",
@@ -2501,6 +2479,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
         "classes:1731",
@@ -2517,6 +2496,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
         "classes:1553",
@@ -2608,17 +2588,17 @@
     {
       "sha256": "a15419356485660f68b50027abc76a052d34427b45eebb23573294c21d834eaa",
       "gt_family": "Opfake",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(2.50)",
         "classes:16",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "a023fa166051294fe5a569f26092588fdf24a060de46e5cd5be9a5c5bb3b0204",
@@ -2881,6 +2861,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
         "classes:1731",
@@ -2981,17 +2962,13 @@
     {
       "sha256": "bcf129023a712e3ab8a8f6d67e74e7914550ffa8e718b0939b7d5238d8b69863",
       "gt_family": "FakeInstaller",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:40",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "8e39fb18e8acb2e4fc4bcd7db2efc320f5ec84100e8ba870fd24dd13a6584277",
@@ -3121,17 +3098,13 @@
     {
       "sha256": "c565f4b9b3c6bb095c6ce62ab02c5cc8a84502231f4facdddb6f3d7af2321b5e",
       "gt_family": "GenericKD",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:33",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "7d44e0009d251ae4983f5bf29f7d8aa9af668df88dba05a17a7a314f6780ceff",
@@ -3162,6 +3135,7 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
         "classes:1731",
@@ -3185,13 +3159,18 @@
     {
       "sha256": "c8bb60d2a82e7f1991fb2ad3e5797cf53117e0d36f64e9ca49dd1682654ec735",
       "gt_family": "FakeInst",
-      "matched_family": "unknown",
-      "confidence": 0.0,
+      "matched_family": "FakeInst",
+      "confidence": 0.9,
       "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
+      "fired_signals": [
+        "string:\"browseintent\"",
+        "perms(1.95)",
+        "classes:25",
+        "native:no"
+      ],
+      "status": "correct",
+      "baseline_family": "FakeInst",
+      "baseline_confidence": 0.9
     },
     {
       "sha256": "c3c7df127552aa2594ad335d7cc955cb1274cc322455a89b1856a2adf9f83ded",
@@ -3243,28 +3222,33 @@
     {
       "sha256": "ccb7b86f0563408816e3ceaedc0b79cf8d48977fcf77c389e4d0db9be8cd28f1",
       "gt_family": "FakeInst",
-      "matched_family": "unknown",
-      "confidence": 0.0,
-      "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
-    },
-    {
-      "sha256": "d2588ff4362c7532a31beea1acbe156cc8ff63fc571387c9954b09bfcd3ab2a2",
-      "gt_family": "Opfake",
       "matched_family": "FakeInst",
       "confidence": 0.9,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "string:\"browseintent\"",
+        "perms(1.95)",
+        "classes:38",
+        "native:no"
+      ],
+      "status": "correct",
+      "baseline_family": "FakeInst",
+      "baseline_confidence": 0.9
+    },
+    {
+      "sha256": "d2588ff4362c7532a31beea1acbe156cc8ff63fc571387c9954b09bfcd3ab2a2",
+      "gt_family": "Opfake",
+      "matched_family": "Opfake",
+      "confidence": 0.85,
+      "via_draft": false,
+      "fired_signals": [
+        "perms(3.50)",
         "classes:46",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "ce312487b225fbd0ed8216bdc75058fd6032e60b74e8c0334e0d8d3c01e975c1",
@@ -3285,17 +3269,13 @@
     {
       "sha256": "ceb48e4b9d82b2ab7b486393048cdc78c6dfaf88799521e63677b06975f707cd",
       "gt_family": "GenericKD",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:33",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "b7ffef61c60d80eee806f36f30f80ff9cf3f73d522bd05e192fa34dcf2e87224",
@@ -3330,17 +3310,17 @@
     {
       "sha256": "d44d9cef26adf2c20c4bdb0d950e13507f8fad0bed8c10812d99e2463e563d66",
       "gt_family": "Opfake",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(3.50)",
         "classes:46",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "status": "correct",
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "d4b3fa551ff6282287ea8d30b2860a55198f0a8c76cf20ea27bba95113628f69",
@@ -3360,17 +3340,13 @@
     {
       "sha256": "d472e114361dd2c6ebafb60daa72ba2db09752de5b243538f0fee18410ad6a25",
       "gt_family": "SpyNote",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:16",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "d406875062926f8a66fec10b45ab924193faa7fd8a01667d4aacb41387c4185d",
@@ -3443,17 +3419,13 @@
     {
       "sha256": "d846f593c4a63614d2810a10f14196a1da43b8bfdc60f6c781a63cf8fcfd632e",
       "gt_family": "AndroidOS",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:23",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "d79cb0972064102afd1bfbabe9a39262bdc864b10f95e60c47e605d1d3f18562",
@@ -3652,17 +3624,17 @@
     {
       "sha256": "e09615bfdc10f44d5250edeb3a0d032f83177737a15352e9c1e552543f5f756d",
       "gt_family": "Agent",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "Opfake",
+      "confidence": 0.85,
       "via_draft": false,
       "fired_signals": [
-        "perms(2.75)",
+        "perms(2.60)",
         "classes:44",
         "native:no"
       ],
       "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "baseline_family": "Opfake",
+      "baseline_confidence": 0.85
     },
     {
       "sha256": "e0f530acc605475dc38c1bae9ecf9f7c94c80b8f24b695e3f8025dba1e8d5c22",
@@ -3678,17 +3650,13 @@
     {
       "sha256": "e45caa25f87531cff2ee2803374ac78de0757941dd1311e3411ce4cdf6d5d942",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:23",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "e4a321eff05a64115f04306b581c8fced4626f71963c4fd2188c0e8e92c018c6",
@@ -3764,13 +3732,18 @@
     {
       "sha256": "e9cee469d3610df81d3c1890691c67027dd179337fb93a87164f95469006440a",
       "gt_family": "FakeInst",
-      "matched_family": "unknown",
-      "confidence": 0.0,
+      "matched_family": "FakeInst",
+      "confidence": 0.9,
       "via_draft": false,
-      "fired_signals": [],
-      "status": "gap",
-      "baseline_family": "unknown",
-      "baseline_confidence": 0.0
+      "fired_signals": [
+        "string:\"browseintent\"",
+        "perms(1.95)",
+        "classes:38",
+        "native:no"
+      ],
+      "status": "correct",
+      "baseline_family": "FakeInst",
+      "baseline_confidence": 0.9
     },
     {
       "sha256": "e9ef2d3002897f11e041e64863d47a4affbfdc5216f860fab51ae51447a5e23a",
@@ -3928,17 +3901,13 @@
     {
       "sha256": "f07deea7b1b1053728c0079d30240d92c07853e3e37c86fa32540ee5e638d941",
       "gt_family": "Gen",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:38",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "f157946d3868fbe013ec23b14f1097bb727654b4f3926322f035e86e3f5f637e",
@@ -3992,17 +3961,13 @@
     {
       "sha256": "f924b3a2932b049fd76c38aec95bac1e4078ac1bebd306acb7d4f1b879916f77",
       "gt_family": "FakeInst",
-      "matched_family": "FakeInst",
-      "confidence": 0.9,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "perms(2.75)",
-        "classes:41",
-        "native:no"
-      ],
-      "status": "correct",
-      "baseline_family": "FakeInst",
-      "baseline_confidence": 0.9
+      "fired_signals": [],
+      "status": "gap",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "f39f20ec060481bd89cfbd44654077fcd6404d87a1286685570334bd430e2f18",
@@ -4736,7 +4701,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -4756,7 +4721,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -4770,24 +4735,14 @@
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
-      "sha256": "07e47fbf43c585155ddcdae49c3330c00ceceedf6c9f98432cf631769a21b206",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
-    },
-    {
       "sha256": "1035296bb576144475b684a9f703fc0220e8c0107a9e7e87c4bf76f72496b6c4",
       "gt_family": "FakeInstaller",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the FakeInstaller signature (currently 1 strings, 1 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fakeinstaller'], c2=['wap4mobi.ru']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "11172b2f0ccaa49ab486b313bb61cfb8900126b15541540acf42ad73cf096133",
@@ -4836,7 +4791,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -4848,16 +4803,6 @@
       "category": "signature_gap",
       "reason": "no signature exists for the family",
       "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
-      "sha256": "315e29c580f1720dfc0f7ef7d48beeb3321f3bf343646e022420af119ad7a370",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "1c2d4a388c3109001751caf2cee1d27516286f4d1ff51dbf271e85dfc069ce98",
@@ -4900,13 +4845,13 @@
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
-      "sha256": "43f62b4cca7597f24772bf7edd005c3929b5e4d1bc821d5097a7d11ff02c0a93",
+      "sha256": "412f959e050df1e74d732401f67210595b7db1c3dbd6e27c49fd1ee2bf8031b4",
       "gt_family": "FakeInst",
       "baseline_match": "unknown",
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -4976,7 +4921,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=['spymax', 'spymaster', 'spyc2', 'com.spymx', 'com.spymax', 'spy_max'], c2=['telegram.org']",
+      "reason": "signature exists but its evidence is absent: strings=['spymax', 'spymaster', 'spyc2', 'com.spymx', 'com.spymax', 'spy_max', 'stopvpn'], c2=['telegram.org']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5006,7 +4951,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5040,14 +4985,14 @@
       "fix": "candidate for the draft signature list, or unsignable"
     },
     {
-      "sha256": "6725dfc3cb9b8f2103ebb129f0d4816ae836c15103229e8fda0151aa390d33ad",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
+      "sha256": "6827b5683119738e2b75c6640e59ff6d4d51b50618f239f41f1bd86687de573e",
+      "gt_family": "FakeInst",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "399f5bddd1e30bb612522c9c770e073f5e304165df170c4668550de34f34f7c1",
@@ -5058,16 +5003,6 @@
       "category": "signature_gap",
       "reason": "no signature exists for the family",
       "fix": "candidate for the draft signature list, or unsignable"
-    },
-    {
-      "sha256": "6a01a9e0fc20d47835fd19d732af97fc4a2d68e1f735f4cdea7d4eeb03fcf582",
-      "gt_family": "FakeInst",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "6a02832c97ad6c0f2ddb813acb52ef002ef616be2a7ded5a0a69b7dbdf2f7aff",
@@ -5088,16 +5023,6 @@
       "category": "outcompeted",
       "reason": "wrong family won: Plankton @ 0.85 with 4 signals",
       "fix": "add a discriminator string/C2 to the FakeRun signature (currently 8 strings, 0 C2 patterns)"
-    },
-    {
-      "sha256": "73b2fd2dfb5860f0701b16002832987d5edcfe059df454d30548aa4fa45bebe6",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
     },
     {
       "sha256": "752f3cacdad6753d4c02bb8e40ef3e0990b55466c18a7b80ec6fa7b9706e40ab",
@@ -5160,16 +5085,6 @@
       "fix": "add a discriminator string/C2 to the Adrd signature (currently 1 strings, 0 C2 patterns)"
     },
     {
-      "sha256": "a15419356485660f68b50027abc76a052d34427b45eebb23573294c21d834eaa",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
-    },
-    {
       "sha256": "9f2d916b1e0ee486f5a49e3e9887eae59dbdca0a554139ae9a4dc8edc2f12de0",
       "gt_family": "BankBot",
       "baseline_match": "unknown",
@@ -5202,12 +5117,12 @@
     {
       "sha256": "bcf129023a712e3ab8a8f6d67e74e7914550ffa8e718b0939b7d5238d8b69863",
       "gt_family": "FakeInstaller",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the FakeInstaller signature (currently 1 strings, 1 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['fakeinstaller'], c2=['wap4mobi.ru']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "beeeb3cafc0ea246cc6dd82d82489621414d6cab9ceb50e70fd9835f5733178c",
@@ -5230,36 +5145,6 @@
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
-      "sha256": "c8bb60d2a82e7f1991fb2ad3e5797cf53117e0d36f64e9ca49dd1682654ec735",
-      "gt_family": "FakeInst",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
-      "sha256": "ccb7b86f0563408816e3ceaedc0b79cf8d48977fcf77c389e4d0db9be8cd28f1",
-      "gt_family": "FakeInst",
-      "baseline_match": "unknown",
-      "baseline_confidence": 0.0,
-      "baseline_signals": 0,
-      "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
-      "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
-      "sha256": "d2588ff4362c7532a31beea1acbe156cc8ff63fc571387c9954b09bfcd3ab2a2",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
-    },
-    {
       "sha256": "ce312487b225fbd0ed8216bdc75058fd6032e60b74e8c0334e0d8d3c01e975c1",
       "gt_family": "Lemon",
       "baseline_match": "Kmin",
@@ -5270,24 +5155,14 @@
       "fix": "add a discriminator string/C2 to the Lemon signature (currently 0 strings, 1 C2 patterns)"
     },
     {
-      "sha256": "d44d9cef26adf2c20c4bdb0d950e13507f8fad0bed8c10812d99e2463e563d66",
-      "gt_family": "Opfake",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the Opfake signature (currently 1 strings, 4 C2 patterns)"
-    },
-    {
       "sha256": "d472e114361dd2c6ebafb60daa72ba2db09752de5b243538f0fee18410ad6a25",
       "gt_family": "SpyNote",
-      "baseline_match": "FakeInst",
-      "baseline_confidence": 0.9,
-      "baseline_signals": 3,
-      "category": "outcompeted",
-      "reason": "wrong family won: FakeInst @ 0.90 with 3 signals",
-      "fix": "add a discriminator string/C2 to the SpyNote signature (currently 5 strings, 0 C2 patterns)"
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['spynote', 'spy_note', 'spynotev', 'com.vv.aio', 'com.spy.note'], c2=[]",
+      "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
       "sha256": "d8882d6a246da7bbdda1ae82c0328601c4dc6cf368e3c0227e6b19a9e1042374",
@@ -5320,13 +5195,13 @@
       "fix": "candidate for the draft signature list, or unsignable"
     },
     {
-      "sha256": "e9cee469d3610df81d3c1890691c67027dd179337fb93a87164f95469006440a",
+      "sha256": "e45caa25f87531cff2ee2803374ac78de0757941dd1311e3411ce4cdf6d5d942",
       "gt_family": "FakeInst",
       "baseline_match": "unknown",
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5356,7 +5231,7 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
@@ -5396,7 +5271,17 @@
       "baseline_confidence": 0.0,
       "baseline_signals": 0,
       "category": "insufficient_signal",
-      "reason": "signature exists but its evidence is absent: strings=[], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
+      "fix": "needs new evidence mined from the sample, or unsignable"
+    },
+    {
+      "sha256": "f924b3a2932b049fd76c38aec95bac1e4078ac1bebd306acb7d4f1b879916f77",
+      "gt_family": "FakeInst",
+      "baseline_match": "unknown",
+      "baseline_confidence": 0.0,
+      "baseline_signals": 0,
+      "category": "insufficient_signal",
+      "reason": "signature exists but its evidence is absent: strings=['browseintent'], c2=['depositmobi.com', 'androids-market.ru', 'waply.ru', 'wb-help.com', 'wap4mobi.net', 'loadwtds.ru', '7hlp.com']",
       "fix": "needs new evidence mined from the sample, or unsignable"
     },
     {
