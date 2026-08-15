@@ -2,21 +2,21 @@
   "summary": {
     "total_samples": 359,
     "drafts_tested": 0,
-    "baseline_correct": 125,
-    "combined_correct": 125,
+    "baseline_correct": 126,
+    "combined_correct": 126,
     "new_correct": 0,
     "new_fps": 0,
     "baseline_counts": {
-      "correct": 125,
-      "fp": 42,
+      "correct": 126,
+      "fp": 40,
       "gap": 68,
-      "abstention": 124
+      "abstention": 125
     },
     "combined_counts": {
-      "correct": 125,
-      "fp": 42,
+      "correct": 126,
+      "fp": 40,
       "gap": 68,
-      "abstention": 124
+      "abstention": 125
     },
     "by_status": {
       "STRONG": {
@@ -40,7 +40,7 @@
     },
     "diagnosis_counts": {
       "below_threshold": 0,
-      "outcompeted": 8,
+      "outcompeted": 7,
       "insufficient_signal": 43,
       "signature_gap": 25
     },
@@ -57,6 +57,7 @@
       "fired_signals": [
         "c2:guohead.com",
         "perms(0.80)",
+        "class_boost:range",
         "classes:322",
         "native:no"
       ],
@@ -73,6 +74,7 @@
       "fired_signals": [
         "string:\"classesjarfile\"",
         "perms(1.50)",
+        "class_boost:iq",
         "classes:14",
         "native:yes"
       ],
@@ -115,6 +117,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:146",
         "native:no"
       ],
@@ -142,6 +145,7 @@
       "fired_signals": [
         "string:\"jiagu\"",
         "perms(1.35)",
+        "class_boost:iq",
         "classes:9"
       ],
       "status": "correct",
@@ -179,6 +183,7 @@
       "fired_signals": [
         "string:\"classesjarfile\"",
         "perms(1.50)",
+        "class_boost:iq",
         "classes:9",
         "native:yes"
       ],
@@ -244,6 +249,7 @@
       "fired_signals": [
         "string:\"jiagu\"",
         "perms(1.35)",
+        "class_boost:iq",
         "classes:9"
       ],
       "status": "correct",
@@ -270,6 +276,7 @@
       "fired_signals": [
         "string:\"jiagu\"",
         "perms(1.35)",
+        "class_boost:iq",
         "classes:10"
       ],
       "status": "correct",
@@ -304,6 +311,7 @@
         "string:\"sensorevent\"",
         "c2:frame.top",
         "perms(1.00)",
+        "class_boost:iq",
         "classes:758",
         "native:no"
       ],
@@ -320,6 +328,7 @@
       "fired_signals": [
         "string:\"classesjarfile\"",
         "perms(1.50)",
+        "class_boost:iq",
         "classes:6",
         "native:yes"
       ],
@@ -363,18 +372,13 @@
     {
       "sha256": "016ab069253276cbface350265f0a2d5f10f38e3c7888dcc976698216c2bdeea",
       "gt_family": "Backdoor",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "unknown",
+      "confidence": 0.0,
       "via_draft": false,
-      "fired_signals": [
-        "c2:monternet.com",
-        "perms(1.00)",
-        "classes:172",
-        "native:no"
-      ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "fired_signals": [],
+      "status": "abstention",
+      "baseline_family": "unknown",
+      "baseline_confidence": 0.0
     },
     {
       "sha256": "022c88f2397b59ef6394db385163b1ed44c5a4b720f667ca3b91983b04f89433",
@@ -385,6 +389,7 @@
       "fired_signals": [
         "c2:rebillme.net",
         "perms(1.50)",
+        "class_boost:iq",
         "classes:18",
         "native:no"
       ],
@@ -438,6 +443,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(3.50)",
+        "class_boost:iq",
         "classes:46",
         "native:no"
       ],
@@ -463,8 +469,10 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"mms_received\"",
         "c2:5k3g.com",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:411",
         "native:no"
       ],
@@ -481,6 +489,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:1077",
         "native:no"
       ],
@@ -497,6 +506,7 @@
       "fired_signals": [
         "c2:rebillme.net",
         "perms(1.50)",
+        "class_boost:iq",
         "classes:18",
         "native:no"
       ],
@@ -512,6 +522,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -537,6 +548,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -552,6 +564,7 @@
       "fired_signals": [
         "c2:wap4mobi.ru",
         "perms(2.65)",
+        "class_boost:iq",
         "classes:34",
         "native:no"
       ],
@@ -596,6 +609,7 @@
         "string:\"androidterm\"",
         "c2:mobile.91.com",
         "perms(4.25)",
+        "class_boost:range",
         "classes:150",
         "native:yes"
       ],
@@ -635,6 +649,7 @@
         "string:\"iconosys\"",
         "c2:smsreplier.net",
         "perms(0.90)",
+        "class_boost:iq",
         "classes:10",
         "native:no"
       ],
@@ -651,6 +666,7 @@
       "fired_signals": [
         "string:\"searchmobileonline\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:708",
         "native:no"
       ],
@@ -678,6 +694,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:iq",
         "classes:951",
         "native:no"
       ],
@@ -711,6 +728,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:759",
         "native:no"
       ],
@@ -727,6 +745,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:iq",
         "classes:774",
         "native:no"
       ],
@@ -809,6 +828,7 @@
       "fired_signals": [
         "string:\"sababa\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:56",
         "native:no"
       ],
@@ -870,6 +890,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "native:yes"
       ],
       "status": "fp",
@@ -945,6 +966,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -959,6 +981,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(2.00)",
+        "class_boost:range",
         "classes:11"
       ],
       "status": "correct",
@@ -984,6 +1007,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(3.50)",
+        "class_boost:iq",
         "classes:46",
         "native:no"
       ],
@@ -1000,6 +1024,7 @@
       "fired_signals": [
         "c2:ysler.com",
         "perms(2.60)",
+        "class_boost:iq",
         "classes:32",
         "native:no"
       ],
@@ -1099,6 +1124,7 @@
       "fired_signals": [
         "c2:waply.ru",
         "perms(2.75)",
+        "class_boost:range",
         "classes:40",
         "native:no"
       ],
@@ -1116,6 +1142,7 @@
         "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
+        "class_boost:iq",
         "classes:2661",
         "native:no"
       ],
@@ -1227,6 +1254,7 @@
         "string:\"ico_url\"",
         "c2:mobclix.com",
         "perms(3.75)",
+        "class_boost:range",
         "classes:385",
         "native:no"
       ],
@@ -1243,6 +1271,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:1915",
         "native:no"
       ],
@@ -1274,6 +1303,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:iq",
         "classes:774",
         "native:no"
       ],
@@ -1289,6 +1319,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -1315,6 +1346,7 @@
       "fired_signals": [
         "string:\"browseintent\"",
         "perms(1.95)",
+        "class_boost:iq",
         "classes:25",
         "native:no"
       ],
@@ -1352,6 +1384,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(2.00)",
+        "class_boost:iq",
         "classes:1987"
       ],
       "status": "correct",
@@ -1400,6 +1433,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:642",
         "native:no"
       ],
@@ -1493,6 +1527,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:722",
         "native:no"
       ],
@@ -1531,6 +1566,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.75)",
+        "class_boost:range",
         "classes:104",
         "native:no"
       ],
@@ -1602,6 +1638,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:78",
         "native:yes"
       ],
@@ -1616,8 +1653,10 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"mms_received\"",
         "c2:5k3g.com",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:362",
         "native:no"
       ],
@@ -1634,6 +1673,7 @@
       "fired_signals": [
         "string:\"auctionid\"",
         "perms(1.90)",
+        "class_boost:iq",
         "native:no"
       ],
       "status": "correct",
@@ -1725,6 +1765,7 @@
       "fired_signals": [
         "string:\"adrd\"",
         "perms(1.95)",
+        "class_boost:iq",
         "classes:244"
       ],
       "status": "correct",
@@ -1773,6 +1814,7 @@
       "fired_signals": [
         "string:\"sababa\"",
         "perms(3.65)",
+        "class_boost:iq",
         "classes:849",
         "native:no"
       ],
@@ -1801,6 +1843,7 @@
         "string:\"androidterm\"",
         "c2:wap.soso.com",
         "perms(0.85)",
+        "class_boost:iq",
         "classes:175",
         "native:yes"
       ],
@@ -1816,6 +1859,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(3.50)",
+        "class_boost:iq",
         "classes:46",
         "native:no"
       ],
@@ -1865,6 +1909,7 @@
       "fired_signals": [
         "c2:battery-updates-android.net",
         "perms(2.50)",
+        "class_boost:iq",
         "classes:363",
         "native:no"
       ],
@@ -1881,6 +1926,7 @@
       "fired_signals": [
         "string:\"browseintent\"",
         "perms(1.95)",
+        "class_boost:iq",
         "classes:38",
         "native:no"
       ],
@@ -1897,6 +1943,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:iq",
         "classes:862",
         "native:no"
       ],
@@ -1914,6 +1961,7 @@
         "string:\"iconosys\"",
         "c2:smsreplier.net",
         "perms(2.45)",
+        "class_boost:iq",
         "classes:49",
         "native:no"
       ],
@@ -1947,6 +1995,7 @@
         "string:\"androidterm\"",
         "c2:wap.soso.com",
         "perms(0.85)",
+        "class_boost:iq",
         "classes:175",
         "native:yes"
       ],
@@ -1973,6 +2022,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "correct",
@@ -1999,6 +2049,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(1.80)",
+        "class_boost:iq",
         "classes:940",
         "native:no"
       ],
@@ -2052,6 +2103,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(3.50)",
+        "class_boost:iq",
         "classes:42",
         "native:no"
       ],
@@ -2068,6 +2120,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:760",
         "native:no"
       ],
@@ -2116,6 +2169,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -2154,6 +2208,7 @@
         "string:\"isafterdate\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:203",
         "native:yes"
       ],
@@ -2169,6 +2224,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -2206,6 +2262,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:148",
         "native:no"
       ],
@@ -2222,6 +2279,7 @@
       "fired_signals": [
         "c2:imnet.us",
         "perms(2.60)",
+        "class_boost:iq",
         "classes:287",
         "native:no"
       ],
@@ -2253,6 +2311,7 @@
       "fired_signals": [
         "c2:wap4mobi.ru",
         "perms(2.65)",
+        "class_boost:iq",
         "classes:34",
         "native:no"
       ],
@@ -2269,6 +2328,7 @@
       "fired_signals": [
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:128",
         "native:yes"
       ],
@@ -2286,6 +2346,7 @@
         "string:\"androidterm\"",
         "c2:mobile.91.com",
         "perms(4.25)",
+        "class_boost:range",
         "classes:150",
         "native:yes"
       ],
@@ -2385,6 +2446,7 @@
         "string:\"iconosys\"",
         "c2:smsreplier.net",
         "perms(2.45)",
+        "class_boost:iq",
         "classes:39",
         "native:no"
       ],
@@ -2411,6 +2473,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -2438,6 +2501,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:272",
         "native:yes"
       ],
@@ -2454,6 +2518,7 @@
       "fired_signals": [
         "c2:imnet.us",
         "perms(2.60)",
+        "class_boost:iq",
         "classes:240",
         "native:no"
       ],
@@ -2482,6 +2547,7 @@
         "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
+        "class_boost:iq",
         "classes:1731",
         "native:no"
       ],
@@ -2499,6 +2565,7 @@
         "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
+        "class_boost:range",
         "classes:1553",
         "native:no"
       ],
@@ -2525,6 +2592,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -2551,6 +2619,7 @@
       "fired_signals": [
         "string:\"softid\"",
         "perms(0.80)",
+        "class_boost:range",
         "classes:408",
         "native:no"
       ],
@@ -2593,6 +2662,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(2.50)",
+        "class_boost:iq",
         "classes:16",
         "native:no"
       ],
@@ -2610,6 +2680,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:range",
         "native:yes"
       ],
       "status": "fp",
@@ -2623,8 +2694,10 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"mms_received\"",
         "c2:5k3g.com",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:149",
         "native:no"
       ],
@@ -2641,6 +2714,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:146",
         "native:no"
       ],
@@ -2679,6 +2753,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.80)",
+        "class_boost:range",
         "classes:76",
         "native:no"
       ],
@@ -2695,6 +2770,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:149",
         "native:no"
       ],
@@ -2722,6 +2798,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(1.80)",
+        "class_boost:range",
         "classes:1128",
         "native:no"
       ],
@@ -2749,6 +2826,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:range",
         "classes:985",
         "native:no"
       ],
@@ -2787,6 +2865,7 @@
       "fired_signals": [
         "c2:battery-updates-android.net",
         "perms(2.50)",
+        "class_boost:iq",
         "classes:272",
         "native:no"
       ],
@@ -2814,6 +2893,7 @@
       "fired_signals": [
         "c2:ysler.com",
         "perms(2.60)",
+        "class_boost:iq",
         "classes:32",
         "native:no"
       ],
@@ -2864,6 +2944,7 @@
         "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
+        "class_boost:iq",
         "classes:1731",
         "native:no"
       ],
@@ -2914,6 +2995,7 @@
         "string:\"isafterdate\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:96",
         "native:yes"
       ],
@@ -2942,6 +3024,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "native:yes"
       ],
       "status": "correct",
@@ -3018,6 +3101,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:107",
         "native:yes"
       ],
@@ -3062,6 +3146,7 @@
         "string:\"global_b_version_id\"",
         "c2:wap.soso.com",
         "perms(4.25)",
+        "class_boost:iq",
         "classes:177"
       ],
       "status": "fp",
@@ -3086,8 +3171,10 @@
       "confidence": 0.8,
       "via_draft": false,
       "fired_signals": [
+        "string:\"mms_received\"",
         "c2:5k3g.com",
         "perms(2.75)",
+        "class_boost:range",
         "classes:142",
         "native:no"
       ],
@@ -3138,6 +3225,7 @@
         "string:\"stopvpn\"",
         "c2:telegram.org",
         "perms(6.05)",
+        "class_boost:iq",
         "classes:1731",
         "native:no"
       ],
@@ -3165,6 +3253,7 @@
       "fired_signals": [
         "string:\"browseintent\"",
         "perms(1.95)",
+        "class_boost:iq",
         "classes:25",
         "native:no"
       ],
@@ -3213,6 +3302,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -3228,6 +3318,7 @@
       "fired_signals": [
         "string:\"browseintent\"",
         "perms(1.95)",
+        "class_boost:iq",
         "classes:38",
         "native:no"
       ],
@@ -3243,6 +3334,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(3.50)",
+        "class_boost:iq",
         "classes:46",
         "native:no"
       ],
@@ -3253,18 +3345,18 @@
     {
       "sha256": "ce312487b225fbd0ed8216bdc75058fd6032e60b74e8c0334e0d8d3c01e975c1",
       "gt_family": "Lemon",
-      "matched_family": "Kmin",
-      "confidence": 0.8,
+      "matched_family": "Lemon",
+      "confidence": 0.6,
       "via_draft": false,
       "fired_signals": [
-        "c2:monternet.com",
-        "perms(1.95)",
+        "c2:kaixinai.com",
+        "perms(2.60)",
         "classes:283",
         "native:no"
       ],
-      "status": "fp",
-      "baseline_family": "Kmin",
-      "baseline_confidence": 0.8
+      "status": "correct",
+      "baseline_family": "Lemon",
+      "baseline_confidence": 0.6
     },
     {
       "sha256": "ceb48e4b9d82b2ab7b486393048cdc78c6dfaf88799521e63677b06975f707cd",
@@ -3286,6 +3378,7 @@
       "fired_signals": [
         "c2:mqtt.pushy.io",
         "perms(2.70)",
+        "class_boost:iq",
         "classes:10632"
       ],
       "status": "correct",
@@ -3301,6 +3394,7 @@
       "fired_signals": [
         "c2:mqtt.pushy.io",
         "perms(2.70)",
+        "class_boost:iq",
         "classes:10632"
       ],
       "status": "correct",
@@ -3315,6 +3409,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(3.50)",
+        "class_boost:iq",
         "classes:46",
         "native:no"
       ],
@@ -3384,6 +3479,7 @@
       "fired_signals": [
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:iq",
         "classes:137",
         "native:yes"
       ],
@@ -3399,6 +3495,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "correct",
@@ -3436,6 +3533,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.75)",
+        "class_boost:range",
         "classes:106",
         "native:no"
       ],
@@ -3463,6 +3561,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(1.80)",
+        "class_boost:range",
         "classes:565",
         "native:no"
       ],
@@ -3500,6 +3599,7 @@
       "via_draft": false,
       "fired_signals": [
         "c2:nfck.loseyourip.com",
+        "class_boost:iq",
         "classes:1459"
       ],
       "status": "fp",
@@ -3527,6 +3627,7 @@
         "string:\"ico_url\"",
         "c2:guohead.com",
         "perms(3.75)",
+        "class_boost:range",
         "classes:410",
         "native:no"
       ],
@@ -3593,6 +3694,7 @@
         "string:\"runcmd\"",
         "c2:adwo.com",
         "perms(2.80)",
+        "class_boost:range",
         "native:yes"
       ],
       "status": "correct",
@@ -3629,6 +3731,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(2.60)",
+        "class_boost:iq",
         "classes:44",
         "native:no"
       ],
@@ -3689,6 +3792,7 @@
       "fired_signals": [
         "c2:androids-market.ru",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:37",
         "native:no"
       ],
@@ -3706,6 +3810,7 @@
         "string:\"runcmd\"",
         "c2:ju6666.com",
         "perms(2.80)",
+        "class_boost:range",
         "classes:51"
       ],
       "status": "correct",
@@ -3722,6 +3827,7 @@
         "string:\"androidterm\"",
         "c2:mobile.91.com",
         "perms(4.25)",
+        "class_boost:range",
         "classes:150",
         "native:yes"
       ],
@@ -3738,6 +3844,7 @@
       "fired_signals": [
         "string:\"browseintent\"",
         "perms(1.95)",
+        "class_boost:iq",
         "classes:38",
         "native:no"
       ],
@@ -3816,6 +3923,7 @@
         "string:\"global_b_version_id\"",
         "c2:wap.soso.com",
         "perms(4.25)",
+        "class_boost:iq",
         "classes:177"
       ],
       "status": "correct",
@@ -3853,6 +3961,7 @@
       "fired_signals": [
         "string:\"airpush\"",
         "perms(3.65)",
+        "class_boost:iq",
         "classes:855",
         "native:no"
       ],
@@ -3880,6 +3989,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:123",
         "native:no"
       ],
@@ -3929,6 +4039,7 @@
       "fired_signals": [
         "c2:wap4mobi.ru",
         "perms(2.65)",
+        "class_boost:iq",
         "classes:34",
         "native:no"
       ],
@@ -3978,6 +4089,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(2.75)",
+        "class_boost:iq",
         "classes:132",
         "native:no"
       ],
@@ -4016,6 +4128,7 @@
       "fired_signals": [
         "string:\"ico_url\"",
         "perms(3.75)",
+        "class_boost:iq",
         "classes:177",
         "native:no"
       ],
@@ -4031,6 +4144,7 @@
       "via_draft": false,
       "fired_signals": [
         "perms(2.60)",
+        "class_boost:iq",
         "classes:33",
         "native:no"
       ],
@@ -5143,16 +5257,6 @@
       "category": "insufficient_signal",
       "reason": "signature exists but its evidence is absent: strings=['rageagainstthecage', 'exploit', 'root'], c2=[]",
       "fix": "needs new evidence mined from the sample, or unsignable"
-    },
-    {
-      "sha256": "ce312487b225fbd0ed8216bdc75058fd6032e60b74e8c0334e0d8d3c01e975c1",
-      "gt_family": "Lemon",
-      "baseline_match": "Kmin",
-      "baseline_confidence": 0.8,
-      "baseline_signals": 4,
-      "category": "outcompeted",
-      "reason": "wrong family won: Kmin @ 0.80 with 4 signals",
-      "fix": "add a discriminator string/C2 to the Lemon signature (currently 0 strings, 1 C2 patterns)"
     },
     {
       "sha256": "d472e114361dd2c6ebafb60daa72ba2db09752de5b243538f0fee18410ad6a25",

@@ -364,9 +364,12 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # This prevents FakeRun from stealing Kmin samples on generic SEND_SMS + class overlap.
     # FIXED: require_c2=True (all 4 GT samples have C2; FPs have "kmin" string but no C2).
     # Added more C2 domains from corpus mining.
+    # Intent action discriminators: mms_received and wap_push_received are present in
+    # ALL 4 GT Kmin samples (from AndroidManifest) but NOT in the 2 FP samples.
+    # These are unique to Kmin's SMS/MMS interception behavior.
     FamilySignature(
         family_name="Kmin",
-        string_patterns=["kmin"],
+        string_patterns=["kmin", "mms_received", "wap_push_received"],
         c2_patterns=[
             C2Pattern("5k3g.com", C2MatchMode.SUBSTRING),
             C2Pattern("5j5l.com", C2MatchMode.SUBSTRING),
@@ -382,7 +385,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         ],
         class_count_min=100, class_count_max=500,
         has_native_libs=False,
-        min_matches=3, confidence=0.80,
+        min_matches=5, confidence=0.80,
         require_c2=True,
     ),
  
@@ -1381,6 +1384,38 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
                 cert_boost = cert_issuer_boost(cert_info, sig.family_name, CERT_PROFILES)
         confidence += cert_boost
         confidence = min(confidence, 1.0)
+
+        # 4b. Class count range boost — secondary confidence multiplier
+        # Samples whose class_count falls within the family's interquartile range
+        # get a small boost; this helps distinguish families with similar strings
+        # but different codebase sizes (e.g., FakeInst ~27 vs SpyMax ~1731).
+        _CLASS_PROFILES = None  # lazy-loaded
+        if _CLASS_PROFILES is None:
+            try:
+                import json as _json
+                from pathlib import Path as _Path
+                _prof_path = _Path(__file__).parent.parent / "analysis" / "family_classcount_profiles.json"
+                if _prof_path.exists():
+                    with open(_prof_path) as _f:
+                        _CLASS_PROFILES = _json.load(_f)
+                else:
+                    _CLASS_PROFILES = {}
+            except Exception:
+                _CLASS_PROFILES = {}
+
+        class_profile = _CLASS_PROFILES.get(sig.family_name)
+        if class_profile and class_count > 0:
+            iq1 = class_profile.get("class_count_iq1", 0)
+            iq3 = class_profile.get("class_count_iq3", 0)
+            cc_min = class_profile.get("class_count_min", 0)
+            cc_max = class_profile.get("class_count_max", 0)
+            if iq1 <= class_count <= iq3:
+                confidence = min(confidence + 0.05, 1.0)
+                signal_details.append("class_boost:iq")
+            elif cc_min <= class_count <= cc_max:
+                confidence = min(confidence + 0.02, 1.0)
+                signal_details.append("class_boost:range")
+            # No penalty for being outside the range — we just don't boost
 
         # 5. Class count.
         # An unbounded range (both None) constrains nothing, so it no longer earns
