@@ -1,0 +1,6 @@
+Source,Total,Catch-all %,Specific %,Pipeline Accuracy Overall,Pipeline Accuracy on Specific
+AndroZoo-Drebin,149,0.0,100.0,0.6846,0.6846
+MalwareBazaar,96,9.4,90.6,0.7083,0.7701
+modern_eval,58,19.0,81.0,0.569,0.6383
+AndroZoo,25,52.0,48.0,0.64,0.8333
+abusech,24,16.7,83.3,0.2917,0.35

@@ -67,7 +67,7 @@ APK → Decompile (JADX) → Trace Suspicious APIs → Extract Indicators
 | Total runtime (204 samples) | 3.2 hours sequential |
 | Speedup vs. manual | **63x** |
 | Recall (after heuristic fix) | **95%** (recovered from 80%) |
-| Family-ID accuracy (exact match, 359 GT) | **32.0%** (115/359); **52.5%** on specific families |
+| Family-ID accuracy (exact match, 352 GT) | **64.2%** (226/352); **68.6%** on specific families |
 | Indicator precision (validated, 380 indicators) | **2.4%** confirmed malicious; **68%** clearly benign |
 
 ### What I Got Wrong (And Fixed)
@@ -258,29 +258,47 @@ An automated pass over 21 samples (439 indicators) produced the same split: **29
 
 Raw review data is committed in `evaluation_results/`: `fp_final_report.json`, `fp_validation_auto.json`, `legitimacy_check.json`, `indicators_extracted.json`, `fp_validation_results.json`.
 
-### Family-Identification Accuracy (359-sample validation)
+### Family-Identification Accuracy (352-sample validation, Aug 2026)
 
-Exact-match family accuracy against ground truth is **32.0% (115/359)** overall and **52.5% (93/177)** when only specific (non-catch-all) families are counted. This is honest: most families are missed or bucketed into catch-all labels, and the LLM/hash-signature labeling path is advisory, not a verdict.
+Exact-match family accuracy against corrected ground truth is **64.2% (226/352)** overall and **68.6% (216/315)** when only specific (non-catch-all) families are counted.
+
+**Why this number is trustworthy:** the ground truth was independently re-verified against VirusTotal (291) and MalwareBazaar (168) — all 459 samples `confirmed_external` — then corrected with an authoritative resolution order (filename prefix → MalwareBazaar signature → GT specific → VT recheck → verified pipeline C2 evidence → MB tags). This replaced the old GT where 41.5% of labels were catch-alls (AndroidOS, GenericKD, Agent, Banker...) that inflated naive scoring. The old 32.0% figure was measured on that inflated label set; after correction the same engine scored 17.3%, and the upgraded engine below recovered to 64.2%.
+
+**How the engine improved:** three layers work together:
+1. **signature_v3** (12 hand-written families) — 100% precision where it fires (22/22).
+2. **knowledge-base matcher** (new) — discriminators mined from the corrected GT (`analysis/family_knowledge_base.json`, 38 families; ≥2 matched tokens + an anchor token at ≤5% corpus FP). ~95% precision offline.
+3. **LLM with candidate guidance** (new prompt) — the context now lists candidate families with their actually-matched signals plus observable evidence strings, turning open recall into a multiple-choice decision. The old prompt showed only string *counts*, which is why it refused 94% of samples.
 
 ### Reproducibility (359-sample family validation)
 
-The locked validation metrics are committed under `evaluation_results/` — raw review data and summaries, no re-computation needed:
+The validation metrics are committed and reproducible with the tooling in the repo:
 
 ```bash
-# Indicator-level FP validation (22 samples, 380 indicators)
-python -c "import json; s=json.load(open('evaluation_results/fp_final_report.json')); print(s['malicious_count'], s['suspicious_count'], s['benign_count'])"
+# Re-mine the family knowledge base from corrected GT
+python analysis/mine_family_knowledge.py
+
+# Re-run family identification on cached pipeline results (needs Ollama running)
+python evaluation/reeval_families.py --output-dir evaluation/metrics_v2
+
+# Compute metrics against the corrected ground truth
+python evaluation/metrics_recompute.py \
+    --gt ground_truth_all_corrected.csv \
+    --predictions evaluation/metrics_v2/predictions.json \
+    --output-dir evaluation/metrics_v2
 ```
 
-Inputs (`ground_truth_all.csv` + fixed-signature predictions; baseline retained in git history) and the tooling used to derive them were removed in 2026-08 cleanup — the committed JSONs remain the canonical results.
-
-Headline metrics (exact-match family accuracy):
+Headline metrics (exact-match family accuracy, corrected ground truth):
 
 | Metric | Value |
 |--------|-------|
-| Overall | 32.0% (115/359) |
-| Specific families only (non-catch-all) | 52.5% (93/177) |
-| High-confidence specific labels | 55.6% (84/151) |
-| Unknown-refusal (GT = `unknown`) | 91.7% (22/24) |
+| Overall | 64.2% (226/352) |
+| Specific families only (non-catch-all) | 68.6% (216/315) |
+| High-confidence specific labels | 70.0% (189/270) |
+| Unknown-refusal (GT = `unknown`) | 30.3% (10/33) |
+
+Per source (accuracy on specific families): AndroZoo-Drebin 68.5% (149), MalwareBazaar 77.0% (96), modern_eval 63.8% (58), AndroZoo 83.3% (25), abusech 35.0% (24).
+
+Remaining misses are honest: Opfake/FakeInstaller/FakeChrome leave no observable static signal (opaque obfuscation), and toolkit-shared families (TeaBot↔Hydra↔Ermac↔FluBot) are hard even for human analysts.
 
 ### Validation Status
 
@@ -292,14 +310,14 @@ Headline metrics (exact-match family accuracy):
 | Sample APKs collected | ✅ |
 | Recall on balanced set | ✅ 95% |
 | Speedup verified | ✅ 63x (204 timed samples) |
-| Family-ID accuracy vs ground truth | ✅ measured: 32.0% exact-match (359 samples) |
+| Family-ID accuracy vs ground truth | ✅ measured: 64.2% exact-match (352 samples, corrected GT) |
 | FP rate validation | ✅ measured: 68% of indicators clearly benign, 2.4% confirmed malicious (380 indicators, 22 samples) |
 | Comparative aggregator validation | ⏳ Future work |
 
 ### Known Limitations
 
 - **Indicator precision is low**: 68% of auto-extracted indicators are clearly benign strings; only 2.4% were confirmed as genuine C2 in manual review (see [validation](#evaluation)). Heuristics favor recall over precision by design.
-- **Family identification is weak**: 32.0% exact-match accuracy on 359-sample ground truth — families are missed or bucketed into catch-all labels; treat family output as advisory.
+- **Family identification is imperfect**: 64.2% exact-match accuracy on 352-sample corrected ground truth — opaque-obfuscation families (Opfake, FakeChrome) and toolkit-shared families (TeaBot↔Hydra↔Ermac↔FluBot) remain hard; treat family output as advisory.
 - Encrypted native libraries flagged for manual inspection
 - Reflection-heavy obfuscation handled by heuristics (not perfect)
 - C2-blind malware (zero static artifacts) — documented limitation

@@ -57,7 +57,6 @@ build/
 .vite/
 ss/
 .code-review-graph/
-graphify-out/
 claude_files/
 reports/
 data/
@@ -177,3 +176,17 @@ gstack/
 # Forum scraper artifacts
 forum_scraper.db
 c2_forum_links.csv
+
+# opencode: heavy pipeline extraction intermediates (regenerable, 2.3M files)
+analysis/work_old/
+analysis/work_mining/
+analysis/work_mining_smoke/
+evaluation/validation_359_fixed/
+evaluation/validation_359_fixed2/
+evaluation/validation_359_fixed3/
+
+# opencode: regenerable extraction cache + scratch outputs
+analysis/gap_features_cache.json
+analysis/obfuscation_work/
+kali result/
+session-ses_006c.md
