@@ -1,14 +1,12 @@
 import { useState } from 'react'
 import ThreatSummary from '../components/ThreatSummary'
 import AttributionEvidence from '../components/AttributionEvidence'
-import RelatedSamples from '../components/RelatedSamples'
 import DissectionTabs from '../components/DissectionTabs'
 
 const SECTIONS = [
   { id: 'summary', label: 'Threat Summary' },
   { id: 'attribution', label: 'Attribution' },
   { id: 'investigation', label: 'Investigation' },
-  { id: 'related', label: 'Related' },
 ]
 
 export default function SampleDetail({ sample, apiUrl, onSelectSample }) {
@@ -68,16 +66,6 @@ export default function SampleDetail({ sample, apiUrl, onSelectSample }) {
 
       {activeSection === 'investigation' && (
         <DissectionTabs sampleId={sampleId} apiUrl={apiUrl} />
-      )}
-
-      {activeSection === 'related' && (
-        <div>
-          <RelatedSamples
-            sampleId={sampleId}
-            apiUrl={apiUrl}
-            onSelect={(sid) => onSelectSample?.({ sampleId: sid })}
-          />
-        </div>
       )}
     </div>
   )

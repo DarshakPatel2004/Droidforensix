@@ -13,7 +13,7 @@
 | Layer | Technology |
 |-------|-----------|
 | Backend | FastAPI, Ollama (Mistral 7B) |
-| Decompilation | AndroGuard, JADX, APKTool |
+| Decompilation | AndroGuard, APKTool |
 | Threat Intel | VirusTotal, AlienVault OTX, Shodan, Censys, AbuseIPDB |
 | Geolocation | MaxMind GeoLite2 |
 | Frontend | React 18, Leaflet, WebSocket, highlight.js, Recharts |
@@ -41,22 +41,20 @@ The 9-step pipeline orchestrates APK decomposition through report generation.
 
 ### `step1_apk_extraction.py` — APK Decomposition (353 LOC)
 
-**Purpose:** Unpacks APK with apktool, decompiles DEX to Java with JADX, extracts DEX info with Androguard, parses AndroidManifest.xml, and extracts native library strings.
+**Purpose:** Unpacks APK with apktool, extracts DEX class/string data with Androguard, parses AndroidManifest.xml, and extracts native library strings.
 
 **Key Functions:**
 - `extract_apk(apk_path, work_dir, sha256)` — Main entry point
 - `compute_sha256(path)` / `compute_md5(path)` — File hashing
 - `run_apktool(apk_path, output_dir)` — APK unpacking
-- `run_jadx(dex_dir, output_dir)` — DEX-to-Java decompilation with retry
 - `run_androguard(apk_path)` — Fast DEX-level extraction
 - `extract_native_strings(extract_dir)` — Multi-tool native .so string extraction
 - `extract_package_name(manifest_path)` — Regex-based package name extraction
 
 **Algorithms:**
 - **Multi-tool native string extraction:** Tries radare2 → rabin2 → strings utility → pure-Python printable-ASCII fallback
-- **Androguard primary path:** Pure-Python DEX parsing (~5s/APK), JADX as fallback
+- **Androguard path:** Pure-Python DEX parsing (~5s/APK), no external decompiler required
 - **Manifest parsing:** Regex-based extraction of package, versions, SDK, permissions from AndroidManifest.xml
-- **JADX retry:** Uses `safe_decompile_apk` with up to 3 retries and output validation
 
 ### `step2_string_enumeration.py` — String Extraction & Filtering (313 LOC)
 
@@ -75,7 +73,7 @@ The 9-step pipeline orchestrates APK decomposition through report generation.
 - **Shannon Entropy:** `H = -Σ p(x)·log₂(p(x))` over UTF-8 byte representation
 - **Multi-layer noise filtering:** DEX type descriptors, Java/Kotlin framework prefixes, pure-symbol/digit patterns, hex constants, dotted package names
 - **Byte array extraction:** Regex `{0xNN, 0xNN, ...}` patterns from Java source
-- **Multi-source strategy:** Androguard (fast) → JADX Java → smali (fallback) → resources + native (always)
+- **Multi-source strategy:** Androguard DEX (primary) → smali (fallback) → resources + native (always)
 
 ### `step3_encoding_detection.py` — Encoding Detection (442 LOC)
 
@@ -215,7 +213,7 @@ Hardcoded secret detection using regex patterns for API keys, AWS secrets, JWT t
 IP validation and legitimacy scoring. Validates IPv4/IPv6 format, classifies as public/private/loopback/reserved, and calculates a legitimacy score based on RFC compliance and known threat feeds.
 
 #### `retry_utils.py` (108 LOC)
-Retry utility with exponential backoff for JADX decompilation and other flaky operations. Supports max retries, custom delay functions, and per-attempt callbacks.
+Retry utility with exponential backoff for flaky operations. Supports max retries, custom delay functions, and per-attempt callbacks.
 
 #### `yara_rules.yar` (20,329 LOC)
 Comprehensive YARA rule set for malware family detection. Covers Android malware, banking trojans, spyware, and adware families.
@@ -296,7 +294,7 @@ Comprehensive YARA rule set for malware family detection. Covers Android malware
 - **Permission classification:** Compound level parsing + hardcoded dangerous/signature sets
 - **Component exported-status:** Android default rules (exported if intent filters for activities/receivers/services)
 - **Class caching:** Per-sample locks with atomic `os.replace(tmp, dest)`
-- **JADX method body extraction:** Brace-counting across source lines
+- **Method body extraction:** DEX instruction disassembly via Androguard
 
 ### `threat_intel.py` — Threat Intelligence Aggregation (524 LOC)
 

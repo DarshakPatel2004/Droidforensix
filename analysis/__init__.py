@@ -7,7 +7,7 @@ if tools_dir.exists():
     paths_to_add = set()
     for r, d, f in os.walk(str(tools_dir)):
         for file in f:
-            if file.lower() in ("java.exe", "apktool.bat", "jadx.bat", "r2.exe", "rabin2.exe"):
+            if file.lower() in ("java.exe", "apktool.bat", "r2.exe", "rabin2.exe"):
                 paths_to_add.add(r)
                 
     if paths_to_add:

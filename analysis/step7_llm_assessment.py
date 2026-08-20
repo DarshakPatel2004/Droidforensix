@@ -831,7 +831,7 @@ class OllamaClient:
 
     def __init__(self, base_url: str = "http://127.0.0.1:11434",
                  model: str = "mistral:7b-instruct-q4_K_M",
-                 max_retries: int = 3, timeout: int = 60):
+                 max_retries: int = 3, timeout: int = 300):
         self.base_url = _normalize_ollama_host(base_url)
         self.model = model
         self.max_retries = max_retries
@@ -1167,7 +1167,7 @@ def explain_threat_chain(chain: dict) -> dict:
             ollama_model = os.environ.get("OLLAMA_MODEL", settings.OLLAMA_MODEL)
             combined = f"{CHAIN_EXPLAIN_SYSTEM_PROMPT}\n\nTHREAT CHAIN:\n{context}\n\nEXPLANATION:"
             import ollama as _ollama
-            client = _ollama.Client(host=_normalize_ollama_host(ollama_host), timeout=120)
+            client = _ollama.Client(host=_normalize_ollama_host(ollama_host), timeout=300)
             resp = client.generate(
                 model=ollama_model,
                 prompt=combined,

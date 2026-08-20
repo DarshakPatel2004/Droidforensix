@@ -25,12 +25,6 @@ TOOLS = {
         "is_zip": False,
         "dest_folder": "apktool"
     },
-    "jadx": {
-        "url": "https://github.com/skylot/jadx/releases/download/v1.5.0/jadx-1.5.0.zip",
-        "filename": "jadx-1.5.0.zip",
-        "is_zip": True,
-        "dest_folder": "jadx"
-    },
     "radare2": {
         "url": "https://github.com/radareorg/radare2/releases/download/5.9.8/radare2-5.9.8-w64.zip",
         "filename": "radare2-5.9.8-w64.zip",

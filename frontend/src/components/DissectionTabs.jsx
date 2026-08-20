@@ -6,7 +6,6 @@ import CodeTab from './tabs/CodeTab'
 import StringsTab from './tabs/StringsTab'
 import DEXTab from './tabs/DEXTab'
 import NativeLibsTab from './tabs/NativeLibsTab'
-import CommunityIntelTab from './tabs/CommunityIntelTab'
 
 const TABS = [
   { id: 'manifest', label: 'Manifest' },
@@ -16,7 +15,6 @@ const TABS = [
   { id: 'strings', label: 'Strings' },
   { id: 'dex', label: 'DEX' },
   { id: 'native', label: 'Native Libs' },
-  { id: 'community', label: 'Community' },
 ]
 
 export default function DissectionTabs({ sampleId, apiUrl }) {
@@ -54,7 +52,6 @@ export default function DissectionTabs({ sampleId, apiUrl }) {
         <div style={{ display: activeTab === 'strings' ? '' : 'none' }}><StringsTab sampleId={sampleId} apiUrl={apiUrl} /></div>
         <div style={{ display: activeTab === 'dex' ? '' : 'none' }}><DEXTab sampleId={sampleId} apiUrl={apiUrl} /></div>
         <div style={{ display: activeTab === 'native' ? '' : 'none' }}><NativeLibsTab sampleId={sampleId} apiUrl={apiUrl} /></div>
-        <div style={{ display: activeTab === 'community' ? '' : 'none' }}><CommunityIntelTab sampleId={sampleId} apiUrl={apiUrl} /></div>
       </div>
     </div>
   )

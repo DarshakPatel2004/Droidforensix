@@ -10,8 +10,10 @@ import csv
 import multiprocessing
 import os
 import sys
+import threading
 import time
 from pathlib import Path
+from typing import Any, Dict
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -23,8 +25,8 @@ META_PATH = Path(__file__).parent.parent / "sample_metadata.csv"
 WORK_DIR = settings.WORK_DIR
 
 # Default timeout per APK size tier (seconds)
-DEFAULT_SMALL_TIMEOUT = 180   # 3 minutes for APKs < 10 MB
-DEFAULT_LARGE_TIMEOUT = 600   # 10 minutes for APKs >= 10 MB
+DEFAULT_SMALL_TIMEOUT = 450   # 7.5 minutes for APKs < 10 MB (LLM calls can each take up to 300s)
+DEFAULT_LARGE_TIMEOUT = 900   # 15 minutes for APKs >= 10 MB (CPU-parallel LLM is slow)
 SIZE_THRESHOLD_BYTES = 10 * 1024 * 1024
 
 
@@ -65,6 +67,19 @@ def run_with_timeout(sample_path: Path, work_dir: Path, timeout: int) -> dict:
         args=(str(sample_path), str(work_dir), queue),
     )
     process.start()
+
+    # Drain the queue concurrently so large results (>64KB pipe buffer)
+    # never deadlock the child's queue.put() while the parent joins.
+    result_box: Dict[str, Any] = {}
+
+    def drain():
+        try:
+            result_box["item"] = queue.get(timeout=timeout + 30)
+        except Exception as e:
+            result_box["error"] = str(e)
+
+    drainer = threading.Thread(target=drain, daemon=True)
+    drainer.start()
     process.join(timeout=timeout)
 
     if process.is_alive():
@@ -78,11 +93,12 @@ def run_with_timeout(sample_path: Path, work_dir: Path, timeout: int) -> dict:
     if process.exitcode != 0:
         raise RuntimeError(f"Pipeline process exited with code {process.exitcode}")
 
-    try:
-        status, payload = queue.get(timeout=5)
-    except Exception as e:
-        raise RuntimeError(f"Failed to read pipeline result: {e}")
+    if "error" in result_box:
+        raise RuntimeError(f"Failed to read pipeline result: {result_box['error']}")
+    if "item" not in result_box:
+        raise RuntimeError("Pipeline finished but produced no result")
 
+    status, payload = result_box["item"]
     if status == "error":
         raise RuntimeError(payload)
 
@@ -90,6 +106,7 @@ def run_with_timeout(sample_path: Path, work_dir: Path, timeout: int) -> dict:
 
 
 def main():
+    global META_PATH
     parser = argparse.ArgumentParser(description="Batch analysis runner for DroidForensix")
     parser.add_argument("--small-timeout", type=int, default=DEFAULT_SMALL_TIMEOUT,
                         help=f"Timeout for APKs < 10 MB (default {DEFAULT_SMALL_TIMEOUT}s)")
@@ -97,11 +114,21 @@ def main():
                         help=f"Timeout for APKs >= 10 MB (default {DEFAULT_LARGE_TIMEOUT}s)")
     parser.add_argument("--max-samples", type=int, default=0,
                         help="Limit number of pending samples to analyze (0 = all)")
+    parser.add_argument("--meta-path", type=str, default=str(META_PATH),
+                        help="Metadata CSV to read/write (for sharded parallel runs)")
+    parser.add_argument("--shard-idx", type=int, default=0,
+                        help="Process only pending records where index % shard-total == shard-idx")
+    parser.add_argument("--shard-total", type=int, default=1,
+                        help="Total number of parallel shards (default 1 = no sharding)")
     args = parser.parse_args()
 
+    META_PATH = Path(args.meta_path)
     records = load_metadata()
     pending = [r for r in records if r.get("status") == "pending"]
-    print(f"[*] Found {len(pending)} pending samples to analyze")
+    if args.shard_total > 1:
+        pending = [r for i, r in enumerate(records)
+                   if r.get("status") == "pending" and i % args.shard_total == args.shard_idx]
+    print(f"[*] Found {len(pending)} pending samples to analyze (shard {args.shard_idx}/{args.shard_total})")
 
     if args.max_samples > 0:
         pending = pending[:args.max_samples]

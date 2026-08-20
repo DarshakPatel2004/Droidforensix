@@ -305,24 +305,6 @@
   border-radius: var(--radius-sm);
 }
 
-.jadx-warning {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.75rem 1rem;
-  margin-bottom: 0.75rem;
-  background: rgba(250, 204, 21, 0.1);
-  border: 1px solid rgba(250, 204, 21, 0.3);
-  border-radius: 8px;
-  color: #fbbf24;
-  font-size: 0.85rem;
-  line-height: 1.5;
-}
-.jadx-warning-icon {
-  flex-shrink: 0;
-  font-size: 1.1rem;
-}
-
 .annotation-error {
   margin: 0.5rem 0.75rem 0;
   padding: 0.65rem 0.85rem;

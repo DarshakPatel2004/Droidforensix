@@ -1,4 +1,5 @@
 import os
+import sys
 from pathlib import Path
 from typing import Optional
 
@@ -6,9 +7,32 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 ROOT_DIR = Path(__file__).resolve().parent.parent
 
+# ---------------------------------------------------------------------------
+# Platform-aware tool path resolution
+# ---------------------------------------------------------------------------
+# The tools/ directory ships both Windows (.bat) and Linux (no-extension)
+# binaries for apktool. apktool ships as a .bat wrapper (Windows) or is invoked
+# directly via java -jar (Linux). die is Windows-only; on Linux we fall back
+# to the system `die` binary on PATH (if available).
+
+_IS_WINDOWS = sys.platform.startswith("win")
+
+# apktool: on Windows use the bundled .bat wrapper; on Linux invoke via java -jar.
+# The java invocation is built in tools.py — here we expose the jar path so
+# tools.py can construct the correct command without duplicating path logic.
+_APKTOOL_BAT = ROOT_DIR / "tools" / "apktool" / "apktool.bat"
+_APKTOOL_JAR = ROOT_DIR / "tools" / "apktool" / "apktool.jar"
+
+# die (Detect-It-Easy): Windows-only bundled binary.
+# On Linux, fall back to "diec" on PATH (user must install separately).
+_DIE_BIN = ROOT_DIR / "tools" / "die" / "die" / "diec.exe" if _IS_WINDOWS else Path("diec")
+
+# 7-Zip: Windows-only bundled install. On Linux, use system p7zip ("7z").
+_SEVEN_ZIP_BIN = Path(r"C:\Program Files\7-Zip\7z.exe") if _IS_WINDOWS else Path("7z")
+
 
 class Settings(BaseSettings):
-    """Centralized Windows-native DroidForensix configuration."""
+    """Centralized cross-platform DroidForensix configuration."""
 
     model_config = SettingsConfigDict(
         env_file=ROOT_DIR / ".env",
@@ -23,18 +47,19 @@ class Settings(BaseSettings):
     SAMPLES_DIR: Path = ROOT_DIR / "samples"
     UPLOADS_DIR: Path = ROOT_DIR / "uploads"
 
-    # Analysis tools (relative to project root)
-    JADX_PATH: str = str(ROOT_DIR / "tools" / "jadx" / "bin" / "jadx.bat")
-    APKTOOL_PATH: str = str(ROOT_DIR / "tools" / "apktool" / "apktool.bat")
-    DIE_PATH: str = str(ROOT_DIR / "tools" / "die" / "die" / "diec.exe")
+    # Analysis tools — override via .env or environment variables if needed.
+    # On Windows: uses bundled .bat wrappers and .exe binaries.
+    # On Linux: apktool via java -jar; die/7z from PATH.
+    APKTOOL_PATH: str = str(_APKTOOL_BAT if _IS_WINDOWS else _APKTOOL_JAR)
+    DIE_PATH: str = str(_DIE_BIN)
     GEOIP_PATH: Path = ROOT_DIR / "data" / "GeoLite2-City.mmdb"
     YARA_RULES_PATH: str = str(ROOT_DIR / "analysis" / "yara_rules.yar")
-    SEVEN_ZIP_PATH: str = r"C:\Program Files\7-Zip\7z.exe"
+    SEVEN_ZIP_PATH: str = str(_SEVEN_ZIP_BIN)
 
-    # Ollama / LLM inference (local Windows service)
+    # Ollama / LLM inference
     OLLAMA_HOST: str = "http://localhost:11434"
-    # Default model; override via the OLLAMA_MODEL environment variable or .env
-    OLLAMA_MODEL: str = "qwen2.5:3b-instruct-q4_K_M"
+    # Default model; override via OLLAMA_MODEL in .env or environment.
+    OLLAMA_MODEL: str = "mistral:3b"
     OLLAMA_TIMEOUT: int = 120
 
     # NVIDIA NIM (optional, for future expansion)
@@ -56,9 +81,8 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 100
     ENABLE_LOGGING: bool = True
     LOG_LEVEL: str = "INFO"
-    # Extraction mode: "auto" uses Androguard (fast, ~5s), JADX runs only when
-    # Androguard fails. Set True to always run JADX (decompiled Java for analysis).
-    USE_JADX: bool = False
+    # Extraction mode: Androguard only (fast, ~5s); DEX data feeds all
+    # downstream steps. No external decompiler is required.
 
     # Web server
     BACKEND_HOST: str = "0.0.0.0"

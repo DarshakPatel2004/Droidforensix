@@ -45,7 +45,6 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
   const [search, setSearch] = useState('')
   const [expandAll, setExpandAll] = useState(false)
   const [error, setError] = useState(null)
-  const [jadxWarning, setJadxWarning] = useState(null)
 
   const sampleId = sample?.sampleId || sample?.sha256 || sample?.uploadId
 
@@ -61,11 +60,6 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
       if (!classesRes.ok) throw new Error(`HTTP ${classesRes.status}`)
       const classesData = await classesRes.json()
       const obfData = obfRes.ok ? await obfRes.json() : null
-      if (classesData.jadx_success === false) {
-        setJadxWarning(classesData.jadx_error || 'JADX decompilation unavailable — showing bytecode-level view.')
-      } else {
-        setJadxWarning(null)
-      }
       setDissectionData(classesData)
       setObfuscationData(obfData)
       setError(null)
@@ -189,13 +183,6 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
           </div>
         </div>
       </div>
-
-      {jadxWarning && (
-        <div className="jadx-warning">
-          <span className="jadx-warning-icon">⚡</span>
-          <span>{jadxWarning}</span>
-        </div>
-      )}
 
       <div className="dissection-results card">
         <div className="dissection-results-header">

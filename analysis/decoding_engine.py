@@ -269,7 +269,7 @@ def is_decoded(text: str) -> Tuple[bool, float]:
     if not text:
         return False, 0.0
 
-    raw = text.encode("utf-8")
+    raw = text.encode("utf-8", errors="replace")
     ent = shannon_entropy(raw)
     printable = printable_ratio(raw)
     numeric_ratio = sum(1 for c in text if c.isdigit() or c in ".,:;- ") / max(len(text), 1)
@@ -609,6 +609,35 @@ def bytes_to_text(data: bytes) -> str:
             return data.hex()
 
 
+def repair_surrogates(text: str) -> str:
+    """Repair lone surrogates left over from MUTF-8/CESU-8 (DEX string) data.
+
+    Android stores strings as Modified UTF-8, which encodes supplementary
+    characters as surrogate pairs. When such data is decoded as plain UTF-8
+    the halves survive as lone surrogates that crash strict UTF-8 encodes.
+    Valid pairs are merged back into a single code point; remaining lone
+    halves become U+FFFD so downstream encoding never fails.
+    """
+    has_surrogate = any(0xD800 <= ord(c) <= 0xDFFF for c in text)
+    if not has_surrogate:
+        return text
+    chars = []
+    i, n = 0, len(text)
+    while i < n:
+        code = ord(text[i])
+        if 0xD800 <= code <= 0xDBFF and i + 1 < n and 0xDC00 <= ord(text[i + 1]) <= 0xDFFF:
+            codepoint = 0x10000 + ((code - 0xD800) << 10) + (ord(text[i + 1]) - 0xDC00)
+            chars.append(chr(codepoint))
+            i += 2
+        elif 0xD800 <= code <= 0xDFFF:
+            chars.append("\ufffd")
+            i += 1
+        else:
+            chars.append(text[i])
+            i += 1
+    return "".join(chars)
+
+
 def _applicable_decoders(text: str, data: bytes, depth: int,
                          decoded_confidence: float = 0.0) -> List[str]:
     """Return decoders that could apply to this input, ordered by specificity.
@@ -667,7 +696,10 @@ def multi_layer_decode(encoded_string: str, max_depth: int = 3,
 
     Returns dict with chain path, per-layer results, and final output.
     """
-    input_entropy = shannon_entropy(encoded_string.encode("utf-8"))
+    # Repair lone surrogates (MUTF-8/CESU-8 from DEX) so strict UTF-8
+    # encodes below never crash with UnicodeEncodeError.
+    encoded_string = repair_surrogates(encoded_string)
+    input_entropy = shannon_entropy(encoded_string.encode("utf-8", errors="replace"))
 
     result: Dict[str, Any] = {
         "original": encoded_string,
@@ -838,7 +870,7 @@ def run_decoding_engine(strings: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     results = []
     for s in strings:
         value = s.get("value", "")
-        entropy = s.get("entropy", shannon_entropy(value.encode("utf-8")))
+        entropy = s.get("entropy", shannon_entropy(value.encode("utf-8", errors="replace")))
         if len(value) < 8:
             continue
 

@@ -15,6 +15,7 @@ Research-backed confidence levels (75-95%) based on validation of 117 samples.
 import json
 import logging
 import os
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Tuple
@@ -1490,6 +1491,189 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
 
 
 # ---------------------------------------------------------------------------
+# 3b. Knowledge-base token matcher (mined from corrected ground truth)
+# ---------------------------------------------------------------------------
+#
+# FAMILY_SIGNATURES above are hand-written and cover 12 families. The mined
+# knowledge base (analysis/family_knowledge_base.json) extends coverage to the
+# families observed in the corpus: discriminating strings, C2 domains and
+# permissions per family, each with target coverage and corpus FP rate.
+# A sample matches a family when the weighted evidence sum crosses a threshold;
+# permission-only matches are discounted because permissions are weak alone.
+
+_KB_PATH = Path(__file__).resolve().parent.parent / "analysis" / "family_knowledge_base.json"
+_KB_CACHE_PATH = Path(__file__).resolve().parent.parent / "analysis" / "gap_features_cache.json"
+_KB_MIN_SCORE = 0.35          # weighted evidence sum required to name a family
+_KB_MIN_TOKENS = 2            # at least 2 distinct matched tokens required
+_KB_ANCHOR_FP = 0.05          # at least one matched token must have fp <= this
+_KB_PERM_WEIGHT = 0.3         # permission hits are weak; discount them
+_KB_LOADED: Optional[Dict[str, Any]] = None
+_KB_CACHE_LOADED: Optional[Dict[str, Any]] = None
+_KB_FEATURE_RE = re.compile(r"^[A-Za-z0-9_./: @\[\]\(\)\-#&%]{4,120}$")
+
+
+def _kb_load() -> Dict[str, Any]:
+    global _KB_LOADED
+    if _KB_LOADED is None:
+        try:
+            _KB_LOADED = json.loads(_KB_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            _KB_LOADED = {}
+    return _KB_LOADED
+
+
+def _kb_load_cache() -> Dict[str, Any]:
+    """Full-DEX androguard feature cache (richer than pipeline-result strings)."""
+    global _KB_CACHE_LOADED
+    if _KB_CACHE_LOADED is None:
+        try:
+            _KB_CACHE_LOADED = json.loads(_KB_CACHE_PATH.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            _KB_CACHE_LOADED = {}
+    return _KB_CACHE_LOADED
+
+
+def _kb_tokenize(values: List[str]) -> Set[str]:
+    tokens: Set[str] = set()
+    for value in values:
+        if not isinstance(value, str):
+            continue
+        value = value.strip()
+        if 4 <= len(value) <= 120 and _KB_FEATURE_RE.match(value):
+            tokens.add(value.lower())
+    return tokens
+
+
+def _kb_extract_features(result: Dict[str, Any],
+                         sample_id: Optional[str] = None) -> Dict[str, Set[str]]:
+    """Feature extraction consistent with the mined knowledge base.
+
+    Prefers the full-DEX androguard cache (keyed by sha256) when available;
+    falls back to the pipeline result's own strings so the matcher still works
+    on samples that were never cached.
+    """
+    if sample_id:
+        cache = _kb_load_cache()
+        entry = cache.get(sample_id.lower())
+        if entry and not entry.get("parse_error"):
+            return {
+                "strings": _kb_tokenize(entry.get("strings", []) or []),
+                "domains": {
+                    (d or "").lower() for d in (entry.get("domains", []) or [])
+                    if isinstance(d, str) and len(d) >= 4
+                },
+                "permissions": {
+                    p.split(".")[-1] for p in (entry.get("permissions", []) or [])
+                },
+            }
+
+    strings_data = result.get("strings", {})
+    values: List[str] = []
+    if isinstance(strings_data, dict):
+        for cat in ("string_literals", "resource_strings", "native_strings"):
+            for item in strings_data.get(cat, []) or []:
+                if isinstance(item, dict):
+                    val = item.get("value")
+                    if isinstance(val, str):
+                        values.append(val)
+                elif isinstance(item, str):
+                    values.append(item)
+    elif isinstance(strings_data, list):
+        for item in strings_data:
+            if isinstance(item, dict):
+                val = item.get("value")
+                if isinstance(val, str):
+                    values.append(val)
+            elif isinstance(item, str):
+                values.append(item)
+
+    domains = {
+        c2.get("domain", "").lower() for c2 in (result.get("c2_infrastructure", []) or [])
+        if c2.get("domain")
+    }
+    perms = {p.split(".")[-1] for p in (result.get("permissions", []) or [])}
+    dangerous = (
+        (result.get("obfuscation_analysis", {}) or {}).get("indicators", {}) or {}
+    ).get("dangerous_permissions", []) or []
+    perms |= {p.split(".")[-1] for p in dangerous}
+    return {
+        "strings": _kb_tokenize(values),
+        "domains": domains,
+        "permissions": perms,
+    }
+
+
+def _match_family_knowledge(result: Dict[str, Any],
+                            sample_id: Optional[str] = None) -> Optional[Dict[str, Any]]:
+    """Score the sample against every knowledge-base family fingerprint."""
+    kb = _kb_load()
+    if not kb:
+        return None
+    features = _kb_extract_features(result, sample_id=sample_id)
+
+    best_score = 0.0
+    best = None
+    for family_name, fingerprint in kb.items():
+        score = 0.0
+        hit_tokens: List[str] = []
+        hit_fps: List[float] = []
+        for token in fingerprint.get("strings", []):
+            if token["token"] in features["strings"]:
+                score += token["coverage"] * (1 - token["fp"])
+                hit_tokens.append(token["token"])
+                hit_fps.append(token["fp"])
+        for token in fingerprint.get("domains", []):
+            if token["token"] in features["domains"]:
+                score += token["coverage"] * (1 - token["fp"])
+                hit_tokens.append(f"c2:{token['token']}")
+                hit_fps.append(token["fp"])
+        for token in fingerprint.get("permissions", []):
+            if token["token"] in features["permissions"]:
+                score += _KB_PERM_WEIGHT * token["coverage"] * (1 - token["fp"])
+                hit_tokens.append(f"perm:{token['token']}")
+                hit_fps.append(token["fp"])
+
+        # Weak generic tokens must not name a family: require multiple distinct
+        # hits AND at least one near-unique anchor token (fp <= 1%).
+        if len(hit_tokens) < _KB_MIN_TOKENS:
+            continue
+        if not any(fp <= _KB_ANCHOR_FP for fp in hit_fps):
+            continue
+
+        if score > best_score:
+            best_score = score
+            best = {
+                "family": family_name,
+                "score": score,
+                "tokens": hit_tokens,
+                "samples": fingerprint.get("samples", 0),
+            }
+
+    if best is None or best_score < _KB_MIN_SCORE:
+        return None
+    confidence = min(0.9, 0.55 + 0.12 * best_score)
+    return {
+        "family": best["family"],
+        "confidence": confidence,
+        "method": "knowledge_base",
+        "reasoning": (
+            f"KB score {best_score:.2f} from "
+            f"{len(best['tokens'])} discriminating tokens: "
+            f"{'; '.join(best['tokens'][:8])}"
+        ),
+        "candidates": [{
+            "family": best["family"],
+            "source": "knowledge_base",
+            "confidence": confidence,
+            "reasoning": "; ".join(best["tokens"][:8]),
+            "kb_score": round(best_score, 3),
+            "kb_samples": best["samples"],
+        }],
+        "deterministic": True,
+    }
+
+
+# ---------------------------------------------------------------------------
 # 4. LLM (optional)
 # ---------------------------------------------------------------------------
 
@@ -1506,16 +1690,24 @@ Analyze ALL evidence holistically before deciding. Look for:
 - Permission clusters that match known family behavior profiles
 - DEX packing indicators (high entropy, few strings relative to size)
 
+A CANDIDATES section may list known malware families with their discriminating
+signals (strings, C2 domains, permissions). If it is present, your job is to
+select the BEST-MATCHING family from that list — the evidence above must match
+at least one of the candidate's listed signals, and the winning candidate must
+beat all others. This is a multiple-choice decision, not an open recall task:
+do NOT invent family names that are not in the list.
+
+If the sample is benign (no malware behavior), or NO candidate's signals appear
+in the evidence at all, return "unknown" with low confidence. Never force a match.
+
 Output valid JSON only, no markdown, exactly this schema:
 {"family": "<family name or 'unknown'>", "confidence": 0.0-1.0, "reasoning": "<short>"}
 
-When returning a known family name, cite specific evidence (e.g. "package name
-contains 'kungfu'", "C2 domain matches known Geinimi infrastructure").
-If indicators are insufficient or the sample appears benign, return "unknown"
-with low confidence. Do NOT force a match when the evidence is weak."""
+When returning a known family name, cite specific evidence (e.g. "C2 domain
+matches candidate's 'mads.php' signal", "string 'kungfu' present in dex")."""
 
 
-def _family_context(result: Dict[str, Any]) -> str:
+def _family_context(result: Dict[str, Any], sample_id: Optional[str] = None) -> str:
     metadata = result.get("metadata", {}) or {}
     c2s = result.get("c2_infrastructure", []) or []
     perms = list(_extract_permissions(result))
@@ -1623,6 +1815,50 @@ def _family_context(result: Dict[str, Any]) -> str:
     if len(perms) > 25:
         lines.append(f"  ... and {len(perms) - 25} more")
 
+    # Candidate families with discriminating signals (mined knowledge base).
+    kb = _kb_load()
+    kb_features = None
+    if kb:
+        kb_features = _kb_extract_features(result, sample_id=sample_id)
+        ranked = []
+        for family_name, fingerprint in kb.items():
+            score = 0.0
+            matched: List[str] = []
+            for token in fingerprint.get("strings", []):
+                if token["token"] in kb_features["strings"]:
+                    score += token["coverage"] * (1 - token["fp"])
+                    matched.append(token["token"])
+            for token in fingerprint.get("domains", []):
+                if token["token"] in kb_features["domains"]:
+                    score += token["coverage"] * (1 - token["fp"])
+                    matched.append(f"c2:{token['token']}")
+            for token in fingerprint.get("permissions", []):
+                if token["token"] in kb_features["permissions"]:
+                    score += _KB_PERM_WEIGHT * token["coverage"] * (1 - token["fp"])
+                    matched.append(f"perm:{token['token']}")
+            if matched:
+                ranked.append((score, family_name, matched[:5]))
+        ranked.sort(reverse=True)
+
+        # Show the sample's own matched evidence strings so the LLM can verify
+        # the candidate signals against concrete observations.
+        if kb_features["strings"]:
+            evidence = sorted(kb_features["strings"])[:40]
+            lines.append("")
+            lines.append("Observable evidence strings (readable, matched against candidate signals):")
+            for token in evidence:
+                lines.append(f"  - {token[:100]}")
+
+        lines.append("")
+        lines.append(f"CANDIDATES (knowledge-base families with matched signals; top {min(10, len(ranked))}):")
+        if not ranked:
+            lines.append("  (no candidate family has any matched signal)")
+        for score, family_name, matched in ranked[:10]:
+            lines.append(f"  [{score:.2f}] {family_name}: {', '.join(matched)}")
+        lines.append("")
+        lines.append("Choose the family from this list whose signals appear in the")
+        lines.append("evidence above. Unknown is ONLY correct if no candidate matches.")
+
     return "\n".join(lines)
 
 
@@ -1635,7 +1871,7 @@ def _llm_family(result: Dict[str, Any], max_tokens: int = 400) -> Optional[Dict[
     or_api_key = os.environ.get("OPENROUTER_API_KEY")
     use_nvidia = provider == "nvidia" or (provider == "auto" and nim_api_key)
     use_openrouter = provider == "openrouter" or (provider == "auto" and or_api_key and not nim_api_key)
-    context = _family_context(result)
+    context = _family_context(result, sample_id=result.get("sample_id") or result.get("metadata", {}).get("sha256"))
     raw = None
 
     # OpenRouter requires HTTP-Referer and X-Title headers
@@ -1693,9 +1929,9 @@ def _llm_family(result: Dict[str, Any], max_tokens: int = 400) -> Optional[Dict[
                 )
                 return None
             import ollama
-            # 60s fits inside the step 9 budget (STEP_TIMEOUTS[9] = 90s);
+            # 300s accommodates 4-way parallel CPU inference (OLLAMA_NUM_PARALLEL=4);
             # on failure _llm_family returns None and family ID falls back to heuristics.
-            client = ollama.Client(host=host, timeout=60)
+            client = ollama.Client(host=host, timeout=300)
             resp = client.generate(
                 model=os.environ.get("OLLAMA_MODEL", settings.OLLAMA_MODEL),
                 prompt=f"{_FAMILY_SYSTEM_PROMPT}\n\nINDICATORS:\n{context}\n\nFAMILY:",
@@ -1788,6 +2024,12 @@ def identify_family(sample_id: str, result: Dict[str, Any],
         sig_match = _match_family_signatures(result)
         if sig_match:
             outcome = sig_match
+
+    # 2b. Knowledge-base token matcher (mined discriminators, corpus-backed).
+    if outcome is None:
+        kb_match = _match_family_knowledge(result, sample_id=sample_id)
+        if kb_match:
+            outcome = kb_match
 
     # 3. LLM fallback — only when no deterministic match found.
     if outcome is None and use_llm:

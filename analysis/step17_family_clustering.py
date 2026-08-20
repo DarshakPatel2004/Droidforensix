@@ -48,7 +48,7 @@ def hash_method_signature(full_signature: str) -> str:
 def extract_methods_from_source(extracted_path: str) -> List[Dict[str, Any]]:
     methods = []
     base = Path(extracted_path)
-    source_dirs = [d for d in [base / "sources", base / "smali", base / "jadx_output"] if d.is_dir()]
+    source_dirs = [d for d in [base / "sources", base / "smali"] if d.is_dir()]
 
     method_pattern = re.compile(r'\.method\s+(?:public|private|protected|static|final)?\s*(.+?)$', re.MULTILINE)
     class_pattern = re.compile(r'\.class\s+(?:public|private|protected|static|final)?\s*(.+?)$', re.MULTILINE)

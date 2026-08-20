@@ -3,7 +3,7 @@ Step 8: Advanced Obfuscation Analysis
 
 Uses Androguard DEX bytecode analysis, native library string extraction,
 and DEX packing/entropy detection to catch obfuscation techniques that
-static decompilation (apktool/jadx) misses.
+static decompilation (apktool) misses.
 
 Detects:
 - Reflection usage

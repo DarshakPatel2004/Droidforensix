@@ -299,22 +299,22 @@ class TestAtomicClassCache:
         assert loaded[0]["name"] == "com.test.OK"
 
 
-class TestJadxErrorPropagation:
-    def test_jadx_available_false_for_bogus_path(self):
-        """APKDissector with a non-existent APK should report JADX as unavailable."""
+class TestAndroguardDissection:
+    def test_list_decompiled_classes_returns_empty_for_bogus_path(self):
+        """APKDissector with a non-existent APK should return no classes."""
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             bogus_apk = Path(tmp) / "nonexistent.apk"
             bogus_apk.write_text("this is not an APK", encoding="utf-8")
             dissector = APKDissector(str(bogus_apk), work_dir=tmp)
-            assert dissector.jadx_available() is False
+            assert dissector.list_decompiled_classes() == []
 
-    def test_classes_endpoint_has_jadx_success(self, client, existing_sample_id):
+    def test_classes_endpoint_returns_classes_list(self, client, existing_sample_id):
         response = client.get(f"/api/sample/{existing_sample_id}/dissection/classes")
         assert response.status_code == 200
         data = response.json()
-        assert "jadx_success" in data
-        assert isinstance(data["jadx_success"], bool)
+        assert "classes" in data
+        assert isinstance(data["classes"], list)
 
     def test_refresh_param_invalidates_cache(self, client, existing_sample_id):
         """?refresh=true should not throw and should return valid data."""

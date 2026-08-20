@@ -54,7 +54,7 @@ def find_reflective_calls(apk_info: Dict[str, Any]) -> Dict[str, Any]:
 
     source_dirs = []
     base = Path(extracted_path)
-    for candidate in [base / "sources", base / "smali", base / "jadx_output"]:
+    for candidate in [base / "sources", base / "smali"]:
         if candidate.is_dir():
             source_dirs.append(candidate)
 

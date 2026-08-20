@@ -129,6 +129,9 @@ def main() -> None:
     print(f"\nHIGH-stability families ({len(high)}): {[f for f, _ in high]}")
     print(f"Useful for cert-based boosting: {len(high)} / {len(profiles)} families")
 
+    global CERT_PROFILES
+    CERT_PROFILES = {fam: p for fam, p in ranked}
+
     output = {
         "summary": {
             "total_apks": total,
@@ -145,3 +148,18 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
+
+# Module-level CERT_PROFILES dict — populated when main() is invoked.
+# If main() hasn't been called, load from the generated JSON file.
+try:
+    with open(OUT_PATH, "r", encoding="utf-8") as f:
+        import json
+        data = json.load(f)
+        CERT_PROFILES = data.get("profiles", {})
+except (FileNotFoundError, json.JSONDecodeError):
+    CERT_PROFILES = {}
+
+# If main() was already run and set a non-empty dict, keep it.
+# Otherwise the auto-load above will have populated it from JSON.
+if not CERT_PROFILES:
+    CERT_PROFILES = {}

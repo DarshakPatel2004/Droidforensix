@@ -1,4 +1,4 @@
-"""Tests for smali string extraction fallback when JADX fails."""
+"""Tests for smali string extraction fallback when Androguard DEX extraction fails."""
 
 from pathlib import Path
 from analysis.step2_string_enumeration import extract_smali_strings

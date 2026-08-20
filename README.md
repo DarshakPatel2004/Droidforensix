@@ -9,7 +9,7 @@
 
 > **63x speedup** over manual analysis. **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers.
 >
-> **Read this before citing headline numbers:** validation shows exact-match family identification at **32.0%** and only **2.4% of raw extracted indicators confirmed as genuine C2** — see [Evaluation & Validation](#evaluation). Raw counts above reflect extraction coverage, not verified accuracy.
+> **Read this before citing headline numbers:** validation shows exact-match family identification at **64.2%** (68.6% on specific families) and only **2.4% of raw extracted indicators confirmed as genuine C2** — see [Evaluation & Validation](#evaluation). Raw counts above reflect extraction coverage, not verified accuracy.
 
 ---
 
@@ -269,7 +269,7 @@ Exact-match family accuracy against corrected ground truth is **64.2% (226/352)*
 2. **knowledge-base matcher** (new) — discriminators mined from the corrected GT (`analysis/family_knowledge_base.json`, 38 families; ≥2 matched tokens + an anchor token at ≤5% corpus FP). ~95% precision offline.
 3. **LLM with candidate guidance** (new prompt) — the context now lists candidate families with their actually-matched signals plus observable evidence strings, turning open recall into a multiple-choice decision. The old prompt showed only string *counts*, which is why it refused 94% of samples.
 
-### Reproducibility (359-sample family validation)
+### Reproducibility (352-sample family validation)
 
 The validation metrics are committed and reproducible with the tooling in the repo:
 

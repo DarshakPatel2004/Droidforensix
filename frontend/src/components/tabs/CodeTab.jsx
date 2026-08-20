@@ -168,63 +168,113 @@ export default function CodeTab({ sampleId, apiUrl }) {
           <div className="empty-state">Select a class to view code analysis</div>
         )}
         {selectedClass && (
-          <div style={{ display: 'flex', gap: 6, marginBottom: 12, flexWrap: 'wrap' }}>
-            <button
-              onClick={() => setViewMode('analysis')}
-              style={{
-                padding: '4px 12px', borderRadius: 4, border: 'none', cursor: 'pointer',
-                fontSize: 11, fontWeight: 600,
-                background: viewMode === 'analysis' ? 'var(--accent-cyan)' : 'var(--bg-secondary)',
-                color: viewMode === 'analysis' ? '#fff' : 'var(--text-secondary)',
-              }}
-            >Attack Flow</button>
-            <button
-              onClick={() => { setViewMode('source'); setHighlightString(null) }}
-              style={{
-                padding: '4px 12px', borderRadius: 4, border: 'none', cursor: 'pointer',
-                fontSize: 11, fontWeight: 600,
-                background: viewMode === 'source' ? 'var(--accent-cyan)' : 'var(--bg-secondary)',
-                color: viewMode === 'source' ? '#fff' : 'var(--text-secondary)',
-              }}
-            >Raw Source{highlightString ? ' 🔍' : ''}</button>
+          <div style={{
+            display: 'flex', gap: 8, marginBottom: 16, flexWrap: 'wrap', alignItems: 'center',
+          }}>
+            <div style={{
+              display: 'flex', gap: 4, padding: 4, borderRadius: 8,
+              background: 'var(--bg-secondary)', border: '1px solid var(--border-color)',
+            }}>
+              <button
+                onClick={() => setViewMode('analysis')}
+                style={{
+                  padding: '6px 14px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                  fontSize: 12, fontWeight: 600,
+                  background: viewMode === 'analysis' ? 'var(--accent-cyan)' : 'transparent',
+                  color: viewMode === 'analysis' ? '#fff' : 'var(--text-secondary)',
+                  transition: 'all 0.15s',
+                }}
+              >Attack Flow</button>
+              <button
+                onClick={() => { setViewMode('source'); setHighlightString(null) }}
+                style={{
+                  padding: '6px 14px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                  fontSize: 12, fontWeight: 600,
+                  background: viewMode === 'source' ? 'var(--accent-cyan)' : 'transparent',
+                  color: viewMode === 'source' ? '#fff' : 'var(--text-secondary)',
+                  transition: 'all 0.15s',
+                }}
+              >Raw Source{highlightString ? ' 🔍' : ''}</button>
+            </div>
+
             {analysis && (
-              <>
-                <button onClick={() => copyText(JSON.stringify(analysis, null, 2))} className="tiny-btn" style={{ marginLeft: 'auto' }}>
-                  copy analysis
-                </button>
-                <button onClick={shareAnalysis} className="tiny-btn" title="Copy formatted analysis summary">
-                  share
-                </button>
-                {selectedClass && (
-                  <button
-                    onClick={() => {
-                      const el = document.querySelector('.source-code code')
-                      if (el) downloadFile(el.textContent || '', `${selectedClass.split('.').pop() || 'class'}.java`)
-                    }}
-                    className="tiny-btn" title="Download source as .java file"
-                  >export</button>
-                )}
-              </>
+              <div style={{
+                display: 'flex', gap: 4, padding: 4, borderRadius: 8,
+                background: 'var(--bg-secondary)', border: '1px solid var(--border-color)',
+              }}>
+                <button
+                  onClick={() => copyText(JSON.stringify(analysis, null, 2))}
+                  style={{
+                    padding: '6px 12px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                    fontSize: 11, fontWeight: 500, background: 'transparent',
+                    color: 'var(--text-secondary)', transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={e => e.target.style.color = 'var(--accent-cyan)'}
+                  onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}
+                >Copy</button>
+                <button
+                  onClick={shareAnalysis}
+                  style={{
+                    padding: '6px 12px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                    fontSize: 11, fontWeight: 500, background: 'transparent',
+                    color: 'var(--text-secondary)', transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={e => e.target.style.color = 'var(--accent-cyan)'}
+                  onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}
+                  title="Copy formatted analysis summary"
+                >Share</button>
+                <button
+                  onClick={() => {
+                    const el = document.querySelector('.source-code code')
+                    if (el) downloadFile(el.textContent || '', `${selectedClass.split('.').pop() || 'class'}.java`)
+                  }}
+                  style={{
+                    padding: '6px 12px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                    fontSize: 11, fontWeight: 500, background: 'transparent',
+                    color: 'var(--text-secondary)', transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={e => e.target.style.color = 'var(--accent-cyan)'}
+                  onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}
+                  title="Download source as .java file"
+                >Export</button>
+              </div>
             )}
           </div>
         )}
         {viewMode === 'source' && selectedClass && (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 6, marginBottom: 8 }}>
-              <button
-                onClick={() => { setHighlightString(null); setViewMode('source') }}
-                className="tiny-btn"
-                style={highlightString ? { color: 'var(--accent-amber)' } : {}}
-              >
-                {highlightString ? `highlight: "${highlightString.substring(0, 30)}" ×` : 'no highlight'}
-              </button>
-              <button
-                onClick={() => {
-                  const el = document.querySelector('.source-code code')
-                  if (el) copyText(el.textContent)
-                }}
-                className="tiny-btn"
-              >copy source</button>
+            <div style={{
+              display: 'flex', justifyContent: 'flex-end', gap: 8, marginBottom: 12,
+            }}>
+              <div style={{
+                display: 'flex', gap: 4, padding: 4, borderRadius: 8,
+                background: 'var(--bg-secondary)', border: '1px solid var(--border-color)',
+              }}>
+                <button
+                  onClick={() => { setHighlightString(null); setViewMode('source') }}
+                  style={{
+                    padding: '5px 12px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                    fontSize: 11, fontWeight: 500, background: 'transparent',
+                    color: highlightString ? 'var(--accent-amber)' : 'var(--text-secondary)',
+                    transition: 'all 0.15s',
+                  }}
+                >
+                  {highlightString ? `Highlight: "${highlightString.substring(0, 25)}" ×` : 'No Highlight'}
+                </button>
+                <button
+                  onClick={() => {
+                    const el = document.querySelector('.source-code code')
+                    if (el) copyText(el.textContent)
+                  }}
+                  style={{
+                    padding: '5px 12px', borderRadius: 6, border: 'none', cursor: 'pointer',
+                    fontSize: 11, fontWeight: 500, background: 'transparent',
+                    color: 'var(--text-secondary)', transition: 'all 0.15s',
+                  }}
+                  onMouseEnter={e => e.target.style.color = 'var(--accent-cyan)'}
+                  onMouseLeave={e => e.target.style.color = 'var(--text-secondary)'}
+                >Copy Source</button>
+              </div>
             </div>
             <ClassSourceViewer
               sampleId={sampleId}

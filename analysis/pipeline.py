@@ -80,10 +80,10 @@ STEP_NAMES = {
 }
 
 STEP_TIMEOUTS = {
-    1: 120, 2: 120, 3: 120, 4: 60, 5: 300,
-    6: 60, 7: 180, 8: 300, 9: 90,
-    10: 60, 11: 60, 12: 60, 13: 60, 14: 60,
-    15: 30, 16: 30, 17: 30, 18: 30,
+    1: 180, 2: 180, 3: 180, 4: 90, 5: 450,
+    6: 90, 7: 270, 8: 900, 9: 450,
+    10: 90, 11: 90, 12: 90, 13: 90, 14: 90,
+    15: 45, 16: 45, 17: 45, 18: 45,
 }
 
 
@@ -268,7 +268,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             f"Step 1 (APK Extraction) failed: {type(e).__name__}: {e}\n\n"
             f"Common fixes:\n"
             f"  1. Verify the file exists and is a valid APK: ls -la {apk_path}\n"
-            f"  2. Check required tools: jadx, apktool, androguard\n"
+            f"  2. Check required tools: apktool, androguard\n"
             f"  3. Ensure WORK_DIR in backend/config.py is writable\n"
             f"  4. Try with --use-androguard-only to skip external tools"
         )
@@ -318,7 +318,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             f"  3. APK is very large — consider running individual steps manually"
         )
 
-    _validate_step_input("Step 2 input", extraction, ["sample_id", "package_name", "jadx_output_dir", "apktool_output_dir"])
+    _validate_step_input("Step 2 input", extraction, ["sample_id", "package_name", "apktool_output_dir"])
 
     # Step 2: String Enumeration
     strings_result, timeline["step2"] = _run_step(
@@ -344,8 +344,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     _validate_step_input("Step 3 input", strings_result, ["total_strings", "categories"])
 
     # Hardcoded Secrets Scan (inline after string enumeration)
-    jadx_dir = extraction.get("jadx_output_dir")
-    secrets_result = analyze_hardcoded_secrets(strings_result, jadx_output_dir=jadx_dir)
+    secrets_result = analyze_hardcoded_secrets(strings_result)
     _emit(event_emitter, "metric_updated", {
         "sample_id": sample_id,
         "metric_name": "hardcoded_secrets_count",
@@ -543,7 +542,6 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         },
         "extraction": {
             "apktool_success": extraction["apktool_success"],
-            "jadx_success": extraction["jadx_success"],
             "errors": extraction.get("errors", []),
             "native_libs_found": extraction["native_libs_found"],
             "decompiled_classes": extraction["decompiled_classes"],

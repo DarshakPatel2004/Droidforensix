@@ -7,7 +7,6 @@ const MOCK_CLASSES = {
     { name: 'com.example.LegitClass', method_names: ['toString', 'onCreate'], method_count: 2 },
     { name: 'com.example.CryptoHelper', method_names: ['encrypt', 'decrypt', 'initCipher'], method_count: 3 },
   ],
-  jadx_success: true,
 }
 
 const MOCK_METHODS = {
@@ -75,17 +74,6 @@ describe('SmartDissection', () => {
     fireEvent.change(searchInput, { target: { value: 'Legit' } })
     expect(screen.getByText(/LegitClass/)).toBeTruthy()
     expect(screen.queryByText(/CryptoHelper/)).toBeNull()
-  })
-
-  test('shows jadx warning when jadx_success is false', async () => {
-    global.fetch = vi.fn()
-      .mockResolvedValueOnce({ ok: true, json: () => Promise.resolve({ ...MOCK_CLASSES, jadx_success: false, jadx_error: 'JADX failed' }) })
-      .mockResolvedValueOnce({ ok: false })
-
-    render(<SmartDissection sample={{ sha256: 'abc' }} apiUrl="http://localhost:8000" />)
-    await waitFor(() => {
-      expect(screen.getByText(/JADX/)).toBeTruthy()
-    })
   })
 
   test('exposes View source button when onSelectClass is provided', async () => {

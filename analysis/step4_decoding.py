@@ -16,7 +16,7 @@ from urllib.parse import urlparse
 
 import phonenumbers
 
-from analysis.decoding_engine import multi_layer_decode
+from analysis.decoding_engine import multi_layer_decode, repair_surrogates
 from analysis.ip_validation import calculate_ip_legitimacy_score
 from backend.config import settings
 
@@ -183,17 +183,47 @@ def normalize_url(url: str) -> str:
         return url
 
 
+# Fraction of null bytes (per 2-byte word) that implies UTF-16 text layout
+UTF16_NULL_RATIO_THRESHOLD = 0.4
+
+
+def decode_bytes_dynamic(data: bytes) -> str:
+    """Decode payload bytes to text, detecting the actual encoding.
+
+    Order of detection:
+      1. UTF-16 via BOM (FF FE = LE, FE FF = BE)
+      2. UTF-16 via null-byte layout when there is no BOM
+      3. UTF-8
+      4. Latin-1 (never fails; preserves byte values)
+    """
+    if not data:
+        return ""
+    if data[:2] == b"\xff\xfe":
+        return data.decode("utf-16", errors="replace")
+    if data[:2] == b"\xfe\xff":
+        return data.decode("utf-16", errors="replace")
+    if len(data) >= 4:
+        words = len(data) // 2
+        nulls_even = sum(1 for i in range(0, len(data) - 1, 2) if data[i] == 0)
+        nulls_odd = sum(1 for i in range(1, len(data), 2) if data[i] == 0)
+        if nulls_odd / words > UTF16_NULL_RATIO_THRESHOLD:
+            return data.decode("utf-16le", errors="replace")
+        if nulls_even / words > UTF16_NULL_RATIO_THRESHOLD:
+            return data.decode("utf-16be", errors="replace")
+    try:
+        return data.decode("utf-8")
+    except UnicodeDecodeError:
+        return data.decode("latin-1", errors="ignore")
+
+
 def extract_artifacts(decoded_bytes: bytes, encoding_type: str) -> List[Dict[str, Any]]:
     """Extract artifacts from decoded bytes."""
     artifacts = []
     if not decoded_bytes:
         return artifacts
 
-    # Try UTF-8 first
-    try:
-        text = decoded_bytes.decode("utf-8")
-    except UnicodeDecodeError:
-        text = decoded_bytes.decode("latin-1", errors="ignore")
+    # Detect actual encoding (UTF-16 BOM/layout, then UTF-8, then Latin-1)
+    text = repair_surrogates(decode_bytes_dynamic(decoded_bytes))
 
     # URLs
     for url in extract_urls(text):
@@ -312,13 +342,10 @@ def decode_payloads(encodings_result: dict) -> dict:
             continue
 
         try:
-            decoded_text = decoded_bytes.decode("utf-8", errors="replace")
-        except UnicodeDecodeError:
-            try:
-                decoded_text = decoded_bytes.decode("latin-1")
-            except Exception:
-                decoded_text = decoded_bytes.hex()
-        decoded_text = decoded_text.encode("utf-8", errors="replace").decode("utf-8")
+            decoded_text = decode_bytes_dynamic(decoded_bytes)
+        except Exception:
+            decoded_text = decoded_bytes.hex()
+        decoded_text = repair_surrogates(decoded_text)
 
         artifacts = extract_artifacts(decoded_bytes, enc_type)
 

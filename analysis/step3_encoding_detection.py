@@ -41,6 +41,11 @@ HIGH_ENTROPY_THRESHOLD = 5.0
 CUSTOM_ENCODING_THRESHOLD = 7.0
 XOR_PRINTABLE_THRESHOLD = 0.70
 
+# Maximum encodings kept per APK. Bounds the per-encoding work in steps 4-8
+# (multi-layer decode, C2 extraction, threat chains, LLM) on very large APKs —
+# no analyst reads thousands of near-duplicate chains.
+MAX_ENCODINGS = 500
+
 # Source locations that are framework / support-library boilerplate.
 # Encodings found here are overwhelmingly false positives (class names, method
 # names, constants) unless the decoded content itself is clearly malicious.
@@ -499,6 +504,14 @@ def detect_encoding(strings_result: dict) -> dict:
                 "validation_status": "uncertain",
             })
             encoding_id += 1
+
+    # Cap: keep all custom-flagged encodings (manual review items) plus the
+    # highest-confidence regular encodings up to MAX_ENCODINGS.
+    if len(encodings) > MAX_ENCODINGS:
+        custom_encodings = [e for e in encodings if e.get("type") == "custom"]
+        regular_encodings = [e for e in encodings if e.get("type") != "custom"]
+        regular_encodings.sort(key=lambda e: e.get("confidence", 0.0), reverse=True)
+        encodings = custom_encodings + regular_encodings[:MAX_ENCODINGS - len(custom_encodings)]
 
     result = {
         "sample_id": sample_id,

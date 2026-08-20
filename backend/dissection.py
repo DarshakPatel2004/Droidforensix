@@ -18,6 +18,7 @@ from typing import Any, Dict, List, Optional, Tuple
 
 from androguard.core.apk import APK
 from androguard.core.dex import DEX
+from lxml import etree
 
 from backend.config import settings
 from backend.elf_analyzer import ELFBreaker
@@ -238,7 +239,7 @@ class APKDissector:
             "application": app_attrs,
             "features": sorted(set(apk.get_features() or [])),
             "libraries": sorted(set(apk.get_libraries() or [])),
-            "raw_manifest": apk.get_raw().decode("utf-8", errors="ignore") if apk.get_raw() else None,
+            "raw_manifest": etree.tostring(manifest, pretty_print=True, encoding='unicode') if manifest is not None else None,
         }
 
     def extract_permissions(self) -> List[Dict[str, Any]]:
@@ -486,19 +487,8 @@ class APKDissector:
         }
 
     def list_decompiled_classes(self) -> List[str]:
-        """List Java classes from JADX output, falling back to Androguard DEX classes if missing."""
-        sample_id = self._sample_id_from_apk()
-        sources_dir = self.work_dir / sample_id / "jadx" / "sources"
-        if not sources_dir.exists():
-            return self._list_classes_from_androguard()
-
-        classes = []
-        for java_file in sources_dir.rglob("*.java"):
-            rel = java_file.relative_to(sources_dir)
-            # Convert path to dotted class name
-            class_name = str(rel.with_suffix("")).replace("/", ".").replace("\\", ".")
-            classes.append(class_name)
-        return sorted(classes)
+        """List class names from DEX via Androguard."""
+        return self._list_classes_from_androguard()
 
     def _list_classes_from_androguard(self) -> List[str]:
         """List class names from DEX via Androguard."""
@@ -514,18 +504,12 @@ class APKDissector:
                             class_name = class_name[1:-1].replace("/", ".")
                         classes.append(class_name)
                 except Exception:
-                    logger.debug("Skipping malformed DEX class entry in androguard fallback")
+                    logger.debug("Skipping malformed DEX class entry in androguard")
                     continue
             return sorted(classes)
         except Exception:
             logger.debug("Androguard class listing failed, returning empty")
             return []
-
-    def jadx_available(self) -> bool:
-        """Check if JADX decompilation output is available for this sample."""
-        sample_id = self._sample_id_from_apk()
-        sources_dir = self.work_dir / sample_id / "jadx" / "sources"
-        return sources_dir.exists() and any(sources_dir.rglob("*.java"))
 
     def list_decompiled_class_objects(self, refresh: bool = False) -> List[Dict[str, Any]]:
         """Return class objects with method/network summaries for the dashboard.
@@ -554,11 +538,7 @@ class APKDissector:
             except Exception:
                 logger.debug("Class cache corrupt, rebuilding")
 
-        sources_dir = self.work_dir / sample_id / "jadx" / "sources"
-        if not sources_dir.exists():
-            result = self._list_class_objects_from_androguard()
-        else:
-            result = self._list_class_objects_from_jadx(sources_dir)
+        result = self._list_class_objects_from_androguard()
 
         # Atomic write cache with per-sample lock
         with _class_cache_locks_lock:
@@ -579,76 +559,8 @@ class APKDissector:
         _CLASS_OBJECTS_CACHE[sample_id] = (result, now)
         return result
 
-    def _list_class_objects_from_jadx(self, sources_dir: Path) -> List[Dict[str, Any]]:
-        """Build class objects from JADX source files (with method bodies)."""
-        import re
-
-        CONTROL_NAMES = {"if", "for", "while", "switch", "catch", "synchronized", "try", "finally"}
-        NETWORK_PATTERNS = [
-            re.compile(r"https?://[^\\s\"'<>]+", re.IGNORECASE),
-            re.compile(r"\b(new\s+URL|new\s+URI|openConnection|getInputStream|getOutputStream)\s*\("),
-            re.compile(r"\b(HttpURLConnection|URLConnection|Socket|ServerSocket|InetAddress)\b"),
-            re.compile(r"\b(okhttp3|retrofit2)\b", re.IGNORECASE),
-        ]
-        method_pattern = re.compile(
-            r"^\s*(?:(?:public|private|protected|static|final|abstract|synchronized)\s+)+"
-            r"(?:[\w\[\]<>?]+(?:\s*<[^>]+>\s*)?\s+)+"
-            r"(\w+)\s*\([^)]*\)\s*\{",
-            re.MULTILINE,
-        )
-
-        classes = []
-        for class_name in self.list_decompiled_classes():
-            source = self.read_class_source(class_name) or ""
-            lines = source.splitlines()
-
-            methods = []
-            for m in method_pattern.finditer(source):
-                name = m.group(1)
-                if name in CONTROL_NAMES:
-                    continue
-                body_start = m.end()
-                brace_count = 1
-                idx = body_start
-                while idx < len(source) and brace_count > 0:
-                    if source[idx] == "{":
-                        brace_count += 1
-                    elif source[idx] == "}":
-                        brace_count -= 1
-                    idx += 1
-                body = source[body_start:idx]
-                methods.append({"name": name, "body": body})
-
-            # Extract network-related snippets, skipping import lines.
-            network_calls = []
-            for line in lines:
-                stripped = line.strip()
-                if stripped.startswith("import "):
-                    continue
-                for pattern in NETWORK_PATTERNS:
-                    if pattern.search(stripped):
-                        network_calls.append(stripped.strip(";"))
-                        break
-            network_calls = list(dict.fromkeys(network_calls))[:20]
-
-            # Extract permission-like API usages.
-            permission_lines = [
-                stripped.strip(";")
-                for stripped in (line.strip() for line in lines)
-                if "checkSelfPermission" in stripped or "checkCallingOrSelfPermission" in stripped
-            ]
-            permissions_used = list(dict.fromkeys(permission_lines))[:10]
-
-            classes.append({
-                "name": class_name,
-                "methods": methods,
-                "network_calls": network_calls,
-                "permissions_used": permissions_used,
-            })
-        return classes
-
     def _list_class_objects_from_androguard(self) -> List[Dict[str, Any]]:
-        """Extract classes and methods from DEX bytecode using Androguard when JADX is unavailable."""
+        """Extract classes and methods from DEX bytecode using Androguard."""
         classes = []
         try:
             apk = self._get_apk()
@@ -671,7 +583,7 @@ class APKDissector:
                                     for ins in _iter_instructions(code):
                                         body_parts.append(f"{ins.get_name()} {ins.get_output()}")
                             except Exception:
-                                logger.debug("Failed to extract method instructions in androguard fallback")
+                                logger.debug("Failed to extract method instructions in androguard")
 
                             body = "\n".join(body_parts) if body_parts else "[Bytecode unavailable]"
                             methods.append({
@@ -686,23 +598,14 @@ class APKDissector:
                             "permissions_used": []
                         })
                 except Exception:
-                    logger.debug("Skipping DEX class in androguard fallback")
+                    logger.debug("Skipping DEX class in androguard")
                     continue
         except Exception:
             logger.debug("Androguard class object extraction failed entirely")
         return sorted(classes, key=lambda x: x["name"])
 
     def read_class_source(self, class_name: str) -> Optional[str]:
-        """Read decompiled Java source for a specific class, or fallback to disassembled DEX instructions."""
-        sample_id = self._sample_id_from_apk()
-        parts = class_name.split(".")
-        source_file = self.work_dir / sample_id / "jadx" / "sources" / Path(*parts).with_suffix(".java")
-        if source_file.exists():
-            try:
-                with open(source_file, "r", encoding="utf-8", errors="ignore") as f:
-                    return f.read()
-            except Exception:
-                logger.debug("Failed to read source file for %s, trying androguard fallback", class_name)
+        """Read class source as disassembled DEX instructions via Androguard."""
         return self._disassemble_class_from_androguard(class_name)
 
     def _disassemble_class_from_androguard(self, class_name: str) -> Optional[str]:
@@ -721,7 +624,7 @@ class APKDissector:
                         cls_raw = cls.get_name()
                         if cls_raw in targets:
                             output = [
-                                f"// Disassembled DEX Class (Fallback for packed/encrypted APK)",
+                                f"// Disassembled DEX Class via Androguard",
                                 f"class {class_name} {{",
                                 ""
                             ]
@@ -753,7 +656,7 @@ class APKDissector:
                     continue
         except Exception:
             logger.debug("Androguard disassemble failed for class %s", class_name)
-        logger.warning("Androguard fallback: class '%s' not found in DEX (listed but source unavailable)", class_name)
+        logger.warning("Androguard: class '%s' not found in DEX (listed but source unavailable)", class_name)
         return None
 
     def load_strings(self) -> Optional[Dict[str, Any]]:

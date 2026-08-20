@@ -101,7 +101,10 @@ def to_pipeline_result(entry: Dict[str, Any]) -> Dict[str, Any]:
             "decompiled_classes": entry.get("class_count", 0),
             "native_libs_found": entry.get("native_libs", []) or [],
         },
-        "metadata": {"apk_path": ""},
+        "metadata": {
+            "apk_path": "",
+            "certificate_issuer": entry.get("certificate_issuer", ""),
+        },
     }
 
 

@@ -326,7 +326,7 @@ def test_analyze_hardcoded_secrets_entry_point():
             "native_strings": [],
         },
     }
-    result = analyze_hardcoded_secrets(string_result, jadx_output_dir=None, scan_high_entropy=False)
+    result = analyze_hardcoded_secrets(string_result, scan_high_entropy=False)
     assert result["total_scanned"] == 2
     assert result["secret_risk"]["total_secrets"] >= 2
     assert result["secret_risk"]["severity"] == "high"

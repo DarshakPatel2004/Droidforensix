@@ -106,56 +106,8 @@ def _extract_strings_from_text(text: str, source_prefix: str, source_path: Path,
     return results
 
 
-def extract_java_strings(source_dir: str) -> List[Dict[str, Any]]:
-    """Extract string literals from Java source files."""
-    results = []
-    source_path = Path(source_dir)
-    if not source_path.exists():
-        return results
-
-    for java_file in source_path.rglob("*.java"):
-        try:
-            with open(java_file, "r", encoding="utf-8", errors="ignore") as f:
-                content = f.read()
-            prefix = str(java_file.relative_to(source_path))
-            results.extend(_extract_strings_from_text(content, prefix, source_path, "string_literal"))
-
-            # Byte arrays
-            lines = content.splitlines()
-            for line_no, line in enumerate(lines, start=1):
-                for match in BYTE_ARRAY_REGEX.finditer(line):
-                    hex_str = match.group(1)
-                    try:
-                        bytes_values = [int(x.strip(), 16) for x in hex_str.split(",")]
-                        byte_data = bytes(bytes_values)
-                        hex_repr = byte_data.hex()
-                        results.append({
-                            "category": "byte_array",
-                            "value": hex_repr,
-                            "entropy": round(shannon_entropy(byte_data), 4),
-                            "source": f"{prefix}:{line_no}",
-                        })
-                    except ValueError:
-                        continue
-
-                # Numeric constants
-                for match in NUMERIC_REGEX.finditer(line):
-                    value = int(match.group(1))
-                    results.append({
-                        "category": "numeric_constant",
-                        "value": value,
-                        "entropy": 0.0,
-                        "source": f"{prefix}:{line_no}",
-                    })
-        except OSError as e:
-            logger.debug("Error reading Java file %s: %s", java_file, e)
-            continue
-
-    return results
-
-
 def extract_smali_strings(apktool_dir: str) -> List[Dict[str, Any]]:
-    """Extract string literals from smali files as a fallback when JADX fails."""
+    """Extract string literals from smali files as a fallback when Androguard DEX extraction fails."""
     results = []
     smali_path = Path(apktool_dir) / "smali"
     if not smali_path.exists():
@@ -300,7 +252,6 @@ def enumerate_strings(extraction_result: dict) -> dict:
     work_dir.mkdir(parents=True, exist_ok=True)
 
     apktool_dir = extraction_result.get("apktool_output_dir")
-    jadx_dir = extraction_result.get("jadx_output_dir")
     native_strings = extraction_result.get("native_strings", [])
     apk_path = extraction_result.get("apk_path")
 
@@ -311,12 +262,7 @@ def enumerate_strings(extraction_result: dict) -> dict:
         andro_strings = extract_androguard_strings(apk_path)
         all_strings.extend(andro_strings)
 
-    # Secondary: JADX Java strings (enrichment, only if Androguard produced nothing)
-    if jadx_dir and not all_strings:
-        java_strings = extract_java_strings(jadx_dir)
-        all_strings.extend(java_strings)
-
-    # Fallback: smali strings from apktool if both Androguard and JADX failed
+    # Fallback: smali strings from apktool if Androguard produced nothing
     if apktool_dir and not all_strings:
         smali_strings = extract_smali_strings(apktool_dir)
         all_strings.extend(smali_strings)

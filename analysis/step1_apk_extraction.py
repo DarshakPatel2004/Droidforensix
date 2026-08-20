@@ -1,7 +1,7 @@
 """
 Step 1: APK Extraction & Decompilation
 
-Unpacks APK using apktool, decompiles DEX to Java using jadx-cli,
+Unpacks APK using apktool, extracts DEX class/string data using Androguard,
 extracts native library strings using the `strings` utility (Windows-native
 when available via Git Bash or Sysinternals), and generates metadata.
 """
@@ -18,7 +18,6 @@ from pathlib import Path
 from typing import Optional
 
 from backend.config import settings
-from analysis.retry_utils import safe_decompile_apk, DecompilationError
 
 logger = logging.getLogger(__name__)
 
@@ -95,58 +94,6 @@ def run_apktool(apk_path: str, output_dir: str) -> dict:
             f"apktool unexpected error: {type(e).__name__}: {e}\n\n"
             f"If this persists, try running apktool manually:\n"
             f"  apktool d -f -o {output_dir} {apk_path}"
-        )
-    return result
-
-
-def run_jadx(apk_path: str, output_dir: str) -> dict:
-    """Run jadx-cli to decompile DEX to Java source."""
-    result = {"success": False, "output_dir": output_dir, "error": None}
-    try:
-        cmd = _tool_cmd(settings.JADX_PATH) + [
-            "-d", output_dir,
-            "--deobf",
-            "--deobf-min", "2",
-            apk_path,
-        ]
-        proc = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=300, shell=(os.name == "nt")
-        )
-        if proc.returncode == 0:
-            result["success"] = True
-        else:
-            result["error"] = (
-                f"jadx exit code {proc.returncode}.\n"
-                f"stderr: {proc.stderr[:500]}\n\n"
-                f"Possible causes:\n"
-                f"  1. APK is corrupted or uses unsupported DEX format\n"
-                f"  2. JADX ran out of memory (try increasing -Xmx in jadx script)\n"
-                f"  3. APK requires a newer JADX version: download from https://github.com/skylot/jadx/releases"
-            )
-    except subprocess.TimeoutExpired:
-        result["error"] = (
-            f"jadx timed out after 300s on {apk_path}.\n\n"
-            f"Options:\n"
-            f"  1. Increase JADX_TIMEOUT in config.py (default 300s)\n"
-            f"  2. APK is very large >50MB — run with --use-androguard-only to skip JADX\n"
-            f"  3. Run jadx manually to diagnose:\n"
-            f"     jadx -d {output_dir} {apk_path}"
-        )
-    except FileNotFoundError:
-        result["error"] = (
-            f"jadx not found.\n"
-            f"Expected location: {settings.JADX_PATH}\n\n"
-            f"Fix:\n"
-            f"  1. Download from: https://github.com/skylot/jadx/releases\n"
-            f"  2. Extract to: tools/jadx/\n"
-            f"  3. Or set JADX_PATH in backend/config.py to your jadx executable\n"
-            f"  4. Then retry: python -m analysis.pipeline {apk_path}"
-        )
-    except Exception as e:
-        result["error"] = (
-            f"jadx unexpected error: {type(e).__name__}: {e}\n\n"
-            f"If this persists, try running jadx manually:\n"
-            f"  jadx -d {output_dir} {apk_path}"
         )
     return result
 
@@ -277,7 +224,10 @@ def _is_corrupted_zip(apk_path: str) -> bool:
     try:
         with zipfile.ZipFile(str(apk_path)) as zf:
             return zf.testzip() is not None  # first bad CRC entry, if any
-    except (zipfile.BadZipFile, OSError):
+    except (zipfile.BadZipFile, OSError, RuntimeError):
+        # RuntimeError: testzip() raises it on encrypted ZIP entries
+        # ("password required for extraction") — the code is unrecoverable
+        # statically, so treat the archive as corrupted rather than crash.
         return True
 
 
@@ -457,14 +407,6 @@ def extract_manifest_info(apk_dir: str) -> dict:
     return info
 
 
-def count_decompiled_classes(output_dir: str) -> int:
-    """Count number of decompiled .java files."""
-    java_dir = Path(output_dir) / "sources"
-    if not java_dir.exists():
-        return 0
-    return len(list(java_dir.rglob("*.java")))
-
-
 def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
     """
     Full Step 1: Extract and decompile an APK.
@@ -490,38 +432,12 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
     sample_work.mkdir(parents=True, exist_ok=True)
 
     apktool_dir = sample_work / "apktool"
-    jadx_dir = sample_work / "jadx"
 
     # Run apktool
     apktool_result = run_apktool(str(apk_path), str(apktool_dir))
 
     # Run Androguard (fast, pure Python — ~5s per APK)
     androguard_result = run_androguard(str(apk_path))
-    jadx_result = {"success": False, "output_dir": str(jadx_dir), "error": None}
-
-    # JADX: only run if USE_JADX is True or Androguard failed
-    use_jadx = settings.USE_JADX or not androguard_result["success"]
-    if use_jadx:
-        retry_result = None
-        try:
-            retry_result = safe_decompile_apk(
-                str(apk_path),
-                str(jadx_dir),
-                timeout=settings.STEP_TIMEOUT,
-                max_retries=3,
-                jadx_path=settings.JADX_PATH,
-            )
-            jadx_result = {"success": True, "output_dir": str(jadx_dir), "error": None}
-        except DecompilationError as e:
-            jadx_result["error"] = e.to_dict()["message"]
-        except Exception as e:
-            jadx_result["error"] = (
-                f"JADX decompilation failed with unexpected error: {type(e).__name__}: {e}\n\n"
-                f"Options:\n"
-                f"  1. Run with --use-androguard-only to bypass JADX\n"
-                f"  2. Check jadx binary at {settings.JADX_PATH} is executable\n"
-                f"  3. Run jadx manually: jadx -d {jadx_dir} {apk_path}"
-            )
 
     # Extract native strings
     native_strings = []
@@ -535,12 +451,8 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
         package_name = extract_package_name(str(apktool_dir))
         manifest_info = extract_manifest_info(str(apktool_dir))
 
-    # Class count: Androguard primary, JADX fallback
+    # Class count from Androguard
     decompiled_classes = androguard_result["class_count"]
-    if decompiled_classes == 0 and jadx_result["success"]:
-        decompiled_classes = retry_result.get("classes", 0) if retry_result else 0
-        if not decompiled_classes:
-            decompiled_classes = count_decompiled_classes(str(jadx_dir))
 
     # Collect all DEX strings from Androguard
     dex_strings = androguard_result.get("dex_strings", [])
@@ -554,10 +466,8 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
         "package_name": package_name,
         "manifest_info": manifest_info,
         "apktool_success": apktool_result["success"],
-        "jadx_success": jadx_result["success"],
         "androguard_success": androguard_result["success"],
         "apktool_output_dir": str(apktool_dir) if apktool_result["success"] else None,
-        "jadx_output_dir": str(jadx_dir) if jadx_result["success"] else None,
         "apk_path": str(apk_path),
         "native_libs_found": list(
             set(s["source"] for s in native_strings)
@@ -574,8 +484,6 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
 
     if not apktool_result["success"]:
         result["errors"].append(apktool_result["error"])
-    if not jadx_result["success"] and use_jadx:
-        result["errors"].append(jadx_result["error"])
     if not androguard_result["success"]:
         result["errors"].append(androguard_result["error"])
     # Surface DEX-level parse failures (e.g. 0-byte classes.dex in crypter

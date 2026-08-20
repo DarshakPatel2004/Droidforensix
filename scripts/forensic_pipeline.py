@@ -4,9 +4,9 @@ DroidForensix 6-Stage Forensic Pipeline
 Structured APK analysis pipeline producing publication-ready forensic reports:
   Stage 0: Pre-Flight & Metadata Extraction
   Stage 1: Threat Indicator Analysis
-  Stage 2: Jadx Decompilation & Code Review
+  Stage 2: Code Review (Androguard DEX Analysis)
   Stage 3: DNS Enrichment (CIRCL pDNS + Live DNS)
-  Stage 4: Cross-Validation (Jadx ↔ AndroGuard)
+  Stage 4: Cross-Validation (Stage 2 ↔ AndroGuard DEX)
   Stage 5: Final Consolidation & PDF Report
 
 All findings are routed through Ollama (Mistral 7B) for cross-verification,
@@ -43,7 +43,7 @@ TOTAL_STAGES = 6
 STAGE_NAMES = {
     0: "Pre-Flight & Metadata",
     1: "Threat Indicators",
-    2: "Jadx Code Review",
+    2: "Code Review",
     3: "DNS Enrichment",
     4: "Cross-Validation",
     5: "Final Consolidation",
@@ -266,7 +266,13 @@ def _androguard_parse(apk_path: str) -> Dict[str, Any]:
         try:
             certs = apk.get_certificates()
             if certs:
-                cert_issuer = str(certs[0].issuer)[:200]
+                # Extract issuer string cleanly; androguard's issuer object may have
+                # unicode/garbled representation depending on certificate encoding.
+                issuer_obj = certs[0].issuer
+                if hasattr(issuer_obj, 'pretty_print'):
+                    cert_issuer = issuer_obj.pretty_print()[1]
+                else:
+                    cert_issuer = str(issuer_obj)[:200]
         except Exception:
             pass
 
@@ -581,41 +587,43 @@ def _calculate_risk_score(api_risk_map, yara_matches, anti_analysis, entropy, pe
 
 
 # ===================================================================
-# STAGE 2: Jadx Decompilation & Code Review
+# STAGE 2: Code Review (Androguard DEX Analysis)
 # ===================================================================
 
-def stage_2_jadx_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> Dict[str, Any]:
-    """Stage 2: Decompile with Jadx, scan for suspicious patterns and IPs."""
-    _log(2, "Starting Jadx decompilation & code review...")
+def stage_2_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> Dict[str, Any]:
+    """Stage 2: Analyze DEX bytecode with Androguard, scan for suspicious patterns and IPs."""
+    _log(2, "Starting Androguard DEX code review...")
     stage_start = time.time()
 
-    jadx_output = str(Path(work_dir) / "jadx_output")
-
-    # 2.1 — Jadx Decompilation
-    decompilation_status = _run_jadx_decompile(apk_path, jadx_output)
-    _log(2, f"Decompilation: {decompilation_status}")
-
-    # 2.2 — IP Extraction from Jadx Output
-    jadx_ips = []
-    if decompilation_status == "success":
-        jadx_ips = _extract_ips_from_jadx(jadx_output)
-        _log(2, f"IPs from Jadx: {len(jadx_ips)}")
+    dex_stats, api_risk_map, anti_analysis, dex_ips = _androguard_deep_analysis(apk_path)
+    decompilation_status = "success" if dex_stats.get("classes", 0) > 0 else "failed"
+    _log(2, f"DEX analysis: {decompilation_status} ({dex_stats.get('classes', 0)} classes)")
+    _log(2, f"IPs from DEX: {len(dex_ips)}")
 
     # 2.3 — Suspicious Class Detection
-    suspicious_classes = []
-    if decompilation_status == "success":
-        suspicious_classes = _identify_suspicious_classes(jadx_output)
-        _log(2, f"Suspicious classes: {len(suspicious_classes)}")
+    suspicious_classes = _identify_suspicious_classes_from_dex(apk_path)
+    _log(2, f"Suspicious classes: {len(suspicious_classes)}")
 
-    # 2.4 — Hardcoded Secrets Detection from Strings and Decompiled Source
+    # 2.4 — Hardcoded Secrets Detection from DEX Strings
     hardcoded_secrets = []
     secret_risk = {"severity": "none", "total_secrets": 0, "risk_score": 0}
     try:
-        strings_result = {"sample_id": "", "categories": {"string_literals": []}, "string_literals": []}
-        if jadx_output and Path(jadx_output).exists():
-            secrets_result = analyze_hardcoded_secrets(strings_result, jadx_output_dir=jadx_output)
-            hardcoded_secrets = secrets_result["hardcoded_secrets"]
-            secret_risk = secrets_result["secret_risk"]
+        dex_strings = _collect_dex_strings(apk_path)
+        strings_result = {
+            "sample_id": "",
+            "categories": {
+                "string_literals": [{
+                    "category": "string_literal",
+                    "value": s,
+                    "entropy": 0.0,
+                    "source": "dex_strings",
+                } for s in dex_strings]
+            },
+            "string_literals": dex_strings,
+        }
+        secrets_result = analyze_hardcoded_secrets(strings_result)
+        hardcoded_secrets = secrets_result["hardcoded_secrets"]
+        secret_risk = secrets_result["secret_risk"]
         _log(2, f"Hardcoded secrets: {secret_risk['total_secrets']} ({secret_risk['severity']})")
     except Exception as e:
         _log(2, f"[WARN] Secrets scan failed: {e}")
@@ -637,11 +645,11 @@ def stage_2_jadx_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> 
 
     llm_result = llm.verify_threat(
         stage="code_review",
-        context="Decompiled code pattern analysis",
+        context="DEX bytecode pattern analysis",
         prompt=(
             f"Suspicious classes identified:\n"
             f"{chr(10).join(code_snippets) if code_snippets else 'None'}\n\n"
-            f"Decompilation status: {decompilation_status}\n"
+            f"DEX analysis status: {decompilation_status}\n"
             f"High-severity patterns: {len(high_severity)}"
             f"{secrets_summary}\n\n"
             f"Are these patterns indicative of malware behavior?"
@@ -656,7 +664,7 @@ def stage_2_jadx_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> 
         "stage_2_jadx_analysis": {
             "decompilation_status": decompilation_status,
             "suspicious_classes": suspicious_classes,
-            "extracted_ips": jadx_ips,
+            "extracted_ips": dex_ips,
             "hardcoded_secrets": hardcoded_secrets,
             "secret_risk": secret_risk,
             "llm_verification": llm_result,
@@ -665,72 +673,56 @@ def stage_2_jadx_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> 
     }
 
 
-def _run_jadx_decompile(apk_path: str, output_dir: str) -> str:
-    """Run Jadx decompilation."""
-    jadx_path = settings.JADX_PATH
+def _collect_dex_strings(apk_path: str) -> List[str]:
+    """Collect all DEX string literals via Androguard."""
     try:
-        result = subprocess.run(
-            [jadx_path, "-d", output_dir, "--show-bad-code", "--deobf", "--deobf-min", "2", apk_path],
-            capture_output=True, text=True, timeout=300, shell=(os.name == "nt"),
-        )
-        if result.returncode == 0:
-            return "success"
-        else:
-            return f"failed: exit {result.returncode}"
-    except subprocess.TimeoutExpired:
-        return "timeout"
-    except FileNotFoundError:
-        return f"jadx_not_found: {jadx_path}"
-    except Exception as e:
-        return f"error: {e}"
+        from androguard.core.apk import APK
+        from androguard.core.dex import DEX
+
+        apk = APK(apk_path)
+        strings = []
+        for dex_data in apk.get_all_dex():
+            try:
+                dex = DEX(dex_data)
+                strings.extend([str(s) for s in dex.get_strings()])
+            except Exception:
+                continue
+        return strings
+    except Exception:
+        return []
 
 
-def _extract_ips_from_jadx(jadx_root: str) -> List[Dict]:
-    """Extract IPs from all .java files in Jadx output."""
-    ips = []
-    for root, dirs, files in os.walk(jadx_root):
-        for file in files:
-            if file.endswith(".java"):
-                filepath = os.path.join(root, file)
-                try:
-                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-                        lines = f.readlines()
-                        for line_num, line in enumerate(lines, 1):
-                            found = _extract_ips_from_text(
-                                line, "jadx_decompiled_source",
-                                filepath.replace(jadx_root, "")
-                            )
-                            for ip_entry in found:
-                                ip_entry["line_number"] = line_num
-                                ips.append(ip_entry)
-                except Exception:
-                    pass
-    return ips
-
-
-def _identify_suspicious_classes(jadx_root: str) -> List[Dict]:
-    """Find classes with suspicious code patterns."""
+def _identify_suspicious_classes_from_dex(apk_path: str) -> List[Dict]:
+    """Find classes whose names or methods match suspicious code patterns."""
     suspicious = []
-    for root, dirs, files in os.walk(jadx_root):
-        for file in files:
-            if file.endswith(".java"):
-                filepath = os.path.join(root, file)
-                try:
-                    with open(filepath, "r", encoding="utf-8", errors="ignore") as f:
-                        content = f.read()
-                        class_name = filepath.replace(jadx_root, "").replace(os.sep, ".").rstrip(".java")
+    try:
+        from androguard.core.apk import APK
+        from androguard.core.dex import DEX
 
-                        for pattern_name, keywords in SUSPICIOUS_PATTERNS:
-                            found_kw = [kw for kw in keywords if kw in content]
-                            if found_kw:
-                                suspicious.append({
-                                    "class": class_name,
-                                    "pattern": pattern_name,
-                                    "keywords_found": found_kw,
-                                    "severity": "high" if pattern_name in ("execution", "dynamic_loading") else "medium",
-                                })
-                except Exception:
-                    pass
+        apk = APK(apk_path)
+        for dex_data in apk.get_all_dex():
+            try:
+                dex = DEX(dex_data)
+                for cls in dex.get_classes():
+                    class_name = cls.get_name()
+                    if class_name.startswith("L") and class_name.endswith(";"):
+                        class_name = class_name[1:-1].replace("/", ".")
+                    method_names = " ".join(m.get_name() for m in cls.get_methods())
+                    haystack = f"{class_name} {method_names}"
+
+                    for pattern_name, keywords in SUSPICIOUS_PATTERNS:
+                        found_kw = [kw for kw in keywords if kw in haystack]
+                        if found_kw:
+                            suspicious.append({
+                                "class": class_name,
+                                "pattern": pattern_name,
+                                "keywords_found": found_kw,
+                                "severity": "high" if pattern_name in ("execution", "dynamic_loading") else "medium",
+                            })
+            except Exception:
+                continue
+    except Exception:
+        _log(2, "[WARN] Androguard class pattern scan failed")
     return suspicious
 
 
@@ -889,25 +881,25 @@ def _live_dns_enrichment(ip: str) -> Dict[str, Any]:
 
 
 # ===================================================================
-# STAGE 4: Cross-Validation (Jadx ↔ AndroGuard)
+# STAGE 4: Cross-Validation (Stage 2 ↔ AndroGuard DEX)
 # ===================================================================
 
 def stage_4_cross_validation(
     apk_path: str, stage1: Dict, stage2: Dict, llm: LLMVerifier
 ) -> Dict[str, Any]:
-    """Stage 4: Validate Jadx findings against AndroGuard DEX analysis."""
+    """Stage 4: Validate stage 2 findings against AndroGuard DEX analysis."""
     _log(4, "Starting cross-validation...")
     stage_start = time.time()
 
     suspicious_classes = stage2.get("stage_2_jadx_analysis", {}).get("suspicious_classes", [])
-    jadx_flagged = list(set(c["class"] for c in suspicious_classes))
+    flagged_classes = list(set(c["class"] for c in suspicious_classes))
 
     validation_results = []
     try:
         from androguard.misc import AnalyzeAPK
         a, d, dx = AnalyzeAPK(apk_path)
 
-        for class_name in jadx_flagged[:20]:  # Cap at 20 classes
+        for class_name in flagged_classes[:20]:  # Cap at 20 classes
             # Convert to smali-style class name
             call_class = "L" + class_name.lstrip(".").replace(".", "/") + ";"
 
@@ -934,7 +926,7 @@ def stage_4_cross_validation(
                         "class": class_name,
                         "found_in_dex": False,
                         "status": "discrepancy",
-                        "note": "Class found in Jadx but not in AndroGuard DEX analysis",
+                        "note": "Class flagged in stage 2 but not found in AndroGuard DEX analysis",
                     })
             except Exception as e:
                 validation_results.append({
@@ -956,7 +948,7 @@ def stage_4_cross_validation(
     # LLM Cross-Verification
     llm_result = llm.verify_threat(
         stage="cross_validation",
-        context="Jadx vs AndroGuard cross-validation",
+        context="Stage 2 vs AndroGuard cross-validation",
         prompt=(
             f"Classes validated: {len(validation_results)}\n"
             f"Confirmed in DEX: {confirmed}\n"
@@ -1114,10 +1106,10 @@ def _generate_pdf_report(report: Dict, output_dir: Path) -> Optional[str]:
 
         # Transform forensic report into the format expected by generate_report
         secret_risk = report.get("final_assessment", {}).get("secret_risk", {})
-        jadx_secrets = report.get("stage_2_jadx_analysis", {}).get("hardcoded_secrets", [])
+        stage2_secrets = report.get("stage_2_jadx_analysis", {}).get("hardcoded_secrets", [])
         secrets_report = ""
-        if jadx_secrets:
-            secrets_report = format_for_report(jadx_secrets)
+        if stage2_secrets:
+            secrets_report = format_for_report(stage2_secrets)
         result_compat = {
             "sample_id": report.get("report_metadata", {}).get("package_name", "forensic"),
             "metadata": {
@@ -1147,7 +1139,7 @@ def _generate_pdf_report(report: Dict, output_dir: Path) -> Optional[str]:
                 "obfuscation_level": "unknown",
                 "indicators": {},
             },
-            "hardcoded_secrets": jadx_secrets,
+            "hardcoded_secrets": stage2_secrets,
             "secret_risk": secret_risk,
             "secret_report_text": secrets_report,
         }
@@ -1210,8 +1202,8 @@ def run_forensic_pipeline(
     # Stage 1: Threat Indicators
     stage1 = stage_1_threat_indicators(apk_path, work_dir, stage0, llm)
 
-    # Stage 2: Jadx Code Review
-    stage2 = stage_2_jadx_code_review(apk_path, work_dir, llm)
+    # Stage 2: Code Review
+    stage2 = stage_2_code_review(apk_path, work_dir, llm)
 
     # Stage 3: DNS Enrichment
     stage3 = stage_3_dns_enrichment(stage0, stage1, stage2, llm)

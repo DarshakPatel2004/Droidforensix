@@ -8,7 +8,7 @@ URL-encoded) to reveal the underlying secret content.
 
 Runs against both:
   - Enumerated string literals (from step2_string_enumeration)
-  - Decompiled Java/smali source files (from jadx/apktool output)
+  - Decompiled smali/source files (from apktool output)
 
 Patterns cover: API keys, auth tokens, private keys, JWT, cloud service keys,
 database connection strings, OAuth secrets, and Android-specific credentials.
@@ -578,10 +578,10 @@ def scan_source_files(
 ) -> List[Dict[str, Any]]:
     """Scan decompiled source files for hardcoded secrets.
 
-    Scans Jadx/apktool output directories for secrets embedded in source code.
+    Scans apktool/smali output directories for secrets embedded in source code.
 
     Args:
-        source_dir: Path to decompiled source root (e.g., jadx_output).
+        source_dir: Path to decompiled source root.
         file_patterns: File globs to scan.
 
     Returns:
@@ -751,14 +751,12 @@ def classify_risk(secret_findings: List[Dict[str, Any]]) -> Dict[str, Any]:
 
 def analyze_hardcoded_secrets(
     string_result: Dict[str, Any],
-    jadx_output_dir: Optional[str] = None,
     scan_high_entropy: bool = False,
 ) -> Dict[str, Any]:
-    """Main entry point: scan enumerated strings and optional source files.
+    """Main entry point: scan enumerated strings for hardcoded secrets.
 
     Args:
         string_result: Output from step2_string_enumeration.enumerate_strings().
-        jadx_output_dir: Path to Jadx decompilation output for source-level scanning.
         scan_high_entropy: Whether to include low-severity high-entropy candidate scan.
 
     Returns:
@@ -776,14 +774,6 @@ def analyze_hardcoded_secrets(
 
     findings = scan_strings(all_strings)
 
-    if jadx_output_dir:
-        source_findings = scan_source_files(jadx_output_dir)
-        existing_values = {f["value"] for f in findings}
-        for sf in source_findings:
-            if sf["value"] not in existing_values:
-                findings.append(sf)
-                existing_values.add(sf["value"])
-
     if scan_high_entropy:
         entropy_findings = scan_high_entropy_strings(all_strings)
         findings.extend(entropy_findings)
@@ -795,7 +785,7 @@ def analyze_hardcoded_secrets(
         "hardcoded_secrets": findings,
         "secret_risk": risk,
         "total_scanned": len(all_strings),
-        "scan_sources": bool(jadx_output_dir),
+        "scan_sources": False,
     }
 
 

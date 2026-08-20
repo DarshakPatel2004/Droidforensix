@@ -25,10 +25,8 @@ def test_apk_path() -> Path:
 
 
 def _tools_available() -> bool:
-    jadx = Path(settings.JADX_PATH)
     apktool = Path(settings.APKTOOL_PATH)
-    return (jadx.exists() or shutil.which(settings.JADX_PATH)) and \
-           (apktool.exists() or shutil.which(settings.APKTOOL_PATH))
+    return apktool.exists() or shutil.which(settings.APKTOOL_PATH)
 
 
 def test_health_check(client):

@@ -457,14 +457,7 @@ async def api_get_dissection_classes(
 
         total = len(lightweight)
         page = lightweight[offset:offset + limit]
-        jadx_ok = dissector.jadx_available()
-        resp = {"classes": page, "total": total, "offset": offset, "limit": limit, "jadx_success": jadx_ok}
-        if not jadx_ok:
-            resp["jadx_error"] = (
-                "JADX decompilation unavailable — showing bytecode-level view from Androguard. "
-                "Method bodies will show DEX instructions instead of Java source."
-            )
-        return resp
+        return {"classes": page, "total": total, "offset": offset, "limit": limit}
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Dissection failed: {e}")
 
@@ -1653,48 +1646,6 @@ async def api_androguard_analysis(file: UploadFile = File(...)):
     results = analyzer.run()
     
     return results
-
-
-# ---------------------------------------------------------------------------
-# Diagnostics
-# ---------------------------------------------------------------------------
-
-@app.get("/api/diagnostics/jadx")
-async def api_diagnostics_jadx() -> dict:
-    """Check JADX installation and configuration."""
-    jadx_path = settings.JADX_PATH
-    path_obj = Path(jadx_path)
-
-    # Check if binary exists
-    exists = path_obj.exists()
-
-    # Try to get version
-    version = None
-    version_error = None
-    try:
-        if exists:
-            result = subprocess.run(
-                [jadx_path, "--version"],
-                capture_output=True,
-                text=True,
-                timeout=5
-            )
-            version = result.stdout.strip() if result.returncode == 0 else None
-            if not version:
-                version_error = result.stderr.strip() if result.stderr else "Unknown error"
-    except Exception as e:
-        version_error = str(e)
-
-    return {
-        "configured_path": str(jadx_path),
-        "exists": exists,
-        "is_file": path_obj.is_file() if path_obj.exists() else False,
-        "is_executable": path_obj.exists() and path_obj.stat().st_mode & 0o111 != 0,
-        "version": version,
-        "version_error": version_error,
-        "status": "ok" if exists and version else "missing" if not exists else "error",
-        "help": "See JADX_SETUP.md for installation instructions"
-    }
 
 
 # ---------------------------------------------------------------------------
