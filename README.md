@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Tests](https://github.com/DarshakPatel2004/DroidForensix/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/DroidForensix/actions/workflows/test.yml)
 
-> **63x speedup** over manual analysis. **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers.
+> **63x speedup** over manual analysis (277-sample article run). **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers. Dataset since grown to 459 APKs.
 >
 > **Read this before citing headline numbers:** validation shows exact-match family identification at **64.2%** (68.6% on specific families) and only **2.4% of raw extracted indicators confirmed as genuine C2** — see [Evaluation & Validation](#evaluation). Raw counts above reflect extraction coverage, not verified accuracy.
 
@@ -54,6 +54,8 @@ APK → Decompile (JADX) → Trace Suspicious APIs → Extract Indicators
 ---
 
 ## Key Results
+
+> This table documents the published 277-sample run (see [Publication](#publication)). The dataset has since grown to **459 APKs** (359 malware + 100 benign).
 
 | Metric | Value |
 |--------|-------|
@@ -234,8 +236,8 @@ graph TD
 
 ### Evaluation
 
-- **306 Android APKs** from 49 malware families across 4 sources (AndroZoo, MalwareBazaar, Pendrive, Modern Eval)
-- **Top families:** Cerberus (16), Hydra (11), TeaBot (11), Ermac (10), SpyNote (8), Anubis (6), Flubot (6)
+- **459 Android APKs** across 6 sources: AndroZoo-Drebin (149), MalwareBazaar (97), modern_eval (63), AndroZoo (26), abusech (24), benign_eval (100 benign)
+- **Top malware families (corrected GT):** FakeInstaller (25), Opfake (21), Plankton (17), DroidKungFu (16), GinMaster (15), NGate (15), SpyNote (14), TeaBot (13), Ermac (12), Hydra (11), FakeTikTok (11), BaseBridge (10)
 - Full metadata in `sample_metadata.csv`
 
 ### Indicator False-Positive Validation (Aug 2026)
@@ -262,12 +264,12 @@ Raw review data is committed in `evaluation_results/`: `fp_final_report.json`, `
 
 Exact-match family accuracy against corrected ground truth is **64.2% (226/352)** overall and **68.6% (216/315)** when only specific (non-catch-all) families are counted.
 
-**Why this number is trustworthy:** the ground truth was independently re-verified against VirusTotal (291) and MalwareBazaar (168) — all 459 samples `confirmed_external` — then corrected with an authoritative resolution order (filename prefix → MalwareBazaar signature → GT specific → VT recheck → verified pipeline C2 evidence → MB tags). This replaced the old GT where 41.5% of labels were catch-alls (AndroidOS, GenericKD, Agent, Banker...) that inflated naive scoring. The old 32.0% figure was measured on that inflated label set; after correction the same engine scored 17.3%, and the upgraded engine below recovered to 64.2%.
+**Why this number is trustworthy:** the ground truth was independently re-verified against VirusTotal (291) and MalwareBazaar (168) — all 459 samples `confirmed_external` — then corrected with an authoritative resolution order (filename prefix → MalwareBazaar signature → GT specific → VT recheck → verified pipeline C2 evidence → MB tags). This replaced the old GT where **48.5%** of labels were catch-alls (AndroidOS, GenericKD, Agent, Banker, Gen, ...) that inflated naive scoring. The old 32.0% figure was measured on that inflated label set; after correction the same engine scored 17.3%, and the upgraded engine below recovered to 64.2%.
 
 **How the engine improved:** three layers work together:
-1. **signature_v3** (12 hand-written families) — 100% precision where it fires (22/22).
-2. **knowledge-base matcher** (new) — discriminators mined from the corrected GT (`analysis/family_knowledge_base.json`, 38 families; ≥2 matched tokens + an anchor token at ≤5% corpus FP). ~95% precision offline.
-3. **LLM with candidate guidance** (new prompt) — the context now lists candidate families with their actually-matched signals plus observable evidence strings, turning open recall into a multiple-choice decision. The old prompt showed only string *counts*, which is why it refused 94% of samples.
+1. **signature_v3** (hand-written families) — fires on 70 samples at 92.9% precision (65/70; all 5 misses are Plankton false positives).
+2. **knowledge-base matcher** (new) — discriminators mined from the corrected GT (`analysis/family_knowledge_base.json`, 38 families; ≥2 matched tokens + an anchor token at ≤5% corpus FP). Offline mining precision ~95%; 76.3% precision on the re-eval (151/198 fires).
+3. **LLM with candidate guidance** (new prompt) — the context now lists candidate families with their actually-matched signals plus observable evidence strings, turning open recall into a multiple-choice decision. The old prompt showed only string *counts* and refused 63.8% of samples (229/359); with the new prompt the LLM produces a verdict on 84/352 samples while the knowledge base handles the rest.
 
 ### Reproducibility (352-sample family validation)
 
@@ -296,7 +298,7 @@ Headline metrics (exact-match family accuracy, corrected ground truth):
 | High-confidence specific labels | 70.0% (189/270) |
 | Unknown-refusal (GT = `unknown`) | 30.3% (10/33) |
 
-Per source (accuracy on specific families): AndroZoo-Drebin 68.5% (149), MalwareBazaar 77.0% (96), modern_eval 63.8% (58), AndroZoo 83.3% (25), abusech 35.0% (24).
+Per source (accuracy on specific families): AndroZoo-Drebin 68.5% (149 specific), MalwareBazaar 77.0% (87), modern_eval 63.8% (47), AndroZoo 83.3% (12), abusech 35.0% (20).
 
 Remaining misses are honest: Opfake/FakeInstaller/FakeChrome leave no observable static signal (opaque obfuscation), and toolkit-shared families (TeaBot↔Hydra↔Ermac↔FluBot) are hard even for human analysts.
 
@@ -342,7 +344,7 @@ pytest tests/ -v
 
 ```bash
 cd frontend
-npm test     # 248 tests across 38 test files — all pass
+npm test     # 247 tests across 38 test files — all pass
 ```
 
 CI runs both suites on every push and PR.
