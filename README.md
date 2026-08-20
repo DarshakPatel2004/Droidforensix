@@ -5,7 +5,7 @@
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
 [![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://react.dev)
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Tests](https://github.com/DarshakPatel2004/DroidForensix/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/DroidForensix/actions/workflows/test.yml)
+[![Tests](https://github.com/DarshakPatel2004/project-zero/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/project-zero/actions/workflows/test.yml)
 
 > **63x speedup** over manual analysis (277-sample article run). **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers. Dataset since grown to 459 APKs.
 >
@@ -21,10 +21,12 @@
 - [Quick Start](#quick-start)
 - [Dashboard](#dashboard)
 - [API Reference](#api-reference)
-- [Research](#research)
+- [Evaluation](#evaluation)
 - [Testing](#testing)
 - [Project Structure](#project-structure)
+- [Environment Variables](#environment-variables)
 - [Known Limitations](#known-limitations)
+- [Future Work](#future-work)
 
 ---
 
@@ -32,24 +34,37 @@
 
 DroidForensix analyzes Android APKs **without execution** — no emulator, no sandbox. It decompiles bytecode to Java, traces method calls, extracts hardcoded indicators, correlates them against threat feeds, geolocates C2 servers, and produces a structured report.
 
-**The problem it solves:** Manual APK analysis takes 3.2 hours per sample. This pipeline does it in ~90 seconds.
+**The problem it solves:** Manual APK analysis takes ~1 hour per sample. This pipeline does it in ~1 minute (~90 s on the LLM path, ~24 s with heuristic skip).
 
 ```
 APK → Decompile (JADX) → Trace Suspicious APIs → Extract Indicators
       → Correlate (VT, OTX, Shodan, Censys) → Geolocate → Score → Report
 ```
 
-### 9-Step Pipeline
+### Pipeline
 
-1. **Decompose** APK via AndroGuard (manifest, permissions, components)
-2. **Decompile** Dalvik bytecode → Java via JADX
-3. **Analyze** method calls for suspicious APIs (WebSocket, shell exec, reflection)
-4. **Extract** indicators (domains, IPs, hardcoded strings, API endpoints)
-5. **Map** permission-to-capability relationships
+The 18-step pipeline (`analysis/step1_*.py` … `step18_*.py`):
+
+1. **Extract** APK (AndroGuard: manifest, permissions, components)
+2. **Enumerate** Dalvik bytecode strings via JADX
+3. **Detect** encodings (base64, hex, XOR, ciphers)
+4. **Decode** obfuscated strings
+5. **Extract** C2 indicators (domains, IPs, hardcoded URLs, API endpoints)
 6. **Correlate** across VT, OTX, Shodan, Censys (parallel threat feeds)
-7. **Geolocate** C2 servers, identify cloud provider, cluster by region
-8. **Score** confidence based on method call frequency + contextual evidence
-9. **Report** structured JSON + PDF with per-phase timing
+7. **Assess** findings via LLM (Ollama/NVIDIA NIM/OpenRouter)
+8. **Analyze** obfuscation (packing, reflection, custom encryption)
+9. **Post-process** dedup, scoring, report assembly
+10. **Detect** binary packing
+11. **Cluster** strings for decryption correlation
+12. **Trace** reflective method calls
+13. **Analyze** native ELF libraries
+14. **Analyze** network protocols
+15. **Correlate** reflective permissions
+16. **Analyze** signing certificates
+17. **Cluster** samples by family
+18. **Synthesize** threat intelligence report
+
+Output: structured JSON + PDF with per-phase timing.
 
 ---
 
@@ -118,8 +133,8 @@ The repo ships portable copies of JADX, APKTool, JDK, and Node.js under `tools\`
 ### Setup
 
 ```bash
-git clone https://github.com/DarshakPatel2004/DroidForensix.git
-cd DroidForensix
+git clone https://github.com/DarshakPatel2004/project-zero.git
+cd project-zero
 
 python -m venv venv
 source venv/bin/activate      # Linux/macOS
@@ -188,27 +203,33 @@ npm run dev
 
 ```mermaid
 graph TD
-    App[App.jsx] --> AV[AnalysisView]
-    App --> UP[UploadPanel]
+    App[App.jsx] --> UP[UploadPanel]
     App --> SS[SampleSearch]
+    App --> LS[LoadingSpinner]
+    App --> TB[ThreatBadge]
+    App --> SD[SampleDetail]
+    App --> AV[AnalysisView]
 
-    AV --> LS[LoadingState]
-    AV --> RV[ResultView]
-    RV --> OV[OverviewTab]
-    RV --> ST[SecretsTab]
-    RV --> LLM[LLMSummaryTab]
-    RV --> DS[DissectionSummaryTab]
-    RV --> OV2[ObfuscationView]
-    RV --> MV[ManifestView]
-    RV --> TS[ThreatSynthesisPanel]
-    RV --> FS[FamilySignalsCard]
+    SD --> TSum[ThreatSummary]
+    SD --> AE[AttributionEvidence]
+    SD --> DT[DissectionTabs]
 
-    OV --> FS
-    DS --> CT[ChainsTab]
+    DT --> MT[ManifestTab]
+    DT --> PT[PermissionsTab]
+    DT --> CT[ComponentsTab]
+    DT --> CodeT[CodeTab]
+    DT --> ST[StringsTab]
+    DT --> DX[DEXTab]
+    DT --> NL[NativeLibsTab]
+
+    AV --> OV[ObfuscationView]
+    AV --> MV[ManifestView]
+    AV --> FS[FamilySignalsCard]
+    AV --> TS[ThreatSynthesisPanel]
 
     style App fill:#0f172a,stroke:#06b6d4
-    style AV fill:#111827,stroke:#f59e0b
-    style RV fill:#111827,stroke:#8b5cf6
+    style SD fill:#111827,stroke:#f59e0b
+    style DT fill:#111827,stroke:#8b5cf6
 ```
 
 ---
@@ -223,7 +244,7 @@ graph TD
 | GET | `/api/sample/{sample_id}/attribution` | MAFIA attribution evidence |
 | GET | `/api/sample/{sample_id}/threat-summary` | Threat summary (glance) |
 | GET | `/api/sample/{sample_id}/dissection` | Full dissection data |
-| GET | `/api/sample/{sample_id}/dissection/{section}` | Per-tab dissection data |
+| GET | `/api/sample/{sample_id}/dissection/{manifest\|permissions\|components\|dex\|classes\|strings}` | Per-tab dissection data |
 | GET | `/api/sample/{sample_id}/code-analysis/{class}` | Method-level code analysis |
 | GET | `/api/graph/{sample_id}` | 3D graph data |
 | GET | `/api/clusters` | Clustering data |
@@ -234,7 +255,7 @@ graph TD
 
 ---
 
-### Evaluation
+## Evaluation
 
 - **459 Android APKs** across 6 sources: AndroZoo-Drebin (149), MalwareBazaar (97), modern_eval (63), AndroZoo (26), abusech (24), benign_eval (100 benign)
 - **Top malware families (corrected GT):** FakeInstaller (25), Opfake (21), Plankton (17), DroidKungFu (16), GinMaster (15), NGate (15), SpyNote (14), TeaBot (13), Ermac (12), Hydra (11), FakeTikTok (11), BaseBridge (10)
@@ -316,7 +337,7 @@ Remaining misses are honest: Opfake/FakeInstaller/FakeChrome leave no observable
 | FP rate validation | ✅ measured: 68% of indicators clearly benign, 2.4% confirmed malicious (380 indicators, 22 samples) |
 | Comparative aggregator validation | ⏳ Future work |
 
-### Known Limitations
+## Known Limitations
 
 - **Indicator precision is low**: 68% of auto-extracted indicators are clearly benign strings; only 2.4% were confirmed as genuine C2 in manual review (see [validation](#evaluation)). Heuristics favor recall over precision by design.
 - **Family identification is imperfect**: 64.2% exact-match accuracy on 352-sample corrected ground truth — opaque-obfuscation families (Opfake, FakeChrome) and toolkit-shared families (TeaBot↔Hydra↔Ermac↔FluBot) remain hard; treat family output as advisory.
@@ -324,7 +345,7 @@ Remaining misses are honest: Opfake/FakeInstaller/FakeChrome leave no observable
 - Reflection-heavy obfuscation handled by heuristics (not perfect)
 - C2-blind malware (zero static artifacts) — documented limitation
 
-### Future Work
+## Future Work
 
 - **Threat Synthesis Engine:** Multi-sample attribution clustering (Q1 2027)
 - **Dynamic Validation:** Frida-based runtime confirmation of static C2 candidates (Q2 2027)
@@ -356,7 +377,7 @@ CI runs both suites on every push and PR.
 ```
 backend/          — FastAPI server, threat intel integration, pipeline logic
 frontend/         — React dashboard (Leaflet C2 maps, FamilySignalsCard, threat chains)
-analysis/         — 9-step pipeline (extraction → decoding → correlation → report)
+analysis/         — 18-step pipeline (extraction → decoding → correlation → synthesis → report)
 scripts/          — Batch analysis, data collection utilities
 data/             — GeoIP databases, YARA rules
 evaluation_results/ — Committed validation results (FP review, family-ID metrics)
