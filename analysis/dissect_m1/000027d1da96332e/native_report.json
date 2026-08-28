@@ -1,0 +1,149 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7.apk",
+  "apk_sha256": "000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7",
+  "so_count": 4,
+  "native_libs": [
+    {
+      "path": "analysis/dissect_m1/000027d1da96332e/000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7/armeabi_libcrypt_sign.so",
+      "sha256": "3ab1a6e2e4b9a7cb1be062d6a6d8fc2266e95603776a61f2b2d09d0efdcdf12d",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_com_ffcs_crypt_CryptSign_signAuth",
+          "addr": "0x1c2c",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_ffcs_crypt_CryptSign_authSign",
+          "addr": "0x2170",
+          "source": "static_export"
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.167,
+        "branches": 2,
+        "total_insns": 12,
+        "distinct_branch_targets": 1,
+        "hub_max_indegree": 1
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/000027d1da96332e/000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7/armeabi_libdnlocal.so",
+      "sha256": "cb0d4b8dbb0559998004f35b3d79f465c1d5eec6e863a4f7310e7773ae304263",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_com_door_frame_utils_CmmUtils_getSystemRawVar",
+          "addr": "0x1585",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_door_pay_plugin_common_util_DnUtils_stringFromJNI",
+          "addr": "0x1559",
+          "source": "static_export"
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.167,
+        "branches": 1,
+        "total_insns": 6,
+        "distinct_branch_targets": 1,
+        "hub_max_indegree": 1
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/000027d1da96332e/000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7/armeabi_libshunpay.so",
+      "sha256": "98855fbc049535936a53c748c0461923d4b64c4aa72a59ffd26b13d2e2940250",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_needConfirm",
+          "addr": "0x9b0d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_testJavaFuncs",
+          "addr": "0x9b39",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_pay",
+          "addr": "0x9c49",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_onSendSMSResult",
+          "addr": "0x9cb5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_onSMSReceived",
+          "addr": "0x9d71",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_onThirdPayResult",
+          "addr": "0x9dc9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_shunpay210_sdk_CppAdapter210_init",
+          "addr": "0x9e3d",
+          "source": "static_export"
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.167,
+        "branches": 1,
+        "total_insns": 6,
+        "distinct_branch_targets": 1,
+        "hub_max_indegree": 1
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/000027d1da96332e/000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7/assets_gd-sdk-sms_lang.so",
+      "error": "LIEF parse failed"
+    }
+  ]
+}

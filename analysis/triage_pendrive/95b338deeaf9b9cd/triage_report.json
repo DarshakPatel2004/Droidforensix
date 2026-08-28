@@ -1,0 +1,59 @@
+{
+  "apk_sha256": "95b338deeaf9b9cdfa123388072dd78257e4c1d85e42c2c5fbe0940f7122739d",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/new apk files/Amazon Collect_1637229383755-1.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.114,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.50734,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 8368248,
+      "total_uncompressed": 16494357,
+      "native_lib_share": 0.0,
+      "big_asset_count": 3,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.5215,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 158,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/OpenSans-Italic.ttf",
+        "assets/fonts/OpenSans-Regular.ttf",
+        "assets/fonts/OpenSans-Semibold.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.amazon.trans.storeapp.StoreApp",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8053304,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

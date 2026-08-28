@@ -1,0 +1,61 @@
+{
+  "apk_sha256": "f0462f4d2b0cdb23b0aa43f0faf2194bc947e85b0963c95211560eebe3756595",
+  "apk_path": "/home/kali/DroidForensix/uploads/0c0b78c9-5d85-4e8a-b1fb-4d62dcab4af6/file.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 3.312,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.626819,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 18766540,
+      "total_uncompressed": 29939350,
+      "native_lib_share": 0.174,
+      "big_asset_count": 0,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 0.0,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 0,
+      "sampled_capped": false,
+      "candidates": []
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.p.inemu.drinkreminder.MyApp",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 9719364,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 12
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "mmap"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

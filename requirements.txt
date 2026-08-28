@@ -44,5 +44,11 @@ geoip2
 # Encrypted / AES-ZIP extraction (MalwareBazaar passworded samples)
 pyzipper
 
+# DNS lookups for C2 domain classification
+dnspython
+
+# Crypto primitives (step20 payload KDF cracking)
+pycryptodomex
+
 PyYAML
 

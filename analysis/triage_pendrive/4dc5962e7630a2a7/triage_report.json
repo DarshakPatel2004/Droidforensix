@@ -1,0 +1,90 @@
+{
+  "apk_sha256": "4dc5962e7630a2a73d619900addd6cfb1fe3424362c135b46f31ab59783d9a84",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Goplay (1).apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 1.114,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.174462,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 5199552,
+      "total_uncompressed": 29803319,
+      "native_lib_share": 0.002,
+      "big_asset_count": 30,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.0399,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 484,
+      "total_windows": 1581,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/PublicSuffixDatabase.list",
+        "assets/splash.zip",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/internal/import/05/052e494e5.4494f.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/kbp_common/import/09/095225d3b.4637c.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/kbp_common/index.f2e3a.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/main/index.73206.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/config.2e545.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/import/01/01aa81ebc.17234.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/index.2e545.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/03/03d7c03d-e8b0-41f9-96ac-a6e6c799e86b.3a34e.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/04/049accce-ff72-46cb-a8aa-de07d3d31f9b.d0817.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/06/066e265a-7f6e-471c-836c-5bdbca4d7cec.c422c.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/23/23d88955-8659-48ac-9e7e-091421348289.1bfcb.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/8e/8e7bb382-3229-447f-98af-bb728318aa50.9ab10.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/9f/9f138fcf-b44a-434f-93ef-ab7b2be9acc7.73730.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/d5/d5cfd9ae-8216-453a-a33c-3448673489f1.54ab4.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/native/d9/d9e1c290-ba80-4fd6-b718-cfe1a54a197b.fda43.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/resources/native/32/327a7b71-9f1f-43a6-97b9-f80ed08b0470.b8e42/Roboto-Bold.ttf",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/resources/native/55/5511db4a-ea04-4ae9-9d2b-b55b2abc7fc1.894a2/Roboto-Medium.ttf",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/resources/native/ee/eef8b681-6766-459e-b21a-e6024ffa0d87.f3663/Roboto-Regular.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.openvision.come.BaseApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 5199552,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 8
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "mmap"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/cocos-js/_virtual_cc-b1726f53.js",
+      "size": 2147056
+    },
+    {
+      "path": "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.5/assets/match/import/01/01aa81ebc.17234.json",
+      "size": 1658892
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

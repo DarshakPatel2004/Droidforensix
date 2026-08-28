@@ -42,6 +42,10 @@ from analysis.step15_reflective_permission_correlation import correlate_reflecti
 from analysis.step16_certificate_analysis import analyze_certificate
 from analysis.step17_family_clustering import cluster_family
 from analysis.step18_threat_synthesis import synthesize_threat_profile
+from analysis.step19_container_repair import repair_if_needed
+from analysis.step20_payload_kdf_crack import crack_payload_kdfs
+from analysis.step21_string_deobfuscation import deobfuscate_strings
+from analysis.step22_dropper_iocs import consolidate as consolidate_dropper_iocs
 from backend.family_id import identify_family
 from backend.dissection import APKDissector
 
@@ -56,7 +60,7 @@ EventEmitter = Optional[Callable[[str, dict], None]]
 
 logger = logging.getLogger(__name__)
 
-TOTAL_STEPS = 18
+TOTAL_STEPS = 22
 
 STEP_NAMES = {
     1: "APK Extraction",
@@ -77,6 +81,10 @@ STEP_NAMES = {
     16: "Certificate Analysis",
     17: "Family Clustering",
     18: "Threat Synthesis",
+    19: "Container Repair",
+    20: "Payload KDF Cracking",
+    21: "String Deobfuscation",
+    22: "Dropper IOC Consolidation",
 }
 
 STEP_TIMEOUTS = {
@@ -84,6 +92,7 @@ STEP_TIMEOUTS = {
     6: 90, 7: 270, 8: 900, 9: 450,
     10: 90, 11: 90, 12: 90, 13: 90, 14: 90,
     15: 45, 16: 45, 17: 45, 18: 45,
+    19: 120, 20: 240, 21: 180, 22: 90,
 }
 
 
@@ -671,6 +680,43 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         synthesize_threat_profile, synthesis_context
     )
 
+    # Step 19-22: Dropper enrichment (container repair, KDF cracking,
+    # string deobfuscation, IOC consolidation). Non-fatal: a step failure
+    # records an error but the pipeline result is still returned.
+    enrichment = {}
+    for step_num, name, fn, args in (
+        (19, "Container Repair", repair_if_needed, (apk_path, work_dir)),
+        (20, "Payload KDF Cracking", crack_payload_kdfs, (apk_path, work_dir)),
+        (21, "String Deobfuscation", deobfuscate_strings, (apk_path, work_dir)),
+        (22, "Dropper IOC Consolidation", None, None),  # wired below
+    ):
+        if fn is None:
+            continue
+        try:
+            res = run_with_timeout(fn, args, STEP_TIMEOUTS[step_num], name)
+        except Exception as e:
+            _emit(event_emitter, "error", {
+                "sample_id": sample_id,
+                "step_number": step_num,
+                "step_name": name,
+                "error_message": f"{name} failed: {e}",
+                "severity": "low",
+            })
+            res = {"error": str(e)}
+        enrichment[f"step{step_num}"] = res
+
+    # Step 22 needs outputs of 19-21
+    try:
+        dropper_result = run_with_timeout(
+            consolidate_dropper_iocs,
+            (apk_path, work_dir,
+             enrichment.get("step19"), enrichment.get("step20"),
+             enrichment.get("step21")),
+            STEP_TIMEOUTS[22], "Dropper IOC Consolidation")
+    except Exception as e:
+        dropper_result = {"error": str(e)}
+    enrichment["step22"] = dropper_result
+
     # Save structural APK dissection (fast, cached for dashboard)
     try:
         dissector = APKDissector(apk_path, work_dir=work_dir)
@@ -690,7 +736,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     duration = round(time.time() - global_start, 3)
     timeline["total"] = duration
 
-    # Merge step 10-18 results
+    # Merge step 10-22 results
     result.update({
         "binary_packing": packing_result,
         "string_clustering": string_cluster_result,
@@ -701,6 +747,10 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         "certificate_analysis": cert_result,
         "family_clustering": family_cluster_result,
         "threat_synthesis": synthesis_result,
+        "container_repair": enrichment.get("step19"),
+        "payload_kdf_crack": enrichment.get("step20"),
+        "string_deobfuscation": enrichment.get("step21"),
+        "dropper_iocs": enrichment.get("step22"),
     })
 
     # Flag for manual review: family matched but LLM risk is low

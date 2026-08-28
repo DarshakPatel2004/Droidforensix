@@ -109,6 +109,7 @@ validation_metrics_report.json
 validation_sample_summary.json
 output.txt
 mal.apk
+RTO.apk
 mal_analysis_result.json
 fdroid_*.json
 VALIDATION_REPORT.md
@@ -190,3 +191,26 @@ analysis/gap_features_cache.json
 analysis/obfuscation_work/
 kali result/
 session-ses_006c.md
+
+# Case evidence: raw drive dumps & victim-data snapshots stay local (PII / size)
+PENDRIVE DATA/
+vault/
+
+# Live-C2 credentials / operator intel / victim-adjacent data — LOCAL ONLY, never push
+analysis/recovered/PENDRIVE_MASTER_KEY_INTEL.md
+analysis/recovered/toreport.csv
+analysis/recovered/myg0N_IOC.md
+# Live malware payload kits — never publish
+analysis/recovered/myg0N_payload/
+analysis/recovered/PNB_One/
+analysis/recovered/Repair_service/
+analysis/recovered/RTO_E_CHALLAN_1/
+
+# Malware dissect work-products & investigation artifacts — local only
+analysis/dissect_pendrive/
+analysis/dissect_m1/0000237117863e53/
+analysis/dissect_m1/000027d1da96332e/
+analysis/dissect_m1/0000a053de676b4d/
+getMe_*.json
+C-FAIL
+reports/pendrive_emulate.log

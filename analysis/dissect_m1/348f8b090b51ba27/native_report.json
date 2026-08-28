@@ -1,0 +1,77 @@
+{
+  "apk_path": "/home/kali/DroidForensix/RTO.apk",
+  "apk_sha256": "348f8b090b51ba27e9042f19730a61c04bb31691d7939fd1047dffc5f51a8d4e",
+  "so_count": 2,
+  "native_libs": [
+    {
+      "path": "analysis/dissect_m1/348f8b090b51ba27/RTO/arm64-v8a_libstrangulation.so",
+      "sha256": "d2f4b383d57d7ce5f47a9f95d71e850ce2da5aa6f70c3ade7d58db4c012c0f0f",
+      "elf": {
+        "arch": "aarch64",
+        "bits": 64,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libm.so",
+          "libdl.so",
+          "libc.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_Dzhugashvili_jD3P_SUO4__",
+          "addr": "0x10058",
+          "source": "static_export",
+          "java_hint": {
+            "class": "Dzhugashvili.jD3P"
+          }
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.095,
+        "branches": 2,
+        "total_insns": 21,
+        "distinct_branch_targets": 2,
+        "hub_max_indegree": 1
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/348f8b090b51ba27/RTO/armeabi-v7a_libstrangulation.so",
+      "sha256": "3c925dbbdaad4ec0399a5315d3eb05d6ac0a196126c0022ed439a9b7df74df1c",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libm.so",
+          "libdl.so",
+          "libc.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_Dzhugashvili_jD3P_SUO4__",
+          "addr": "0x6f0d",
+          "source": "static_export",
+          "java_hint": {
+            "class": "Dzhugashvili.jD3P"
+          }
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.4,
+        "branches": 6,
+        "total_insns": 15,
+        "distinct_branch_targets": 3,
+        "hub_max_indegree": 1
+      }
+    }
+  ]
+}

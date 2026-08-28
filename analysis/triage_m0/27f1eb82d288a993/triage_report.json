@@ -1,0 +1,125 @@
+{
+  "apk_sha256": "27f1eb82d288a9939b7c0bdd0fb94f78749824ffc753d32d421e01cbe487e5e0",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/net.osmand.plus_531003.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 10.612,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.16369,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 48011384,
+      "total_uncompressed": 293306117,
+      "native_lib_share": 0.2254,
+      "big_asset_count": 31,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.5162,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 2722,
+      "total_windows": 7065,
+      "sampled_capped": true,
+      "candidates": [
+        "assets/OsmAndCore_ResourcesBundle.index",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/05_NotoSans-Regular.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/10_NotoSans-Bold.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/15_NotoSans-Italic.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/20_NotoSans-BoldItalic.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/35_NotoSansSouthAsian-Regular.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/40_NotoSansSouthAsian-Bold.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/45_NotoSansSoutheastAsian-Regular.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/50_NotoSansSoutheastAsian-Bold.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/55_NotoSansTibetan-Regular.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/60_NotoSansTibetan-Bold.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/65_NotoSansNastaliqUrdu-Regular.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/map/fonts/DroidSansFallback.ttf.qz",
+        "assets/OsmAndCore_ResourcesBundle/misc/icu4c/icu-data-l.dat.qz",
+        "assets/World_basemap_mini.obf",
+        "assets/astro/stars.db",
+        "assets/fonts/03_Estedad-Regular.ttf",
+        "assets/fonts/04_Estedad-Bold.ttf",
+        "assets/fonts/05_NotoSans-Regular.ttf",
+        "assets/fonts/10_NotoSans-Bold.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "net.osmand.plus.OsmandApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8748640,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": false,
+      "max_text_bytes": 0,
+      "libs_parsed": 6
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "openat",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/World_basemap_mini.obf",
+      "size": 60473680
+    },
+    {
+      "path": "assets/proj.db",
+      "size": 7921664
+    },
+    {
+      "path": "assets/OsmAndCore_ResourcesBundle/misc/icu4c/icu-data-l.dat.qz",
+      "size": 7469988
+    },
+    {
+      "path": "assets/fonts/DroidSansFallback.ttf",
+      "size": 3939852
+    },
+    {
+      "path": "assets/astro/stars.db",
+      "size": 3440640
+    },
+    {
+      "path": "assets/OsmAndCore_ResourcesBundle/map/fonts/DroidSansFallback.ttf.qz",
+      "size": 1816529
+    },
+    {
+      "path": "assets/fonts/35_NotoSansSouthAsian-Regular.ttf",
+      "size": 1484512
+    },
+    {
+      "path": "assets/fonts/40_NotoSansSouthAsian-Bold.ttf",
+      "size": 1224136
+    },
+    {
+      "path": "assets/fonts/05_NotoSans-Regular.ttf",
+      "size": 1189088
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

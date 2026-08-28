@@ -1,0 +1,60 @@
+{
+  "apk_sha256": "dec4d9a9d5ec6aff2444b9414caff75db2bdd08fe50dbbbfe458c1ca2587d68b",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Bank of India.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.237,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.205748,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1551772,
+      "total_uncompressed": 7542116,
+      "native_lib_share": 0.0,
+      "big_asset_count": 1,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.1397,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 498,
+      "total_windows": 878,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/output.apk"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/output.apk",
+      "size": 3599248
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

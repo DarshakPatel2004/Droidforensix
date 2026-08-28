@@ -1,0 +1,11 @@
+{
+  "brands": [
+    {"name": "Bangcle/SecNeo", "markers": ["com.secneo.apkwrapper", "libsecexe.so", "libsecmain.so", "libdexhelper.so", "classes.dex.bak"]},
+    {"name": "Ijiami", "markers": ["com.stub.stubapp", "libexecmain.so", "ijiami.dat", "ajm.dat"]},
+    {"name": "TencentLegu", "markers": ["com.tencent.stubshell", "libshella-", "libshellx-", "mixz.dex"]},
+    {"name": "360Jiagu", "markers": ["com.qihoo.util", "libjiagu.so", "libjiagu_art.so", "libjiagu_x86.so", "libprotectclass.so"]},
+    {"name": "NQShield", "markers": ["com.netqin.android.dopt", "libnqshield.so"]},
+    {"name": "Wangsu", "markers": ["libkwsgmain.so", "libkdp.so"]},
+    {"name": "Ali", "markers": ["libmobisec.so", "ali.protect"]}
+  ]
+}

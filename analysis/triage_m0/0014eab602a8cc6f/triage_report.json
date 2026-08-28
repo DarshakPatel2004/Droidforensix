@@ -1,0 +1,99 @@
+{
+  "apk_sha256": "0014eab602a8cc6feec52ca0bfc1d24dc928a35bdad6de2ea37146460c5587dc",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0014EAB602A8CC6FEEC52CA0BFC1D24DC928A35BDAD6DE2EA37146460C5587DC.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.537,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.109708,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 3201548,
+      "total_uncompressed": 29182493,
+      "native_lib_share": 0.116,
+      "big_asset_count": 33,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.2892,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 2592,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/www/css/fontawesome/js/all.js",
+        "assets/www/css/fontawesome/js/all.min.js",
+        "assets/www/css/fontawesome/js/brands.js",
+        "assets/www/css/fontawesome/js/brands.min.js",
+        "assets/www/css/fontawesome/js/regular.js",
+        "assets/www/css/fontawesome/js/regular.min.js",
+        "assets/www/css/fontawesome/js/solid.js",
+        "assets/www/css/fontawesome/js/solid.min.js",
+        "assets/www/css/fontawesome/metadata/icons.json",
+        "assets/www/css/fontawesome/metadata/icons.yml",
+        "assets/www/css/fontawesome/sprites/brands.svg",
+        "assets/www/css/fontawesome/sprites/regular.svg",
+        "assets/www/css/fontawesome/sprites/solid.svg",
+        "assets/www/css/fontawesome/webfonts/fa-brands-400.eot",
+        "assets/www/css/fontawesome/webfonts/fa-brands-400.svg",
+        "assets/www/css/fontawesome/webfonts/fa-brands-400.ttf",
+        "assets/www/css/fontawesome/webfonts/fa-regular-400.svg",
+        "assets/www/css/fontawesome/webfonts/fa-solid-900.eot",
+        "assets/www/css/fontawesome/webfonts/fa-solid-900.svg",
+        "assets/www/css/fontawesome/webfonts/fa-solid-900.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 25,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 5
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "mmap",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/www/css/fontawesome/metadata/icons.json",
+      "size": 2779063
+    },
+    {
+      "path": "assets/www/js/angular.js",
+      "size": 1253806
+    },
+    {
+      "path": "assets/www/css/fontawesome/js/all.js",
+      "size": 1108483
+    },
+    {
+      "path": "assets/www/css/fontawesome/js/all.min.js",
+      "size": 1061194
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

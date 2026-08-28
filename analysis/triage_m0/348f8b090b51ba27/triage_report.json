@@ -1,0 +1,65 @@
+{
+  "apk_sha256": "348f8b090b51ba27e9042f19730a61c04bb31691d7939fd1047dffc5f51a8d4e",
+  "apk_path": "/home/kali/DroidForensix/RTO.apk",
+  "verdict": "packed_custom",
+  "confidence": 0.85,
+  "duration_seconds": 0.333,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.000116,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 976,
+      "total_uncompressed": 8385408,
+      "native_lib_share": 0.0648,
+      "big_asset_count": 1,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9544,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 1024,
+      "total_windows": 1024,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/myg0N"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": true,
+      "app_class": "Dzhugashvili.Hispanicisation",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 976,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 1,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 2
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/myg0N",
+      "size": 7815568
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

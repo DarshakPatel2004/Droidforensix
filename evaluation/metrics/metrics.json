@@ -1,84 +1,97 @@
 {
-  "ground_truth": "ground_truth_all.csv",
-  "predictions": "evaluation\\validation_359_fixed3\\predictions.json",
-  "generated_at": "2026-08-14T13:23:45.651416+00:00",
-  "total_samples": 359,
+  "ground_truth": "ground_truth_all_corrected.csv",
+  "predictions": "evaluation/metrics_v2/predictions.json",
+  "generated_at": "2026-08-20T15:33:54.439475+00:00",
+  "total_samples": 352,
   "catch_all_label_count": 24,
   "overall": {
-    "evaluated": 356,
-    "errors": 3,
-    "correct": 128,
-    "accuracy": 0.3565,
-    "precision_macro": 0.3025,
-    "recall_macro": 0.3435
+    "evaluated": 352,
+    "errors": 0,
+    "correct": 226,
+    "accuracy": 0.642,
+    "precision_macro": 0.4639,
+    "recall_macro": 0.4698
   },
   "subset_metrics": {
     "specific_families": {
-      "total": 177,
-      "correct": 106,
-      "accuracy": 0.5989
+      "total": 315,
+      "correct": 216,
+      "accuracy": 0.6857
     },
     "high_confidence_specific": {
-      "total": 151,
-      "correct": 97,
-      "accuracy": 0.6424
+      "total": 270,
+      "correct": 189,
+      "accuracy": 0.7
     },
     "unknown_refusal": {
-      "total": 24,
-      "correct": 22,
-      "refused_correctly": 22,
-      "accuracy": 0.9167
+      "total": 33,
+      "correct": 10,
+      "refused_correctly": 10,
+      "accuracy": 0.303
     }
   },
   "per_source_accuracy": [
     {
-      "source": "androzoo_drebin",
+      "source": "AndroZoo-Drebin",
       "total": 149,
-      "catch_all_count": 34,
-      "catch_all_pct": 22.8,
-      "specific_count": 115,
-      "specific_pct": 77.2,
-      "accuracy_overall": 0.5235,
-      "accuracy_specific": 0.6783,
+      "catch_all_count": 0,
+      "catch_all_pct": 0.0,
+      "specific_count": 149,
+      "specific_pct": 100.0,
+      "accuracy_overall": 0.6846,
+      "accuracy_specific": 0.6846,
       "accuracy_catch_all": 0.0,
-      "overall_correct": 78,
-      "specific_correct": 78
+      "overall_correct": 102,
+      "specific_correct": 102
     },
     {
-      "source": "abusech",
-      "total": 121,
-      "catch_all_count": 98,
-      "catch_all_pct": 81.0,
-      "specific_count": 23,
-      "specific_pct": 19.0,
-      "accuracy_overall": 0.1157,
-      "accuracy_specific": 0.4783,
-      "accuracy_catch_all": 0.0306,
-      "overall_correct": 14,
-      "specific_correct": 11
+      "source": "MalwareBazaar",
+      "total": 96,
+      "catch_all_count": 9,
+      "catch_all_pct": 9.4,
+      "specific_count": 87,
+      "specific_pct": 90.6,
+      "accuracy_overall": 0.7083,
+      "accuracy_specific": 0.7701,
+      "accuracy_catch_all": 0.1111,
+      "overall_correct": 68,
+      "specific_correct": 67
     },
     {
       "source": "modern_eval",
-      "total": 63,
-      "catch_all_count": 35,
-      "catch_all_pct": 55.6,
-      "specific_count": 28,
-      "specific_pct": 44.4,
-      "accuracy_overall": 0.4603,
-      "accuracy_specific": 0.3571,
-      "accuracy_catch_all": 0.5429,
-      "overall_correct": 29,
-      "specific_correct": 10
+      "total": 58,
+      "catch_all_count": 11,
+      "catch_all_pct": 19.0,
+      "specific_count": 47,
+      "specific_pct": 81.0,
+      "accuracy_overall": 0.569,
+      "accuracy_specific": 0.6383,
+      "accuracy_catch_all": 0.2727,
+      "overall_correct": 33,
+      "specific_correct": 30
     },
     {
       "source": "AndroZoo",
-      "total": 26,
-      "catch_all_count": 15,
-      "catch_all_pct": 57.7,
-      "specific_count": 11,
-      "specific_pct": 42.3,
-      "accuracy_overall": 0.2692,
-      "accuracy_specific": 0.6364,
+      "total": 25,
+      "catch_all_count": 13,
+      "catch_all_pct": 52.0,
+      "specific_count": 12,
+      "specific_pct": 48.0,
+      "accuracy_overall": 0.64,
+      "accuracy_specific": 0.8333,
+      "accuracy_catch_all": 0.4615,
+      "overall_correct": 16,
+      "specific_correct": 10
+    },
+    {
+      "source": "abusech",
+      "total": 24,
+      "catch_all_count": 4,
+      "catch_all_pct": 16.7,
+      "specific_count": 20,
+      "specific_pct": 83.3,
+      "accuracy_overall": 0.2917,
+      "accuracy_specific": 0.35,
       "accuracy_catch_all": 0.0,
       "overall_correct": 7,
       "specific_correct": 7
@@ -86,147 +99,138 @@
   ],
   "per_family_breakdown": [
     {
-      "family": "AndroidOS",
-      "gt_count": 53,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "AndroZoo;abusech;androzoo_drebin;modern_eval",
-      "confidence": "high:51; medium:2",
-      "catch_all": true
-    },
-    {
       "family": "unknown",
-      "gt_count": 24,
-      "correct": 22,
-      "accuracy": 0.9167,
-      "sources": "abusech;modern_eval",
-      "confidence": "medium:21; low:3",
-      "catch_all": true
-    },
-    {
-      "family": "GenericKD",
-      "gt_count": 19,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:19",
-      "catch_all": true
-    },
-    {
-      "family": "FakeInst",
-      "gt_count": 17,
-      "correct": 11,
-      "accuracy": 0.6471,
-      "sources": "AndroZoo;androzoo_drebin",
-      "confidence": "high:17",
-      "catch_all": false
-    },
-    {
-      "family": "Agent",
-      "gt_count": 15,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "AndroZoo;abusech;androzoo_drebin",
-      "confidence": "high:14; medium:1",
-      "catch_all": true
-    },
-    {
-      "family": "Opfake",
-      "gt_count": 14,
-      "correct": 2,
-      "accuracy": 0.1429,
-      "sources": "androzoo_drebin",
-      "confidence": "high:14",
-      "catch_all": false
-    },
-    {
-      "family": "Banker",
-      "gt_count": 13,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:13",
-      "catch_all": true
-    },
-    {
-      "family": "Gen",
-      "gt_count": 12,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech;androzoo_drebin;modern_eval",
-      "confidence": "high:12",
-      "catch_all": true
-    },
-    {
-      "family": "GinMaster",
-      "gt_count": 12,
-      "correct": 12,
-      "accuracy": 1.0,
-      "sources": "AndroZoo;androzoo_drebin",
-      "confidence": "high:12",
-      "catch_all": false
-    },
-    {
-      "family": "Adware",
-      "gt_count": 10,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "AndroZoo;androzoo_drebin",
-      "confidence": "high:10",
+      "gt_count": 33,
+      "correct": 10,
+      "accuracy": 0.303,
+      "sources": "AndroZoo;MalwareBazaar;abusech;modern_eval",
+      "confidence": "high:22; medium:8; low:3",
       "catch_all": true
     },
     {
       "family": "FakeInstaller",
-      "gt_count": 9,
-      "correct": 3,
-      "accuracy": 0.3333,
-      "sources": "androzoo_drebin",
-      "confidence": "high:9",
+      "gt_count": 25,
+      "correct": 15,
+      "accuracy": 0.6,
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:25",
+      "catch_all": false
+    },
+    {
+      "family": "Opfake",
+      "gt_count": 21,
+      "correct": 2,
+      "accuracy": 0.0952,
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:21",
       "catch_all": false
     },
     {
       "family": "Plankton",
-      "gt_count": 9,
-      "correct": 8,
-      "accuracy": 0.8889,
-      "sources": "androzoo_drebin",
-      "confidence": "high:9",
-      "catch_all": false
-    },
-    {
-      "family": "SpyNote",
-      "gt_count": 9,
-      "correct": 2,
-      "accuracy": 0.2222,
-      "sources": "abusech;modern_eval",
-      "confidence": "high:2; medium:7",
-      "catch_all": false
-    },
-    {
-      "family": "Backdoor",
-      "gt_count": 7,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:7",
-      "catch_all": true
-    },
-    {
-      "family": "BaseBridge",
-      "gt_count": 7,
-      "correct": 7,
+      "gt_count": 17,
+      "correct": 17,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:7",
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:17",
       "catch_all": false
     },
     {
       "family": "DroidKungFu",
-      "gt_count": 6,
-      "correct": 6,
+      "gt_count": 16,
+      "correct": 15,
+      "accuracy": 0.9375,
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:16",
+      "catch_all": false
+    },
+    {
+      "family": "GinMaster",
+      "gt_count": 15,
+      "correct": 14,
+      "accuracy": 0.9333,
+      "sources": "AndroZoo;AndroZoo-Drebin",
+      "confidence": "high:15",
+      "catch_all": false
+    },
+    {
+      "family": "NGate",
+      "gt_count": 15,
+      "correct": 14,
+      "accuracy": 0.9333,
+      "sources": "MalwareBazaar;abusech",
+      "confidence": "high:15",
+      "catch_all": false
+    },
+    {
+      "family": "SpyNote",
+      "gt_count": 14,
+      "correct": 13,
+      "accuracy": 0.9286,
+      "sources": "MalwareBazaar;modern_eval",
+      "confidence": "high:7; medium:7",
+      "catch_all": false
+    },
+    {
+      "family": "TeaBot",
+      "gt_count": 13,
+      "correct": 9,
+      "accuracy": 0.6923,
+      "sources": "MalwareBazaar;abusech",
+      "confidence": "high:13",
+      "catch_all": false
+    },
+    {
+      "family": "Ermac",
+      "gt_count": 12,
+      "correct": 11,
+      "accuracy": 0.9167,
+      "sources": "MalwareBazaar;abusech",
+      "confidence": "high:11; medium:1",
+      "catch_all": false
+    },
+    {
+      "family": "FakeTikTok",
+      "gt_count": 11,
+      "correct": 2,
+      "accuracy": 0.1818,
+      "sources": "MalwareBazaar;modern_eval",
+      "confidence": "high:5; medium:6",
+      "catch_all": false
+    },
+    {
+      "family": "Hydra",
+      "gt_count": 11,
+      "correct": 11,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:6",
+      "sources": "MalwareBazaar",
+      "confidence": "high:11",
+      "catch_all": false
+    },
+    {
+      "family": "BaseBridge",
+      "gt_count": 10,
+      "correct": 10,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:10",
+      "catch_all": false
+    },
+    {
+      "family": "mParivahan",
+      "gt_count": 9,
+      "correct": 5,
+      "accuracy": 0.5556,
+      "sources": "MalwareBazaar;modern_eval",
+      "confidence": "medium:9",
+      "catch_all": false
+    },
+    {
+      "family": "FluBot",
+      "gt_count": 8,
+      "correct": 8,
+      "accuracy": 1.0,
+      "sources": "MalwareBazaar;abusech",
+      "confidence": "high:8",
       "catch_all": false
     },
     {
@@ -239,30 +243,30 @@
       "catch_all": false
     },
     {
-      "family": "Linux",
-      "gt_count": 6,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "AndroZoo;androzoo_drebin;modern_eval",
-      "confidence": "high:6",
-      "catch_all": true
-    },
-    {
-      "family": "SpyMax",
-      "gt_count": 6,
-      "correct": 5,
-      "accuracy": 0.8333,
-      "sources": "abusech",
-      "confidence": "high:5; low:1",
+      "family": "GhostBat",
+      "gt_count": 5,
+      "correct": 3,
+      "accuracy": 0.6,
+      "sources": "modern_eval",
+      "confidence": "high:1; medium:4",
       "catch_all": false
     },
     {
-      "family": "GhostBat",
+      "family": "Bradesco",
+      "gt_count": 4,
+      "correct": 4,
+      "accuracy": 1.0,
+      "sources": "modern_eval",
+      "confidence": "high:3; medium:1",
+      "catch_all": false
+    },
+    {
+      "family": "FakeChrome",
       "gt_count": 4,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "modern_eval",
-      "confidence": "medium:4",
+      "sources": "MalwareBazaar",
+      "confidence": "high:4",
       "catch_all": false
     },
     {
@@ -270,7 +274,7 @@
       "gt_count": 4,
       "correct": 4,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:4",
       "catch_all": false
     },
@@ -279,44 +283,26 @@
       "gt_count": 4,
       "correct": 4,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:4",
       "catch_all": false
-    },
-    {
-      "family": "NGate",
-      "gt_count": 4,
-      "correct": 3,
-      "accuracy": 0.75,
-      "sources": "abusech",
-      "confidence": "high:4",
-      "catch_all": false
-    },
-    {
-      "family": "a",
-      "gt_count": 4,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:4",
-      "catch_all": true
     },
     {
       "family": "Andr/Banker-HDY",
       "gt_count": 3,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "abusech",
+      "sources": "MalwareBazaar;abusech",
       "confidence": "high:3",
       "catch_all": false
     },
     {
-      "family": "BankBot",
+      "family": "Exobot",
       "gt_count": 3,
-      "correct": 1,
-      "accuracy": 0.3333,
-      "sources": "abusech",
-      "confidence": "high:2; medium:1",
+      "correct": 3,
+      "accuracy": 1.0,
+      "sources": "MalwareBazaar",
+      "confidence": "high:3",
       "catch_all": false
     },
     {
@@ -324,8 +310,17 @@
       "gt_count": 3,
       "correct": 3,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:3",
+      "catch_all": false
+    },
+    {
+      "family": "Indusind",
+      "gt_count": 3,
+      "correct": 2,
+      "accuracy": 0.6667,
+      "sources": "modern_eval",
+      "confidence": "medium:3",
       "catch_all": false
     },
     {
@@ -342,44 +337,62 @@
       "gt_count": 3,
       "correct": 3,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:3",
+      "catch_all": false
+    },
+    {
+      "family": "PixRevolution",
+      "gt_count": 3,
+      "correct": 3,
+      "accuracy": 1.0,
+      "sources": "MalwareBazaar",
+      "confidence": "high:3",
+      "catch_all": false
+    },
+    {
+      "family": "SendPay",
+      "gt_count": 3,
+      "correct": 3,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:3",
       "catch_all": false
     },
     {
       "family": "Adrd",
       "gt_count": 2,
-      "correct": 1,
-      "accuracy": 0.5,
-      "sources": "androzoo_drebin",
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:2",
       "catch_all": false
     },
     {
-      "family": "Andr/Xgen2-AYJ",
+      "family": "Alien",
       "gt_count": 2,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "modern_eval",
-      "confidence": "high:2",
-      "catch_all": false
-    },
-    {
-      "family": "Android/Agent",
-      "gt_count": 2,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech;modern_eval",
+      "sources": "abusech",
       "confidence": "high:2",
       "catch_all": false
     },
     {
       "family": "AppRisk",
       "gt_count": 2,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "AndroZoo;abusech",
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "AndroZoo;MalwareBazaar",
       "confidence": "medium:2",
+      "catch_all": false
+    },
+    {
+      "family": "BankBot",
+      "gt_count": 2,
+      "correct": 1,
+      "accuracy": 0.5,
+      "sources": "abusech",
+      "confidence": "high:2",
       "catch_all": false
     },
     {
@@ -392,20 +405,11 @@
       "catch_all": false
     },
     {
-      "family": "Dropper",
-      "gt_count": 2,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:2",
-      "catch_all": true
-    },
-    {
       "family": "FakeDoc",
       "gt_count": 2,
       "correct": 2,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:2",
       "catch_all": false
     },
@@ -414,18 +418,9 @@
       "gt_count": 2,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:2",
       "catch_all": false
-    },
-    {
-      "family": "General",
-      "gt_count": 2,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech;modern_eval",
-      "confidence": "medium:2",
-      "catch_all": true
     },
     {
       "family": "HyPay",
@@ -437,47 +432,47 @@
       "catch_all": false
     },
     {
-      "family": "KungFu",
+      "family": "ICICI",
+      "gt_count": 2,
+      "correct": 1,
+      "accuracy": 0.5,
+      "sources": "abusech",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "Konfety",
       "gt_count": 2,
       "correct": 2,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "MalwareBazaar",
+      "confidence": "high:2",
+      "catch_all": false
+    },
+    {
+      "family": "SMSreg",
+      "gt_count": 2,
+      "correct": 2,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin;modern_eval",
       "confidence": "high:2",
       "catch_all": false
     },
     {
       "family": "Secapk",
       "gt_count": 2,
-      "correct": 0,
-      "accuracy": 0.0,
+      "correct": 2,
+      "accuracy": 1.0,
       "sources": "AndroZoo",
       "confidence": "high:2",
       "catch_all": false
-    },
-    {
-      "family": "33107585",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:1",
-      "catch_all": true
     },
     {
       "family": "40094400",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:1",
-      "catch_all": true
-    },
-    {
-      "family": "A",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "MalwareBazaar",
       "confidence": "high:1",
       "catch_all": true
     },
@@ -495,16 +490,7 @@
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:1",
-      "catch_all": false
-    },
-    {
-      "family": "Airpush",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -513,7 +499,7 @@
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "abusech",
+      "sources": "MalwareBazaar",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -527,13 +513,22 @@
       "catch_all": true
     },
     {
-      "family": "Application",
+      "family": "Aversefalc",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
       "sources": "modern_eval",
       "confidence": "high:1",
-      "catch_all": true
+      "catch_all": false
+    },
+    {
+      "family": "BeatBanker",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "MalwareBazaar",
+      "confidence": "high:1",
+      "catch_all": false
     },
     {
       "family": "Bian",
@@ -549,6 +544,33 @@
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
+      "sources": "MalwareBazaar",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Boxer",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "BtmobRAT",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "modern_eval",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Cerberus",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
       "sources": "abusech",
       "confidence": "high:1",
       "catch_all": false
@@ -556,9 +578,18 @@
     {
       "family": "Cnzz",
       "gt_count": 1,
-      "correct": 1,
-      "accuracy": 1.0,
+      "correct": 0,
+      "accuracy": 0.0,
       "sources": "AndroZoo",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Copycat",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -572,20 +603,11 @@
       "catch_all": false
     },
     {
-      "family": "Detected",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "AndroZoo",
-      "confidence": "low:1",
-      "catch_all": true
-    },
-    {
       "family": "Dougalek",
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -594,7 +616,25 @@
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Escobar",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "MalwareBazaar",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Eventbot",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -603,52 +643,61 @@
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "abusech",
+      "sources": "MalwareBazaar",
       "confidence": "high:1",
       "catch_all": true
     },
     {
-      "family": "Exploit",
+      "family": "ExploitLinuxLotoor",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:1",
-      "catch_all": true
-    },
-    {
-      "family": "FaceNiff",
-      "gt_count": 1,
-      "correct": 1,
-      "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
     {
-      "family": "FakeApp",
+      "family": "FaceNiff",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "FakeInst",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "FakeTelegram",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "MalwareBazaar",
       "confidence": "high:1",
       "catch_all": false
     },
     {
       "family": "FakeTimer",
       "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
     {
       "family": "Geinimi",
       "gt_count": 1,
-      "correct": 1,
-      "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -662,29 +711,29 @@
       "catch_all": true
     },
     {
-      "family": "Hacktool",
+      "family": "Hamob",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
-      "catch_all": true
+      "catch_all": false
     },
     {
-      "family": "Hamob",
+      "family": "Joker",
       "gt_count": 1,
-      "correct": 1,
-      "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "abusech",
       "confidence": "high:1",
       "catch_all": false
     },
     {
       "family": "Lemon",
       "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -702,7 +751,7 @@
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -711,7 +760,7 @@
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -720,34 +769,52 @@
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
     {
-      "family": "SMSreg",
+      "family": "Nyleaker",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "modern_eval",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
     {
-      "family": "SendPay",
+      "family": "Ollvm",
       "gt_count": 1,
-      "correct": 1,
-      "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "MalwareBazaar",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Penetho",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo-Drebin",
+      "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "Serbg",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
     {
       "family": "SmForw",
       "gt_count": 1,
-      "correct": 1,
-      "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -765,7 +832,7 @@
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -774,88 +841,43 @@
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
+      "catch_all": false
+    },
+    {
+      "family": "SpyMax",
+      "gt_count": 1,
+      "correct": 0,
+      "accuracy": 0.0,
+      "sources": "MalwareBazaar",
+      "confidence": "low:1",
       "catch_all": false
     },
     {
       "family": "Stiniter",
       "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "correct": 1,
+      "accuracy": 1.0,
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
     {
-      "family": "Trojan ( 0001140e1 )",
+      "family": "Tiramisu",
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "AndroZoo",
-      "confidence": "medium:1",
-      "catch_all": true
-    },
-    {
-      "family": "Trojan ( 005cbb901 )",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
+      "sources": "MalwareBazaar",
       "confidence": "high:1",
-      "catch_all": true
-    },
-    {
-      "family": "Trojan ( 005cf1d81 )",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:1",
-      "catch_all": true
-    },
-    {
-      "family": "Trojan-Banker",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:1",
-      "catch_all": true
-    },
-    {
-      "family": "Trojan-Dropper",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "abusech",
-      "confidence": "high:1",
-      "catch_all": true
+      "catch_all": false
     },
     {
       "family": "Typstu",
       "gt_count": 1,
       "correct": 1,
       "accuracy": 1.0,
-      "sources": "androzoo_drebin",
-      "confidence": "high:1",
-      "catch_all": false
-    },
-    {
-      "family": "UKP",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "modern_eval",
-      "confidence": "high:1",
-      "catch_all": false
-    },
-    {
-      "family": "Wooboo",
-      "gt_count": 1,
-      "correct": 0,
-      "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     },
@@ -864,7 +886,7 @@
       "gt_count": 1,
       "correct": 0,
       "accuracy": 0.0,
-      "sources": "androzoo_drebin",
+      "sources": "AndroZoo-Drebin",
       "confidence": "high:1",
       "catch_all": false
     }

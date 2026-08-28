@@ -94,7 +94,7 @@
 }
 
 .manifest-permissions-card .permission-badge.dangerous {
-  background: rgba(244, 63, 94, 0.1);
+  background: rgba(251, 92, 116, 0.1);
   border-color: var(--accent-rose);
   color: var(--accent-rose);
 }

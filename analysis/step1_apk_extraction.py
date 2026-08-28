@@ -48,6 +48,9 @@ def compute_md5(file_path: str) -> str:
 def _tool_cmd(path: str) -> list:
     """Return a subprocess-ready command list from a configured tool path."""
     tool = Path(path)
+    # A .jar is not directly executable on POSIX; launch it through java.
+    if tool.suffix.lower() == ".jar" and os.name != "nt":
+        return ["java", "-jar", str(tool)]
     return [str(tool)] if tool.exists() else [path]
 
 

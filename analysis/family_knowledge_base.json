@@ -8,17 +8,17 @@
         "fp": 0.048
       },
       {
+        "token": "error_sms_sending",
+        "coverage": 0.48,
+        "fp": 0.0037
+      },
+      {
         "token": "smsquantity",
         "coverage": 0.48,
         "fp": 0.0037
       },
       {
         "token": "main_text",
-        "coverage": 0.48,
-        "fp": 0.0037
-      },
-      {
-        "token": "error_sms_sending",
         "coverage": 0.48,
         "fp": 0.0037
       },
@@ -53,7 +53,7 @@
         "fp": 0.0369
       },
       {
-        "token": "thirdtext",
+        "token": "secondtext",
         "coverage": 0.44,
         "fp": 0.0
       },
@@ -63,32 +63,7 @@
         "fp": 0.0
       },
       {
-        "token": "initdatafromconfigs",
-        "coverage": 0.44,
-        "fp": 0.0
-      },
-      {
         "token": "apps_dir_wasnt_created",
-        "coverage": 0.44,
-        "fp": 0.0
-      },
-      {
-        "token": "inittextviews",
-        "coverage": 0.44,
-        "fp": 0.0
-      },
-      {
-        "token": "progress_start",
-        "coverage": 0.44,
-        "fp": 0.0
-      },
-      {
-        "token": "i_accept",
-        "coverage": 0.44,
-        "fp": 0.0
-      },
-      {
-        "token": "fourthtext",
         "coverage": 0.44,
         "fp": 0.0
       },
@@ -98,7 +73,17 @@
         "fp": 0.0
       },
       {
-        "token": "initgui",
+        "token": "thirdtext",
+        "coverage": 0.44,
+        "fp": 0.0
+      },
+      {
+        "token": "inittextviews",
+        "coverage": 0.44,
+        "fp": 0.0
+      },
+      {
+        "token": "i_accept",
         "coverage": 0.44,
         "fp": 0.0
       },
@@ -108,7 +93,22 @@
         "fp": 0.0
       },
       {
-        "token": "secondtext",
+        "token": "initdatafromconfigs",
+        "coverage": 0.44,
+        "fp": 0.0
+      },
+      {
+        "token": "fourthtext",
+        "coverage": 0.44,
+        "fp": 0.0
+      },
+      {
+        "token": "progress_start",
+        "coverage": 0.44,
+        "fp": 0.0
+      },
+      {
+        "token": "initgui",
         "coverage": 0.44,
         "fp": 0.0
       },
@@ -141,7 +141,7 @@
     "samples": 17,
     "strings": [
       {
-        "token": "m_server_url",
+        "token": "kaka",
         "coverage": 1.0,
         "fp": 0.0036
       },
@@ -151,14 +151,9 @@
         "fp": 0.0036
       },
       {
-        "token": "kaka",
+        "token": "m_server_url",
         "coverage": 1.0,
         "fp": 0.0036
-      },
-      {
-        "token": "developer_id",
-        "coverage": 1.0,
-        "fp": 0.0072
       },
       {
         "token": "developerid",
@@ -166,47 +161,92 @@
         "fp": 0.0072
       },
       {
-        "token": "bookmark error",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "bookmarksrequest.java",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "bookmark is already exist",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "commandsresponse.java",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "setfirsttimeactivation",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "activationresponse.java",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "firsttimeactivation",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "androidparametersmanager.java",
-        "coverage": 0.941,
-        "fp": 0.0036
+        "token": "developer_id",
+        "coverage": 1.0,
+        "fp": 0.0072
       },
       {
         "token": "notificationsrequest.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "device id is missing",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "getcommands",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "setxdpi",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "activationrequest.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "success_with_warning",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "generalutils.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "setdensitydpi",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "commandstatusresponse.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "with columns",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "baserequest.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "first time",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "getxdpi",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "applicationdetails.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "commandstatusrequest.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "androidsdkprovider.java",
+        "coverage": 0.941,
+        "fp": 0.0036
+      },
+      {
+        "token": "setheightpixels",
         "coverage": 0.941,
         "fp": 0.0036
       },
@@ -216,52 +256,12 @@
         "fp": 0.0036
       },
       {
-        "token": "build.java",
+        "token": "commandinformation.java",
         "coverage": 0.941,
         "fp": 0.0036
       },
       {
-        "token": "setsupportlauncher",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "setvalidresponse",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "setshortcutlist",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "startapp_devid",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "androidshortcutsdma.java",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "launcher_name",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "seteula",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "getapplicationdetails",
-        "coverage": 0.941,
-        "fp": 0.0036
-      },
-      {
-        "token": "getmissingparameters",
+        "token": "]#nl#",
         "coverage": 0.941,
         "fp": 0.0036
       }
@@ -279,12 +279,12 @@
         "fp": 0.0323
       },
       {
-        "token": "UNINSTALL_SHORTCUT",
+        "token": "READ_HISTORY_BOOKMARKS",
         "coverage": 1.0,
         "fp": 0.0394
       },
       {
-        "token": "READ_HISTORY_BOOKMARKS",
+        "token": "UNINSTALL_SHORTCUT",
         "coverage": 1.0,
         "fp": 0.0394
       }
@@ -319,12 +319,12 @@
         "fp": 0.0
       },
       {
-        "token": "myoutput",
+        "token": "decryptbuff",
         "coverage": 0.812,
         "fp": 0.0
       },
       {
-        "token": "decryptbuff",
+        "token": "myoutput",
         "coverage": 0.812,
         "fp": 0.0
       },
@@ -339,12 +339,12 @@
         "fp": 0.0107
       },
       {
-        "token": "dialog_grant_su",
+        "token": "updateservice.java",
         "coverage": 0.75,
         "fp": 0.0
       },
       {
-        "token": "updateservice.java",
+        "token": "dialog_grant_su",
         "coverage": 0.75,
         "fp": 0.0
       },
@@ -359,22 +359,12 @@
         "fp": 0.0464
       },
       {
-        "token": "runok",
+        "token": "runfailbynopkg",
         "coverage": 0.688,
         "fp": 0.0
       },
       {
-        "token": "downfailed",
-        "coverage": 0.688,
-        "fp": 0.0
-      },
-      {
-        "token": "cpinstfail",
-        "coverage": 0.688,
-        "fp": 0.0
-      },
-      {
-        "token": "3 /data/app/",
+        "token": "cpinstok",
         "coverage": 0.688,
         "fp": 0.0
       },
@@ -384,22 +374,32 @@
         "fp": 0.0
       },
       {
+        "token": "downok",
+        "coverage": 0.688,
+        "fp": 0.0
+      },
+      {
         "token": "lilhermitcore",
         "coverage": 0.688,
         "fp": 0.0
       },
       {
-        "token": "runcmd",
+        "token": "3 /data/app/",
         "coverage": 0.688,
         "fp": 0.0
       },
       {
-        "token": "cpdelfail",
+        "token": "netoperater",
         "coverage": 0.688,
         "fp": 0.0
       },
       {
-        "token": "typedsada",
+        "token": "runcmd_wrapper begin",
+        "coverage": 0.688,
+        "fp": 0.0
+      },
+      {
+        "token": "/system/bin/chmod",
         "coverage": 0.688,
         "fp": 0.0
       },
@@ -414,7 +414,7 @@
         "fp": 0.0
       },
       {
-        "token": "netoperater",
+        "token": "downfailed",
         "coverage": 0.688,
         "fp": 0.0
       }
@@ -452,17 +452,17 @@
         "fp": 0.0
       },
       {
+        "token": "detail_flag",
+        "coverage": 0.867,
+        "fp": 0.0
+      },
+      {
         "token": "ico_url",
         "coverage": 0.867,
         "fp": 0.0
       },
       {
         "token": "soft_id",
-        "coverage": 0.867,
-        "fp": 0.0
-      },
-      {
-        "token": "detail_flag",
         "coverage": 0.867,
         "fp": 0.0
       },
@@ -492,17 +492,17 @@
         "fp": 0.0427
       },
       {
+        "token": "apk_size",
+        "coverage": 0.533,
+        "fp": 0.0
+      },
+      {
         "token": "icon_file",
         "coverage": 0.533,
         "fp": 0.0
       },
       {
         "token": "apk_url",
-        "coverage": 0.533,
-        "fp": 0.0
-      },
-      {
-        "token": "apk_size",
         "coverage": 0.533,
         "fp": 0.0
       },
@@ -532,42 +532,42 @@
         "fp": 0.0498
       },
       {
+        "token": "request_status_success",
+        "coverage": 0.467,
+        "fp": 0.0
+      },
+      {
+        "token": "pop_data",
+        "coverage": 0.467,
+        "fp": 0.0
+      },
+      {
         "token": "i-uid",
         "coverage": 0.467,
         "fp": 0.0
       },
       {
-        "token": "dotimergetconfig",
+        "token": "cpuid",
         "coverage": 0.467,
         "fp": 0.0
       },
       {
-        "token": "download_status_canceld",
+        "token": "free_flag",
         "coverage": 0.467,
         "fp": 0.0
       },
       {
-        "token": "class_id",
+        "token": "get_list_limit",
         "coverage": 0.467,
         "fp": 0.0
       },
       {
-        "token": "get_alert_limit",
+        "token": "need_adb_flag",
         "coverage": 0.467,
         "fp": 0.0
       },
       {
-        "token": "download_status_none",
-        "coverage": 0.467,
-        "fp": 0.0
-      },
-      {
-        "token": "request_status_running",
-        "coverage": 0.467,
-        "fp": 0.0
-      },
-      {
-        "token": "download_status_paused",
+        "token": "config_next",
         "coverage": 0.467,
         "fp": 0.0
       }
@@ -579,22 +579,12 @@
     "samples": 14,
     "strings": [
       {
-        "token": "9f4c",
-        "coverage": 0.929,
-        "fp": 0.0035
-      },
-      {
-        "token": "9f1a",
-        "coverage": 0.929,
-        "fp": 0.0035
-      },
-      {
         "token": "9f02",
         "coverage": 0.929,
         "fp": 0.0035
       },
       {
-        "token": "9f6b",
+        "token": "9f45",
         "coverage": 0.929,
         "fp": 0.0035
       },
@@ -604,17 +594,27 @@
         "fp": 0.0035
       },
       {
-        "token": "9f37",
+        "token": "9f35",
         "coverage": 0.929,
         "fp": 0.0035
       },
       {
-        "token": "5f2a",
+        "token": "9f6b",
         "coverage": 0.929,
         "fp": 0.0035
       },
       {
         "token": "9f27",
+        "coverage": 0.929,
+        "fp": 0.0035
+      },
+      {
+        "token": "9f37",
+        "coverage": 0.929,
+        "fp": 0.0035
+      },
+      {
+        "token": "9f21",
         "coverage": 0.929,
         "fp": 0.0035
       },
@@ -629,17 +629,12 @@
         "fp": 0.0035
       },
       {
+        "token": "9f4e",
+        "coverage": 0.929,
+        "fp": 0.0035
+      },
+      {
         "token": "9f7c",
-        "coverage": 0.929,
-        "fp": 0.0035
-      },
-      {
-        "token": "9f45",
-        "coverage": 0.929,
-        "fp": 0.0035
-      },
-      {
-        "token": "9f21",
         "coverage": 0.929,
         "fp": 0.0035
       },
@@ -649,12 +644,17 @@
         "fp": 0.0035
       },
       {
-        "token": "9f4e",
+        "token": "9f4c",
         "coverage": 0.929,
         "fp": 0.0035
       },
       {
-        "token": "9f35",
+        "token": "5f2a",
+        "coverage": 0.929,
+        "fp": 0.0035
+      },
+      {
+        "token": "9f1a",
         "coverage": 0.929,
         "fp": 0.0035
       },
@@ -727,12 +727,12 @@
         "fp": 0.0284
       },
       {
-        "token": "transformpivotx",
+        "token": "transformpivoty",
         "coverage": 0.5,
         "fp": 0.0319
       },
       {
-        "token": "transformpivoty",
+        "token": "transformpivotx",
         "coverage": 0.5,
         "fp": 0.0319
       },
@@ -747,12 +747,12 @@
         "fp": 0.0355
       },
       {
-        "token": "centerhorizontally",
+        "token": "llliflli",
         "coverage": 0.5,
         "fp": 0.039
       },
       {
-        "token": "llliflli",
+        "token": "centerhorizontally",
         "coverage": 0.5,
         "fp": 0.039
       },
@@ -760,11 +760,6 @@
         "token": "centervertically",
         "coverage": 0.5,
         "fp": 0.039
-      },
-      {
-        "token": "unused attribute 0x",
-        "coverage": 0.5,
-        "fp": 0.0461
       },
       {
         "token": "getparagraphcount",
@@ -782,7 +777,12 @@
         "fp": 0.0461
       },
       {
-        "token": "dimensionratio",
+        "token": "unused attribute 0x",
+        "coverage": 0.5,
+        "fp": 0.0461
+      },
+      {
+        "token": "parent_id",
         "coverage": 0.5,
         "fp": 0.0461
       },
@@ -792,7 +792,7 @@
         "fp": 0.0461
       },
       {
-        "token": "parent_id",
+        "token": "dimensionratio",
         "coverage": 0.5,
         "fp": 0.0461
       },
@@ -812,32 +812,32 @@
         "fp": 0.0496
       },
       {
-        "token": "mwrapheight",
+        "token": "maxtablesize:",
         "coverage": 0.429,
         "fp": 0.0
       },
       {
-        "token": "barrierconnectionresolved:",
+        "token": "maxrows:",
         "coverage": 0.429,
         "fp": 0.0
       },
       {
-        "token": "letliudid",
+        "token": "extravariables:",
         "coverage": 0.429,
         "fp": 0.0
       },
       {
-        "token": "msharedpref",
+        "token": "preoptimize",
         "coverage": 0.429,
         "fp": 0.0
       },
       {
-        "token": "getinternaldrawx",
+        "token": "setcolumnalignment",
         "coverage": 0.429,
         "fp": 0.0
       },
       {
-        "token": "user_creator",
+        "token": "bfs:",
         "coverage": 0.429,
         "fp": 0.0
       }
@@ -861,12 +861,12 @@
         "fp": 0.0
       },
       {
-        "token": "OPPO_COMPONENT_SAFE",
+        "token": "OPLUS_COMPONENT_SAFE",
         "coverage": 0.786,
         "fp": 0.0
       },
       {
-        "token": "OPLUS_COMPONENT_SAFE",
+        "token": "OPPO_COMPONENT_SAFE",
         "coverage": 0.786,
         "fp": 0.0
       },
@@ -911,12 +911,12 @@
         "fp": 0.0389
       },
       {
-        "token": "response_code",
+        "token": "getsurfacetexture",
         "coverage": 0.615,
         "fp": 0.0459
       },
       {
-        "token": "getsurfacetexture",
+        "token": "response_code",
         "coverage": 0.615,
         "fp": 0.0459
       },
@@ -926,22 +926,22 @@
         "fp": 0.0459
       },
       {
-        "token": "utils",
-        "coverage": 0.615,
-        "fp": 0.0495
-      },
-      {
         "token": "abandonaudiofocus",
         "coverage": 0.615,
         "fp": 0.0495
       },
       {
-        "token": "cityname",
+        "token": "utils",
+        "coverage": 0.615,
+        "fp": 0.0495
+      },
+      {
+        "token": "agree",
         "coverage": 0.538,
         "fp": 0.0141
       },
       {
-        "token": "agree",
+        "token": "cityname",
         "coverage": 0.538,
         "fp": 0.0141
       },
@@ -966,12 +966,12 @@
         "fp": 0.0283
       },
       {
-        "token": "india",
+        "token": "setcreatetime",
         "coverage": 0.538,
         "fp": 0.0318
       },
       {
-        "token": "setcreatetime",
+        "token": "india",
         "coverage": 0.538,
         "fp": 0.0318
       },
@@ -981,7 +981,7 @@
         "fp": 0.0353
       },
       {
-        "token": "createtime",
+        "token": "manual",
         "coverage": 0.538,
         "fp": 0.0389
       },
@@ -991,7 +991,7 @@
         "fp": 0.0389
       },
       {
-        "token": "mexecutorservice",
+        "token": "createtime",
         "coverage": 0.538,
         "fp": 0.0389
       },
@@ -1001,12 +1001,12 @@
         "fp": 0.0389
       },
       {
-        "token": "manual",
+        "token": "mexecutorservice",
         "coverage": 0.538,
         "fp": 0.0389
       },
       {
-        "token": "getapplicationname",
+        "token": "arm64-v8a",
         "coverage": 0.538,
         "fp": 0.0424
       }
@@ -1065,12 +1065,12 @@
         "fp": 0.0106
       },
       {
-        "token": "getapp",
+        "token": "onpaused",
         "coverage": 0.75,
         "fp": 0.0317
       },
       {
-        "token": "onpaused",
+        "token": "getapp",
         "coverage": 0.75,
         "fp": 0.0317
       },
@@ -1095,7 +1095,7 @@
         "fp": 0.0458
       },
       {
-        "token": "drop_oldest",
+        "token": "illiizz",
         "coverage": 0.75,
         "fp": 0.0493
       },
@@ -1105,67 +1105,67 @@
         "fp": 0.0493
       },
       {
-        "token": "illiizz",
-        "coverage": 0.75,
-        "fp": 0.0493
-      },
-      {
         "token": "drop_latest",
         "coverage": 0.75,
         "fp": 0.0493
       },
       {
-        "token": "startadmin",
+        "token": "drop_oldest",
+        "coverage": 0.75,
+        "fp": 0.0493
+      },
+      {
+        "token": "clear all",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "clear storage",
+        "token": "com.google.android.gm:id/sender_name",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "com.google.android.gm:id/subject",
+        "token": "list.last()",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "%enable_accessibility_service%",
+        "token": "gmail_mes",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "locale.displaycountry",
+        "token": "toshi",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "com.wallet.crypto.trustapp:id/graph_settings",
+        "token": "com.google.android.gm:id/viewified_conversation_item_view",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "com.wallet.crypto.trustapp:id/next",
+        "token": "smslist",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "startclearcash",
+        "token": "org.toshi",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "listjson.tostring()",
+        "token": "subscriptioninfo.iccid",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "keylogger",
+        "token": "phone_number1",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "sms_mailing_phonebook_error",
+        "token": "onstartcommand executed with startid:",
         "coverage": 0.667,
         "fp": 0.0
       }
@@ -1279,12 +1279,7 @@
         "fp": 0.0175
       },
       {
-        "token": "error_size",
-        "coverage": 0.636,
-        "fp": 0.0211
-      },
-      {
-        "token": "error_ttl_exceeded",
+        "token": "getbodylocalizationargs",
         "coverage": 0.636,
         "fp": 0.0211
       },
@@ -1294,7 +1289,17 @@
         "fp": 0.0211
       },
       {
-        "token": "gettitlelocalizationkey",
+        "token": "gettitlelocalizationargs",
+        "coverage": 0.636,
+        "fp": 0.0211
+      },
+      {
+        "token": "error_ttl_exceeded",
+        "coverage": 0.636,
+        "fp": 0.0211
+      },
+      {
+        "token": "error_size",
         "coverage": 0.636,
         "fp": 0.0211
       },
@@ -1304,12 +1309,7 @@
         "fp": 0.0211
       },
       {
-        "token": "getbodylocalizationargs",
-        "coverage": 0.636,
-        "fp": 0.0211
-      },
-      {
-        "token": "gettitlelocalizationargs",
+        "token": "getbodylocalizationkey",
         "coverage": 0.636,
         "fp": 0.0211
       },
@@ -1319,22 +1319,12 @@
         "fp": 0.0211
       },
       {
-        "token": "getbodylocalizationkey",
+        "token": "gettitlelocalizationkey",
         "coverage": 0.636,
         "fp": 0.0211
       },
       {
-        "token": "setcollapsekey",
-        "coverage": 0.636,
-        "fp": 0.0246
-      },
-      {
         "token": "deletetoken",
-        "coverage": 0.636,
-        "fp": 0.0246
-      },
-      {
-        "token": "isautoinitenabled",
         "coverage": 0.636,
         "fp": 0.0246
       },
@@ -1344,7 +1334,17 @@
         "fp": 0.0246
       },
       {
-        "token": "getactivitycontext",
+        "token": "isautoinitenabled",
+        "coverage": 0.636,
+        "fp": 0.0246
+      },
+      {
+        "token": "getcollapsekey",
+        "coverage": 0.636,
+        "fp": 0.0246
+      },
+      {
+        "token": "referencevalue",
         "coverage": 0.636,
         "fp": 0.0246
       }
@@ -1383,7 +1383,7 @@
         "fp": 0.0
       },
       {
-        "token": "androidterm",
+        "token": "setptywindowsize",
         "coverage": 0.8,
         "fp": 0.0
       },
@@ -1393,7 +1393,7 @@
         "fp": 0.0
       },
       {
-        "token": "setptywindowsize",
+        "token": "androidterm",
         "coverage": 0.8,
         "fp": 0.0
       },
@@ -1423,22 +1423,47 @@
         "fp": 0.0315
       },
       {
-        "token": "ebookstart",
+        "token": "hitime",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "bitime",
+        "token": ":string/l_s",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "mainn",
+        "token": "jpbook",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "notsavedate",
+        "token": "jinping",
+        "coverage": 0.7,
+        "fp": 0.0
+      },
+      {
+        "token": "nextbtn",
+        "coverage": 0.7,
+        "fp": 0.0
+      },
+      {
+        "token": "getexpandablelistview",
+        "coverage": 0.7,
+        "fp": 0.0
+      },
+      {
+        "token": "list_pop",
+        "coverage": 0.7,
+        "fp": 0.0
+      },
+      {
+        "token": ":string/lc_",
+        "coverage": 0.7,
+        "fp": 0.0
+      },
+      {
+        "token": "historyinfo",
         "coverage": 0.7,
         "fp": 0.0
       },
@@ -1448,57 +1473,32 @@
         "fp": 0.0
       },
       {
-        "token": "hitime",
-        "coverage": 0.7,
-        "fp": 0.0
-      },
-      {
-        "token": "db_init_bookinginfo",
-        "coverage": 0.7,
-        "fp": 0.0
-      },
-      {
-        "token": "ebooktext",
-        "coverage": 0.7,
-        "fp": 0.0
-      },
-      {
         "token": "hicreatetime desc limit 10",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "previousbtn",
+        "token": "app_about",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "hiid",
+        "token": "bookinginfo",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "atemp.jpg",
+        "token": "book_textdetail_speed",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "minhistory",
+        "token": "notsavedate",
         "coverage": 0.7,
         "fp": 0.0
       },
       {
-        "token": "book_lastread_id",
-        "coverage": 0.7,
-        "fp": 0.0
-      },
-      {
-        "token": "app_about_msg",
-        "coverage": 0.7,
-        "fp": 0.0
-      },
-      {
-        "token": "bipid",
+        "token": "mintitle",
         "coverage": 0.7,
         "fp": 0.0
       }
@@ -1523,88 +1523,6 @@
       }
     ]
   },
-  "mParivahan": {
-    "samples": 9,
-    "strings": [],
-    "domains": [],
-    "permissions": [
-      {
-        "token": "FOREGROUND_SERVICE_MEDIA_PLAYBACK",
-        "coverage": 0.667,
-        "fp": 0.0209
-      },
-      {
-        "token": "DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSIONil",
-        "coverage": 0.556,
-        "fp": 0.0
-      },
-      {
-        "token": "FLAG_SHOW_WHEN_LOCKED",
-        "coverage": 0.556,
-        "fp": 0.0035
-      },
-      {
-        "token": "GOOGLE_PHOTOS",
-        "coverage": 0.556,
-        "fp": 0.0035
-      },
-      {
-        "token": "ACCESS_MEDIA_LOCATION",
-        "coverage": 0.556,
-        "fp": 0.007
-      },
-      {
-        "token": "FOREGROUND_SERVICE_PHONE_CALL",
-        "coverage": 0.556,
-        "fp": 0.007
-      },
-      {
-        "token": "BLUETOOTH_CONNECT",
-        "coverage": 0.556,
-        "fp": 0.007
-      },
-      {
-        "token": "READ_MEDIA_AUDIO",
-        "coverage": 0.556,
-        "fp": 0.007
-      },
-      {
-        "token": "READ_MEDIA_IMAGES",
-        "coverage": 0.556,
-        "fp": 0.0105
-      },
-      {
-        "token": "BILLING",
-        "coverage": 0.556,
-        "fp": 0.0105
-      },
-      {
-        "token": "ACCESS_ADSERVICES_ATTRIBUTION",
-        "coverage": 0.556,
-        "fp": 0.0105
-      },
-      {
-        "token": "READ_MEDIA_VIDEO",
-        "coverage": 0.556,
-        "fp": 0.0105
-      },
-      {
-        "token": "ACCESS_ADSERVICES_AD_ID",
-        "coverage": 0.556,
-        "fp": 0.0105
-      },
-      {
-        "token": "AD_ID",
-        "coverage": 0.556,
-        "fp": 0.0139
-      },
-      {
-        "token": "MANAGE_OWN_CALLS",
-        "coverage": 0.556,
-        "fp": 0.0174
-      }
-    ]
-  },
   "FluBot": {
     "samples": 8,
     "strings": [
@@ -1614,12 +1532,12 @@
         "fp": 0.0243
       },
       {
-        "token": "no_network",
+        "token": "info:",
         "coverage": 1.0,
         "fp": 0.0312
       },
       {
-        "token": "info:",
+        "token": "no_network",
         "coverage": 1.0,
         "fp": 0.0312
       },
@@ -1639,27 +1557,17 @@
         "fp": 0.0382
       },
       {
-        "token": "gethardwareaddress",
-        "coverage": 1.0,
-        "fp": 0.0417
-      },
-      {
         "token": "onshowfilechooser",
         "coverage": 1.0,
         "fp": 0.0417
       },
       {
-        "token": "fitxy",
+        "token": "gethardwareaddress",
         "coverage": 1.0,
-        "fp": 0.0451
+        "fp": 0.0417
       },
       {
         "token": "fitend",
-        "coverage": 1.0,
-        "fp": 0.0451
-      },
-      {
-        "token": "bytestream",
         "coverage": 1.0,
         "fp": 0.0451
       },
@@ -1669,12 +1577,22 @@
         "fp": 0.0451
       },
       {
-        "token": "key:",
+        "token": "bytestream",
+        "coverage": 1.0,
+        "fp": 0.0451
+      },
+      {
+        "token": "fitxy",
+        "coverage": 1.0,
+        "fp": 0.0451
+      },
+      {
+        "token": "setreadonly",
         "coverage": 1.0,
         "fp": 0.0486
       },
       {
-        "token": "setreadonly",
+        "token": "key:",
         "coverage": 1.0,
         "fp": 0.0486
       },
@@ -1684,7 +1602,7 @@
         "fp": 0.0486
       },
       {
-        "token": "mobile_4g",
+        "token": "mobile_2g",
         "coverage": 0.875,
         "fp": 0.0069
       },
@@ -1694,17 +1612,17 @@
         "fp": 0.0069
       },
       {
-        "token": "mobile_2g",
+        "token": "mobile_4g",
         "coverage": 0.875,
         "fp": 0.0069
       },
       {
-        "token": "presentationtimeus",
+        "token": "frametype",
         "coverage": 0.875,
         "fp": 0.0139
       },
       {
-        "token": "frametype",
+        "token": "presentationtimeus",
         "coverage": 0.875,
         "fp": 0.0139
       },
@@ -1766,12 +1684,7 @@
         "fp": 0.0312
       },
       {
-        "token": "staging.api.id.mipay.com",
-        "coverage": 0.375,
-        "fp": 0.0
-      },
-      {
-        "token": "ubimpi.electracard.com",
+        "token": "agent.com",
         "coverage": 0.375,
         "fp": 0.0
       },
@@ -1781,7 +1694,7 @@
         "fp": 0.0
       },
       {
-        "token": "fr-resolver-msg-global-xiaomi-n-916220403.eu-central-1.elb.amazonaws.com",
+        "token": "dummyurl",
         "coverage": 0.375,
         "fp": 0.0
       },
@@ -1791,17 +1704,22 @@
         "fp": 0.0
       },
       {
-        "token": "dummyurl",
-        "coverage": 0.375,
-        "fp": 0.0
-      },
-      {
         "token": "result.top",
         "coverage": 0.375,
         "fp": 0.0
       },
       {
-        "token": "staging.m.id.mipay.com",
+        "token": "ubimpi.electracard.com",
+        "coverage": 0.375,
+        "fp": 0.0
+      },
+      {
+        "token": "fr-resolver-msg-global-xiaomi-n-916220403.eu-central-1.elb.amazonaws.com",
+        "coverage": 0.375,
+        "fp": 0.0
+      },
+      {
+        "token": "staging.api.id.mipay.com",
         "coverage": 0.375,
         "fp": 0.0
       },
@@ -1819,172 +1737,259 @@
       }
     ]
   },
+  "mParivahan": {
+    "samples": 8,
+    "strings": [],
+    "domains": [],
+    "permissions": [
+      {
+        "token": "DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSIONil",
+        "coverage": 0.625,
+        "fp": 0.0
+      },
+      {
+        "token": "GOOGLE_PHOTOS",
+        "coverage": 0.625,
+        "fp": 0.0035
+      },
+      {
+        "token": "FLAG_SHOW_WHEN_LOCKED",
+        "coverage": 0.625,
+        "fp": 0.0035
+      },
+      {
+        "token": "FOREGROUND_SERVICE_PHONE_CALL",
+        "coverage": 0.625,
+        "fp": 0.0069
+      },
+      {
+        "token": "ACCESS_MEDIA_LOCATION",
+        "coverage": 0.625,
+        "fp": 0.0069
+      },
+      {
+        "token": "BLUETOOTH_CONNECT",
+        "coverage": 0.625,
+        "fp": 0.0069
+      },
+      {
+        "token": "READ_MEDIA_AUDIO",
+        "coverage": 0.625,
+        "fp": 0.0069
+      },
+      {
+        "token": "ACCESS_ADSERVICES_AD_ID",
+        "coverage": 0.625,
+        "fp": 0.0104
+      },
+      {
+        "token": "READ_MEDIA_IMAGES",
+        "coverage": 0.625,
+        "fp": 0.0104
+      },
+      {
+        "token": "READ_MEDIA_VIDEO",
+        "coverage": 0.625,
+        "fp": 0.0104
+      },
+      {
+        "token": "ACCESS_ADSERVICES_ATTRIBUTION",
+        "coverage": 0.625,
+        "fp": 0.0104
+      },
+      {
+        "token": "BILLING",
+        "coverage": 0.625,
+        "fp": 0.0104
+      },
+      {
+        "token": "AD_ID",
+        "coverage": 0.625,
+        "fp": 0.0139
+      },
+      {
+        "token": "MANAGE_OWN_CALLS",
+        "coverage": 0.625,
+        "fp": 0.0174
+      },
+      {
+        "token": "BIND_GET_INSTALL_REFERRER_SERVICE",
+        "coverage": 0.625,
+        "fp": 0.0208
+      }
+    ]
+  },
   "GhostBat": {
-    "samples": 5,
+    "samples": 6,
     "strings": [
       {
-        "token": "orderbychild",
-        "coverage": 0.6,
+        "token": "leafmostvalue",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "serializedwrite",
-        "coverage": 0.6,
+        "token": "purgeallwrites",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "parsedvalue",
-        "coverage": 0.6,
+        "token": "getconnectioncontext",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "barrierreference",
-        "coverage": 0.6,
+        "token": "percent_of_queries_to_prune_at_once",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "foreachtree",
-        "coverage": 0.6,
+        "token": "databaseconfig.java",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "appendframe",
-        "coverage": 0.6,
+        "token": "request_data_hash",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "schedulealarm",
-        "coverage": 0.6,
+        "token": "oldlisten",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "deletedregistration",
-        "coverage": 0.6,
+        "token": "getcompletenode",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "opthashvaluebuilder",
-        "coverage": 0.6,
+        "token": "providerinstaller.lock",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "redundant",
-        "coverage": 0.6,
+        "token": "changewithprevname",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "senddispositionheader",
-        "coverage": 0.6,
+        "token": "averagecharsperbyte",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "boundary_bytes",
-        "coverage": 0.6,
+        "token": "deserializenode",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "visiblewrites",
-        "coverage": 0.6,
+        "token": "getsslcachedirectory",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "hctcolor",
-        "coverage": 0.6,
+        "token": "but we have data stored higher up at",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "getmaxnumberofqueriestokeep",
-        "coverage": 0.6,
+        "token": "dragdurationmillis",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "helperreference",
-        "coverage": 0.6,
+        "token": "fulllimitupdatechild",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "getminname",
-        "coverage": 0.6,
+        "token": "extractframecount",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "frompathmerge",
-        "coverage": 0.6,
+        "token": "servercacheupdatessincelastprunecheck",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "schedulenow",
-        "coverage": 0.6,
+        "token": "com.google.firebase:firebase-components@@16.0.0",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "assertunfrozen",
-        "coverage": 0.6,
+        "token": "getputobject",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "activeindicatordrawable",
-        "coverage": 0.6,
+        "token": "getlocationx",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "eventcache",
-        "coverage": 0.6,
+        "token": "purgeoutstandingwrites",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "calceventcacheafterserveroverwrite",
-        "coverage": 0.6,
+        "token": "intializer",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "ensureindexed",
-        "coverage": 0.6,
+        "token": "deleted %d (all) write(s) in %dms",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "sawpriority",
-        "coverage": 0.6,
+        "token": "getlocalrepo",
+        "coverage": 0.5,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "firebaseio-demo.com",
-        "coverage": 0.6,
+        "token": "www.firebase.com",
+        "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "www.firebase.com",
-        "coverage": 0.6,
+        "token": "firebaseio-demo.com",
+        "coverage": 0.5,
         "fp": 0.0
       }
     ],
     "permissions": [
       {
         "token": "FOREGROUND_SERVICE_MEDIA_PLAYBACK",
-        "coverage": 0.8,
-        "fp": 0.0275
+        "coverage": 0.833,
+        "fp": 0.0241
       },
       {
         "token": "READ_BASIC_PHONE_STATE",
-        "coverage": 0.6,
-        "fp": 0.0069
-      },
-      {
-        "token": "REQUEST_COMPANION_START_FOREGROUND_SERVICES_FROM_BACKGROUND",
-        "coverage": 0.6,
-        "fp": 0.0069
+        "coverage": 0.667,
+        "fp": 0.0034
       },
       {
         "token": "BROADCAST_SMS",
-        "coverage": 0.6,
-        "fp": 0.0069
+        "coverage": 0.667,
+        "fp": 0.0034
+      },
+      {
+        "token": "REQUEST_COMPANION_START_FOREGROUND_SERVICES_FROM_BACKGROUND",
+        "coverage": 0.667,
+        "fp": 0.0034
       },
       {
         "token": "REQUEST_COMPANION_USE_DATA_IN_BACKGROUND",
-        "coverage": 0.6,
-        "fp": 0.0241
+        "coverage": 0.667,
+        "fp": 0.0207
+      },
+      {
+        "token": "DELETE_SMS",
+        "coverage": 0.5,
+        "fp": 0.0034
       }
     ]
   },
@@ -1992,102 +1997,97 @@
     "samples": 4,
     "strings": [
       {
-        "token": "hascostpid",
+        "token": "action_errorinfo",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "pcontext",
+        "token": "[mainactivity]",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "prerequestcontent",
+        "token": "repeateinstall:",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "needsaveservicestate",
+        "token": "com.jx.ad.bootsmsreceiverservice",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "mmsc.monternet.com",
+        "token": "welcomeactivity.java",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "infodialog",
+        "token": "getownerinfo",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "createcmnetapn",
+        "token": "controlreceiver",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "com.jx.ad.adservice.confirminstallinfo",
+        "token": "adtimer",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "islistentimeout",
+        "token": "[ownerinfo]pid:",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "task_network_setting",
+        "token": "lstactivity",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "savecostrespackagename",
+        "token": "com.jx.action_copyreserror",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "btnused",
+        "token": "clicklistenernegative",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "res.dat",
+        "token": "ownerid:",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "installcomplete",
+        "token": "action_saveid",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "canchecknetworkstate",
+        "token": "sendsmsmessage",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "cumms",
+        "token": "hasrunningservice",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "themepackagename",
+        "token": "domainusedindex",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "resownerid",
+        "token": "servicecontrolreceiver",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "clicklistenerconfirm",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "com.jx.mainactivity.costinfo",
+        "token": "type_cmnet",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2097,22 +2097,27 @@
         "fp": 0.0
       },
       {
-        "token": "com.jx.mainactivity.repeateinstall",
+        "token": "keypid",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "action_runcancle",
+        "token": "softids",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "action_adservice_run",
+        "token": "cansavecenteraddress",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "action_run",
+        "token": "urlnew",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "action_copyreserror",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -2124,7 +2129,17 @@
         "fp": 0.0
       },
       {
-        "token": "www.5j5l.com",
+        "token": "jujoy.5y3g.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "transit.5j5w.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "soft.sj.91.com",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2144,17 +2159,7 @@
         "fp": 0.0
       },
       {
-        "token": "transit.5j5w.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "soft.sj.91.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "jujoy.5y3g.com",
+        "token": "www.5j5l.com",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2186,92 +2191,27 @@
     "samples": 4,
     "strings": [
       {
+        "token": "i find a beautiful wallpaper and want to share it with you.you can click the url below to download the wallpaper.",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "share_msg_end",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "onoroff",
+        "token": "resulturls",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "select_dialog_items",
+        "token": "default_subject_id",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "bitlyutil.java",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "api_secret",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "md5encryption.java",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "showselecteddialog",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "menu_feedback",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "esharer_url",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "ewallpaper",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "share by",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "sendactionlog",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "appproperties",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "dosharebysms",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "trips",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "getshorturl",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "actionlogrunner.java",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "key_apk_channel",
+        "token": "a beautiful wallpaper for you",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2281,22 +2221,32 @@
         "fp": 0.0
       },
       {
-        "token": "default_apk_channel",
+        "token": "uniquely_code",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "menu_more_app",
+        "token": "esharer_url",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "wallpaper_url",
+        "token": "sendphotofeedback",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "dosharebyemail",
+        "token": "dosharebysms",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "onoroff",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "showselecteddialog",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2306,29 +2256,89 @@
         "fp": 0.0
       },
       {
+        "token": "insidewebviewclient",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "default_api_secret",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "jsons",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "ewallpaper",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "bitlyserver",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "app.properties",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "gennonce",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "dosharebyemail",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "issynok",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "menu_more_app",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "api_secret",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "senddeviceinfos",
         "coverage": 1.0,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "wp.ysler.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
         "token": "file1.eoemarket.com",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "www.imnet.us",
+        "token": "log.ysler.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "wp.ysler.com",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
         "token": "wps.appscolor.net",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "www.imnet.us",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -2339,11 +2349,6 @@
       },
       {
         "token": "__no_matching_ad__",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "log.ysler.com",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -2359,12 +2364,12 @@
     "samples": 4,
     "strings": [
       {
-        "token": "eehugaithaikuu9u",
+        "token": "lixhokfsmav",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "lixhokfsmav",
+        "token": "eehugaithaikuu9u",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -2376,67 +2381,7 @@
     "samples": 3,
     "strings": [
       {
-        "token": "n011231",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "jgdtc",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n111333331",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n1112230",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n111312130",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n011331133",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "interface14",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n011133333",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n01131333",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n111220",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "n111333320",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n1112111",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "n0113120",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2446,7 +2391,12 @@
         "fp": 0.0
       },
       {
-        "token": "interface17",
+        "token": "n111333331",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n01131333",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2456,14 +2406,64 @@
         "fp": 0.0
       },
       {
+        "token": "n1112111",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n111312130",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "interface17",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "n011212",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "n011333313",
+        "token": "n111220",
         "coverage": 1.0,
-        "fp": 0.0034
+        "fp": 0.0
+      },
+      {
+        "token": "interface14",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n011331133",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "jgdtc",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n011133333",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n011231",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n1112230",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "n0113120",
+        "coverage": 1.0,
+        "fp": 0.0
       },
       {
         "token": "n11111110",
@@ -2471,32 +2471,37 @@
         "fp": 0.0034
       },
       {
-        "token": "n11110",
+        "token": "enable_crash_report",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "n01030",
+        "token": "n01033",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "n111111110",
+        "token": "n111333330",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "n01130",
+        "token": "n1110",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "n01122",
+        "token": "n1112",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "n0113113",
+        "token": "n011331110",
+        "coverage": 1.0,
+        "fp": 0.0034
+      },
+      {
+        "token": "n01131130",
         "coverage": 1.0,
         "fp": 0.0034
       }
@@ -2524,112 +2529,12 @@
     "samples": 3,
     "strings": [
       {
-        "token": "initialvalues7",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "smsver",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues6",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues8",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues12",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues13",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "initialvalues1",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "initialvalues4",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "deletetitle",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "key_isbn",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues3",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "inserttitle",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues14",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues11",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "sendphonedata",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "auto_st",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "getalltitles",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues15",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "key_publisher",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues9",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "drop table if exists titles",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "initialvalues16",
+        "token": "initialvalues13",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2644,7 +2549,107 @@
         "fp": 0.0
       },
       {
+        "token": "initialvalues11",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "drop table if exists titles",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "inserttitle",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues14",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "sendphonedata",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues8",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues7",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "key_publisher",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "deletetitle",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "getalltitles",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues3",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "smsver",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "auto_st",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues6",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues16",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues4",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues9",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues12",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "key_isbn",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "initialvalues10",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "initialvalues15",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -2656,17 +2661,17 @@
         "fp": 0.0
       },
       {
-        "token": "eng.drivereply.us",
-        "coverage": 0.667,
-        "fp": 0.0
-      },
-      {
         "token": "rocketmail.com",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
         "token": "blackflyday.com",
+        "coverage": 0.667,
+        "fp": 0.0
+      },
+      {
+        "token": "eng.drivereply.us",
         "coverage": 0.667,
         "fp": 0.0
       }
@@ -2677,102 +2682,27 @@
     "samples": 3,
     "strings": [
       {
-        "token": "splash_url",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "txmenu",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "resstatus",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "getbm",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "reg_url",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "flat_name_huangdao",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "flat_name_chat",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "setimgaddress",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "txactivity",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "postquerymap",
+        "token": "cnname",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "1065-5021-80133",
+        "token": "txconfig/menu.json",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "flat_name_read",
+        "token": "1065-71090-88877",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "tx_root",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "flat_name",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "flat_name_jianghu",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "txconfig/splashimg.json",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "txactivity.java",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "flat_name_farm",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "flat_name_space",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "getcnname",
+        "token": "getimgaddress",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2782,7 +2712,67 @@
         "fp": 0.0
       },
       {
-        "token": "flat_name_gold",
+        "token": "listmenu",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "resstatus",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "getcnname",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "txmenu.java",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "#android#",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "postquerymap",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "txmenu",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "flat_name_love",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "is_first_page",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "flat_name_news",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "login_suc",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "flat_name_farm",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "splash_url",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2792,12 +2782,27 @@
         "fp": 0.0
       },
       {
-        "token": "/sdcard/app/tx/root",
+        "token": "apps_url",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "/sdcard/app/tx/",
+        "token": "txconfig/apps.json",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "imgaddress",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "setbm",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "setimgaddress",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -2820,6 +2825,46 @@
     "samples": 3,
     "strings": [
       {
+        "token": "drop table if exists update_alert",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "http://www.go108.com.cn/mobile/client/apk/imoney.apk",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "no_sd_card",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "/imei:",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "http://api.go108.cn/client/trace/end/client:",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "update_alert",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "no device id available.",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": ".wiad_cache/",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "failed to download apk:",
         "coverage": 1.0,
         "fp": 0.0
@@ -2830,77 +2875,7 @@
         "fp": 0.0
       },
       {
-        "token": "you must add write_external_storage permission",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": ".wiad_cache/",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "drop table if exists update_alert",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "/channel:",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "http://www.go108.com.cn/mobile/client/apk/iching.apk",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "failed to notify server",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "no device id available.",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "/go108/apk/",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "no_sd_card",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "http://api.go108.cn/client/trace/end/client:",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "uadb.db",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "http://api.go108.cn/client/trace/start/client:",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "update_alert",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "context is not set",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "http://www.go108.com.cn/mobile/client/apk/lic.apk",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2910,7 +2885,37 @@
         "fp": 0.0
       },
       {
+        "token": "/go108/apk/",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "you must add write_external_storage permission",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": ".wiad_cache",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "context is not set",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "you must add access_wifi_state permission",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "http://www.go108.com.cn/mobile/client/apk/iching.apk",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "http://api.go108.cn/client/trace/start/client:",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -2920,27 +2925,27 @@
         "fp": 0.0
       },
       {
-        "token": "/client:",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "you must add read_phone_state permission",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "http://www.go108.com.cn/mobile/client/apk/imoney.apk",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "/imei:",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "vliiib",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "failed to notify server",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "/client:",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "uadb.db",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -2973,17 +2978,17 @@
         "fp": 0.0
       },
       {
-        "token": "child tag defining a drawable",
-        "coverage": 0.667,
-        "fp": 0.0034
-      },
-      {
         "token": "android.arch.lifecycle.viewmodelprovider.defaultkey",
         "coverage": 0.667,
         "fp": 0.0034
       },
       {
-        "token": "android.support.transition.fragmenttransitionsupport",
+        "token": "child tag defining a drawable",
+        "coverage": 0.667,
+        "fp": 0.0034
+      },
+      {
+        "token": "could not be instantiated. did you forget",
         "coverage": 0.667,
         "fp": 0.0102
       },
@@ -2993,7 +2998,7 @@
         "fp": 0.0102
       },
       {
-        "token": "could not be instantiated. did you forget",
+        "token": "android.support.transition.fragmenttransitionsupport",
         "coverage": 0.667,
         "fp": 0.0102
       },
@@ -3003,12 +3008,12 @@
         "fp": 0.0137
       },
       {
-        "token": "mlastindex",
+        "token": "android.arch.lifecycle.lifecycledispatcher.report_fragment_tag",
         "coverage": 0.667,
         "fp": 0.0171
       },
       {
-        "token": "android.arch.lifecycle.lifecycledispatcher.report_fragment_tag",
+        "token": "mlastindex",
         "coverage": 0.667,
         "fp": 0.0171
       },
@@ -3052,127 +3057,127 @@
     "samples": 3,
     "strings": [
       {
-        "token": "platformscrollconfig",
+        "token": "ondrawwithcontent",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getlastplacedindex",
+        "token": "prefer usage of addoval() with a winding direction",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getprevwordoffset",
+        "token": "elevatedassistchipelevation",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "errorlabelcolor",
+        "token": "legacycursoranchorinfocontroller.android.kt",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getlargeshape",
+        "token": "getpivotbringintoviewspec",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "timepickertokens.kt",
+        "token": "all keylinelists must have at least one focal keyline",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "setmaxsizestate",
+        "token": "getlabellargesize-xsaiize",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "nonobservable",
+        "token": "cc(remember):androidview.android.kt#9igjgp",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "classkeyforobject",
+        "token": "pulltorefreshmodifiernode",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "interceptfontsynthesis-mscr08y",
+        "token": "viljjlllii",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "androidx.compose.ui.graphics.filterquality",
+        "token": "lazylistiteminfo.kt",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "defaultfocushighlightenabled",
+        "token": "getsnapshotid",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "serializersmodulebuilders.kt",
+        "token": "endshape",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "geterrorlabelcolor",
+        "token": "remeasurelookaheadrootsinsubtree",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "cc(remember):tooltip.android.kt#9igjgp",
+        "token": "null cannot be cast to non-null type scope of androidx.compose.runtime.collection.scopemap",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "vjjjjjjjjjl",
+        "token": "startwithmoveto",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "vljizil",
+        "token": "fp16signshift",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "tostringforlog",
+        "token": "persistentorderedmapbuildercontentviews.kt",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "lastinitialvalue",
+        "token": "dampingratiolowbouncy",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "inactivebordercolor",
+        "token": "initialoffsetx",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getscalefromkey",
+        "token": "androidcursorhandle.android.kt",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "_selecteddate",
+        "token": "button10",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getsupportingtextcolor-0d7_kju",
+        "token": "defaultkeylines",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "listitemleadingavatarlabelcolor",
+        "token": "enteralwaysscrollbehavior",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "liizlii",
+        "token": "flingvelocity",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -3184,7 +3189,12 @@
         "fp": 0.0
       },
       {
-        "token": "logodownload.org",
+        "token": "companieslogo.com",
+        "coverage": 0.667,
+        "fp": 0.0
+      },
+      {
+        "token": "www.hci.com.br",
         "coverage": 0.667,
         "fp": 0.0
       },
@@ -3194,22 +3204,17 @@
         "fp": 0.0
       },
       {
-        "token": "images.seeklogo.com",
-        "coverage": 0.667,
-        "fp": 0.0
-      },
-      {
         "token": "www.imagemhost.com.br",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "companieslogo.com",
+        "token": "images.seeklogo.com",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "www.hci.com.br",
+        "token": "logodownload.org",
         "coverage": 0.667,
         "fp": 0.0
       },
@@ -3231,7 +3236,7 @@
     "samples": 3,
     "strings": [
       {
-        "token": "onmoreinfoclicked",
+        "token": "setinstalllocation",
         "coverage": 0.667,
         "fp": 0.0
       },
@@ -3241,22 +3246,7 @@
         "fp": 0.0
       },
       {
-        "token": "opencheck",
-        "coverage": 0.667,
-        "fp": 0.0
-      },
-      {
-        "token": "setapplicationenabledsettingpersistent",
-        "coverage": 0.667,
-        "fp": 0.0
-      },
-      {
-        "token": "setinstalllocation",
-        "coverage": 0.667,
-        "fp": 0.0
-      },
-      {
-        "token": "setinstallscenario",
+        "token": "restricted_permissions_all",
         "coverage": 0.667,
         "fp": 0.0
       },
@@ -3266,12 +3256,12 @@
         "fp": 0.0
       },
       {
-        "token": "restricted_permissions_all",
+        "token": "onmoreinfoclicked",
         "coverage": 0.667,
         "fp": 0.0
       },
       {
-        "token": "isprofileownerapp",
+        "token": "opencheck",
         "coverage": 0.667,
         "fp": 0.0
       },
@@ -3281,17 +3271,32 @@
         "fp": 0.0
       },
       {
+        "token": "setapplicationenabledsettingpersistent",
+        "coverage": 0.667,
+        "fp": 0.0
+      },
+      {
+        "token": "setinstallscenario",
+        "coverage": 0.667,
+        "fp": 0.0
+      },
+      {
+        "token": "isprofileownerapp",
+        "coverage": 0.667,
+        "fp": 0.0
+      },
+      {
+        "token": "onupdateclicked",
+        "coverage": 0.667,
+        "fp": 0.0034
+      },
+      {
         "token": "setinstallreason",
         "coverage": 0.667,
         "fp": 0.0034
       },
       {
         "token": "setautorevokepermissionsmode",
-        "coverage": 0.667,
-        "fp": 0.0034
-      },
-      {
-        "token": "onupdateclicked",
         "coverage": 0.667,
         "fp": 0.0034
       },
@@ -3313,6 +3318,36 @@
         "fp": 0.0137
       },
       {
+        "token": "hepgbz",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
+        "token": "j2heiu0",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
+        "token": "rmi5mfzyi",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
+        "token": "0slaw6bt5qdypfv8fjoejuk",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
+        "token": "mbpvylve4qlpxw28y2skq28",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
+        "token": "sx6m8dl6rmi5cl02pvc6vhyr",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
         "token": "0pbvkq2r4",
         "coverage": 0.667,
         "fp": 0.0137
@@ -3323,7 +3358,7 @@
         "fp": 0.0137
       },
       {
-        "token": "2cyytiqtof3ktbnidwwqorozn",
+        "token": "idiu30dj1zs35gwbvzi",
         "coverage": 0.667,
         "fp": 0.0137
       },
@@ -3338,47 +3373,17 @@
         "fp": 0.0137
       },
       {
+        "token": "2cyytiqtof3ktbnidwwqorozn",
+        "coverage": 0.667,
+        "fp": 0.0137
+      },
+      {
         "token": "zkmcn7r6t",
         "coverage": 0.667,
         "fp": 0.0137
       },
       {
-        "token": "mbpvylve4qlpxw28y2skq28",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
-        "token": "j2heiu0",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
-        "token": "sx6m8dl6rmi5cl02pvc6vhyr",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
-        "token": "0slaw6bt5qdypfv8fjoejuk",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
         "token": "34avmog",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
-        "token": "idiu30dj1zs35gwbvzi",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
-        "token": "rmi5mfzyi",
-        "coverage": 0.667,
-        "fp": 0.0137
-      },
-      {
-        "token": "hepgbz",
         "coverage": 0.667,
         "fp": 0.0137
       }
@@ -3396,7 +3401,22 @@
     "samples": 2,
     "strings": [
       {
-        "token": "checkspace",
+        "token": "destsoname",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "runall",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "assets/bangcle_classes.jar",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "destfilename",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -3406,62 +3426,17 @@
         "fp": 0.0
       },
       {
-        "token": "copyjarfile",
+        "token": "checkspace",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "mydexoptfile",
+        "token": "runall1",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "realreceiver",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "/.cache/classes.dex",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "createchildprocess",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "runpkg",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "getacall",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "fversion",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "destsoname",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "set3",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "checkx86",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "dexfilename",
+        "token": "libsecmain.x86.so",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -3471,27 +3446,32 @@
         "fp": 0.0
       },
       {
-        "token": "trydo",
+        "token": ".x86",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "set4",
+        "token": "firstapplication.java",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "copybinaryfile",
+        "token": "isspaceenough",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "doprovider",
+        "token": "dexfilename",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "/.cache",
+        "token": "x86ctx",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "libfilename",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -3501,12 +3481,17 @@
         "fp": 0.0
       },
       {
-        "token": "/.cache/classes.jar",
+        "token": "readversions",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "libfile",
+        "token": "jarentryname",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "receivertemplate.java",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -3516,7 +3501,27 @@
         "fp": 0.0
       },
       {
-        "token": "chkout",
+        "token": "dexresult",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "checkx86",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "/.cache",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "copybinaryfile",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "getcustomclassloader",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -3543,112 +3548,112 @@
         "fp": 0.0136
       },
       {
-        "token": "app_sugoku2",
+        "token": "showblood",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "getachievingvalue",
+        "token": "drawmainmenu",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "award.default.achieved.png",
+        "token": "loadroutes",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "clipx2",
+        "token": "horizontalmirror",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "gamesetpara",
+        "token": "menus115",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "img_person06",
+        "token": "startpayment",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "spxname_bt_profile",
+        "token": "segmentstandard",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "coverscreen",
+        "token": "font2",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "mimg2_array",
+        "token": "system_name",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "img_body_shot",
+        "token": "onrequestcompleted called for not completed request",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "nbennemisnormal",
+        "token": "sprite_array",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "getspxname",
+        "token": "img_sniper_mission_02",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "anzhiload.java",
+        "token": "gameplay_loading_mission4",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "max_lines",
+        "token": "launch browser:",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "blue2",
+        "token": "selectedsegment",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "piste2",
+        "token": "blefttopy",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "lastactive",
+        "token": "explosion2part",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "/setnativeactivationoverlay",
+        "token": "hasweapon",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "getrangelength",
+        "token": "framedataoffset",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "img_sniper_reslut",
+        "token": "submitmessage",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "readtexture",
+        "token": "getcontestantscore",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "setemailaddress",
+        "token": "stopmessage",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -3656,6 +3661,21 @@
     "domains": [
       {
         "token": "www.osaris.net",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "sandbox.appdriver.jp",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "api.scoreloop.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "www.turbofly3d.com",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -3670,7 +3690,7 @@
         "fp": 0.0
       },
       {
-        "token": "api.scoreloop.com",
+        "token": "appdriver.jp",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -3680,17 +3700,7 @@
         "fp": 0.0
       },
       {
-        "token": "sandbox.appdriver.jp",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "www.turbofly3d.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "frame.top",
+        "token": "www.scoreloop.com",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -3700,12 +3710,7 @@
         "fp": 0.0
       },
       {
-        "token": "appdriver.jp",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "www.scoreloop.com",
+        "token": "frame.top",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -3721,179 +3726,129 @@
         "fp": 0.0068
       },
       {
-        "token": "minarc",
+        "token": "addfieldbinding",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "persistentcookiestore.java",
+        "token": "sns_money",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "securerandomproviders",
+        "token": "isdebugon",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "com.muzhiwan.sdk.service.imzwlogincallback",
+        "token": "calling the backend",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "cpu_key",
+        "token": "getcrc32",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "outofmemory inside firescreen.paint().",
+        "token": "response from cache was malformed:",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "wkday",
+        "token": "setasynchronousworkerscore",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "exthdr",
+        "token": "encodecookie",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "cannot close output stream",
+        "token": "lcz/msebera/android/httpclient/concurrent/futurecallback",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "cacheablestatuses",
+        "token": "setsalt",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "inoff",
+        "token": "response cannot be parsed as json data",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "no @%s defined on @%s.",
+        "token": "callallbuglistener",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "l1103",
+        "token": "isincluderootfolder",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "loclen",
+        "token": "unzipengineparameters.java",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "return.java",
+        "token": "uribuilder.java",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "expiresheader",
+        "token": "getsizeofdata",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "backendresponse",
+        "token": "revalidationresponseistooold",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "sethttpclient",
+        "token": "origheaders",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "onpositionupdateobj",
+        "token": "getsupportedsourceversion",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "renamedviews",
+        "token": "getpercentdone",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "taskmanagerutils.java",
+        "token": "invalid derived key",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "invalid compression level for deflater. compression level should be in the range of 0-9",
+        "token": "simplextoast.java",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "managedhttpclientconnectionfactory.java",
+        "token": "calculatedelayinmillis",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "inmemorydnsresolver.java",
+        "token": "getwidthandheightanddensityarray",
         "coverage": 0.5,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "hbox.",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "cmnsguider.yunos.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "0.1.php",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
         "token": "jabox.ru",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "uop.umeng.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "flirt.",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "sbox.",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "alog.umengcloud.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "chat.",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "sdk.muzhiwan.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "jimm.",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -3903,17 +3858,67 @@
         "fp": 0.0
       },
       {
+        "token": "www.lequ.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "sdk.muzhiwan.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "lequ.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "alog.umengcloud.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
         "token": "jbox.",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "www.netmite.com",
+        "token": "lbox.",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "sbox.",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "flirt.",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "titlebar.ruler1.color",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "chat.",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
         "token": "secret.",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "secret.erwap.ru",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "h.lequ.com",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -3924,22 +3929,7 @@
     "samples": 2,
     "strings": [
       {
-        "token": ".lrc",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "filena",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "currentfilepath",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "singer",
+        "token": "googlepath",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -3954,7 +3944,12 @@
         "fp": 0.0
       },
       {
-        "token": "googlepath",
+        "token": "currentfilepath",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": ".lrc",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -3964,12 +3959,17 @@
         "fp": 0.0
       },
       {
-        "token": "timetostring",
+        "token": "singer",
         "coverage": 1.0,
-        "fp": 0.0034
+        "fp": 0.0
       },
       {
-        "token": "strpath",
+        "token": "filena",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "timetostring",
         "coverage": 1.0,
         "fp": 0.0034
       },
@@ -3979,9 +3979,9 @@
         "fp": 0.0034
       },
       {
-        "token": "setactualdefaultringtoneuri",
+        "token": "strpath",
         "coverage": 1.0,
-        "fp": 0.0068
+        "fp": 0.0034
       },
       {
         "token": "fileex",
@@ -3990,6 +3990,11 @@
       },
       {
         "token": "myurl",
+        "coverage": 1.0,
+        "fp": 0.0068
+      },
+      {
+        "token": "setactualdefaultringtoneuri",
         "coverage": 1.0,
         "fp": 0.0068
       },
@@ -4009,12 +4014,12 @@
         "fp": 0.0136
       },
       {
-        "token": "song",
+        "token": "looping",
         "coverage": 1.0,
         "fp": 0.0136
       },
       {
-        "token": "looping",
+        "token": "song",
         "coverage": 1.0,
         "fp": 0.0136
       },
@@ -4029,22 +4034,22 @@
         "fp": 0.017
       },
       {
-        "token": "unformattedtongyongpinyinpanel",
+        "token": "mimageids1",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "songalreadyaddedtoplaylist",
+        "token": "iplayback.java",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "option_item_onlinesong",
+        "token": "hprosereader.java",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "j2me/ucweb7.4.0.57",
+        "token": "readreference",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -4056,22 +4061,7 @@
         "fp": 0.0
       },
       {
-        "token": "www.coolcode.org",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "coolcode.org",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "bawbaw.icittys.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "gw.youmi.net",
+        "token": "cache.icittys.com",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -4081,17 +4071,7 @@
         "fp": 0.0
       },
       {
-        "token": "static.youmi.net",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "hot.icittys.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "cache.icittys.com",
+        "token": "bawbaw.icittys.com",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -4101,7 +4081,32 @@
         "fp": 0.0
       },
       {
+        "token": "www.coolcode.org",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "gw.youmi.net",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
         "token": "xxx.huanhaola.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "hot.icittys.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "static.youmi.net",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "coolcode.org",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -4128,92 +4133,32 @@
     "samples": 2,
     "strings": [
       {
-        "token": "exception handler threw an exception",
+        "token": "baseappversion",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "not an http connection",
+        "token": "event_format",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "handlesendsms -",
+        "token": "send_on_receive",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "external memory:",
+        "token": "downloadingtitle",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "select sqlite_version()",
+        "token": "fell through switch statement",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "villliz",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "tablename %s is invalid",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "@n/a@",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "finishedticker",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "body cannot be null",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "net.everythingandroid.smspopup.extras_contact_name",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "handler received message_open",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "net.everythingandroid.smspopup.extras_reminder_count",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "wall_time",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "device_android_id_hash",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "event_battery_lose_charge_notification",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "value_platform",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "processed_in_blob",
+        "token": "less than",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -4223,52 +4168,97 @@
         "fp": 0.0
       },
       {
-        "token": "key_locale_language",
+        "token": "key_data_type",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "locale_country",
+        "token": "event_history",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "net.everythingandroid.smspopup.extras_message_body",
+        "token": "attributes cannot contain null keys",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "localytics_library_version",
+        "token": "ratingactivity",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "applicationdata",
+        "token": "no events associated with blob",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "net.everythingandroid.smspopup.extras_quickreply",
+        "token": "phone_storage_free",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "failed to connect",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "rate_text",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "last_step_text",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "key_client_app_version",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "referrerfromlogs",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "upload_callback",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "api_keys",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "/localytics/device_id",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "com.extend.battery.intent.http.show",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "key_device_country",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "tabhandler",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "event_unknown_sources_show",
         "coverage": 1.0,
         "fp": 0.0
       }
     ],
     "domains": [
-      {
-        "token": "battery-updates-android.net",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "privacy-policy.truste.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "sigma.sgadtracker.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
       {
         "token": "moba.rsigma.com",
         "coverage": 1.0,
@@ -4280,9 +4270,29 @@
         "fp": 0.0
       },
       {
+        "token": "privacy-policy.truste.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "battery-updates-android.net",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "sigma.sgadtracker.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "everythingandroid.net",
         "coverage": 1.0,
         "fp": 0.0034
+      },
+      {
+        "token": "www.mojiva.com",
+        "coverage": 0.5,
+        "fp": 0.0
       },
       {
         "token": "request.airpopt.net",
@@ -4291,11 +4301,6 @@
       },
       {
         "token": "ma.mkhoj.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "www.mojiva.com",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -4317,12 +4322,7 @@
     "samples": 2,
     "strings": [
       {
-        "token": "menu_home",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "music_menu_share_twitter",
+        "token": "a_tabwidgetactivity.java",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -4332,32 +4332,12 @@
         "fp": 0.0
       },
       {
-        "token": "cool apps",
+        "token": "isconnectedtotheinternet",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "_togglenoresults",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "tab_main_layout",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "music_menu_exit",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "shownoresults",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "website_menu",
+        "token": "results -",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -4377,27 +4357,27 @@
         "fp": 0.0
       },
       {
-        "token": "isconnectedtotheinternet",
+        "token": "_togglenoresults",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "secureconnection",
+        "token": "tab_main_layout",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "results -",
+        "token": "music_menu_exit",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "music_menu_share_facebook",
+        "token": "cool apps",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "noresults",
+        "token": "website_menu",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -4407,37 +4387,62 @@
         "fp": 0.0
       },
       {
-        "token": "a_tabwidgetactivity.java",
+        "token": "menu_home",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "ptype1",
+        "token": "shownoresults",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "music_menu_share_facebook",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "music_menu_share_twitter",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "secureconnection",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "noresults",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "rarrlp",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "protocol layering without a tunnel not supported.",
+        "token": "request uri may not be null",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "rateapp",
+        "token": "twoheadleftarrow",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "mscr",
+        "token": "frac35",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "unexpected base64 byte",
+        "token": "starttagname",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "shortleftarrow",
+        "token": "jscr",
         "coverage": 1.0,
         "fp": 0.0034
       }
@@ -4449,12 +4454,12 @@
         "fp": 0.0034
       },
       {
-        "token": "www.android-supermarket.com",
+        "token": "www.droidsettings.com",
         "coverage": 1.0,
         "fp": 0.0034
       },
       {
-        "token": "www.droidsettings.com",
+        "token": "www.android-supermarket.com",
         "coverage": 1.0,
         "fp": 0.0034
       },
@@ -4462,16 +4467,6 @@
         "token": "my.mobfox.com",
         "coverage": 1.0,
         "fp": 0.0102
-      },
-      {
-        "token": "prod.sellaring.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": ";https",
-        "coverage": 0.5,
-        "fp": 0.0
       },
       {
         "token": "urlsfound",
@@ -4484,12 +4479,22 @@
         "fp": 0.0
       },
       {
-        "token": "www.uk-droidsettings.com",
+        "token": ";https",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "prod.sellaring.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "www.jp-droidsettings.com",
         "coverage": 0.5,
         "fp": 0.0034
       },
       {
-        "token": "www.jp-droidsettings.com",
+        "token": "www.uk-droidsettings.com",
         "coverage": 0.5,
         "fp": 0.0034
       }
@@ -4511,12 +4516,12 @@
         "fp": 0.0
       },
       {
-        "token": "[androidx.compose.ui.uicomposable[androidx.compose.ui.uicomposable]]",
+        "token": "androidx.compose.ui.uicomposable",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "androidx.compose.ui.uicomposable",
+        "token": "[androidx.compose.ui.uicomposable[androidx.compose.ui.uicomposable]]",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -4536,12 +4541,12 @@
         "fp": 0.0102
       },
       {
-        "token": "lfffzzff",
+        "token": "androidlegacyplatformtextinputserviceadapter",
         "coverage": 1.0,
         "fp": 0.0102
       },
       {
-        "token": "androidlegacyplatformtextinputserviceadapter",
+        "token": "lfffzzff",
         "coverage": 1.0,
         "fp": 0.0102
       },
@@ -4549,11 +4554,6 @@
         "token": "lllillflffiiffffil",
         "coverage": 1.0,
         "fp": 0.0102
-      },
-      {
-        "token": "anchoreddraggable.kt",
-        "coverage": 1.0,
-        "fp": 0.0136
       },
       {
         "token": "jjffffil",
@@ -4571,17 +4571,47 @@
         "fp": 0.0136
       },
       {
+        "token": "anchoreddraggable.kt",
+        "coverage": 1.0,
+        "fp": 0.0136
+      },
+      {
         "token": "applier",
         "coverage": 1.0,
         "fp": 0.017
       },
       {
-        "token": "rounded.sportsgolf",
+        "token": "sameinstance",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "androidx.compose.material.bottomappbar (appbar.kt:405)",
+        "token": "filled.cabin",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "vljjjjjil",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "twotone.filter",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "automirrored.sharp.schedulesend",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "outlined.storage",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "filled.transferwithinastation",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -4591,42 +4621,17 @@
         "fp": 0.0
       },
       {
-        "token": "icons.automirrored.rounded.featuredvideo",
+        "token": "sharp.highlight",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "lljjiili",
+        "token": "vllllllfflli",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "rounded.sip",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "suiteclasses",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "outlined.dodisturbalt",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "outlined.colorlens",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "llllljjfiili",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "lllllllffllili",
+        "token": "outlined.printdisabled",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -4644,127 +4649,127 @@
     "samples": 2,
     "strings": [
       {
-        "token": "wellaffected",
+        "token": "issafetotrydecoding",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "sclerodermous",
+        "token": "checkedbuttonids",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "commonisduplex",
+        "token": "kremlin",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "interconvertibly",
+        "token": "coplanar",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "lakeless",
+        "token": "thallous",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "commonisoneshot",
+        "token": "nonstylized",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "interrupters",
+        "token": "densitymultiplier",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "wallless",
+        "token": "ishardwareconfigdisallowedbyb112551574",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "witlosen",
+        "token": "alliterationist",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "localpriority",
+        "token": "tbar",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "margarate",
+        "token": "peacockfeathered",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "parcelfiledescriptorrewinder.java",
+        "token": "tele",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "colorspaceattribute",
+        "token": "outroots",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "glenoid",
+        "token": "demolished",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "parcelfiledescriptorimagereader",
+        "token": "budh",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "cannot decode vp8 video on cros.",
+        "token": "triaster",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "remainingtowrite",
+        "token": "250a1a5929225f303604171e2d190e562e0b5b2a3d180959243301",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "maybeunregisterreceiver",
+        "token": "minintermediates",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "moto g(6) play",
+        "token": "lm-x410pm",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "adjustedscalefactor",
+        "token": "commonremoveheader",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "numinism",
+        "token": "immortally",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "makernoteattribute",
+        "token": "staphylolysin",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "garm",
+        "token": "buchmanism",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "250a3806292253302216131d2d171651290b19113d181d3e3726231b362e20022a1e1d2421090a00",
+        "token": "hecatic",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "datacachegenerator.startnext",
+        "token": "mastership",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -4776,154 +4781,134 @@
     "samples": 2,
     "strings": [
       {
+        "token": "remassign",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "no_expected_type",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "getbooleantype",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
         "token": "https://real-debrid.com/account",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "day_night_theme",
+        "token": "issetornullableset",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "but the date is",
+        "token": "message_encoding_field_number",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "android.content.extra.size",
+        "token": "upperprefix",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "segmentation",
+        "token": "unfinishedworklistener",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "reserved_",
+        "token": "error type for a compiler exception while analyzing %s",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "findassociatedobject",
+        "token": "is not supported for navigation arguments.",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": ".tolong()",
+        "token": "tfa_pending",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "binarytorrent",
+        "token": "variousapi",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "invalid link:",
+        "token": "variousapihelper",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "reflecttype",
+        "token": "semantic_",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "rendercompanionobjectname",
+        "token": "membersfromsupertypes",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "llillilllilil",
+        "token": "isextension_",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "kodi_port",
+        "token": "org.eclipse.jdt.annotation",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "null cannot be cast to non-null type kotlin.shortarray",
+        "token": "oneof_decl_field_number",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "jsonadapter(object)",
+        "token": "getvalueparameters",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "bootstrapdns called for",
+        "token": "invalidated pagingsource",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "of module",
+        "token": "newdownload",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "readutf()",
+        "token": "androidx.annotation.nullable",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "black and white",
+        "token": "createprimaryconstructorforobject",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "getvariance(...)",
+        "token": "getfunctionlist(...)",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": ". returned",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "unexpected parse result:",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "character [%s] outside of valid range",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "unexpected declaration kind:",
+        "token": "lllilzz",
         "coverage": 0.5,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "dns.google",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
         "token": "oauth.net",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "api.real-debrid.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "real-debrid.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "countly_action_event",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -4933,12 +4918,32 @@
         "fp": 0.0
       },
       {
+        "token": "com.mxtech.videoplayer.pro",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "real-debrid.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
         "token": "gpl-3.0.en.html",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "com.mxtech.videoplayer.pro",
+        "token": "countly_action_event",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "api.real-debrid.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "dns.google",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -4949,139 +4954,144 @@
     "samples": 2,
     "strings": [
       {
-        "token": "bx1d",
+        "token": "httpput",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "applyrecordactivity.java",
+        "token": "activity_game_detail_cps",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "setnewrmd",
+        "token": "ssdk_shortmessage",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "ssdk_oks_classic_bluetooth",
+        "token": "onshowmessagefromwxreq",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "googleplusclientnotexistexception",
+        "token": "ssdk_youdao",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "cn.sharesdk.tencent.qzone.qzone",
+        "token": "webpageobject.java",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "minegiftcouponlistactivitynew.java",
+        "token": "tv_cost_yuan",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "bgaswipeitemlayout_bga_sil_springdistance",
+        "token": "rl_root_splash",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "adapter_like_game_head",
+        "token": "signinokdialogutil.java",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getgmgamecnt",
+        "token": "wechatfavoritenotsupportedexception.java",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "urlhttpresponse.java",
+        "token": "tv_game_money",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "rlswitchjpush",
+        "token": "adapter_fuli_gift_hotrec",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "jsonrequest.java",
+        "token": "bofang_bt",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "gameselecttabview.java",
+        "token": "textviewexpandableanimation.java",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "ssdk_facebookmessenger_client_inavailable",
+        "token": "testgame",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "bill_status",
+        "token": "/2/friendships/create.json",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "http://weibo.com/",
+        "token": "padding5",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "fragment_detail_desc",
+        "token": "circleprogressbar_mlpb_progress",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "dialog_filter_popup",
+        "token": "tv_account_tag",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "iv_paytype2",
+        "token": "selectaddresslistener",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getis_real",
+        "token": "include_mine_account_new",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "iv_rank",
+        "token": "tv_friend_name",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "activity_user_spend_record",
+        "token": "detail_bottom_game_down",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "authorizelistener.java",
+        "token": "setgoods_content",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "islastcolum",
+        "token": "authreq.java",
         "coverage": 1.0,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "up.sharesdk.cn",
+        "token": "pay.weixin.app",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "mobileu.payeco.com",
+        "token": "1tsdk.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "api.share.mob.com",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -5096,6 +5106,31 @@
         "fp": 0.0
       },
       {
+        "token": "www.1tsdk.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "up.sharesdk.cn",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "mobile.payeco.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "testmobile.payeco.com",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "pay.swiftpass.cn",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
         "token": "www.jcard.cn",
         "coverage": 1.0,
         "fp": 0.0
@@ -5106,42 +5141,7 @@
         "fp": 0.0
       },
       {
-        "token": "l.mob.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "pay.swiftpass.cn",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "mobilet.payeco.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
         "token": "pay.heepay.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "www.1tsdk.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "pay.weixin.app",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "api.share.mob.com",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "api.exc.mob.com",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -5149,16 +5149,16 @@
         "token": "www.myapp.com",
         "coverage": 1.0,
         "fp": 0.0
+      },
+      {
+        "token": "c.data.mob.com",
+        "coverage": 1.0,
+        "fp": 0.0
       }
     ],
     "permissions": [
       {
-        "token": "BLUETOOTH_ADMIN",
-        "coverage": 1.0,
-        "fp": 0.0102
-      },
-      {
-        "token": "JPUSH_MESSAGE",
+        "token": "RECEIVE_USER_PRESENT",
         "coverage": 1.0,
         "fp": 0.0102
       },
@@ -5168,7 +5168,12 @@
         "fp": 0.0102
       },
       {
-        "token": "RECEIVE_USER_PRESENT",
+        "token": "BLUETOOTH_ADMIN",
+        "coverage": 1.0,
+        "fp": 0.0102
+      },
+      {
+        "token": "JPUSH_MESSAGE",
         "coverage": 1.0,
         "fp": 0.0102
       }
@@ -5198,42 +5203,7 @@
         "fp": 0.0102
       },
       {
-        "token": "has_next",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
-        "token": "mlasty",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
         "token": "abstract",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
-        "token": "setfirstdayofweek",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
-        "token": "view:",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
-        "token": "last_flag",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
-        "token": "installpackage",
-        "coverage": 1.0,
-        "fp": 0.0136
-      },
-      {
-        "token": "printf",
         "coverage": 1.0,
         "fp": 0.0136
       },
@@ -5243,12 +5213,32 @@
         "fp": 0.0136
       },
       {
+        "token": "has_next",
+        "coverage": 1.0,
+        "fp": 0.0136
+      },
+      {
+        "token": "last_flag",
+        "coverage": 1.0,
+        "fp": 0.0136
+      },
+      {
+        "token": "printf",
+        "coverage": 1.0,
+        "fp": 0.0136
+      },
+      {
         "token": "export",
         "coverage": 1.0,
         "fp": 0.0136
       },
       {
-        "token": "touchup",
+        "token": "mlasty",
+        "coverage": 1.0,
+        "fp": 0.0136
+      },
+      {
+        "token": "view:",
         "coverage": 1.0,
         "fp": 0.0136
       },
@@ -5258,9 +5248,19 @@
         "fp": 0.0136
       },
       {
-        "token": "parsehex",
+        "token": "installpackage",
         "coverage": 1.0,
-        "fp": 0.017
+        "fp": 0.0136
+      },
+      {
+        "token": "setfirstdayofweek",
+        "coverage": 1.0,
+        "fp": 0.0136
+      },
+      {
+        "token": "touchup",
+        "coverage": 1.0,
+        "fp": 0.0136
       },
       {
         "token": "llffi",
@@ -5268,79 +5268,49 @@
         "fp": 0.017
       },
       {
-        "token": "onlayout mheaderheight :",
+        "token": "parsehex",
+        "coverage": 1.0,
+        "fp": 0.017
+      },
+      {
+        "token": "failed to read wifi network stats",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "com.tencent.halley.common.platform.service.activateservice",
+        "token": "getgametabgetsmartcardsresponse",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "__mod",
+        "token": "plugin_downloadticket",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "currentsmartlist",
+        "token": "uninstallappsrecord",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "applugincontext mclassloader:",
+        "token": "getpagenextpos",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "e_tlv_verify",
+        "token": "pluginsdk_pluginpath",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "praisereply",
+        "token": "login through qq hd",
         "coverage": 0.5,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "qzone.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "com.sina.news",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "test-conn-hl.mig.tencent-cloud.net",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "blog.bihe0832.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "myapp.com",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "shp.qpic.cn",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "bjuser.jpush.cn",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "temp.im",
+        "token": "awake-stats.jpush.cn",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -5350,17 +5320,52 @@
         "fp": 0.0
       },
       {
-        "token": "update.sdk.jiguang.cn",
+        "token": "seatimg",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "android.myapp.com",
+        "token": "cms.myapp.com",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "unipay.sdk.android",
+        "token": "com.sina.news",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "shp.qpic.cn",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "yyb.gtimg.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "conn-hl.mig.tencent-cloud.net",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "user.jpush.cn",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "a.myapp.com",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "x5.decouple.backup",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "bjuser.jpush.cn",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -5370,19 +5375,19 @@
         "fp": 0.0
       },
       {
-        "token": "com.tencent.cloud",
+        "token": "test-hllb-hl.mig.tencent-cloud.net",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "conn-hl.mig.tencent-cloud.net",
+        "token": "dd.myapp.com",
         "coverage": 0.5,
         "fp": 0.0
       }
     ],
     "permissions": [
       {
-        "token": "WRITE_CALENDAR",
+        "token": "READ_SECURE_SETTINGS",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -5392,12 +5397,27 @@
         "fp": 0.0
       },
       {
+        "token": "WRITE_CALENDAR",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
         "token": "CACHE_READ_PERMISSION",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "READ_SECURE_SETTINGS",
+        "token": "ACCESS_MTK_MMHW",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "DIAGNOSTIC",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "FORCE_STOP_PACKAGES",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -5407,32 +5427,7 @@
         "fp": 0.0
       },
       {
-        "token": "READ_PERMISSION",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "READ_CALENDAR",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "EXPAND_STATUS_BAR",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
         "token": "YYB_EVENT_PERMISSION",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "SET_PREFERRED_APPLICATIONS",
-        "coverage": 0.5,
-        "fp": 0.0
-      },
-      {
-        "token": "VIRUS_SCAN",
         "coverage": 0.5,
         "fp": 0.0
       },
@@ -5442,17 +5437,27 @@
         "fp": 0.0
       },
       {
+        "token": "EXPAND_STATUS_BAR",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
+        "token": "SET_PREFERRED_APPLICATIONS",
+        "coverage": 0.5,
+        "fp": 0.0
+      },
+      {
         "token": "permission",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "MANAGE_USERS",
+        "token": "VIRUS_SCAN",
         "coverage": 0.5,
         "fp": 0.0
       },
       {
-        "token": "DIAGNOSTIC",
+        "token": "component_security",
         "coverage": 0.5,
         "fp": 0.0
       }
@@ -5462,134 +5467,134 @@
     "samples": 2,
     "strings": [
       {
-        "token": "hasassociatedtext",
+        "token": "setmessagetime",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getloadedobject",
+        "token": "set operation not supported in shared mode",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "der_tag_octet_string",
+        "token": "rightencode",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "getycoord",
+        "token": "reduce61",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "application_template",
+        "token": "getlmsparameters",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "null cannot be cast to non-null type androidx.datastore.preferences.core.mutablepreferences",
+        "token": "m194",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "setdatavaluedescriptor",
+        "token": "pbkdf2withsha3_256",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "failed to decode certificate",
+        "token": "java.security.cert.pkixrevocationchecker",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "tag length must be 128 bits",
+        "token": "sect233k1_affine_zs",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "containsattributetype",
+        "token": "digest_1024_1024",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "1.1.3.1.1",
+        "token": "signature.sha512withddsa",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "sha256rsa",
+        "token": "getmasterseed",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "x9_42_schemes",
+        "token": "_updatecreatorproperty",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "no base64variant with name",
+        "token": "addvect",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "calculatepbemac",
+        "token": "acceptableeccurves",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "sect163r2",
+        "token": "failed to construct sequence from byte[]:",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "processnonce",
+        "token": "sms4_cfb1",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "_notnullclass",
+        "token": "setpathtonames",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "shake_20_512",
+        "token": "-gmac",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "biometricinfo",
+        "token": "_tertiarystart",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "attempt to add existing attribute with different value",
+        "token": "alg.alias.signature.sha1withrsaandmgf1",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "seedwrap",
+        "token": "1.3.6.1.5.5.7.4.14",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "keyagreement.ecdhwithsha384kdf",
+        "token": "key not recognized",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "ox9bbkk0kk0bbb99b9bk0kk0b99bbbb9b90k0bb9bbb99b9bkk00kk0bbb99b9bkk00k00",
+        "token": "getdatagroupnumber",
         "coverage": 1.0,
         "fp": 0.0
       },
       {
-        "token": "othername is from an excluded subtree.",
+        "token": "llillliz",
         "coverage": 1.0,
         "fp": 0.0
       }
     ],
     "domains": [
       {
-        "token": "pushy.me",
+        "token": "api.pushy.me",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -5599,7 +5604,12 @@
         "fp": 0.0
       },
       {
-        "token": "api.pushy.me",
+        "token": "pushy.me",
+        "coverage": 1.0,
+        "fp": 0.0
+      },
+      {
+        "token": "mqtt.pushy.io",
         "coverage": 1.0,
         "fp": 0.0
       },
@@ -5610,11 +5620,6 @@
       },
       {
         "token": "www.bouncycastle.org)",
-        "coverage": 1.0,
-        "fp": 0.0
-      },
-      {
-        "token": "mqtt.pushy.io",
         "coverage": 1.0,
         "fp": 0.0
       }
@@ -5636,17 +5641,17 @@
         "fp": 0.0034
       },
       {
-        "token": "READ_SYNC_SETTINGS",
-        "coverage": 1.0,
-        "fp": 0.0102
-      },
-      {
         "token": "AUTHENTICATE_ACCOUNTS",
         "coverage": 1.0,
         "fp": 0.0102
       },
       {
         "token": "WRITE_SYNC_SETTINGS",
+        "coverage": 1.0,
+        "fp": 0.0102
+      },
+      {
+        "token": "READ_SYNC_SETTINGS",
         "coverage": 1.0,
         "fp": 0.0102
       }
