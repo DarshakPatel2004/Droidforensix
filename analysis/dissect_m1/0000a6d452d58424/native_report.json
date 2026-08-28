@@ -1,0 +1,210 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541.apk",
+  "apk_sha256": "0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541",
+  "so_count": 3,
+  "native_libs": [
+    {
+      "path": "analysis/dissect_m1/0000a6d452d58424/0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541/armeabi_libcocos2dcpp.so",
+      "sha256": "373595486f331793c84da4b0a4714dd37fff4c2640f94e02cf104f3dab0c069f",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "libOpenSLES.so",
+          "libGLESv2.so",
+          "liblog.so",
+          "libz.so",
+          "libandroid.so",
+          "libGLESv1_CM.so",
+          "libEGL.so",
+          "libdl.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxBitmap_nativeInitBitmapDC",
+          "addr": "0x2e7338",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit",
+          "addr": "0x2e95f8",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxActivity_getGLContextAttrs",
+          "addr": "0x2e9794",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnSurfaceChanged",
+          "addr": "0x2e9848",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxAccelerometer_onSensorChanged",
+          "addr": "0x2e9bfc",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxHelper_nativeSetApkPath",
+          "addr": "0x2ea2d8",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxHelper_nativeSetContext",
+          "addr": "0x2ea33c",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxHelper_nativeSetEditTextDialogResult",
+          "addr": "0x2ea380",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeRender",
+          "addr": "0x2eb850",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnPause",
+          "addr": "0x2eb884",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeOnResume",
+          "addr": "0x2eb96c",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInsertText",
+          "addr": "0x2eba54",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeDeleteBackward",
+          "addr": "0x2ebabc",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeGetContentText",
+          "addr": "0x2ebae8",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesBegin",
+          "addr": "0x2ec9d8",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesEnd",
+          "addr": "0x2eca44",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesMove",
+          "addr": "0x2ecab0",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeTouchesCancel",
+          "addr": "0x2ecde0",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeKeyDown",
+          "addr": "0x2ed1b8",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_chukong_cocosplay_client_CocosPlayClient_getSearchPaths",
+          "addr": "0x2ef3f4",
+          "source": "static_export"
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [
+        {
+          "kind": "tea_delta_le",
+          "section": ".text",
+          "offset": "0x132fa4",
+          "size": 4
+        },
+        {
+          "kind": "rc4_sbox_init",
+          "section": ".rodata",
+          "offset": "0x42530",
+          "size": 32
+        }
+      ],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.143,
+        "branches": 1,
+        "total_insns": 7,
+        "distinct_branch_targets": 1,
+        "hub_max_indegree": 1
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000a6d452d58424/0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541/assets_libjiagu.so",
+      "sha256": "434cf55e68aa7c3da02555fbdc88e380d552c11c2ae59e206bb8d6e95a20d4a0",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libz.so",
+          "libdl.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "branches": 0,
+        "total_insns": 0,
+        "distinct_branch_targets": 0,
+        "hub_max_indegree": 0
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000a6d452d58424/0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541/assets_libjiagu_x86.so",
+      "sha256": "57f0ffa7062aaa03074648a0c9df78ed9d3f78c2f07fb846b11bb1b667e246bc",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libz.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "branches": 0,
+        "total_insns": 12,
+        "distinct_branch_targets": 0,
+        "hub_max_indegree": 0
+      }
+    }
+  ]
+}

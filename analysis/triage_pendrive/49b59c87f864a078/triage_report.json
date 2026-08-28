@@ -1,0 +1,78 @@
+{
+  "apk_sha256": "49b59c87f864a078100f2348508f82020da771d4d180addde821a4cde385e781",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/PNB ONE ACTIVATION.apk",
+  "verdict": "indeterminate",
+  "confidence": 0.35,
+  "duration_seconds": 0.936,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.205633,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 2912340,
+      "total_uncompressed": 14162795,
+      "native_lib_share": 0.0372,
+      "big_asset_count": 6,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9544,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 2545,
+      "total_windows": 2545,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/heeleyaccommodateness",
+        "assets/wyvhtvmqlcbfmi9w/bhtn0kbg",
+        "assets/bendedwordmongering",
+        "assets/protoconidagropyron",
+        "assets/trustifying",
+        "assets/fugleman"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.bitmavrick.lumolight.LumolightApp",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 2912340,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 3,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 2
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/trustifying",
+      "size": 3592496
+    },
+    {
+      "path": "assets/heeleyaccommodateness",
+      "size": 2636784
+    },
+    {
+      "path": "assets/protoconidagropyron",
+      "size": 2386704
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

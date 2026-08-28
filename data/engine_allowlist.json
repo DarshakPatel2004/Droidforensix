@@ -1,0 +1,11 @@
+{
+  "_comment": "H1 suppression rules for legitimately big-payload apps (plan C1 edge cases / decision D4). asset_patterns: substring match on lowercased zip entry paths. native_share_exempt: if lib/*.so uncompressed bytes exceed this share of total, the app is a genuine native-heavy app, not a packer (packer stubs ship small .so + one encrypted blob).",
+  "asset_patterns": [
+    "assets/bin/data/",
+    "assets/www/",
+    "index.android.bundle",
+    "libflutter.so",
+    "libapp.so"
+  ],
+  "native_share_exempt": 0.25
+}

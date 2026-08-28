@@ -165,7 +165,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
                   <Marker key={idx} position={[ip.latitude, ip.longitude]} icon={DEFAULT_ICON}>
                     <Popup>
                       <strong>{ip.ip}</strong><br />
-                      {ip.country}{ip.isp ? `<br/>${ip.isp}` : ''}
+                      {ip.country}{ip.isp ? <><br />{ip.isp}</> : null}
                     </Popup>
                   </Marker>
                 ))}

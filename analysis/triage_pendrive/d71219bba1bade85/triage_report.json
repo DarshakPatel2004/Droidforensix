@@ -1,0 +1,100 @@
+{
+  "apk_sha256": "d71219bba1bade855a3386671bce3328846ac98c0b3aeeb1a1ef3386e2857044",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/kinemaster-mod-apk-7.5.14.34120.gp-kinemaster.gold_.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 4.771,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.183993,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 37763264,
+      "total_uncompressed": 205242653,
+      "native_lib_share": 0.4509,
+      "big_asset_count": 26,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.2204,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 3428,
+      "total_windows": 5754,
+      "sampled_capped": true,
+      "candidates": [
+        "assets/kmassets.zip",
+        "assets/lato-bold.ttf",
+        "assets/greatvibes-regular.ttf",
+        "assets/NotoColorEmojiCompat.ttf",
+        "assets/tflite_langid.tflite.jpg",
+        "assets/km_segmentation_352x352_fp16.tflite",
+        "assets/DCI/dci.json",
+        "assets/audience_network.dex",
+        "assets/outro/spring_outro.mp4",
+        "assets/backgrounds/1v1/BG02_1v1.jpg",
+        "assets/backgrounds/1v1/BG05_1v1.jpg",
+        "assets/backgrounds/1v1/BG04_1v1.jpg",
+        "assets/backgrounds/9v16/BG09_9v16.jpg",
+        "assets/backgrounds/9v16/BG04_9v16.jpg",
+        "assets/backgrounds/9v16/BG02_9v16.jpg",
+        "assets/backgrounds/9v16/BG03_9v16.jpg",
+        "assets/backgrounds/9v16/BG05_9v16.jpg",
+        "assets/backgrounds/9v16/BG01_9v16.jpg",
+        "assets/backgrounds/16v9/BG06_16v9.jpg",
+        "assets/backgrounds/16v9/BG03_16v9.jpg"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.nextreaming.nexeditorui.KineMasterApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8132528,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 43
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/kmassets.zip",
+      "size": 36244165
+    },
+    {
+      "path": "assets/km_segmentation_352x352_fp16.tflite",
+      "size": 7132104
+    },
+    {
+      "path": "assets/audience_network.dex",
+      "size": 3798248
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

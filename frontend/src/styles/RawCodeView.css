@@ -1,0 +1,99 @@
+.raw-code-layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 16px;
+  min-height: calc(100vh - 200px);
+}
+
+.raw-code-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  overflow: hidden;
+}
+
+.raw-code-search {
+  flex: 1;
+  min-width: 0;
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+  font-size: 13px;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.raw-code-search:focus {
+  border-color: rgba(34, 200, 230, 0.45);
+  box-shadow: 0 0 0 3px rgba(34, 200, 230, 0.1);
+}
+
+.raw-code-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+}
+
+.raw-code-rows {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.raw-code-row {
+  text-align: left;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-size: 12px;
+  cursor: pointer;
+  font-family: 'JetBrains Mono', monospace;
+  background: transparent;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.raw-code-row:hover {
+  background: var(--bg-surface-hover);
+  color: var(--text-primary);
+}
+
+.raw-code-row.selected {
+  background: var(--accent-cyan-soft);
+  border-color: rgba(34, 200, 230, 0.25);
+  color: var(--accent-cyan);
+}
+
+.raw-code-methods {
+  margin-left: 6px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+.raw-code-viewer {
+  overflow: auto;
+  min-width: 0;
+}
+
+.raw-code-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  color: var(--text-muted);
+  border-style: dashed;
+}
+
+@media (max-width: 1024px) {
+  .raw-code-layout {
+    grid-template-columns: 240px minmax(0, 1fr);
+  }
+}

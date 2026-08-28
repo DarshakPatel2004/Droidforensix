@@ -46,6 +46,7 @@ GROUND_TRUTH_FILES = [
     ("modern", ROOT / "evaluation" / "ground_truth_modern.json"),
     ("benign", ROOT / "evaluation" / "ground_truth_benign.json"),
     ("gt_json", ROOT / "evaluation" / "ground_truth.json"),
+    ("pendrive", ROOT / "evaluation" / "ground_truth_pendrive.json"),
 ]
 
 # ---------------------------------------------------------------------------

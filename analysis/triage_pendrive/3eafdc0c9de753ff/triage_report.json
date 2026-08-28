@@ -1,0 +1,70 @@
+{
+  "apk_sha256": "3eafdc0c9de753ff6184652f90fb8eb9451f1b54995c2ebd8b8cb593690a718f",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/youtube-revanced-v20.13.41-all.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 3.037,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.260636,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 55422968,
+      "total_uncompressed": 212644769,
+      "native_lib_share": 0.51,
+      "big_asset_count": 3,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.5408,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 220,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/mainapp_filegroup/42_js_module_config.dat",
+        "assets/mainapp_filegroup/_srs_resources_eml_bundle/animated_like_icon.eml_a56ede2c3957db5d",
+        "assets/youtube_sans_bold_font.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.google.android.apps.youtube.app.YouTubeTikTokRoot_Application",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8667764,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 55
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

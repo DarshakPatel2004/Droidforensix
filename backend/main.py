@@ -416,7 +416,7 @@ async def api_get_dissection_classes(
     sample_id: str,
     refresh: bool = Query(False),
     offset: int = Query(0, ge=0),
-    limit: int = Query(50, ge=1, le=200),
+    limit: int = Query(200, ge=1, le=10000),
 ) -> dict:
     """Get list of decompiled Java classes (lightweight — no method bodies).
     Method bodies are fetched on demand via /dissection/class-methods.

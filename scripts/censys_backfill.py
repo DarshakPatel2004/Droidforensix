@@ -43,14 +43,17 @@ def collect_all_ips() -> set:
             for r_ip in (c2.get("live_dns") or {}).get("ips", []) or []:
                 ips.add(r_ip)
 
-    # Filter to public IPs only
+    # Filter to public IPs only (ipaddress handles CGNAT 100.64.0.0/10,
+    # which the old string-prefix filter missed)
+    import ipaddress
     public = set()
     for ip in ips:
-        if ip.startswith(("10.", "172.", "192.168.", "127.", "169.254.")):
+        try:
+            addr = ipaddress.ip_address(ip)
+        except ValueError:
             continue
-        if ":" in ip:
-            continue
-        public.add(ip)
+        if addr.version == 4 and addr.is_global:
+            public.add(ip)
     return public
 
 
@@ -99,7 +102,7 @@ def main():
 
     out_dir = ROOT / "reports"
     out_dir.mkdir(parents=True, exist_ok=True)
-    out_path = out_dir / "censys_enrichment_2026-07-20.json"
+    out_path = out_dir / f"censys_enrichment_{time.strftime('%Y-%m-%d')}.json"
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
 

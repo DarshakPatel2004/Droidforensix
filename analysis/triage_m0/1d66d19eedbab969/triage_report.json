@@ -1,0 +1,61 @@
+{
+  "apk_sha256": "1d66d19eedbab969b1be2e44e0ea35f5f8921cbe83b5c5ac810767ca1a84b7e8",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/org.schabi.newpipe_1015.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.269,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.599158,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 11376836,
+      "total_uncompressed": 18988037,
+      "native_lib_share": 0.002,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.3016,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 82,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/PublicSuffixDatabase.list",
+        "assets/aboutlibraries.json"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "org.schabi.newpipe.App",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 10294484,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 4
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

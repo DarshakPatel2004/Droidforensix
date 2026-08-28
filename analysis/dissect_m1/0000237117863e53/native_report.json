@@ -1,0 +1,157 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28.apk",
+  "apk_sha256": "0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28",
+  "so_count": 6,
+  "native_libs": [
+    {
+      "path": "analysis/dissect_m1/0000237117863e53/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28/assets_libsecexe.so",
+      "sha256": "bce3fb20c2f5432b398bf62b4ded0318b6bf2b5dda547b2f49fda64a944455a2",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000237117863e53/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28/assets_libsecexe.x86.so",
+      "sha256": "2659cb98f75c335ddc59f38ca321a57a0425087140daa037ef90cd1a1a8c7d16",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000237117863e53/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28/assets_libsecmain.so",
+      "sha256": "19da270ac2e467d1db11a11b78f65dcd89d7f116bc537218fe837e917324ecd0",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000237117863e53/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28/assets_libsecmain.x86.so",
+      "sha256": "ffba1b7698dfeba9ebfa8ae805c4e8210d12ee9835ec739953c3d3fb404b7b5c",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000237117863e53/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28/assets_libsecpreload.so",
+      "sha256": "7ea6fe1d3f87fe8d11eff215d8be37af1b00856456f9dd03d662d511ef66cdfa",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.244,
+        "branches": 327,
+        "total_insns": 1340,
+        "distinct_branch_targets": 168,
+        "hub_max_indegree": 10
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000237117863e53/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28/assets_libsecpreload.x86.so",
+      "sha256": "f331a9932fc1215fdf83ab19b99f1832f1adddea8a766a5b608f703a155811fb",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "branches": 0,
+        "total_insns": 0,
+        "distinct_branch_targets": 0,
+        "hub_max_indegree": 0
+      }
+    }
+  ]
+}

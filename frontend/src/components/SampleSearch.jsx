@@ -1,5 +1,6 @@
 import { useState, useCallback } from 'react'
 import { apiFetch } from '../api/client'
+import '../styles/SampleSearch.css'
 
 export default function SampleSearch({ apiUrl, onSelect, samples }) {
   const [query, setQuery] = useState('')
@@ -23,40 +24,27 @@ export default function SampleSearch({ apiUrl, onSelect, samples }) {
   }, [query, samples, apiUrl])
 
   return (
-    <div className="card" style={{ padding: 16 }}>
-      <div style={{ display: 'flex', gap: 8, marginBottom: 12 }}>
+    <div className="card sample-search">
+      <div className="sample-search-bar">
         <input
+          className="sample-search-input"
           placeholder="Search by hash, package name, or family..."
           value={query}
           onChange={e => setQuery(e.target.value)}
           onKeyDown={e => e.key === 'Enter' && doSearch()}
-          style={{
-            flex: 1, padding: '8px 12px', borderRadius: 6, border: '1px solid var(--border-color)',
-            background: 'var(--bg-secondary)', color: 'var(--text-primary)', fontSize: 13,
-            outline: 'none',
-          }}
+          aria-label="Search samples"
         />
-        <button className="primary" onClick={doSearch} disabled={searching} style={{ padding: '8px 16px' }}>
+        <button className="btn-primary sample-search-btn" onClick={doSearch} disabled={searching}>
           {searching ? '...' : 'Search'}
         </button>
       </div>
       {results.length > 0 && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4, maxHeight: 300, overflow: 'auto' }}>
+        <div className="sample-search-results">
           {results.map((s, i) => (
-            <button
-              key={i}
-              onClick={() => onSelect?.(s)}
-              style={{
-                textAlign: 'left', padding: '8px 12px', borderRadius: 6, border: 'none',
-                background: 'var(--bg-secondary)', cursor: 'pointer', fontSize: 12,
-                color: 'var(--text-secondary)', fontFamily: "'JetBrains Mono', monospace",
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-surface-hover)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-secondary)'}
-            >
+            <button key={i} className="sample-search-row" onClick={() => onSelect?.(s)}>
               {s.sha256?.substring(0, 16) || s.sample_id?.substring(0, 16)}...
-              {s.package_name && <span style={{ color: 'var(--text-muted)', marginLeft: 8 }}>{s.package_name}</span>}
-              {s.family && <span style={{ color: 'var(--accent-amber)', marginLeft: 8 }}>{s.family}</span>}
+              {s.package_name && <span className="text-muted">{s.package_name}</span>}
+              {s.family && <span className="text-amber">{s.family}</span>}
             </button>
           ))}
         </div>

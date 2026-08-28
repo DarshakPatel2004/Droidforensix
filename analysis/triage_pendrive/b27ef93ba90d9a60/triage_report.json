@@ -1,0 +1,85 @@
+{
+  "apk_sha256": "b27ef93ba90d9a60f9fc96003af46611d17bb49c57599ead276def608b2cd8cd",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/blinkit-app-driver-release-11.8.2.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 5.322,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.297614,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 32678116,
+      "total_uncompressed": 109800162,
+      "native_lib_share": 0.4724,
+      "big_asset_count": 6,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.0563,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 1,
+      "total_windows": 1558,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/detection/detection.bin",
+        "assets/live/model_1.bin",
+        "assets/live/model_2.bin",
+        "assets/mlkit_barcode_models/barcode_ssd_mobilenet_v1_dmp25_quant.tflite",
+        "assets/mlkit_barcode_models/oned_auto_regressor_mobile.tflite",
+        "assets/mlkit_barcode_models/oned_feature_extractor_mobile.tflite"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.carthero.driver.RunnrApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 10530660,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 28
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/detection/detection.bin",
+      "size": 1876140
+    },
+    {
+      "path": "assets/live/model_1.bin",
+      "size": 1821388
+    },
+    {
+      "path": "assets/live/model_2.bin",
+      "size": 1812716
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

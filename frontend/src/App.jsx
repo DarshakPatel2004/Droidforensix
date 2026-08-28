@@ -671,6 +671,7 @@ function AppInner() {
 
   return (
     <div className="app-shell">
+        <a className="skip-link" href="#main-content">Skip to content</a>
         <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`} role="navigation" aria-label="Main navigation">
           <div className="brand">
             <span className="brand-mark" aria-hidden="true">D</span>
@@ -721,10 +722,10 @@ function AppInner() {
           </div>
         </header>
 
-        <section className="content" role="main" aria-label={`${activeLabel} view`}>
+        <section className="content" id="main-content" role="main" aria-label={`${activeLabel} view`}>
           {activeTab === 'upload' && (
             <div className="view-wrapper">
-              <div className="upload-grid">
+              <div className="workspace-grid">
                 <UploadPanel
                   onUpload={handleUpload}
                   samples={samples}

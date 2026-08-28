@@ -1,0 +1,117 @@
+{
+  "apk_sha256": "a5d98757657397b4c417c222448033811c0396b701791ba2930f5adee9f3f687",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/com.gpl.rpg.AndorsTrail_86.apk",
+  "verdict": "clean_static",
+  "confidence": 0.7,
+  "duration_seconds": 3.508,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.012325,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 4170012,
+      "total_uncompressed": 338340759,
+      "native_lib_share": 0.0,
+      "big_asset_count": 79,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.7604,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 15159,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/translation/ain.po",
+        "assets/translation/ar.mo",
+        "assets/translation/ar.po",
+        "assets/translation/arq.po",
+        "assets/translation/az.po",
+        "assets/translation/be.po",
+        "assets/translation/bg.po",
+        "assets/translation/ca.mo",
+        "assets/translation/ca.po",
+        "assets/translation/ckb.po",
+        "assets/translation/cs.mo",
+        "assets/translation/cs.po",
+        "assets/translation/da.po",
+        "assets/translation/de.mo",
+        "assets/translation/de.po",
+        "assets/translation/de_AT.po",
+        "assets/translation/el.mo",
+        "assets/translation/el.po",
+        "assets/translation/english.pot",
+        "assets/translation/eo.po"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.gpl.rpg.AndorsTrail.AndorsTrailApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 4170012,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/translation/ta.po",
+      "size": 8108753
+    },
+    {
+      "path": "assets/translation/ta.mo",
+      "size": 6735252
+    },
+    {
+      "path": "assets/translation/ru.po",
+      "size": 5672691
+    },
+    {
+      "path": "assets/translation/uk.po",
+      "size": 5587572
+    },
+    {
+      "path": "assets/translation/ca.po",
+      "size": 4906389
+    },
+    {
+      "path": "assets/translation/id.po",
+      "size": 4822857
+    },
+    {
+      "path": "assets/translation/zh_CN.po",
+      "size": 4677365
+    },
+    {
+      "path": "assets/translation/de.po",
+      "size": 4643384
+    },
+    {
+      "path": "assets/translation/es.po",
+      "size": 4551727
+    },
+    {
+      "path": "assets/translation/fr.po",
+      "size": 4535303
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

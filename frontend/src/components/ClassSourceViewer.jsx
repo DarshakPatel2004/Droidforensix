@@ -20,13 +20,16 @@ export default function ClassSourceViewer({ sampleId, className, apiUrl, highlig
     const el = codeRef.current
     if (!el || !source) return
 
-    if (el.dataset._raw) {
-      el.innerHTML = el.dataset._raw
+    // Remove any prior highlight marker so re-highlighting starts from clean
+    // text (the <code> is keyed by className, so it remounts on class switch
+    // and never shows a previous class's markup).
+    el.removeAttribute('data-highlighted')
+    try {
+      hljs.highlightElement(el)
+    } catch {
+      // highlight.js can throw on unusual input; fall back to plain text.
+      el.textContent = source
     }
-    hljs.highlightElement(el)
-
-    const raw = el.innerHTML
-    el.dataset._raw = raw
 
     if (highlight) {
       const escaped = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
@@ -86,11 +89,11 @@ export default function ClassSourceViewer({ sampleId, className, apiUrl, highlig
       </div>
       {loading && <div className="source-loading">Loading source…</div>}
       {error && <div className="source-error">Error loading source: {error}</div>}
-      {!loading && !error && source !== null && (
-        <pre className="source-code">
-          <code ref={codeRef} className="language-java">{source}</code>
-        </pre>
-      )}
+       {!loading && !error && source !== null && (
+         <pre className="source-code">
+           <code key={className} ref={codeRef} className="language-java">{source}</code>
+         </pre>
+       )}
     </div>
   )
 }

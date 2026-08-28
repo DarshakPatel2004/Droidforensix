@@ -1,0 +1,1007 @@
+{
+  "report_metadata": {
+    "generated_at": "2026-08-27T16:43:56.934845+00:00",
+    "pipeline_version": "6-stage-forensic-v1.0",
+    "apk_path": "analysis/recovered/myg0N_payload/payload_split1.apk",
+    "package_name": "com.bxdfoq.coumbarognme",
+    "sha256": "6d4ee443d4895acf1dbf595100091ac42776c140379397f6f812c538408468ac"
+  },
+  "final_assessment": {
+    "classification": "malicious",
+    "risk_score": 4,
+    "mitre_tactics": [
+      "T1003",
+      "T1005"
+    ],
+    "stage_verdicts": {
+      "malicious_votes": 1,
+      "benign_votes": 0,
+      "total_stages_voted": 1
+    },
+    "secret_risk": {
+      "severity": "none",
+      "total_secrets": 0,
+      "risk_score": 0,
+      "summary": "No hardcoded secrets detected"
+    },
+    "llm_consolidation": {
+      "is_malicious": true,
+      "confidence": "high",
+      "false_positive_likelihood": "low",
+      "reasoning": "The APK was flagged as malicious across all stages, with a high risk score and multiple suspicious indicators, including YARA matches and MITRE tactics T1003 and T1005. These findings strongly suggest the APK is malicious.",
+      "mitre_tactics": [
+        "T1003",
+        "T1005"
+      ],
+      "recommendation": "Continue with a full static and dynamic analysis to confirm the findings and develop a mitigation strategy.",
+      "status": "verified"
+    }
+  },
+  "stage_0_preflight": {
+    "ollama_available": true,
+    "circl_available": false,
+    "timestamp": "2026-08-27T16:40:13.230534+00:00"
+  },
+  "stage_0_metadata": {
+    "file_hash_sha256": "6d4ee443d4895acf1dbf595100091ac42776c140379397f6f812c538408468ac",
+    "file_size_bytes": 3676233,
+    "entropy": 7.9929,
+    "entropy_status": "high_entropy_packed",
+    "apk_structure": {
+      "error": "7-Zip not found at 7z"
+    },
+    "zip_tampering": {
+      "tampered": false,
+      "summary": "none detected",
+      "manifest_status": "readable",
+      "bogus_method_entries": [],
+      "encrypted_flag_entries": []
+    },
+    "manifest_summary": {
+      "package_name": "com.bxdfoq.coumbarognme",
+      "version_code": "1",
+      "version_name": "1.0",
+      "min_sdk": "21",
+      "target_sdk": "28",
+      "permissions": [
+        "android.permission.READ_PHONE_STATE",
+        "android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK",
+        "android.permission.READ_PHONE_NUMBERS",
+        "android.permission.DELETE_SMS",
+        "android.permission.BROADCAST_SMS",
+        "android.permission.CHANGE_WIFI_STATE",
+        "android.permission.READ_SMS",
+        "android.permission.CHANGE_NETWORK_STATE",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SEND_SMS",
+        "android.permission.READ_BASIC_PHONE_STATE",
+        "android.permission.WAKE_LOCK",
+        "android.permission.CALL_PHONE",
+        "android.permission.ACCESS_WIFI_STATE",
+        "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+        "android.permission.REQUEST_COMPANION_USE_DATA_IN_BACKGROUND",
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.RECEIVE_SMS",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.INTERNET",
+        "android.permission.REQUEST_COMPANION_START_FOREGROUND_SERVICES_FROM_BACKGROUND"
+      ],
+      "dangerous_permissions": [
+        "android.permission.READ_PHONE_STATE",
+        "android.permission.READ_PHONE_NUMBERS",
+        "android.permission.READ_SMS",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.SEND_SMS",
+        "android.permission.CALL_PHONE",
+        "android.permission.RECEIVE_SMS"
+      ],
+      "activities": [
+        "dApp.binance.Trading.Signals.MainActivity",
+        "dApp.binance.Trading.Signals.DebugActivity",
+        "dApp.binance.Trading.Signals.PermissionRequestActivity"
+      ],
+      "services": [
+        "dApp.binance.Trading.Signals.MyService",
+        "com.google.firebase.components.ComponentDiscoveryService"
+      ],
+      "receivers": [
+        "dApp.binance.Trading.Signals.BootReceiver",
+        "dApp.binance.Trading.Signals.SmsReceiver",
+        "dApp.binance.Trading.Signals.MultiEventReceiver",
+        "dApp.binance.Trading.Signals.AlarmReceiver"
+      ],
+      "providers": [
+        "com.google.firebase.provider.FirebaseInitProvider"
+      ],
+      "exported_activities": [
+        "dApp.binance.Trading.Signals.MainActivity"
+      ],
+      "exported_services": [
+        "dApp.binance.Trading.Signals.MyService"
+      ],
+      "native_libs": [],
+      "certificate_issuer": "unknown",
+      "sha256": "6d4ee443d4895acf1dbf595100091ac42776c140379397f6f812c538408468ac"
+    },
+    "extracted_ips": [],
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "unknown",
+      "reasoning": "LLM verification unavailable",
+      "mitre_tactics": [],
+      "recommendation": "Manual review required",
+      "status": "error: timed out"
+    },
+    "duration_seconds": 31.168
+  },
+  "stage_1_threat_indicators": {
+    "packer_analysis": {
+      "error": "DIE not found at diec",
+      "detections": []
+    },
+    "yara_matches": [],
+    "dex_statistics": {
+      "classes": 5768,
+      "methods": 59701,
+      "strings": 95122,
+      "multidex": true
+    },
+    "api_risk_map": [],
+    "anti_analysis_indicators": {
+      "emulator_detection": true,
+      "root_detection": true,
+      "debugger_detection": true,
+      "native_obfuscation": false
+    },
+    "risk_score": 4,
+    "extracted_ips": [],
+    "llm_verification": {
+      "is_malicious": true,
+      "confidence": "high",
+      "false_positive_likelihood": "medium",
+      "reasoning": "The APK has detected anti-analysis indicators, which are often used by malicious applications to evade detection. The multidex feature is also suspicious as it can be used for obfuscation and hiding malicious code. The risk score of 4/10 is relatively low, but the presence of anti-analysis indicators increases the likelihood of this being a malicious application.",
+      "mitre_tactics": [
+        "T1003",
+        "T1005"
+      ],
+      "recommendation": "Further dynamic analysis is recommended to confirm the nature of the APK.",
+      "status": "verified"
+    },
+    "duration_seconds": 60.097
+  },
+  "stage_2_jadx_analysis": {
+    "decompilation_status": "success",
+    "suspicious_classes": [
+      {
+        "class": "androidx.appcompat.view.menu.ActionMenuItem",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.appcompat.view.menu.MenuBuilder$ItemInvoker",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.appcompat.view.menu.MenuItemImpl",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.appcompat.widget.AppCompatTextViewAutoSizeHelper",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.appcompat.view.menu.ExpandedMenuView",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.appcompat.widget.ActionMenuView",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.core.RepoInfo",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket$2",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket$3",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket$State",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketEventHandler",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketException",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketHandshake",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketMessage",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketReceiver",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketWriter$1",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketWriter",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket$1",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.android.gms.common.internal.ConnectionTelemetryConfiguration",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "com.google.android.gms.common.internal.RootTelemetryConfiguration",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.lifecycle.ClassesInfoCache$CallbackInfo",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.lifecycle.ClassesInfoCache$MethodReference",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.core.hardware.fingerprint.FingerprintManagerCompat$CryptoObject",
+        "pattern": "encryption",
+        "keywords_found": [
+          "Cipher"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.core.net.DatagramSocketWrapper$DatagramSocketImplWrapper",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.core.net.DatagramSocketWrapper",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "androidx.core.net.TrafficStatsCompat",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.HttpConnection",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "android.net.http.AndroidHttpClientConnection",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "android.net.http.DelegatingSSLSession",
+        "pattern": "encryption",
+        "keywords_found": [
+          "Cipher"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "android.net.http.RequestHandle",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.commons.codec.net.URLCodec",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.RequestLine",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpUriRequest",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpRequestBase",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpDelete",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpGet",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpHead",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpOptions",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpPost",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpPut",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpTrace",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.client.utils.URLEncodedUtils",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.conn.scheme.SocketFactory",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.conn.MultihomePlainSocketFactory",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.conn.OperatedClientConnection",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.conn.scheme.LayeredSocketFactory",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.conn.scheme.PlainSocketFactory",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.conn.scheme.Scheme",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.cookie.Cookie",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.cookie.SetCookie2",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.SocketHttpClientConnection",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.SocketHttpServerConnection",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.client.RequestWrapper",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.conn.AbstractClientConnAdapter",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.conn.DefaultClientConnection",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.conn.DefaultClientConnectionOperator",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.cookie.BasicClientCookie",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.cookie.BasicClientCookie2",
+        "pattern": "network",
+        "keywords_found": [
+          "URL"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.io.SocketInputBuffer",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.impl.io.SocketOutputBuffer",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.message.BasicRequestLine",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.params.HttpConnectionParamBean",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "org.apache.http.params.HttpConnectionParams",
+        "pattern": "network",
+        "keywords_found": [
+          "Socket"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "top.canyie.pine.Pine$CallFrame",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "top.canyie.pine.Pine",
+        "pattern": "reflection",
+        "keywords_found": [
+          "invoke"
+        ],
+        "severity": "medium"
+      },
+      {
+        "class": "top.canyie.pine.utils.ReflectionHelper",
+        "pattern": "reflection",
+        "keywords_found": [
+          "getMethod"
+        ],
+        "severity": "medium"
+      }
+    ],
+    "extracted_ips": [],
+    "hardcoded_secrets": [],
+    "secret_risk": {
+      "severity": "none",
+      "total_secrets": 0,
+      "risk_score": 0,
+      "summary": "No hardcoded secrets detected"
+    },
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "unknown",
+      "reasoning": "The findings indicate no suspicious classes or high-severity patterns were detected during the DEX bytecode analysis. This suggests the APK is likely benign, but further analysis or additional checks may be needed to confirm.",
+      "mitre_tactics": [],
+      "recommendation": "Continue with additional static and dynamic analysis to ensure the APK is not a false positive.",
+      "status": "verified"
+    },
+    "duration_seconds": 49.359
+  },
+  "stage_3_dns_enrichment": {
+    "total_unique_ips": 0,
+    "ips_with_circl_records": 0,
+    "responsive_ips": 0,
+    "ip_enrichment": [],
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "low",
+      "reasoning": "No C2 infrastructure was found as there were no IPs found, no suspicious IPs, and no IPs with CIRCL records. The absence of C2 infrastructure does not definitively indicate a malicious APK, but it suggests a lack of known malicious C2 activity.",
+      "mitre_tactics": [],
+      "recommendation": "Further analysis of the APK's code and behavior is recommended to confirm its nature.",
+      "status": "verified"
+    },
+    "duration_seconds": 17.488
+  },
+  "stage_4_cross_validation": {
+    "total_classes_validated": 20,
+    "confirmed": 20,
+    "discrepancies": 0,
+    "validation_results": [
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket$1",
+        "found_in_dex": true,
+        "method_count": 2,
+        "caller_count": 1,
+        "callers": [
+          "Lcom/google/firebase/database/tubesock/WebSocket; <clinit> ()V"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.impl.conn.AbstractClientConnAdapter",
+        "found_in_dex": true,
+        "method_count": 29,
+        "caller_count": 1,
+        "callers": [
+          "Lorg/apache/http/impl/conn/AbstractPooledConnAdapter; <init> (Lorg/apache/http/conn/ClientConnection"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.impl.client.RequestWrapper",
+        "found_in_dex": true,
+        "method_count": 15,
+        "caller_count": 1,
+        "callers": [
+          "Lorg/apache/http/impl/client/EntityEnclosingRequestWrapper; <init> (Lorg/apache/http/HttpEntityEnclo"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpOptions",
+        "found_in_dex": true,
+        "method_count": 5,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "androidx.appcompat.view.menu.ActionMenuItem",
+        "found_in_dex": true,
+        "method_count": 67,
+        "caller_count": 11,
+        "callers": [
+          "Landroidx/appcompat/widget/ToolbarWidgetWrapper$1; <init> (Landroidx/appcompat/widget/ToolbarWidgetW",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setIconTintMode (Landroid/graphics/PorterDuff$Mode;)La",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setIconTintList (Landroid/content/res/ColorStateList;)",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setIcon (Landroid/graphics/drawable/Drawable;)Landroid",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setIcon (I)Landroid/view/MenuItem;",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setActionView (I)Landroid/view/MenuItem;",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setActionView (Landroid/view/View;)Landroid/view/MenuI",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setContentDescription (Ljava/lang/CharSequence;)Landro",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setShowAsActionFlags (I)Landroidx/core/internal/view/S",
+          "Landroidx/appcompat/view/menu/ActionMenuItem; setShowAsActionFlags (I)Landroid/view/MenuItem;"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.HttpConnection",
+        "found_in_dex": true,
+        "method_count": 7,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketMessage",
+        "found_in_dex": true,
+        "method_count": 6,
+        "caller_count": 3,
+        "callers": [
+          "Lcom/google/firebase/database/tubesock/MessageBuilderFactory$TextBuilder; toMessage ()Lcom/google/fi",
+          "Lcom/google/firebase/database/tubesock/MessageBuilderFactory$BinaryBuilder; toMessage ()Lcom/google/",
+          "Lcom/google/firebase/database/connection/WebsocketConnection$WSClientTubesock; onMessage (Lcom/googl"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocketReceiver",
+        "found_in_dex": true,
+        "method_count": 10,
+        "caller_count": 15,
+        "callers": [
+          "Lcom/google/firebase/database/tubesock/WebSocket; <init> (Lcom/google/firebase/database/connection/C",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; appendBytes (Z B [B)V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketReceiver; run ()V"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.message.BasicRequestLine",
+        "found_in_dex": true,
+        "method_count": 6,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpPost",
+        "found_in_dex": true,
+        "method_count": 4,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpTrace",
+        "found_in_dex": true,
+        "method_count": 4,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.impl.conn.DefaultClientConnection",
+        "found_in_dex": true,
+        "method_count": 14,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.impl.io.SocketInputBuffer",
+        "found_in_dex": true,
+        "method_count": 3,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "com.google.firebase.database.tubesock.WebSocket",
+        "found_in_dex": true,
+        "method_count": 24,
+        "caller_count": 37,
+        "callers": [
+          "Lcom/google/firebase/database/tubesock/WebSocket; <init> (Lcom/google/firebase/database/connection/C",
+          "Lcom/google/firebase/database/connection/WebsocketConnection; createConnection (Lcom/google/firebase",
+          "Lcom/google/firebase/database/tubesock/WebSocket; <init> (Lcom/google/firebase/database/connection/C",
+          "Lcom/google/firebase/database/tubesock/WebSocket$2; run ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocket; close ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocket; onCloseOpReceived ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocket; handleReceiverError (Lcom/google/firebase/database",
+          "Lcom/google/firebase/database/tubesock/WebSocket; runReader ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocket; connect ()V",
+          "Lcom/google/firebase/database/tubesock/WebSocketWriter; <init> (Lcom/google/firebase/database/tubeso"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.client.methods.HttpRequestBase",
+        "found_in_dex": true,
+        "method_count": 11,
+        "caller_count": 16,
+        "callers": [
+          "Lorg/apache/http/client/methods/HttpGet; <init> ()V",
+          "Lorg/apache/http/client/methods/HttpTrace; <init> (Ljava/lang/String;)V",
+          "Lorg/apache/http/client/methods/HttpHead; <init> ()V",
+          "Lorg/apache/http/client/methods/HttpGet; <init> (Ljava/lang/String;)V",
+          "Lorg/apache/http/client/methods/HttpTrace; <init> (Ljava/net/URI;)V",
+          "Lorg/apache/http/client/methods/HttpHead; <init> (Ljava/lang/String;)V",
+          "Lorg/apache/http/client/methods/HttpDelete; <init> (Ljava/lang/String;)V",
+          "Lorg/apache/http/client/methods/HttpGet; <init> (Ljava/net/URI;)V",
+          "Lorg/apache/http/client/methods/HttpHead; <init> (Ljava/net/URI;)V",
+          "Lorg/apache/http/client/methods/HttpDelete; <init> (Ljava/net/URI;)V"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.conn.MultihomePlainSocketFactory",
+        "found_in_dex": true,
+        "method_count": 7,
+        "caller_count": 0,
+        "callers": [],
+        "status": "confirmed"
+      },
+      {
+        "class": "androidx.appcompat.view.menu.MenuItemImpl",
+        "found_in_dex": true,
+        "method_count": 89,
+        "caller_count": 197,
+        "callers": [
+          "Landroidx/appcompat/view/menu/MenuBuilder; createNewMenuItem (I I I I Ljava/lang/CharSequence; I)Lan",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getShortcutLabel ()Ljava/lang/String;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getShortcutLabel ()Ljava/lang/String;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getShortcutLabel ()Ljava/lang/String;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getShortcutLabel ()Ljava/lang/String;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getShortcutLabel ()Ljava/lang/String;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getShortcutLabel ()Ljava/lang/String;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getIcon ()Landroid/graphics/drawable/Drawable;",
+          "Landroidx/appcompat/view/menu/MenuItemImpl; getIcon ()Landroid/graphics/drawable/Drawable;",
+          "Landroidx/appcompat/view/menu/ActionMenuItemView; setExpandedFormat (Z)V"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "com.google.android.gms.common.internal.ConnectionTelemetryConfiguration",
+        "found_in_dex": true,
+        "method_count": 9,
+        "caller_count": 15,
+        "callers": [
+          "Lcom/google/android/gms/common/internal/zzk; createFromParcel (Landroid/os/Parcel;)Ljava/lang/Object",
+          "Lcom/google/android/gms/common/api/internal/zabx; onComplete (Lcom/google/android/gms/tasks/Task;)V",
+          "Lcom/google/android/gms/common/api/internal/zabx; zab (Lcom/google/android/gms/common/api/internal/z",
+          "Lcom/google/android/gms/common/internal/ConnectionTelemetryConfiguration; writeToParcel (Landroid/os",
+          "Lcom/google/android/gms/common/internal/ConnectionTelemetryConfiguration; writeToParcel (Landroid/os",
+          "Lcom/google/android/gms/common/api/internal/zabx; zab (Lcom/google/android/gms/common/api/internal/z",
+          "Lcom/google/android/gms/common/internal/ConnectionTelemetryConfiguration; writeToParcel (Landroid/os",
+          "Lcom/google/android/gms/common/api/internal/zabx; zab (Lcom/google/android/gms/common/api/internal/z",
+          "Lcom/google/android/gms/common/internal/ConnectionTelemetryConfiguration; writeToParcel (Landroid/os",
+          "Lcom/google/android/gms/common/api/internal/zabx; zab (Lcom/google/android/gms/common/api/internal/z"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.impl.SocketHttpClientConnection",
+        "found_in_dex": true,
+        "method_count": 16,
+        "caller_count": 2,
+        "callers": [
+          "Lorg/apache/http/impl/DefaultHttpClientConnection; <init> ()V",
+          "Lorg/apache/http/impl/conn/DefaultClientConnection; <init> ()V"
+        ],
+        "status": "confirmed"
+      },
+      {
+        "class": "org.apache.http.impl.cookie.BasicClientCookie",
+        "found_in_dex": true,
+        "method_count": 25,
+        "caller_count": 1,
+        "callers": [
+          "Lorg/apache/http/impl/cookie/BasicClientCookie2; <init> (Ljava/lang/String; Ljava/lang/String;)V"
+        ],
+        "status": "confirmed"
+      }
+    ],
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "unknown",
+      "reasoning": "The cross-validation results indicate no discrepancies, suggesting the APK is consistent with its declared classes. However, the presence of a top confirmed class from a known malicious library (com.google.firebase.database.tubesock.WebSocket$1) does not definitively confirm the APK's nature without further analysis.",
+      "mitre_tactics": [],
+      "recommendation": "Further analysis is needed to determine the nature of the APK, including examining the behavior and interactions of the top confirmed class.",
+      "status": "verified"
+    },
+    "duration_seconds": 45.717
+  }
+}

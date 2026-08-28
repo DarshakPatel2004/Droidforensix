@@ -19,6 +19,7 @@ import math
 import os
 import re
 import socket
+import struct
 import subprocess
 import sys
 import time
@@ -148,6 +149,13 @@ def stage_0_preflight_and_metadata(apk_path: str, work_dir: str, llm: LLMVerifie
     # 0.1 — 7-Zip Structure Analysis
     seven_zip = _run_7zip_analysis(apk_path)
 
+    # 0.1b — ZIP Header Tamper Detection
+    # Tampered central directories (fake encryption flags / bogus compression
+    # methods) break aapt/androguard downstream; must be flagged before 0.3.
+    zip_tamper = _detect_zip_tampering(apk_path)
+    if zip_tamper.get("tampered"):
+        _log(0, f"ZIP TAMPERING detected: {zip_tamper['summary']}")
+
     # 0.2 — Entropy Check
     entropy = _calculate_entropy(apk_path)
     _log(0, f"Entropy: {entropy['entropy']:.4f} ({entropy['status']})")
@@ -173,6 +181,7 @@ def stage_0_preflight_and_metadata(apk_path: str, work_dir: str, llm: LLMVerifie
             f"{len(manifest.get('exported_activities', [])) + len(manifest.get('exported_services', []))} total\n"
             f"Native libraries: {len(manifest.get('native_libs', []))}\n"
             f"Entropy: {entropy['entropy']:.4f} ({entropy['status']})\n"
+            f"ZIP tampering: {zip_tamper.get('summary', 'none detected')}\n"
             f"Certificate issuer: {manifest.get('certificate_issuer', 'unknown')}\n\n"
             f"Is this APK suspicious based on metadata alone?"
         ),
@@ -190,11 +199,72 @@ def stage_0_preflight_and_metadata(apk_path: str, work_dir: str, llm: LLMVerifie
             "entropy": entropy["entropy"],
             "entropy_status": entropy["status"],
             "apk_structure": seven_zip,
+            "zip_tampering": zip_tamper,
             "manifest_summary": manifest,
             "extracted_ips": manifest_ips,
             "llm_verification": llm_result,
             "duration_seconds": duration,
         },
+    }
+
+
+def _detect_zip_tampering(apk_path: str) -> Dict[str, Any]:
+    """Detect ZIP central-directory tampering in an APK.
+
+    Fraud-kit droppers corrupt entry headers (bogus compression methods,
+    fake PKZIP encryption flags, wrong sizes) so aapt/unzip/androguard fail.
+    Parses the central directory directly to flag such entries.
+    """
+    try:
+        data = open(apk_path, "rb").read()
+    except OSError as e:
+        return {"tampered": False, "error": f"unreadable: {e}"}
+
+    eocd = data.rfind(b"PK\x05\x06")
+    if eocd < 0:
+        return {"tampered": False, "summary": "not a zip archive"}
+
+    entry_count = struct.unpack_from("<H", data, eocd + 10)[0]
+    bogus_methods: List[Dict[str, Any]] = []
+    encrypted_entries: List[str] = []
+    manifest_status = "absent"
+
+    offset = struct.unpack_from("<I", data, eocd + 16)[0]
+    for _ in range(entry_count):
+        if data[offset:offset + 4] != b"PK\x01\x02":
+            break
+        method = struct.unpack_from("<H", data, offset + 10)[0]
+        gp_flag = struct.unpack_from("<H", data, offset + 8)[0]
+        name_len = struct.unpack_from("<H", data, offset + 28)[0]
+        extra_len = struct.unpack_from("<H", data, offset + 30)[0]
+        comment_len = struct.unpack_from("<H", data, offset + 32)[0]
+        name = data[offset + 46:offset + 46 + name_len].decode("utf-8", "ignore")
+        offset += 46 + name_len + extra_len + comment_len
+
+        lowered = name.lower()
+        if lowered == "androidmanifest.xml":
+            manifest_status = ("encrypted" if gp_flag & 1 else
+                               "bogus_method" if method not in (0, 8) else
+                               "readable")
+        if method not in (0, 8):
+            bogus_methods.append({"name": name[:80], "method": hex(method)})
+        if gp_flag & 1:
+            encrypted_entries.append(name[:80])
+
+    tampered = bool(bogus_methods or encrypted_entries)
+    parts = []
+    if bogus_methods:
+        parts.append(f"{len(bogus_methods)} bogus-method entries")
+    if encrypted_entries:
+        parts.append(f"{len(encrypted_entries)} fake-encrypted entries")
+    summary = "; ".join(parts) if tampered else "none detected"
+
+    return {
+        "tampered": tampered,
+        "summary": summary,
+        "manifest_status": manifest_status,
+        "bogus_method_entries": bogus_methods[:10],
+        "encrypted_flag_entries": encrypted_entries[:10],
     }
 
 

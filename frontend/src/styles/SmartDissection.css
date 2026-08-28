@@ -30,7 +30,7 @@
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: border-color 0.2s ease, background-color 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .filter-button:hover {
@@ -43,9 +43,9 @@
   border-color: transparent;
 }
 
-.filter-button.filter-rose.active { background: var(--accent-rose); }
-.filter-button.filter-violet.active { background: var(--accent-violet); }
-.filter-button.filter-cyan.active { background: var(--accent-cyan); }
+.filter-button.filter-rose.active { background: var(--accent-rose); box-shadow: 0 0 16px rgba(251, 92, 116, 0.3); }
+.filter-button.filter-violet.active { background: var(--accent-violet); box-shadow: 0 0 16px rgba(167, 139, 250, 0.3); }
+.filter-button.filter-cyan.active { background: var(--accent-cyan); box-shadow: 0 0 16px rgba(34, 200, 230, 0.3); }
 
 .filter-count {
   padding: 0.15rem 0.45rem;
@@ -113,7 +113,7 @@
 
 .dissection-search input:focus {
   border-color: var(--accent-cyan);
-  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 0 3px rgba(34, 200, 230, 0.1);
 }
 
 .dissection-search input::placeholder {
@@ -165,9 +165,14 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   overflow: hidden;
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
   min-height: fit-content;
   height: auto;
+}
+
+.class-card:hover {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-sm);
 }
 
 .class-card.suspicious {
@@ -339,6 +344,11 @@
   border: 1px solid var(--border-color);
   border-radius: var(--radius-sm);
   overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.method-card:hover {
+  border-color: var(--border-strong);
 }
 
 .method-header {
@@ -349,7 +359,7 @@
   padding: 0.7rem 0.85rem;
   cursor: pointer;
   user-select: none;
-  transition: all 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 
 .method-header:hover {
@@ -457,7 +467,7 @@
 .network-call-chip {
   padding: 0.45rem 0.7rem;
   background: var(--accent-rose-soft);
-  border: 1px solid rgba(244, 63, 94, 0.2);
+  border: 1px solid rgba(251, 92, 116, 0.2);
   border-radius: var(--radius-sm);
   font-size: 0.8rem;
   color: var(--accent-rose);
@@ -482,7 +492,7 @@
 .code-block {
   margin: 0;
   padding: 0.75rem 0;
-  background: var(--bg-primary);
+  background: linear-gradient(180deg, rgba(148, 163, 184, 0.02), transparent 60%), var(--bg-primary);
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -500,7 +510,7 @@
 }
 
 .code-line.suspicious-line {
-  background: rgba(244, 63, 94, 0.08);
+  background: rgba(251, 92, 116, 0.08);
 }
 
 .line-num {
@@ -595,15 +605,15 @@
   letter-spacing: 0.04em;
 }
 
-.threat-reflection    { background: rgba(245,158,11,0.15); color: #fbbf24; }
-.threat-dynamic_loading { background: rgba(6,182,212,0.15); color: #22d3ee; }
-.threat-crypto        { background: rgba(139,92,246,0.15); color: #c084fc; }
-.threat-network       { background: rgba(16,185,129,0.15); color: #34d399; }
+.threat-reflection    { background: rgba(251,176,64,0.15); color: #fcd34d; }
+.threat-dynamic_loading { background: rgba(34,200,230,0.15); color: #67e3f4; }
+.threat-crypto        { background: rgba(167,139,250,0.15); color: #c084fc; }
+.threat-network       { background: rgba(45,211,154,0.15); color: #4ade80; }
 .threat-command_exec  { background: rgba(239,68,68,0.15);  color: #f87171; }
 .threat-persistence   { background: rgba(239,68,68,0.15);  color: #f87171; }
-.threat-encoding      { background: rgba(245,158,11,0.15); color: #fbbf24; }
-.threat-permissions   { background: rgba(6,182,212,0.15);  color: #22d3ee; }
-.threat-benign        { background: rgba(16,185,129,0.12); color: #6ee7b7; }
+.threat-encoding      { background: rgba(251,176,64,0.15); color: #fcd34d; }
+.threat-permissions   { background: rgba(34,200,230,0.15);  color: #67e3f4; }
+.threat-benign        { background: rgba(45,211,154,0.12); color: #6ee7b7; }
 .threat-unknown       { background: rgba(107,114,128,0.15);color: #9ca3af; }
 
 /* ── Shimmer loading skeleton ────────────────────────────────────── */
@@ -659,11 +669,11 @@
   opacity: 0.85;
 }
 
-.annotation-amber   { background: rgba(245,158,11,0.12); color: #fbbf24; }
-.annotation-cyan    { background: rgba(6,182,212,0.12);  color: #22d3ee; }
-.annotation-violet  { background: rgba(139,92,246,0.12); color: #c084fc; }
+.annotation-amber   { background: rgba(251,176,64,0.12); color: #fcd34d; }
+.annotation-cyan    { background: rgba(34,200,230,0.12);  color: #67e3f4; }
+.annotation-violet  { background: rgba(167,139,250,0.12); color: #c084fc; }
 .annotation-rose    { background: rgba(239,68,68,0.12);  color: #f87171; }
-.annotation-emerald { background: rgba(16,185,129,0.12); color: #34d399; }
+.annotation-emerald { background: rgba(45,211,154,0.12); color: #4ade80; }
 
 @media (max-width: 700px) {
   .dissection-toolbar {

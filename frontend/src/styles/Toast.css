@@ -1,53 +1,44 @@
 .toast-container {
   position: fixed;
-  top: 1rem;
+  top: calc(var(--header-height) + 12px);
   right: 1rem;
   z-index: 9999;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
-  max-width: 640px;
+  gap: 0.6rem;
+  max-width: min(420px, calc(100vw - 2rem));
   pointer-events: none;
 }
 
 .toast {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  padding: 1.5rem 2rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius-lg);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  gap: 0.75rem;
+  padding: 0.8rem 1rem;
+  background:
+    linear-gradient(180deg, rgba(148, 163, 184, 0.05), transparent 60%),
+    var(--bg-toast);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
   animation: toastSlideIn 0.25s ease-out;
   pointer-events: auto;
-  transition: opacity 0.2s ease, transform 0.2s ease;
+  transition: opacity var(--transition-base), transform var(--transition-base);
 }
 
-.toast-success {
-  border-left: 5px solid var(--accent-emerald);
-}
-
-.toast-info {
-  border-left: 5px solid var(--accent-cyan);
-}
-
-.toast-warning {
-  border-left: 5px solid var(--accent-amber);
-}
-
-.toast-error {
-  border-left: 5px solid var(--accent-rose);
-}
+.toast-success { border-left: 3px solid var(--accent-emerald); }
+.toast-info { border-left: 3px solid var(--accent-cyan); }
+.toast-warning { border-left: 3px solid var(--accent-amber); }
+.toast-error { border-left: 3px solid var(--accent-rose); }
 
 .toast-icon {
-  font-size: 1.6rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
 }
 
 .toast-message {
   flex: 1;
-  font-size: 1.1rem;
+  font-size: 0.85rem;
   color: var(--text-primary);
   line-height: 1.5;
 }
@@ -56,16 +47,28 @@
   background: none;
   border: none;
   color: var(--text-muted);
-  font-size: 1.5rem;
+  font-size: 1.25rem;
   cursor: pointer;
-  padding: 0 0.5rem;
+  padding: 0 0.35rem;
   line-height: 1;
   flex-shrink: 0;
-  transition: color 0.15s ease;
+  border-radius: 6px;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
 }
 
 .toast-dismiss:hover {
   color: var(--text-primary);
+  background: rgba(148, 163, 184, 0.12);
+}
+
+@media (max-width: 680px) {
+  .toast-container {
+    top: auto;
+    bottom: 1rem;
+    left: 1rem;
+    right: 1rem;
+    max-width: none;
+  }
 }
 
 @keyframes toastSlideIn {

@@ -1,0 +1,19 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541.apk",
+  "apk_sha256": "0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541",
+  "libs_tried": [
+    {
+      "lib": "armeabi_libcocos2dcpp.so",
+      "entry": "Java_org_cocos2dx_lib_Cocos2dxRenderer_nativeInit",
+      "entry_va": "0x3e95f8",
+      "arch": "arm",
+      "status": "Invalid memory write (UC_ERR_WRITE_UNMAPPED)",
+      "heap_used": 709128336,
+      "jni_calls": 0
+    }
+  ],
+  "recovered": [],
+  "status": [
+    "Invalid memory write (UC_ERR_WRITE_UNMAPPED)"
+  ]
+}

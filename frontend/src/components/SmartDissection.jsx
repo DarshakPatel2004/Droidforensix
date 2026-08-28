@@ -53,7 +53,7 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
     try {
       setLoading(true)
       const [classesRes, obfRes] = await Promise.all([
-        fetch(`${apiUrl}/api/sample/${sampleId}/dissection/classes`),
+        fetch(`${apiUrl}/api/sample/${sampleId}/dissection/classes?limit=10000`),
         fetch(`${apiUrl}/api/sample/${sampleId}/obfuscation`),
       ])
       if (isCancelled && isCancelled()) return

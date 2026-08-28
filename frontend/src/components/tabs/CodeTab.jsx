@@ -43,7 +43,7 @@ export default function CodeTab({ sampleId, apiUrl }) {
 
   useEffect(() => {
     if (!sampleId) return
-    fetch(`${apiUrl}/api/sample/${sampleId}/dissection/classes?limit=200`)
+    fetch(`${apiUrl}/api/sample/${sampleId}/dissection/classes?limit=10000`)
       .then(r => r.ok ? r.json() : Promise.reject())
       .then(d => { setClasses(d.classes || []) })
       .catch(() => {})

@@ -57,7 +57,7 @@
 }
 
 .source-highlight {
-  background: rgba(245, 158, 11, 0.3);
+  background: rgba(251, 176, 64, 0.3);
   border-bottom: 2px solid var(--accent-amber);
   border-radius: 2px;
   padding: 0 2px;
