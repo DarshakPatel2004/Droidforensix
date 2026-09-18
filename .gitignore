@@ -80,7 +80,7 @@ Thumbs.db
 *.bak
 
 # Root research / investigation scripts
-_*.py
+/_*.py
 
 # Debug / experimental scripts
 debug_*.py
