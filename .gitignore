@@ -80,7 +80,9 @@ Thumbs.db
 *.bak
 
 # Root research / investigation scripts
-/_*.py
+_*.py
+!droidforensix/__init__.py
+!droidforensix/__main__.py
 
 # Debug / experimental scripts
 debug_*.py
