@@ -1,0 +1,60 @@
+{
+  "apk_sha256": "0017288b5baca5108efb77a2d98cb46812aff622fb323f226f6b51fde520a50a",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0017288B5BACA5108EFB77A2D98CB46812AFF622FB323F226F6B51FDE520A50A.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.176,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.474087,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 4330460,
+      "total_uncompressed": 9134318,
+      "native_lib_share": 0.0,
+      "big_asset_count": 1,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.7804,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 872,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/databases/bodosong.sqlite"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/databases/bodosong.sqlite",
+      "size": 3571712
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

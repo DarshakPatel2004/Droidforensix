@@ -1,0 +1,89 @@
+{
+  "apk_sha256": "0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465",
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465.apk",
+  "verdict": "packed_known(Ijiami)",
+  "confidence": 0.95,
+  "duration_seconds": 0.426,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.000519,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 4316,
+      "total_uncompressed": 8316063,
+      "native_lib_share": 0.1627,
+      "big_asset_count": 20,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.8117,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 1733,
+      "total_windows": 1784,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/audio/gm_1.ogg",
+        "assets/audio/gm_2.ogg",
+        "assets/audio/gm_3.ogg",
+        "assets/audio/mainmenu.ogg",
+        "assets/ijm_lib/armeabi/libexec.so",
+        "assets/ijm_lib/x86/libexec.so",
+        "assets/tex/bg/bg_0_s.png",
+        "assets/tex/bg/bg_1_s.png",
+        "assets/tex/bg/bg_2_s.png",
+        "assets/tex/bg/bg_3_s.png",
+        "assets/tex/bg/bg_4_s.png",
+        "assets/tex/bg/tex_mainmenu_bg_s.png",
+        "assets/tex/bg/tex_world_bg_s.png",
+        "assets/tex/bg/win_last_s.png",
+        "assets/tex/help.png",
+        "assets/tex/mainmenu.png",
+        "assets/tex/playworld.png",
+        "assets/tex/subplay.png",
+        "assets/tex/world.png",
+        "assets/ijiami.dat"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.shell.SuperApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 4316,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": false,
+      "max_text_bytes": 0,
+      "libs_parsed": 6
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "Ijiami",
+          "markers": [
+            "libexecmain.so",
+            "ijiami.dat"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

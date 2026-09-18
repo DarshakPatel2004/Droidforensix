@@ -1,0 +1,63 @@
+{
+  "apk_sha256": "4d3ac77efbbd3da030899937e9ba8d4ef472b813b6d8aa939b56326232bbe3b2",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/jwtc.android.chess_284.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.782,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.352138,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 2064288,
+      "total_uncompressed": 5862158,
+      "native_lib_share": 0.0764,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.1816,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 234,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/PublicSuffixDatabase.list",
+        "assets/hashmap.bin",
+        "assets/practice.pgn",
+        "assets/puzzles.pgn"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "android.app.Application",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 2064288,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 54,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 4
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

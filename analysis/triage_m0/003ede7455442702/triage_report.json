@@ -1,0 +1,73 @@
+{
+  "apk_sha256": "003ede745544270210f826edf3266510bf835cde67fa5df2ac7470008bd233b0",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/003EDE745544270210F826EDF3266510BF835CDE67FA5DF2AC7470008BD233B0.apk",
+  "verdict": "clean_static",
+  "confidence": 0.85,
+  "duration_seconds": 3.841,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.140961,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 12136536,
+      "total_uncompressed": 86098291,
+      "native_lib_share": 0.4564,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9342,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 756,
+      "total_windows": 758,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Resources/images/tablet/general/home-bg.png",
+        "assets/Resources/images/tablet/home/home-bg.png",
+        "assets/Resources/images/tablet/login/login_bg.png",
+        "assets/Resources/ti.main.js.bin"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "CrisisdriverApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 3416600,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 18
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "mmap",
+        "open",
+        "read"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/Resources/images/tablet/login/login_bg.png",
+      "size": 1204274
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

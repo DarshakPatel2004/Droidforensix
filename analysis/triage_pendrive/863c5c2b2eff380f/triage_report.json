@@ -1,0 +1,99 @@
+{
+  "apk_sha256": "863c5c2b2eff380f1f1127a840108668d965b2815581c6ce1cebd06906d85c56",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/BreakInB.S1E02_HD720p.WEB-DI_H265_vRev-Y13359.apk",
+  "verdict": "clean_static",
+  "confidence": 0.85,
+  "duration_seconds": 3.151,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.465337,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 60890160,
+      "total_uncompressed": 130851699,
+      "native_lib_share": 0.0266,
+      "big_asset_count": 58,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.8965,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 3553,
+      "total_windows": 3612,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/cldr_strings.pack",
+        "assets/compressed/arm64-v8a/libs.spo",
+        "assets/compressed/armeabi-v7a/libs.spo",
+        "assets/compressed/emojis/emojis.oba",
+        "assets/compressed/strings/strings_af.spo",
+        "assets/compressed/strings/strings_am.spo",
+        "assets/compressed/strings/strings_ar.spo",
+        "assets/compressed/strings/strings_az.spo",
+        "assets/compressed/strings/strings_bg.spo",
+        "assets/compressed/strings/strings_bn.spo",
+        "assets/compressed/strings/strings_ca.spo",
+        "assets/compressed/strings/strings_cs.spo",
+        "assets/compressed/strings/strings_da.spo",
+        "assets/compressed/strings/strings_de.spo",
+        "assets/compressed/strings/strings_el.spo",
+        "assets/compressed/strings/strings_es.spo",
+        "assets/compressed/strings/strings_et.spo",
+        "assets/compressed/strings/strings_fa.spo",
+        "assets/compressed/strings/strings_fi.spo",
+        "assets/compressed/strings/strings_fr.spo"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.m.a.DuceApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 60890160,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 7
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/compressed/armeabi-v7a/libs.spo",
+      "size": 12865465
+    },
+    {
+      "path": "assets/compressed/arm64-v8a/libs.spo",
+      "size": 10964902
+    },
+    {
+      "path": "assets/compressed/emojis/emojis.oba",
+      "size": 6198667
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

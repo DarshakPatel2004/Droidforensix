@@ -1,0 +1,74 @@
+{
+  "apk_sha256": "0007a751120e9d2640a1cbf1c8cb542c793df1bc72a0ddc575dad4595dd548ec",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0007A751120E9D2640A1CBF1C8CB542C793DF1BC72A0DDC575DAD4595DD548EC.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 5.695,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.093722,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 7930544,
+      "total_uncompressed": 84617656,
+      "native_lib_share": 0.692,
+      "big_asset_count": 6,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.4696,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 3,
+      "total_windows": 356,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Baskerville.ttf",
+        "assets/FakeApplause.wav",
+        "assets/Montserrat-Bold.otf",
+        "assets/Roboto-Light.ttf",
+        "assets/Roboto-Regular.ttf",
+        "assets/swoosh.wav"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "crc641cfc85f6c0f39f64.MainApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 7930544,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 28
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

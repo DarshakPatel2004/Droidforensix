@@ -1,0 +1,146 @@
+{
+ "0e81a0fd09c711561aa98284e6ed4acff136594f40afa5023ca5fb7ca401f01c": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper+native_loader(libhawesville)+runtime_keyed_blob_ZoCv0N",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/PNB One.apk"
+ },
+ "49b59c87f864a078100f2348508f82020da771d4d180addde821a4cde385e781": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper+wordsalad_assets+libcater.so+lumolight_masquerade",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/PNB ONE ACTIVATION.apk"
+ },
+ "0ed420c4f23c50d2eeba330b01cdd72f05bd6f5658b42db1bfb55184a1d02d52": {
+  "family": "FrontierSmartRAT_dropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_stub_ucuwr.prnhz.azc->assets/update.apk=com.frontier.smart_RAT",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Tubi-0415.apk"
+ },
+ "dec4d9a9d5ec6aff2444b9414caff75db2bdd08fe50dbbbfe458c1ca2587d68b": {
+  "family": "BoithirtyeightBanker_dropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_stub_com.mr_fox.bhai->output.apk=ce.ef.boithirtyeight_OTP_banker_boi-38/43_firebase_same_signer",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Bank of India.apk"
+ },
+ "f2bff0866024bdf1aab366a4f2c2aa0538aeef2c48f20c3c57be6f57e5dae079": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_com.zaika.dropper+SinkholeVpn",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Delhi board  39420/DELHI JAL BOARD METER UPDATE.apk"
+ },
+ "f5ac462d03c4805d2e10ffcf81d9d9c2fbd87f86da00fd1507cfcbd2e820d1b8": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_com.zsdlw.msplstoi_encrypted_manifest",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Central bank india/M PARIWAHAN CHALAN (12).apk"
+ },
+ "fcd233be7c75771ec3e3b3eed880516ebf6415669d7447c79670697dd2bfe456": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_com.cqjziq.preordinganpce_echallan_lure",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/RTO E CHALLAN (1).apk"
+ },
+ "1869b4b8f7e80ee6150174910af5af488ce0e056e8f3a078f019ce2cb6963223": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_com.gsa.unscandalize_encrypted_manifest",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Repair service.apk"
+ },
+ "ef77467adb3b19acfa0a2daa02bd342ebe6a15725490094b3f396c7e30e962b1": {
+  "family": "TelegramBanker",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_qkn.zucq.atb_telegram_exfil_bot_7213006737_assets/1.html_phish",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Central bank india/J&K Bank kyc Update.apk"
+ },
+ "9fb84221b89705785440ee555a80a15a0c52eff1f47d0c2e7840a03689a1c161": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_random_pkg_mefesedevavovomiji.vebtuxejaqofe",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Tubi-inin.apk"
+ },
+ "d0ad24efcc30a35bbd83334a93222252f8337f17311dbba91f904b09e16f3afe": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:zip_tamper_random_pkg_vagosuxcazego.layzez",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/new apk files/Google Video.apk"
+ },
+ "8455cb3aa8db4f9bacc5f991b3709efc87b449c5326d91dbf46418de27fb078c": {
+  "family": "FraudDropper",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:encrypted_flag_entries_fake_tubi_family",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/MediaPlayer2.apk"
+ },
+ "ace39affd2db7e066f03b0c3564fd8698da0f823110007e8d14ddf75f5ff587e": {
+  "family": "TrojanWhatsAppMod",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:com.yowhats.sofitab_sms_steal_overlay_upipin_vaicore_c2",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/SW_m4582hsz.apk"
+ },
+ "a7872756d87d237a221b8a8e0eb176e0d203184cbf3375804fee5a28c4365741": {
+  "family": "FakeStoreOps",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:com.blinkitstoreops_blinkit_clone_overlay_install_perms_wordsalad",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/157500.apk"
+ },
+ "7ccd3d58dcb1fd3ad4ac04282e3f71d9d1c8d697dea146e12d31814c74e34e55": {
+  "family": "SMSStealer",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:com.example.smsreafukgt_send+receive_sms_govt_lure",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Central bank india/PM AWAS YOJANA 2024_073138.apk"
+ },
+ "ff9c46fcf64ae0ad50ed7b64478bf951f9d70dc32d3413ebbe64ed9f84353b1a": {
+  "family": "SMSStealer",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:royal.developer.myapplicatior_full_sms_steal_set_cvv/mpin_strings",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Central bank india/प्रधानमंत्री ग्रामीण आवास योजना लिस्ट 2024_1.0.apk"
+ },
+ "008a3e0a9587f231077eac079d4b4d79726f86e89257f7b39145b51b488ac383": {
+  "family": "SpyNote_like",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:guardian.analyzerx.observer_read_sms+overlay",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Customer Support..apk"
+ },
+ "84ca02a9ef02d9bd23e8ad93df454b417c4f656d86f21a7fe59c255599f20c1c": {
+  "family": "FakeBankApp",
+  "is_malware": true,
+  "source": "pendrive",
+  "confidence": "high",
+  "gt_reason": "manual_analysis:com.paytm.goldengate_read+receive_sms_brand_impersonation",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Paytm Golden Gate App 2.8 Letest Version  .apk"
+ }
+}

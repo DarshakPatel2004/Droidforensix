@@ -1,0 +1,86 @@
+{
+  "apk_sha256": "0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b",
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b.apk",
+  "verdict": "packed_known(Bangcle/SecNeo)",
+  "confidence": 0.95,
+  "duration_seconds": 0.398,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.000533,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 19048,
+      "total_uncompressed": 35757669,
+      "native_lib_share": 0.5087,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": [
+        "native_share:0.51"
+      ]
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.8884,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 1228,
+      "total_windows": 1251,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Main.swf",
+        "assets/alipay_plugin_20120428msp.apk",
+        "assets/bangcle_classes.jar",
+        "assets/libsecmain.x86.so"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.secapk.wrapper.ApplicationWrapper",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 19048,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 4
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "Bangcle/SecNeo",
+          "markers": [
+            "libsecexe.so",
+            "libsecmain.so"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "mmap",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/Main.swf",
+      "size": 16149973
+    }
+  ],
+  "allowlist_overrides_applied": [
+    "native_share:0.51"
+  ]
+}

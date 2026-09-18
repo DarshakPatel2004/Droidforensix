@@ -1,0 +1,53 @@
+{
+  "apk_sha256": "bc714dc65572aa7bc57654f3253fef4f436446c816ddb9e786e7a10ed89d4a27",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/com.bay9k.main-10.0.16.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.029,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.672602,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1947956,
+      "total_uncompressed": 2896150,
+      "native_lib_share": 0.0,
+      "big_asset_count": 0,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 0.0,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 0,
+      "sampled_capped": false,
+      "candidates": []
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

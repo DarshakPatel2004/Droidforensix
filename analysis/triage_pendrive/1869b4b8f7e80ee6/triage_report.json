@@ -1,0 +1,65 @@
+{
+  "apk_sha256": "1869b4b8f7e80ee6150174910af5af488ce0e056e8f3a078f019ce2cb6963223",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Repair service.apk",
+  "verdict": "indeterminate",
+  "confidence": 0.35,
+  "duration_seconds": 1.018,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.121492,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1422908,
+      "total_uncompressed": 11711967,
+      "native_lib_share": 0.0357,
+      "big_asset_count": 1,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9545,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 1024,
+      "total_windows": 1024,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/LAZx0b"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.github.ashutoshgngwr.tenbitclockwidget.ClockWidgetApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 1422908,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 3,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 2
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/LAZx0b",
+      "size": 9024704
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

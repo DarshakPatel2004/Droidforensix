@@ -1,0 +1,74 @@
+{
+  "apk_sha256": "321fe53643171260494102ac3e14ae98bc3aa5216838bc4919224536d3a22452",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/Vedu1.0.14.apk",
+  "verdict": "clean_static",
+  "confidence": 0.85,
+  "duration_seconds": 2.903,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.70683,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 46368496,
+      "total_uncompressed": 65600635,
+      "native_lib_share": 0.1595,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.7462,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 513,
+      "total_windows": 545,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/.yxfyxxc.dex",
+        "assets/PublicSuffixDatabase.list"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "androidx.multidex.MultiDexApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 10683728,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 36
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "pread64",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/.yxfyxxc.dex",
+      "size": 2105152
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

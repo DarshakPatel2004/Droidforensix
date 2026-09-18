@@ -1,0 +1,124 @@
+{
+  "apk_sha256": "fe8f5253c181b6f8a52242bb523d51c77d8d0df892455451e7328092ee5de665",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/new apk files/GBwhatsapp(1).apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.794,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.131704,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 14263691,
+      "total_uncompressed": 108300790,
+      "native_lib_share": 0.1167,
+      "big_asset_count": 111,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.3521,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 420,
+      "total_windows": 632,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/ComicSans.ttf",
+        "assets/compressed/strings/strings_vi.spk.br",
+        "assets/compressed/strings/strings_af.spk.br",
+        "assets/compressed/strings/strings_bn.spk.br",
+        "assets/fonts/Motla_bold(Arabic).ttf",
+        "assets/compressed/strings/strings_fr.spk.br",
+        "assets/compressed/strings/strings_sl.spk.br",
+        "assets/fonts/line-vamp-iphone(Arabic).ttf",
+        "assets/compressed/strings/strings_ms.spk.br",
+        "assets/compressed/strings/strings_tr.spk.br",
+        "assets/compressed/strings/strings_nb.spk.br",
+        "assets/ghost_custom_ar.mp4",
+        "assets/compressed/strings/strings_uz.spk.br",
+        "assets/fonts/Kufi_moderate(Arabic).ttf",
+        "assets/fonts/BacktoBlack.ttf",
+        "assets/compressed/strings/strings_ar.spk.br",
+        "assets/compressed/strings/strings_da.spk.br",
+        "assets/compressed/strings/strings_mr.spk.br",
+        "assets/compressed/strings/strings_sw.spk.br",
+        "assets/fonts/Comfortaa.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "v17846d7a.l17846d7a",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 14263691,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 14
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/compressed/armeabi-v7a/libs.spk.zst",
+      "size": 9695936
+    },
+    {
+      "path": "assets/compressed/arm64-v8a/libs.spk.zst",
+      "size": 8899284
+    },
+    {
+      "path": "assets/compressed/emojis/emojis.oba",
+      "size": 6043778
+    },
+    {
+      "path": "assets/l17846d7a_a64.so",
+      "size": 3102304
+    },
+    {
+      "path": "assets/l17846d7a_a32.so",
+      "size": 2451944
+    },
+    {
+      "path": "assets/fonts/San-Francisco-iPhone(Arabic).ttf",
+      "size": 2016024
+    },
+    {
+      "path": "assets/l17846d7a_x64.so",
+      "size": 1980000
+    },
+    {
+      "path": "assets/l17846d7a_x86.so",
+      "size": 1961860
+    },
+    {
+      "path": "assets/fonts/orbitron-bold-iphone(Arabic).ttf",
+      "size": 1160672
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

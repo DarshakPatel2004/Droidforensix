@@ -1,0 +1,76 @@
+{
+  "apk_sha256": "0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28",
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28.apk",
+  "verdict": "packed_known(Bangcle/SecNeo)",
+  "confidence": 0.95,
+  "duration_seconds": 0.123,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.007686,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 24140,
+      "total_uncompressed": 3140803,
+      "native_lib_share": 0.1917,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.6186,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 518,
+      "total_windows": 553,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/bangcle_classes.jar",
+        "assets/libsecexe.so",
+        "assets/libsecmain.so",
+        "assets/libsecmain.x86.so"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.bangcle.protect.ApplicationWrapper",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 24140,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 2
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "Bangcle/SecNeo",
+          "markers": [
+            "libsecexe.so",
+            "libsecmain.so"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/bangcle_classes.jar",
+      "size": 1798516
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

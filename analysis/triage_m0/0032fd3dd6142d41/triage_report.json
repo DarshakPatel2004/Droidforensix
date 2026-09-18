@@ -1,0 +1,75 @@
+{
+  "apk_sha256": "0032fd3dd6142d41164923f864f10641e19986b9dbbaa860ce2f028d50e3ec4b",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0032FD3DD6142D41164923F864F10641E19986B9DBBAA860CE2F028D50E3EC4B.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.931,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.114929,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 7937532,
+      "total_uncompressed": 69064381,
+      "native_lib_share": 0.2129,
+      "big_asset_count": 8,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.3234,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 1,
+      "total_windows": 343,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Cera Pro Black Italic.otf",
+        "assets/Cera Pro Black.otf",
+        "assets/Cera Pro Bold.otf",
+        "assets/Cera Pro Light.otf",
+        "assets/Cera Pro Medium.otf",
+        "assets/Cera Pro Regular Italic.otf",
+        "assets/Roboto-Medium.ttf",
+        "assets/Roboto-Regular.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "crc6403f214fe7528f9a7.KitchenomicsApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 7937532,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": false,
+      "max_text_bytes": 0,
+      "libs_parsed": 12
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,65 @@
+{
+  "apk_sha256": "0e81a0fd09c711561aa98284e6ed4acff136594f40afa5023ca5fb7ca401f01c",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/PNB One.apk",
+  "verdict": "indeterminate",
+  "confidence": 0.35,
+  "duration_seconds": 0.555,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.088238,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1040340,
+      "total_uncompressed": 11790201,
+      "native_lib_share": 0.0354,
+      "big_asset_count": 1,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9547,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 1024,
+      "total_windows": 1024,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/ZoCv0N"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.ominous.batterynotification.application.BatteryNotification",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 1040340,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 3,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 2
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/ZoCv0N",
+      "size": 9177056
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

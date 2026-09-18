@@ -1,0 +1,63 @@
+{
+  "apk_sha256": "002c0fd93061c27ea04e1aeb920fe13f2066eef93b7d66141a6935e8ae9d4c2a",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/002C0FD93061C27EA04E1AEB920FE13F2066EEF93B7D66141A6935E8AE9D4C2A.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.127,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.428902,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 6053460,
+      "total_uncompressed": 14113862,
+      "native_lib_share": 0.0,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.1787,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 1061,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/databasetruyen.sqlite",
+        "assets/fonts/verdanab.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.truyenlengontinh.ngoihuongtamchong.GQApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 6053460,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/databasetruyen.sqlite",
+      "size": 5080064
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

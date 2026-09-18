@@ -1,0 +1,84 @@
+{
+  "apk_sha256": "e1d7be107b3595bef22569f43c9932272b17adc11a36d2bf1ccc715713919a8f",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/dream11_1.apk",
+  "verdict": "clean_static",
+  "confidence": 0.8,
+  "duration_seconds": 3.439,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.52266,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 56937860,
+      "total_uncompressed": 108938555,
+      "native_lib_share": 0.1077,
+      "big_asset_count": 21,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.6925,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 360,
+      "total_windows": 4069,
+      "sampled_capped": true,
+      "candidates": [
+        "assets/ChatEmptyState.json",
+        "assets/audios/jp_upimogo3sec.mp3",
+        "assets/clientConfig.json",
+        "assets/fonts/NotoSansKannada-Bold.ttf",
+        "assets/fonts/NotoSansKannada-Medium.ttf",
+        "assets/fonts/NotoSansKannada-Regular.ttf",
+        "assets/fonts/Roboto-Bold.ttf",
+        "assets/fonts/Roboto-Medium.ttf",
+        "assets/fonts/Roboto-Regular.ttf",
+        "assets/fonts/Roboto-SemiBold.ttf",
+        "assets/fonts/Trim-Bold.ttf",
+        "assets/fonts/Trim-Medium.ttf",
+        "assets/fonts/Trim-Regular.ttf",
+        "assets/fonts/Trim-SemiBold.ttf",
+        "assets/index.android.bundle",
+        "assets/juspay/payments/in.juspay.ec/v1-index_bundle.jsa",
+        "assets/juspay/payments/in.juspay.hyperupi/v1-index_bundle.jsa",
+        "assets/juspay/payments/in.juspay.inappupi/v1-index_bundle.jsa",
+        "assets/splash_to_mobile_en.json",
+        "assets/splash_to_mobile_hi.json"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.app.dream11.dream11.DreamApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8541164,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 65
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/index.android.bundle",
+      "size": 21086816
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,72 @@
+{
+  "apk_sha256": "0011135860f3c1f50a6960472e5a6ed3161a94800791b3f1a8b0df3c7f5b7697",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0011135860F3C1F50A6960472E5A6ED3161A94800791B3F1A8B0DF3C7F5B7697.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 13.673,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.037269,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 7787584,
+      "total_uncompressed": 208954208,
+      "native_lib_share": 0.83,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.1349,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 147,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/splash_pattern_animation2.json",
+        "assets/splash_pattern_animation3.json",
+        "assets/splash_pattern_animation6.json",
+        "assets/splash_pattern_animation1.json"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.absa.ke.mobile.android.ui.\u1adc\u0870",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 7787584,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": false,
+      "max_text_bytes": 0,
+      "libs_parsed": 232
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

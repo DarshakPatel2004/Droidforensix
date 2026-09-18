@@ -1,0 +1,90 @@
+{
+  "apk_sha256": "987a9b7add6947ac93b3f4b8c5cce6e623616ee8ca49a863461f7c97d836be56",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/come.foehu.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 1.369,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.191274,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 5950304,
+      "total_uncompressed": 31108859,
+      "native_lib_share": 0.0019,
+      "big_asset_count": 29,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.7738,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 586,
+      "total_windows": 2457,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/PublicSuffixDatabase.list",
+        "assets/splash.zip",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/glint.png",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/kbloading_bg.jpg",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/src/chunks/bundle.a70bc.js",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/cocos-js/assets/spine-59f406dc.wasm",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/cocos-js/_virtual_cc-b2f3a377.js",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/cocos-js/spine.asm-8c7702b2.js",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/rummy/import/09/09744329c.ad6f8.json",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/rummy/native/2f/2f76d91c-08d9-426d-9871-3052a2d6bc33.77d75.jpg",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/rummy/native/d1/d151b13b-b06c-4ee2-a140-cc3add2431c3.ed562.png",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/rummy/index.c431a.js",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/internal/import/0c/0c64e8912.42da4.json",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/import/09/090cdda41.084f3.json",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/native/08/08f5325a-1e20-458f-a673-40f606c1e6ec.05f4d.png",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/native/d5/d5cfd9ae-8216-453a-a33c-3448673489f1.54ab4.mp3",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/native/06/066e265a-7f6e-471c-836c-5bdbca4d7cec.c422c.png",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/native/7c/7c4b5264-1c8f-4a9b-85a8-77dca534dd89.8a44d.png",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/native/9f/9f138fcf-b44a-434f-93ef-ab7b2be9acc7.73730.png",
+        "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/native/fa/fa684e3e-695f-4a96-9275-bad60105c8da.54ee2.png"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.openvision.come.BaseApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 5950304,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 8
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "mmap"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/cocos-js/_virtual_cc-b2f3a377.js",
+      "size": 2147056
+    },
+    {
+      "path": "assets/www/ab-res-gf237asd.kbresnew413huv.com/res/prod/4/203/1.0.2/assets/match/import/09/090cdda41.084f3.json",
+      "size": 1682329
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

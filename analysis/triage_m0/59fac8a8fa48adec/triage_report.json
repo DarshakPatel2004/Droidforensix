@@ -1,0 +1,89 @@
+{
+  "apk_sha256": "59fac8a8fa48adec9cb1d6887de7366111195b4caf527caeb05369c908eb2aaf",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/com.money.manager.ex_1115.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 3.335,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.430305,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 26479084,
+      "total_uncompressed": 61535643,
+      "native_lib_share": 0.3152,
+      "big_asset_count": 24,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.7959,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 721,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/Roboto-Black.ttf",
+        "assets/fonts/Roboto-BlackItalic.ttf",
+        "assets/fonts/Roboto-Bold.ttf",
+        "assets/fonts/Roboto-BoldCondensed.ttf",
+        "assets/fonts/Roboto-BoldCondensedItalic.ttf",
+        "assets/fonts/Roboto-BoldItalic.ttf",
+        "assets/fonts/Roboto-Condensed.ttf",
+        "assets/fonts/Roboto-CondensedItalic.ttf",
+        "assets/fonts/Roboto-CondensedLight.ttf",
+        "assets/fonts/Roboto-CondensedLightItalic.ttf",
+        "assets/fonts/Roboto-Italic.ttf",
+        "assets/fonts/Roboto-Light.ttf",
+        "assets/fonts/Roboto-LightItalic.ttf",
+        "assets/fonts/Roboto-Medium.ttf",
+        "assets/fonts/Roboto-MediumItalic.ttf",
+        "assets/fonts/Roboto-Regular.ttf",
+        "assets/fonts/Roboto-Thin.ttf",
+        "assets/fonts/Roboto-ThinItalic.ttf",
+        "assets/fonts/RobotoSlab-Bold.ttf",
+        "assets/fonts/RobotoSlab-Light.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.money.manager.ex.MmexApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8684200,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 4
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "pread",
+        "pread64",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,80 @@
+{
+  "apk_sha256": "0045b08c351866d5a8e45511455d9e0b2b184157e1ce9e81b063adabd2db0166",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0045B08C351866D5A8E45511455D9E0B2B184157E1CE9E81B063ADABD2DB0166.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 3.608,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.360787,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 19449240,
+      "total_uncompressed": 53907745,
+      "native_lib_share": 0.1041,
+      "big_asset_count": 3,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.1285,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 1213,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Pretendard-Medium.otf",
+        "assets/Pretendard-Regular.otf",
+        "assets/Pretendard-Bold.otf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "kr.co.s1.mobilecard.s1mobilecard.S1MobileCardApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 9005000,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 15
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/Pretendard-Medium.otf",
+      "size": 1663544
+    },
+    {
+      "path": "assets/Pretendard-Bold.otf",
+      "size": 1655440
+    },
+    {
+      "path": "assets/Pretendard-Regular.otf",
+      "size": 1654020
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

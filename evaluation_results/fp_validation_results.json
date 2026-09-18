@@ -1,0 +1,18 @@
+{
+  "schema_version": "1.0",
+  "generated_at": "2026-08-07T04:54:28.420020+00:00",
+  "results": [
+    {
+      "indicator": "books.google.",
+      "type": "domain",
+      "sample_id": "00002ea4413cad0dfc05648c2136d8149c12d144937abdf8b5352716c10b6fb1",
+      "family": "FakeDoc",
+      "confidence": 0.5,
+      "source": "dex",
+      "user_classification": "malicious",
+      "classification_source": "manual",
+      "matched_pattern": null,
+      "timestamp": "2026-08-07T04:54:28.419760+00:00"
+    }
+  ]
+}

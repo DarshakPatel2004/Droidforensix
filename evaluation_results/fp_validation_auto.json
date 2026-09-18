@@ -1,0 +1,3671 @@
+{
+  "schema_version": "2.0",
+  "generated_at": "2026-08-07T05:21:56.947552+00:00",
+  "summary": {
+    "total_samples": 21,
+    "samples_with_c2": 16,
+    "total_indicators": 439,
+    "benign": 299,
+    "suspicious": 129,
+    "malicious": 11,
+    "fp_rate": 96.45
+  },
+  "by_type": {
+    "domain": 410,
+    "ip": 29
+  },
+  "by_family": {
+    "SpyNote": {
+      "total": 144,
+      "benign": 88,
+      "suspicious": 49,
+      "malicious": 7,
+      "fp_rate": 92.63
+    },
+    "BankBot": {
+      "total": 87,
+      "benign": 77,
+      "suspicious": 9,
+      "malicious": 1,
+      "fp_rate": 98.72
+    },
+    "unknown": {
+      "total": 83,
+      "benign": 29,
+      "suspicious": 52,
+      "malicious": 2,
+      "fp_rate": 93.55
+    },
+    "SpyMax": {
+      "total": 58,
+      "benign": 41,
+      "suspicious": 17,
+      "malicious": 0,
+      "fp_rate": 100.0
+    },
+    "GinMaster": {
+      "total": 44,
+      "benign": 42,
+      "suspicious": 2,
+      "malicious": 0,
+      "fp_rate": 100.0
+    },
+    "DroidKungFu": {
+      "total": 14,
+      "benign": 14,
+      "suspicious": 0,
+      "malicious": 0,
+      "fp_rate": 100.0
+    },
+    "DroidDream": {
+      "total": 7,
+      "benign": 6,
+      "suspicious": 0,
+      "malicious": 1,
+      "fp_rate": 85.71
+    },
+    "FakeDoc": {
+      "total": 2,
+      "benign": 2,
+      "suspicious": 0,
+      "malicious": 0,
+      "fp_rate": 100.0
+    }
+  },
+  "top_benign_indicators": [
+    [
+      "googleads.g.doubleclick.net",
+      25
+    ],
+    [
+      "lovequiz.us",
+      7
+    ],
+    [
+      "www.googleadservices.com",
+      5
+    ],
+    [
+      "2.0.0.0",
+      4
+    ],
+    [
+      "system.net",
+      4
+    ],
+    [
+      "3.0.0.0",
+      4
+    ],
+    [
+      "gmail.com",
+      4
+    ],
+    [
+      "www.mopub.com",
+      4
+    ],
+    [
+      "app.bilibili.com",
+      4
+    ],
+    [
+      "live.bilibili.com",
+      4
+    ],
+    [
+      "descriptionrelatively",
+      3
+    ],
+    [
+      "applicationslink",
+      3
+    ],
+    [
+      "addeventlistenerresponsible",
+      3
+    ],
+    [
+      "www.interpretation",
+      3
+    ],
+    [
+      "staticsuggested",
+      3
+    ],
+    [
+      "style=",
+      3
+    ],
+    [
+      "www.wencodeuricomponent(",
+      3
+    ],
+    [
+      "encoding=",
+      3
+    ],
+    [
+      "www.style=",
+      3
+    ],
+    [
+      "www.language=",
+      3
+    ]
+  ],
+  "results": [
+    {
+      "indicator": "books.google.",
+      "sample_id": "00002ea4413cad0dfc05648c2136d8149c12d144937abdf8b5352716c10b6fb1",
+      "family": "FakeDoc",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.937004+00:00"
+    },
+    {
+      "indicator": "maps.google.",
+      "sample_id": "00002ea4413cad0dfc05648c2136d8149c12d144937abdf8b5352716c10b6fb1",
+      "family": "FakeDoc",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.937059+00:00"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937106+00:00"
+    },
+    {
+      "indicator": "www.googleadservices.com",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.937123+00:00"
+    },
+    {
+      "indicator": "532400393339-ngqeegmv0enk0sdk01h7cub251663ne8.apps.googleusercontent.com",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937154+00:00"
+    },
+    {
+      "indicator": "3.2.0.14",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937180+00:00"
+    },
+    {
+      "indicator": "6.7.8.5",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937204+00:00"
+    },
+    {
+      "indicator": "1.2.0.4",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937226+00:00"
+    },
+    {
+      "indicator": "l.ie",
+      "sample_id": "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937255+00:00"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937284+00:00"
+    },
+    {
+      "indicator": "www.googleadservices.com",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.937298+00:00"
+    },
+    {
+      "indicator": "1095475153550-iljbnfrb0caaa3vm6mhbjn9jf9lqberh.apps.googleusercontent.com",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937325+00:00"
+    },
+    {
+      "indicator": "tos.org",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937356+00:00"
+    },
+    {
+      "indicator": "descriptionrelatively",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937383+00:00"
+    },
+    {
+      "indicator": "applicationslink",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937408+00:00"
+    },
+    {
+      "indicator": "addeventlistenerresponsible",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937443+00:00"
+    },
+    {
+      "indicator": "www.interpretation",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937470+00:00"
+    },
+    {
+      "indicator": "staticsuggested",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937495+00:00"
+    },
+    {
+      "indicator": "style=",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.937523+00:00"
+    },
+    {
+      "indicator": "w3.org",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937555+00:00"
+    },
+    {
+      "indicator": "www.wencodeuricomponent(",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937588+00:00"
+    },
+    {
+      "indicator": "encoding=",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.937616+00:00"
+    },
+    {
+      "indicator": "www.style=",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937650+00:00"
+    },
+    {
+      "indicator": "www.language=",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937676+00:00"
+    },
+    {
+      "indicator": "www.w3.org",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937705+00:00"
+    },
+    {
+      "indicator": "osbridge.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937732+00:00"
+    },
+    {
+      "indicator": "basic-utilities.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937760+00:00"
+    },
+    {
+      "indicator": "basic-android-system.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937787+00:00"
+    },
+    {
+      "indicator": "cpu-arch-detect.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937813+00:00"
+    },
+    {
+      "indicator": "android-system.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937839+00:00"
+    },
+    {
+      "indicator": "monodroid-glue.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937866+00:00"
+    },
+    {
+      "indicator": "debug.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.937893+00:00"
+    },
+    {
+      "indicator": "2.0.5.0",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937917+00:00"
+    },
+    {
+      "indicator": "2.0.0.0",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937940+00:00"
+    },
+    {
+      "indicator": "system.net",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.937953+00:00"
+    },
+    {
+      "indicator": "3.0.0.0",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.937975+00:00"
+    },
+    {
+      "indicator": "debug-constants.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938002+00:00"
+    },
+    {
+      "indicator": "embedded-assemblies.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938029+00:00"
+    },
+    {
+      "indicator": "embedded-assemblies-zip.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938061+00:00"
+    },
+    {
+      "indicator": "globals.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938087+00:00"
+    },
+    {
+      "indicator": "logger.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938114+00:00"
+    },
+    {
+      "indicator": "shared-constants.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938143+00:00"
+    },
+    {
+      "indicator": "timezones.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938170+00:00"
+    },
+    {
+      "indicator": "util.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938196+00:00"
+    },
+    {
+      "indicator": "java-interop.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938222+00:00"
+    },
+    {
+      "indicator": "java-interop-mono.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938249+00:00"
+    },
+    {
+      "indicator": "java-interop-util.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938274+00:00"
+    },
+    {
+      "indicator": "java-interop-dlfcn.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938300+00:00"
+    },
+    {
+      "indicator": "mono-log-adapter.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938325+00:00"
+    },
+    {
+      "indicator": "string.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938351+00:00"
+    },
+    {
+      "indicator": "terminate.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938377+00:00"
+    },
+    {
+      "indicator": "vector.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938403+00:00"
+    },
+    {
+      "indicator": "monodroid-networkinfo.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938430+00:00"
+    },
+    {
+      "indicator": "xa-internal-api.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938457+00:00"
+    },
+    {
+      "indicator": "disabled-by-default-skia.gpu.cache",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938486+00:00"
+    },
+    {
+      "indicator": "s.xyz",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .xyz; unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938513+00:00"
+    },
+    {
+      "indicator": "www.srgb.com",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938541+00:00"
+    },
+    {
+      "indicator": "1.6.38.git",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938568+00:00"
+    },
+    {
+      "indicator": "color.xyz",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .xyz; unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938595+00:00"
+    },
+    {
+      "indicator": "internal-pinvoke-api.cc",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938623+00:00"
+    },
+    {
+      "indicator": "assemblies.x86.blob",
+      "sample_id": "00018a5de07befd97112a72fa7850c6b0267167d61a74de16f2ae641b37a1860",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938649+00:00"
+    },
+    {
+      "indicator": "gmail.com",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.938673+00:00"
+    },
+    {
+      "indicator": "iki.fi",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938703+00:00"
+    },
+    {
+      "indicator": "bothner.com",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.938727+00:00"
+    },
+    {
+      "indicator": "p1.p2.cl",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.938753+00:00"
+    },
+    {
+      "indicator": "api.openrouteservice.org",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.938781+00:00"
+    },
+    {
+      "indicator": "charmex.net",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.938809+00:00"
+    },
+    {
+      "indicator": "charmex.net",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.938833+00:00"
+    },
+    {
+      "indicator": "charmex.net",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.938856+00:00"
+    },
+    {
+      "indicator": "translate.yandex.net",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.938884+00:00"
+    },
+    {
+      "indicator": "www.alquisa.es",
+      "sample_id": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.938911+00:00"
+    },
+    {
+      "indicator": "www.go-mono.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.938937+00:00"
+    },
+    {
+      "indicator": "masterserver.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.938953+00:00"
+    },
+    {
+      "indicator": "proxy.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.938967+00:00"
+    },
+    {
+      "indicator": "facilitator.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.938982+00:00"
+    },
+    {
+      "indicator": "connectiontester.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.938995+00:00"
+    },
+    {
+      "indicator": "83.221.146.11",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939017+00:00"
+    },
+    {
+      "indicator": "config.uca.cloud.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939033+00:00"
+    },
+    {
+      "indicator": "cdp.cloud.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939047+00:00"
+    },
+    {
+      "indicator": "api.uca.cloud.unity3d.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939061+00:00"
+    },
+    {
+      "indicator": "2.0.0.0",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939083+00:00"
+    },
+    {
+      "indicator": "system.net",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939094+00:00"
+    },
+    {
+      "indicator": "3.0.0.0",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939115+00:00"
+    },
+    {
+      "indicator": "3.5.0.0",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939136+00:00"
+    },
+    {
+      "indicator": "www.go-mono.com",
+      "sample_id": "0001f6aab0d2f9b5b959f3d435163e1543ed3206816526de3e2afdd3a1485600",
+      "family": "DroidKungFu",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939163+00:00"
+    },
+    {
+      "indicator": "applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939177+00:00"
+    },
+    {
+      "indicator": "doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939190+00:00"
+    },
+    {
+      "indicator": "googleadservices.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939202+00:00"
+    },
+    {
+      "indicator": "monetization-support.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939216+00:00"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.939242+00:00"
+    },
+    {
+      "indicator": "gmail.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939266+00:00"
+    },
+    {
+      "indicator": "schemas.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939281+00:00"
+    },
+    {
+      "indicator": "a.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939295+00:00"
+    },
+    {
+      "indicator": "a.applvn.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939322+00:00"
+    },
+    {
+      "indicator": "adc3-launch-staging.adcolony.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939340+00:00"
+    },
+    {
+      "indicator": "adc3-launch.adcolony.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939358+00:00"
+    },
+    {
+      "indicator": "assets.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939372+00:00"
+    },
+    {
+      "indicator": "d.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939379+00:00"
+    },
+    {
+      "indicator": "d.applvn.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939404+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939417+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939429+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939441+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939453+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939464+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939475+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939487+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939499+00:00"
+    },
+    {
+      "indicator": "goviralclub.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939523+00:00"
+    },
+    {
+      "indicator": "ms.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939537+00:00"
+    },
+    {
+      "indicator": "ms.applvn.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939563+00:00"
+    },
+    {
+      "indicator": "pastebin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939593+00:00"
+    },
+    {
+      "indicator": "rt.applvn.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939620+00:00"
+    },
+    {
+      "indicator": "prod-a.applovin.com,https",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939646+00:00"
+    },
+    {
+      "indicator": "rt.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939660+00:00"
+    },
+    {
+      "indicator": "rt.applvn.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939685+00:00"
+    },
+    {
+      "indicator": "vid.applovin.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939699+00:00"
+    },
+    {
+      "indicator": "wd.adcolony.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939716+00:00"
+    },
+    {
+      "indicator": "www.googleadservices.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939729+00:00"
+    },
+    {
+      "indicator": "z.moatads.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939754+00:00"
+    },
+    {
+      "indicator": "mopub.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939773+00:00"
+    },
+    {
+      "indicator": "ads.api.vungle.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939779+00:00"
+    },
+    {
+      "indicator": "api.vungle.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939784+00:00"
+    },
+    {
+      "indicator": "config.unityads.unity3d.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939798+00:00"
+    },
+    {
+      "indicator": "config.unityads.unitychina.cn",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939824+00:00"
+    },
+    {
+      "indicator": "px.moatads.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.939850+00:00"
+    },
+    {
+      "indicator": "vungle.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939870+00:00"
+    },
+    {
+      "indicator": "www.mopub.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939883+00:00"
+    },
+    {
+      "indicator": "www.mopub.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.939895+00:00"
+    },
+    {
+      "indicator": "979220042171-iic5ro6j355488qega8lntg3efiijhc3.apps.googleusercontent.com",
+      "sample_id": "0002ca163461c26d3ea1d7384db1833d4002ca679d0ba1906494e1bb24a95896",
+      "family": "GinMaster",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.939921+00:00"
+    },
+    {
+      "indicator": "niotron.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939954+00:00"
+    },
+    {
+      "indicator": "gmail.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.939989+00:00"
+    },
+    {
+      "indicator": "niotron.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.940022+00:00"
+    },
+    {
+      "indicator": "room-runtime-2.2.5.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940059+00:00"
+    },
+    {
+      "indicator": "sqlite-2.1.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940095+00:00"
+    },
+    {
+      "indicator": "sqlite-framework-2.1.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940130+00:00"
+    },
+    {
+      "indicator": "iki.fi",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940168+00:00"
+    },
+    {
+      "indicator": "bothner.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.940203+00:00"
+    },
+    {
+      "indicator": "p1.p2.cl",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940243+00:00"
+    },
+    {
+      "indicator": "browser-1.0.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940286+00:00"
+    },
+    {
+      "indicator": "cameraviewplus-0.9.5.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940323+00:00"
+    },
+    {
+      "indicator": "firebase-components-16.0.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940357+00:00"
+    },
+    {
+      "indicator": "firebase-common-19.3.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940392+00:00"
+    },
+    {
+      "indicator": "consent-library-1.0.8.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940426+00:00"
+    },
+    {
+      "indicator": "firebase-auth-19.3.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940461+00:00"
+    },
+    {
+      "indicator": "firebase-auth-interop-19.0.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940497+00:00"
+    },
+    {
+      "indicator": "play-services-auth-19.0.0.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940532+00:00"
+    },
+    {
+      "indicator": "firebase-ui-firestore-6.2.1.aar",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940566+00:00"
+    },
+    {
+      "indicator": "my.image.server",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940606+00:00"
+    },
+    {
+      "indicator": "api.openrouteservice.org",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.940642+00:00"
+    },
+    {
+      "indicator": "companion.niotron.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940671+00:00"
+    },
+    {
+      "indicator": "cttricks.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.940706+00:00"
+    },
+    {
+      "indicator": "init.supersonicads.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940734+00:00"
+    },
+    {
+      "indicator": "outcome-arm-ext-med-ext.sonic-us.supersonicads.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940761+00:00"
+    },
+    {
+      "indicator": "outcome-crash-report.supersonicads.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940787+00:00"
+    },
+    {
+      "indicator": "outcome-ssp.supersonicads.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940813+00:00"
+    },
+    {
+      "indicator": "outcome-ssp.supersonicads.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940838+00:00"
+    },
+    {
+      "indicator": "pguat.paytm.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940863+00:00"
+    },
+    {
+      "indicator": "translate.yandex.net",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.940890+00:00"
+    },
+    {
+      "indicator": "rendezvous.niotron.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940916+00:00"
+    },
+    {
+      "indicator": "winpuzzle.com",
+      "sample_id": "0002ee103fad7c2eebc7e66e14faf074038103ede86339598428143d325708d4",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.940940+00:00"
+    },
+    {
+      "indicator": "tos.org",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.940967+00:00"
+    },
+    {
+      "indicator": "descriptionrelatively",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.940992+00:00"
+    },
+    {
+      "indicator": "applicationslink",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941016+00:00"
+    },
+    {
+      "indicator": "addeventlistenerresponsible",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941049+00:00"
+    },
+    {
+      "indicator": "www.interpretation",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941075+00:00"
+    },
+    {
+      "indicator": "style=",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.941101+00:00"
+    },
+    {
+      "indicator": "staticsuggested",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941125+00:00"
+    },
+    {
+      "indicator": "w3.org",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941154+00:00"
+    },
+    {
+      "indicator": "www.wencodeuricomponent(",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941178+00:00"
+    },
+    {
+      "indicator": "encoding=",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.941204+00:00"
+    },
+    {
+      "indicator": "www.style=",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941238+00:00"
+    },
+    {
+      "indicator": "www.language=",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941262+00:00"
+    },
+    {
+      "indicator": "www.w3.org",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941293+00:00"
+    },
+    {
+      "indicator": "android-system.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941319+00:00"
+    },
+    {
+      "indicator": "basic-utilities.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941346+00:00"
+    },
+    {
+      "indicator": "debug.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941375+00:00"
+    },
+    {
+      "indicator": "embedded-assemblies.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941401+00:00"
+    },
+    {
+      "indicator": "embedded-assemblies-zip.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941427+00:00"
+    },
+    {
+      "indicator": "monodroid-glue.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941453+00:00"
+    },
+    {
+      "indicator": "2.0.5.0",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941477+00:00"
+    },
+    {
+      "indicator": "2.0.0.0",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941500+00:00"
+    },
+    {
+      "indicator": "system.net",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.941512+00:00"
+    },
+    {
+      "indicator": "3.0.0.0",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941534+00:00"
+    },
+    {
+      "indicator": "monodroid-networkinfo.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941560+00:00"
+    },
+    {
+      "indicator": "basic-android-system.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941593+00:00"
+    },
+    {
+      "indicator": "cpu-arch-detect.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941619+00:00"
+    },
+    {
+      "indicator": "debug-constants.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941645+00:00"
+    },
+    {
+      "indicator": "external-api.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941671+00:00"
+    },
+    {
+      "indicator": "logger.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941697+00:00"
+    },
+    {
+      "indicator": "osbridge.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941723+00:00"
+    },
+    {
+      "indicator": "shared-constants.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941749+00:00"
+    },
+    {
+      "indicator": "timezones.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941774+00:00"
+    },
+    {
+      "indicator": "java-interop.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941799+00:00"
+    },
+    {
+      "indicator": "java-interop-mono.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941825+00:00"
+    },
+    {
+      "indicator": "java-interop-util.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941850+00:00"
+    },
+    {
+      "indicator": "globals.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941875+00:00"
+    },
+    {
+      "indicator": "util.cc",
+      "sample_id": "0004ddaa01cdcb004a002f2923e666234eaa6d1f2acab4fee1db7a44aaebe21c",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941901+00:00"
+    },
+    {
+      "indicator": "tos.org",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.941927+00:00"
+    },
+    {
+      "indicator": "descriptionrelatively",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941951+00:00"
+    },
+    {
+      "indicator": "applicationslink",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.941975+00:00"
+    },
+    {
+      "indicator": "addeventlistenerresponsible",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942009+00:00"
+    },
+    {
+      "indicator": "www.interpretation",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942039+00:00"
+    },
+    {
+      "indicator": "staticsuggested",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942063+00:00"
+    },
+    {
+      "indicator": "style=",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.942089+00:00"
+    },
+    {
+      "indicator": "w3.org",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942118+00:00"
+    },
+    {
+      "indicator": "www.wencodeuricomponent(",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942141+00:00"
+    },
+    {
+      "indicator": "encoding=",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.942167+00:00"
+    },
+    {
+      "indicator": "www.style=",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942201+00:00"
+    },
+    {
+      "indicator": "www.language=",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942225+00:00"
+    },
+    {
+      "indicator": "www.w3.org",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942255+00:00"
+    },
+    {
+      "indicator": "android-system.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942282+00:00"
+    },
+    {
+      "indicator": "basic-utilities.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942308+00:00"
+    },
+    {
+      "indicator": "debug.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942333+00:00"
+    },
+    {
+      "indicator": "embedded-assemblies.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942360+00:00"
+    },
+    {
+      "indicator": "embedded-assemblies-zip.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942385+00:00"
+    },
+    {
+      "indicator": "2.0.5.0",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942408+00:00"
+    },
+    {
+      "indicator": "2.0.0.0",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942431+00:00"
+    },
+    {
+      "indicator": "system.net",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.942443+00:00"
+    },
+    {
+      "indicator": "3.0.0.0",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942465+00:00"
+    },
+    {
+      "indicator": "basic-android-system.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942492+00:00"
+    },
+    {
+      "indicator": "cpu-arch-detect.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942518+00:00"
+    },
+    {
+      "indicator": "debug-constants.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942544+00:00"
+    },
+    {
+      "indicator": "logger.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942570+00:00"
+    },
+    {
+      "indicator": "monodroid-glue.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942596+00:00"
+    },
+    {
+      "indicator": "xa-internal-api.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942627+00:00"
+    },
+    {
+      "indicator": "osbridge.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942654+00:00"
+    },
+    {
+      "indicator": "shared-constants.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942682+00:00"
+    },
+    {
+      "indicator": "timezones.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942708+00:00"
+    },
+    {
+      "indicator": "java-interop.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942734+00:00"
+    },
+    {
+      "indicator": "java-interop-mono.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942759+00:00"
+    },
+    {
+      "indicator": "java-interop-util.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942784+00:00"
+    },
+    {
+      "indicator": "java-interop-dlfcn.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942810+00:00"
+    },
+    {
+      "indicator": "monodroid-networkinfo.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942836+00:00"
+    },
+    {
+      "indicator": "1.1.0.0",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.942859+00:00"
+    },
+    {
+      "indicator": "rzn7sx.8sxnysz.zszn",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942886+00:00"
+    },
+    {
+      "indicator": "disabled-by-default-skia.gpu.cache",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942912+00:00"
+    },
+    {
+      "indicator": "s.xyz",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .xyz; unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942939+00:00"
+    },
+    {
+      "indicator": "www.srgb.com",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942966+00:00"
+    },
+    {
+      "indicator": "color.xyz",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .xyz; unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.942992+00:00"
+    },
+    {
+      "indicator": "internal-pinvoke-api.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943018+00:00"
+    },
+    {
+      "indicator": "globals.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943044+00:00"
+    },
+    {
+      "indicator": "util.cc",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943071+00:00"
+    },
+    {
+      "indicator": "environment.armeabi-v7a.armeabi",
+      "sample_id": "0005394ca712861ba3064a1aa693bc37e5092a22fa43f52ded3706ede452282f",
+      "family": "unknown",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943097+00:00"
+    },
+    {
+      "indicator": "1.4.7.32",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943121+00:00"
+    },
+    {
+      "indicator": "1.2.10.27",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943143+00:00"
+    },
+    {
+      "indicator": "2.7.0.33",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943165+00:00"
+    },
+    {
+      "indicator": "2.10.1.34",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943187+00:00"
+    },
+    {
+      "indicator": "i1.ytimg.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943214+00:00"
+    },
+    {
+      "indicator": "i.ytimg.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943241+00:00"
+    },
+    {
+      "indicator": "i1.ytimg.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943267+00:00"
+    },
+    {
+      "indicator": "i2.ytimg.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943293+00:00"
+    },
+    {
+      "indicator": "i3.ytimg.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943318+00:00"
+    },
+    {
+      "indicator": "i4.ytimg.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943342+00:00"
+    },
+    {
+      "indicator": "feedads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943355+00:00"
+    },
+    {
+      "indicator": "da.feedsportal.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943389+00:00"
+    },
+    {
+      "indicator": "feeds.feedburner.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943418+00:00"
+    },
+    {
+      "indicator": "pi.feedsportal.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943445+00:00"
+    },
+    {
+      "indicator": "res3.feedsportal.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943470+00:00"
+    },
+    {
+      "indicator": "appyet.video",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943497+00:00"
+    },
+    {
+      "indicator": "doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943509+00:00"
+    },
+    {
+      "indicator": "feedsportal.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943535+00:00"
+    },
+    {
+      "indicator": "appyet_base",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943562+00:00"
+    },
+    {
+      "indicator": "cloud.feedly.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943596+00:00"
+    },
+    {
+      "indicator": "pinterest.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943623+00:00"
+    },
+    {
+      "indicator": "wellformedweb.org",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943648+00:00"
+    },
+    {
+      "indicator": "www.appyet.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943675+00:00"
+    },
+    {
+      "indicator": "www.appyet.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943702+00:00"
+    },
+    {
+      "indicator": "cfg.flurry.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943711+00:00"
+    },
+    {
+      "indicator": "data.flurry.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943721+00:00"
+    },
+    {
+      "indicator": "data.flurry.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943732+00:00"
+    },
+    {
+      "indicator": "pinterest.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943757+00:00"
+    },
+    {
+      "indicator": "pheedo.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943781+00:00"
+    },
+    {
+      "indicator": "statcounter.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943806+00:00"
+    },
+    {
+      "indicator": "dolby.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943830+00:00"
+    },
+    {
+      "indicator": "wordpress.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.943855+00:00"
+    },
+    {
+      "indicator": "www.assoc-amazon.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943883+00:00"
+    },
+    {
+      "indicator": "googleadservices.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943896+00:00"
+    },
+    {
+      "indicator": "debug.firebase.analytics.app",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943923+00:00"
+    },
+    {
+      "indicator": "fontawesome-webfont-4.3.0.ttf",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.943949+00:00"
+    },
+    {
+      "indicator": "dev.tapjoy.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.943961+00:00"
+    },
+    {
+      "indicator": "developers.ironsrc.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.943991+00:00"
+    },
+    {
+      "indicator": "fabric.io",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.944017+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944030+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944043+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944055+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944067+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944079+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944093+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944106+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944118+00:00"
+    },
+    {
+      "indicator": "policies.oath.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944145+00:00"
+    },
+    {
+      "indicator": "unity3d.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944159+00:00"
+    },
+    {
+      "indicator": "vungle.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944180+00:00"
+    },
+    {
+      "indicator": "www.adcolony.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944199+00:00"
+    },
+    {
+      "indicator": "www.aerserv.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944227+00:00"
+    },
+    {
+      "indicator": "www.appbrain.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944255+00:00"
+    },
+    {
+      "indicator": "www.applovin.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944270+00:00"
+    },
+    {
+      "indicator": "www.appnext.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944303+00:00"
+    },
+    {
+      "indicator": "www.appodeal.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944324+00:00"
+    },
+    {
+      "indicator": "www.appodeal.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944344+00:00"
+    },
+    {
+      "indicator": "www.glispa.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944371+00:00"
+    },
+    {
+      "indicator": "www.googleadservices.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944384+00:00"
+    },
+    {
+      "indicator": "www.inmobi.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944393+00:00"
+    },
+    {
+      "indicator": "www.localytics.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944420+00:00"
+    },
+    {
+      "indicator": "www.mintegral.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944446+00:00"
+    },
+    {
+      "indicator": "www.mobfox.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944472+00:00"
+    },
+    {
+      "indicator": "www.mobvista.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944499+00:00"
+    },
+    {
+      "indicator": "www.mopub.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944512+00:00"
+    },
+    {
+      "indicator": "www.mopub.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944526+00:00"
+    },
+    {
+      "indicator": "www.startapp.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944553+00:00"
+    },
+    {
+      "indicator": "532954079176-lm25onmjrtlbuv396irnegnbg2mj1vr1.apps.googleusercontent.com",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.944580+00:00"
+    },
+    {
+      "indicator": "paolorotolo.github.io",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.944607+00:00"
+    },
+    {
+      "indicator": "upload.ffmpeg.org",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.944632+00:00"
+    },
+    {
+      "indicator": "ffmpeg.org",
+      "sample_id": "00066353eca48a99661bc0bad4a3a29a009e97515aa7596a722c47ce2a769cfd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.944656+00:00"
+    },
+    {
+      "indicator": "doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944670+00:00"
+    },
+    {
+      "indicator": "googleadservices.com",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944683+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944695+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944708+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944720+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944732+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944746+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944758+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944771+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944782+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944796+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944806+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944815+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944824+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944835+00:00"
+    },
+    {
+      "indicator": "lovequiz.us",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944844+00:00"
+    },
+    {
+      "indicator": "gmail.com",
+      "sample_id": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+      "family": "SpyMax",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.944870+00:00"
+    },
+    {
+      "indicator": "4.0.4.android",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "malicious",
+      "reason": "unusual protocol: unknown; NXDOMAIN",
+      "timestamp": "2026-08-07T05:21:56.944900+00:00"
+    },
+    {
+      "indicator": "admob.com",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944921+00:00"
+    },
+    {
+      "indicator": "a.admob.com",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944927+00:00"
+    },
+    {
+      "indicator": "c.admob.com",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944947+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944960+00:00"
+    },
+    {
+      "indicator": "googleads.g.doubleclick.net",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944972+00:00"
+    },
+    {
+      "indicator": "www.googleadservices.com",
+      "sample_id": "c699d9b9896d4842c16e418bdff5d7d18c99a102da111880fa455fc1a39bba5a",
+      "family": "DroidDream",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.944985+00:00"
+    },
+    {
+      "indicator": "engine.io",
+      "sample_id": "d5ca7ba75cfb8fd76929c1b8f6547780d8305a6654b6423124d380ff59b0d1c9",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945012+00:00"
+    },
+    {
+      "indicator": "socket.io",
+      "sample_id": "d5ca7ba75cfb8fd76929c1b8f6547780d8305a6654b6423124d380ff59b0d1c9",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945039+00:00"
+    },
+    {
+      "indicator": "accounts.snapchat.com",
+      "sample_id": "d65ae353ce5d975cea85bb0fab578590a90061173657ba2e1a0c1110d9b8eb91",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945068+00:00"
+    },
+    {
+      "indicator": "www.sec.co.kr",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945096+00:00"
+    },
+    {
+      "indicator": "rect.top",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .top; unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945125+00:00"
+    },
+    {
+      "indicator": "wappaygw.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945153+00:00"
+    },
+    {
+      "indicator": "bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.945171+00:00"
+    },
+    {
+      "indicator": "biligame.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945196+00:00"
+    },
+    {
+      "indicator": "www.hpplay.com.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945224+00:00"
+    },
+    {
+      "indicator": "254.169.in-addr.arpa",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945251+00:00"
+    },
+    {
+      "indicator": "8.e.f.ip6.arpa",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945278+00:00"
+    },
+    {
+      "indicator": "9.e.f.ip6.arpa",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945304+00:00"
+    },
+    {
+      "indicator": "mobile.opensdk.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945334+00:00"
+    },
+    {
+      "indicator": "alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945363+00:00"
+    },
+    {
+      "indicator": "alipay.net",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945388+00:00"
+    },
+    {
+      "indicator": "bili-location.sdk.manager.downgrade",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945421+00:00"
+    },
+    {
+      "indicator": "bili-location.sdk.manager.request",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.945449+00:00"
+    },
+    {
+      "indicator": "ff-pre.live.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.945458+00:00"
+    },
+    {
+      "indicator": "10.221.16.82",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945482+00:00"
+    },
+    {
+      "indicator": "117.78.27.103",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945506+00:00"
+    },
+    {
+      "indicator": "122.112.239.32",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945529+00:00"
+    },
+    {
+      "indicator": "122.112.239.32",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945552+00:00"
+    },
+    {
+      "indicator": "192.168.8.230",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945574+00:00"
+    },
+    {
+      "indicator": "42.99.34.129",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945603+00:00"
+    },
+    {
+      "indicator": "47.112.113.131",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945626+00:00"
+    },
+    {
+      "indicator": "hpplay.cdn.cibn.cc",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945658+00:00"
+    },
+    {
+      "indicator": "m.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945686+00:00"
+    },
+    {
+      "indicator": "meglivesdk.oss-cn-hangzhou.aliyuncs.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945714+00:00"
+    },
+    {
+      "indicator": "mobilegw-1-64.test.alipay.net",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945743+00:00"
+    },
+    {
+      "indicator": "mobilegw.aaa.alipay.net",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945770+00:00"
+    },
+    {
+      "indicator": "mobilegw.stable.alipay.net",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945796+00:00"
+    },
+    {
+      "indicator": "rphk.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945822+00:00"
+    },
+    {
+      "indicator": "vipgift.biligame.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945849+00:00"
+    },
+    {
+      "indicator": "wappaygw.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945876+00:00"
+    },
+    {
+      "indicator": "www.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.945893+00:00"
+    },
+    {
+      "indicator": "adeng.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.945920+00:00"
+    },
+    {
+      "indicator": "api.meishesdk.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945945+00:00"
+    },
+    {
+      "indicator": "api.meishesdk.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.945969+00:00"
+    },
+    {
+      "indicator": "app.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.945986+00:00"
+    },
+    {
+      "indicator": "app.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946003+00:00"
+    },
+    {
+      "indicator": "app.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946020+00:00"
+    },
+    {
+      "indicator": "app.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946037+00:00"
+    },
+    {
+      "indicator": "app.biligame.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.946061+00:00"
+    },
+    {
+      "indicator": "appupgrade.cp12.wasu.tv",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946088+00:00"
+    },
+    {
+      "indicator": "bigfun.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946106+00:00"
+    },
+    {
+      "indicator": "bigfun.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946123+00:00"
+    },
+    {
+      "indicator": "cdnauth1.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946150+00:00"
+    },
+    {
+      "indicator": "cdnauth2.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946177+00:00"
+    },
+    {
+      "indicator": "cgi.qplus.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946205+00:00"
+    },
+    {
+      "indicator": "cm.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946222+00:00"
+    },
+    {
+      "indicator": "collect.ux.21cn.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946250+00:00"
+    },
+    {
+      "indicator": "dep.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946277+00:00"
+    },
+    {
+      "indicator": "devicemgr.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946306+00:00"
+    },
+    {
+      "indicator": "h5.m.taobao.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946334+00:00"
+    },
+    {
+      "indicator": "i0.hdslb.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946362+00:00"
+    },
+    {
+      "indicator": "image.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.946387+00:00"
+    },
+    {
+      "indicator": "live.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946395+00:00"
+    },
+    {
+      "indicator": "live.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946403+00:00"
+    },
+    {
+      "indicator": "live.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946411+00:00"
+    },
+    {
+      "indicator": "live.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946419+00:00"
+    },
+    {
+      "indicator": "loggw-exsdk.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946450+00:00"
+    },
+    {
+      "indicator": "logu.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946479+00:00"
+    },
+    {
+      "indicator": "logu.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946505+00:00"
+    },
+    {
+      "indicator": "loguhk.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946533+00:00"
+    },
+    {
+      "indicator": "loguhk.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946559+00:00"
+    },
+    {
+      "indicator": "mcgw.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946619+00:00"
+    },
+    {
+      "indicator": "misdkauth.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946647+00:00"
+    },
+    {
+      "indicator": "mobilegw.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946674+00:00"
+    },
+    {
+      "indicator": "mobilegw.alipaydev.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946701+00:00"
+    },
+    {
+      "indicator": "new-service.biliapi.net",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946728+00:00"
+    },
+    {
+      "indicator": "open.e.189.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946755+00:00"
+    },
+    {
+      "indicator": "pin.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946781+00:00"
+    },
+    {
+      "indicator": "quiz.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.946799+00:00"
+    },
+    {
+      "indicator": "rps.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946826+00:00"
+    },
+    {
+      "indicator": "sdkauthhk.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946852+00:00"
+    },
+    {
+      "indicator": "sl.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946878+00:00"
+    },
+    {
+      "indicator": "slhk.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946904+00:00"
+    },
+    {
+      "indicator": "ssdkauth.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946931+00:00"
+    },
+    {
+      "indicator": "uat.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946957+00:00"
+    },
+    {
+      "indicator": "uat.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.946983+00:00"
+    },
+    {
+      "indicator": "uat.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947008+00:00"
+    },
+    {
+      "indicator": "vipgslb.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947038+00:00"
+    },
+    {
+      "indicator": "vipimdns.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947068+00:00"
+    },
+    {
+      "indicator": "vosdkauth.hpplay.cn",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947096+00:00"
+    },
+    {
+      "indicator": "wappaygw.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947126+00:00"
+    },
+    {
+      "indicator": "wappaygw.alipay.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947153+00:00"
+    },
+    {
+      "indicator": "www.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.947170+00:00"
+    },
+    {
+      "indicator": "www.bilibili.com",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "whitelisted SDK domain",
+      "timestamp": "2026-08-07T05:21:56.947186+00:00"
+    },
+    {
+      "indicator": "id6.me",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.947215+00:00"
+    },
+    {
+      "indicator": "infra.net",
+      "sample_id": "ddabe5999dbc9ffbc8b804a7ea6bb61415bc88e346b2d2c0d53bfff9dcc88d32",
+      "family": "BankBot",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.947241+00:00"
+    },
+    {
+      "indicator": "rect.top",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .top; unusual protocol: unknown; NXDOMAIN",
+      "timestamp": "2026-08-07T05:21:56.947270+00:00"
+    },
+    {
+      "indicator": "www.jivesoftware.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "clean indicator",
+      "timestamp": "2026-08-07T05:21:56.947299+00:00"
+    },
+    {
+      "indicator": "staging.api.id.mipay.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "unusual protocol: unknown; NXDOMAIN",
+      "timestamp": "2026-08-07T05:21:56.947329+00:00"
+    },
+    {
+      "indicator": "fr-resolver-msg-global-xiaomi-n-916220403.eu-central-1.elb.amazonaws.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "unusual protocol: unknown; NXDOMAIN",
+      "timestamp": "2026-08-07T05:21:56.947358+00:00"
+    },
+    {
+      "indicator": "10.50.23.170",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.947383+00:00"
+    },
+    {
+      "indicator": "agent.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.947409+00:00"
+    },
+    {
+      "indicator": "agent.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.947434+00:00"
+    },
+    {
+      "indicator": "agent.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "benign",
+      "reason": "junk domain (code fragment or sentence)",
+      "timestamp": "2026-08-07T05:21:56.947459+00:00"
+    },
+    {
+      "indicator": "resolver-msg-xiaomi-net-665721575.ap-south-1.elb.amazonaws.com",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "unusual protocol: unknown; NXDOMAIN",
+      "timestamp": "2026-08-07T05:21:56.947491+00:00"
+    },
+    {
+      "indicator": "result.top",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "malicious",
+      "reason": "suspicious TLD: .top; unusual protocol: unknown; NXDOMAIN",
+      "timestamp": "2026-08-07T05:21:56.947518+00:00"
+    },
+    {
+      "indicator": "youtu.be",
+      "sample_id": "df5944f9190614f04a8818a50438dfaf3339fa95289cdc0af54f8f239eb253fd",
+      "family": "SpyNote",
+      "classification": "suspicious",
+      "reason": "unusual protocol: unknown",
+      "timestamp": "2026-08-07T05:21:56.947546+00:00"
+    }
+  ]
+}

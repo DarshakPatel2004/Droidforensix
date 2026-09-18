@@ -1,0 +1,3101 @@
+{
+  "generated_at": "2026-08-07T05:30:56.451358+00:00",
+  "total_ips": 20,
+  "total_domains": 285,
+  "ips": [
+    {
+      "ip": "1.1.0.0",
+      "country": "China",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "1.2.0.4",
+      "country": "China",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "1.2.10.27",
+      "country": "China",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "1.4.7.32",
+      "country": "China",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "10.221.16.82",
+      "status": "reserved",
+      "reason": "Reserved (private)"
+    },
+    {
+      "ip": "10.50.23.170",
+      "status": "reserved",
+      "reason": "Reserved (private)"
+    },
+    {
+      "ip": "117.78.27.103",
+      "country": "China",
+      "city": "Beijing",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": "ecs-117-78-27-103.compute.hwclouds-dns.com"
+    },
+    {
+      "ip": "122.112.239.32",
+      "country": "China",
+      "city": "Shanghai",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": "ecs-122-112-239-32.compute.hwclouds-dns.com"
+    },
+    {
+      "ip": "192.168.8.230",
+      "status": "reserved",
+      "reason": "Reserved (private)"
+    },
+    {
+      "ip": "2.0.0.0",
+      "country": "Sweden",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "2.0.5.0",
+      "country": "Sweden",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "2.10.1.34",
+      "country": "France",
+      "city": "Vannes",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": "lfbn-ren-1-258-34.w2-10.abo.wanadoo.fr"
+    },
+    {
+      "ip": "2.7.0.33",
+      "country": "France",
+      "city": "Grenoble",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": "lfbn-lyo-1-257-33.w2-7.abo.wanadoo.fr"
+    },
+    {
+      "ip": "3.0.0.0",
+      "country": "Singapore",
+      "city": "Singapore",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": "ec2-3-0-0-0.ap-southeast-1.compute.amazonaws.com"
+    },
+    {
+      "ip": "3.2.0.14",
+      "country": "United States",
+      "city": "Houston",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "3.5.0.0",
+      "country": "United States",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "42.99.34.129",
+      "country": "China",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "47.112.113.131",
+      "country": "China",
+      "city": "Shenzhen",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "6.7.8.5",
+      "country": "United States",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    },
+    {
+      "ip": "83.221.146.11",
+      "country": "Denmark",
+      "city": "",
+      "isp": "",
+      "provider_type": "unknown",
+      "ptr": null
+    }
+  ],
+  "domains": [
+    {
+      "domain": ");",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": ",",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "1.6.38.git",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "1095475153550-iljbnfrb0caaa3vm6mhbjn9jf9lqberh.apps.googleusercontent.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "254.169.in-addr.arpa",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "4.0.4.android",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "DroidDream"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "532400393339-ngqeegmv0enk0sdk01h7cub251663ne8.apps.googleusercontent.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "532954079176-lm25onmjrtlbuv396irnegnbg2mj1vr1.apps.googleusercontent.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "8.e.f.ip6.arpa",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "9.e.f.ip6.arpa",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "979220042171-iic5ro6j355488qega8lntg3efiijhc3.apps.googleusercontent.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "a.admob.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidDream"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "a.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "a.applvn.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "according",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "accounts.snapchat.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "adc3-launch-staging.adcolony.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "adc3-launch.adcolony.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "addeventlistenerresponsible",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "adeng.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "admob.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "DroidDream"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ads.api.vungle.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "agent.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "ain",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "alipay.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "alipay.net",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "an",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "android-system.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "api.meishesdk.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "api.openrouteservice.org",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "api.uca.cloud.unity3d.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "api.vungle.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "app.bilibili.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "app.biligame.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "applicationslink",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "applovin.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "appupgrade.cp12.wasu.tv",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "appyet.video",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "appyet_base",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "assemblies.x86.blob",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "assets.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ator",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "base",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "basic-android-system.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "basic-utilities.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "bigfun.bilibili.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "bili-location.sdk.manager.downgrade",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "bili-location.sdk.manager.request",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "bilibili.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "biligame.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "blank",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "books.google.",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "FakeDoc"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "bothner.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "browser-1.0.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "c.admob.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidDream"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cameraviewplus-0.9.5.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cdnauth1.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cdnauth2.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cdp.cloud.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cfg.flurry.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cgi.qplus.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "charmex.net",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "clk",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "DroidDream"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cloud.feedly.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cm.bilibili.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "collect.ux.21cn.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "color.xyz",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "comment",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "companion.niotron.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "config.uca.cloud.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "config.unityads.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "config.unityads.unitychina.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "connectiontester.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "consent-library-1.0.8.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "cpu-arch-detect.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "cript",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "cttricks.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "d.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "d.applvn.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "da.feedsportal.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "data.flurry.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "debug-constants.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "debug.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "debug.firebase.analytics.app",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "GinMaster",
+        "SpyNote"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "dep.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "descriptionrelatively",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "dev.tapjoy.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "developers.ironsrc.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "devicemgr.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "disabled-by-default-skia.gpu.cache",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "dolby.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "doubleclick.net",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax",
+        "GinMaster",
+        "SpyNote"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "dummyurl",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "embedded-assemblies-zip.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "embedded-assemblies.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "encoding=",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "engine.io",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "environment.armeabi-v7a.armeabi",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "unknown"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "external-api.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "unknown"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "fabric.io",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "facilitator.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "familiar",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "feedads.g.doubleclick.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "feeds.feedburner.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "feedsportal.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ff-pre.live.bilibili.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ffmpeg.org",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "firebase-auth-19.3.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "firebase-auth-interop-19.0.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "firebase-common-19.3.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "firebase-components-16.0.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "firebase-ui-firestore-6.2.1.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "fontawesome-webfont-4.3.0.ttf",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "fr-resolver-msg-global-xiaomi-n-916220403.eu-central-1.elb.amazonaws.com",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "globals.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "gmail.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster",
+        "SpyMax"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "googleads.g.doubleclick.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax",
+        "GinMaster",
+        "SpyNote",
+        "DroidDream"
+      ],
+      "occurrences": 25
+    },
+    {
+      "domain": "googleadservices.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax",
+        "GinMaster",
+        "SpyNote"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "goviralclub.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "h5.m.taobao.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "hpplay.cdn.cibn.cc",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "i",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "i.ytimg.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "i0.hdslb.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "i1.ytimg.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "i2.ytimg.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "i3.ytimg.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "i4.ytimg.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "id6.me",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "iki.fi",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "image.hpplay.cn",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "imenglish",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "in",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "infra.net",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "init.supersonicads.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "interested",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "internal-pinvoke-api.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "interpreted",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "iparticipation",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "java-interop-dlfcn.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "java-interop-mono.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "java-interop-util.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "java-interop.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "l.ie",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "link",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "live.bilibili.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "logger.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "loggw-exsdk.alipay.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "logu.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "loguhk.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "lovequiz.us",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 7
+    },
+    {
+      "domain": "m.alipay.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "maps.google.",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "FakeDoc"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "masterserver.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mcgw.alipay.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "meglivesdk.oss-cn-hangzhou.aliyuncs.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "misdkauth.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mobile.opensdk.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mobilegw-1-64.test.alipay.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mobilegw.aaa.alipay.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mobilegw.alipay.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mobilegw.alipaydev.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mobilegw.stable.alipay.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "monetization-support.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "mono-log-adapter.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "monodroid-glue.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "monodroid-networkinfo.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "mopub.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ms.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ms.applvn.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "my.image.server",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "navigation",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "new-service.biliapi.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "niotron.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "open.e.189.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "option",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "osbridge.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "outcome-arm-ext-med-ext.sonic-us.supersonicads.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "outcome-crash-report.supersonicads.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "outcome-ssp.supersonicads.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "p1.p2.cl",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "paolorotolo.github.io",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "pastebin.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "pguat.paytm.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "pheedo.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "pi.feedsportal.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "pin.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "pinterest.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "play-services-auth-19.0.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "policies.oath.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "prod-a.applovin.com,https",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "proxy.unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "px.moatads.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "px;",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "quiz.bilibili.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "rect.top",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "BankBot"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "rendezvous.niotron.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "res3.feedsportal.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "resolver-msg-xiaomi-net-665721575.ap-south-1.elb.amazonaws.com",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "result.top",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "room-runtime-2.2.5.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "rphk.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "rps.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "rt.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "rt.applvn.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "rzn7sx.8sxnysz.zszn",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "unknown"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "s.xyz",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "schemas.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "sdkauthhk.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "shared-constants.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "site_name",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "sl.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "slhk.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "socket.io",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "sqlite-2.1.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "sqlite-framework-2.1.0.aar",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "ssdkauth.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "staging.api.id.mipay.com",
+      "status": "MALICIOUS",
+      "classification": "malicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "statcounter.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "staticsuggested",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "string.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "style=",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "system.net",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown",
+        "DroidKungFu"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "terminate.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "timezones.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "tos.org",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "translate.yandex.net",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "ua-compatible",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "uat.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "unity3d.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "upload.ffmpeg.org",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "util.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "vector.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "vid.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "vipgift.biligame.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "vipgslb.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "vipimdns.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "vosdkauth.hpplay.cn",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "vungle.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "GinMaster",
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "w",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "w3.org",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "wappaygw.alipay.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "was",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "wd.adcolony.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "wellformedweb.org",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "whether",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "winpuzzle.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "wordpress.com",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www-",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www.",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 6
+    },
+    {
+      "domain": "www.adcolony.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.aerserv.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.alquisa.es",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyMax"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.appbrain.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.applovin.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.appnext.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.appodeal.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "www.appyet.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "www.assoc-amazon.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.bilibili.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www.glispa.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.go-mono.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "DroidKungFu"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "www.googleadservices.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster",
+        "SpyNote",
+        "DroidDream"
+      ],
+      "occurrences": 5
+    },
+    {
+      "domain": "www.hpplay.com.cn",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.inmobi.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.interpretation",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www.jivesoftware.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.language=",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www.localytics.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.mintegral.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.mobfox.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.mobvista.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.mopub.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster",
+        "SpyNote"
+      ],
+      "occurrences": 4
+    },
+    {
+      "domain": "www.sec.co.kr",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "BankBot"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.srgb.com",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "www.startapp.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "www.style=",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www.w3.org",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "www.wencodeuricomponent(",
+      "status": "JUNK",
+      "classification": "benign",
+      "is_junk": true,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "x",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "xa-internal-api.cc",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 2
+    },
+    {
+      "domain": "xt",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "SpyNote",
+        "unknown"
+      ],
+      "occurrences": 3
+    },
+    {
+      "domain": "youtu.be",
+      "status": "SUSPICIOUS",
+      "classification": "suspicious",
+      "is_junk": false,
+      "families": [
+        "SpyNote"
+      ],
+      "occurrences": 1
+    },
+    {
+      "domain": "z.moatads.com",
+      "status": "BENIGN",
+      "classification": "benign",
+      "is_junk": false,
+      "families": [
+        "GinMaster"
+      ],
+      "occurrences": 1
+    }
+  ],
+  "ip_summary": {
+    "unknown": 17,
+    "reserved": 3
+  },
+  "domain_summary": {
+    "JUNK": 68,
+    "BENIGN": 134,
+    "SUSPICIOUS": 75,
+    "MALICIOUS": 8
+  }
+}

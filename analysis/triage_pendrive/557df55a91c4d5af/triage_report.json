@@ -1,0 +1,87 @@
+{
+  "apk_sha256": "557df55a91c4d5afc543dd9709c6140717f34f77e56df580e299515415c3df87",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Calculator(1).apk",
+  "verdict": "packed_known(Ijiami)",
+  "confidence": 0.95,
+  "duration_seconds": 0.586,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.000593,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 13656,
+      "total_uncompressed": 23025829,
+      "native_lib_share": 0.1328,
+      "big_asset_count": 7,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.5978,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 2066,
+      "total_windows": 2266,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/cgrj_applock_data.json",
+        "assets/ijiami.dat",
+        "assets/ijm_lib/arm64-v8a/libexecmain.so",
+        "assets/ijm_lib/arm64-v8a/libexec.so",
+        "assets/ijm_lib/armeabi/libexecmain.so",
+        "assets/ijm_lib/armeabi/libexec.so",
+        "assets/ijiami.ajm"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "s.h.e.l.l.S",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 13656,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 14
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "Ijiami",
+          "markers": [
+            "libexecmain.so",
+            "ijiami.dat"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/ijiami.dat",
+      "size": 7734285
+    },
+    {
+      "path": "assets/ijiami.ajm",
+      "size": 3683190
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,93 @@
+{
+  "apk_sha256": "01bd73c17302af6fdbf678046ed56cb288876e934b485c00188b13eb7b921b22",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Calculator(2).apk",
+  "verdict": "packed_known(Ijiami)",
+  "confidence": 0.95,
+  "duration_seconds": 0.842,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.00039,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 13652,
+      "total_uncompressed": 34968138,
+      "native_lib_share": 0.1065,
+      "big_asset_count": 9,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.1054,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 2166,
+      "total_windows": 2834,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/cgrj_applock_data.json",
+        "assets/google_fonts.json",
+        "assets/ijiami.dat",
+        "assets/IJMDal.Data",
+        "assets/ijm_lib/arm64-v8a/libexecmain.so",
+        "assets/ijm_lib/arm64-v8a/libexec.so",
+        "assets/ijm_lib/armeabi/libexecmain.so",
+        "assets/ijm_lib/armeabi/libexec.so",
+        "assets/ijiami.ajm"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "s.h.e.l.l.S",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 13652,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 22
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "Ijiami",
+          "markers": [
+            "libexecmain.so",
+            "ijiami.dat"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/ijiami.dat",
+      "size": 6871023
+    },
+    {
+      "path": "assets/ijiami.ajm",
+      "size": 3898987
+    },
+    {
+      "path": "assets/google_fonts.json",
+      "size": 1759426
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,93 @@
+{
+  "apk_sha256": "0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541",
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541.apk",
+  "verdict": "packed_known(360Jiagu)",
+  "confidence": 0.95,
+  "duration_seconds": 0.961,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.065398,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1486944,
+      "total_uncompressed": 22736970,
+      "native_lib_share": 0.4238,
+      "big_asset_count": 10,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.7114,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 2204,
+      "total_windows": 2467,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/arial.ttf",
+        "assets/libjiagu.so",
+        "assets/libjiagu_x86.so",
+        "assets/mimo_asset.apk",
+        "assets/res/GameResources.png",
+        "assets/res/Pack1.png",
+        "assets/res/Pack2.png",
+        "assets/res/Pack3.png",
+        "assets/sounds/backgrounds_music.mp3",
+        "assets/unity.action"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": true,
+      "app_class": "com.stub.StubApp",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 1486944,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 3
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "360Jiagu",
+          "markers": [
+            "libjiagu.so",
+            "libjiagu_x86.so"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/unity.action",
+      "size": 2707296
+    },
+    {
+      "path": "assets/sounds/backgrounds_music.mp3",
+      "size": 1974316
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

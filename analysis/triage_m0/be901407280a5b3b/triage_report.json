@@ -1,0 +1,84 @@
+{
+  "apk_sha256": "be901407280a5b3b281969e068f725ed5d52c9cd9a7b55013de68487ad419ec4",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/com.shatteredpixel.shatteredpixeldungeon_896.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.51,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.068307,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 3163976,
+      "total_uncompressed": 46319952,
+      "native_lib_share": 0.0879,
+      "big_asset_count": 89,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.8051,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 1489,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/messages/actors/actors.properties",
+        "assets/messages/actors/actors_be.properties",
+        "assets/messages/actors/actors_cs.properties",
+        "assets/messages/actors/actors_de.properties",
+        "assets/messages/actors/actors_el.properties",
+        "assets/messages/actors/actors_eo.properties",
+        "assets/messages/actors/actors_es.properties",
+        "assets/messages/actors/actors_fr.properties",
+        "assets/messages/actors/actors_hu.properties",
+        "assets/messages/actors/actors_in.properties",
+        "assets/messages/actors/actors_it.properties",
+        "assets/messages/actors/actors_ja.properties",
+        "assets/messages/actors/actors_ko.properties",
+        "assets/messages/actors/actors_nl.properties",
+        "assets/messages/actors/actors_pl.properties",
+        "assets/messages/actors/actors_pt.properties",
+        "assets/messages/actors/actors_ru.properties",
+        "assets/messages/actors/actors_sv.properties",
+        "assets/messages/actors/actors_tr.properties",
+        "assets/messages/actors/actors_uk.properties"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 59,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 8
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/music/halls_boss.ogg",
+      "size": 1071184
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,53 @@
+{
+  "apk_sha256": "a2cc8d04db010cf1d80ebc84da8ffe6d9a38f2a2ac055addd1c615d942f4386c",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/com.inabcr.main-10.0.13.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.033,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.721177,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 2503944,
+      "total_uncompressed": 3472024,
+      "native_lib_share": 0.0,
+      "big_asset_count": 0,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 0.0,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 0,
+      "sampled_capped": false,
+      "candidates": []
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

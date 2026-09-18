@@ -1,0 +1,81 @@
+{
+  "apk_sha256": "67200ff6ee287a6022720d9bce24f770385654306451db92b7bb7d4d980fb00c",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/BlockDAGv1.6.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 4.806,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.097999,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 8758256,
+      "total_uncompressed": 89371101,
+      "native_lib_share": 0.734,
+      "big_asset_count": 9,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.2775,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 16,
+      "total_windows": 1618,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/Inter-Bold.ttf",
+        "assets/fonts/Inter-Light.ttf",
+        "assets/fonts/Inter-Medium.ttf",
+        "assets/fonts/Inter-Regular.ttf",
+        "assets/fonts/Inter-SemiBold.ttf",
+        "assets/index.android.bundle",
+        "assets/mlkit_barcode_models/barcode_ssd_mobilenet_v1_dmp25_quant.tflite",
+        "assets/mlkit_barcode_models/oned_auto_regressor_mobile.tflite",
+        "assets/mlkit_barcode_models/oned_feature_extractor_mobile.tflite"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.bdag.network.MainApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 7460976,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 237
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/index.android.bundle",
+      "size": 4593852
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

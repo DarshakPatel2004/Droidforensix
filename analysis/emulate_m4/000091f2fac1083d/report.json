@@ -1,0 +1,16 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3.apk",
+  "apk_sha256": "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+  "libs_tried": [
+    {
+      "lib": "armeabi_libsecexe.so",
+      "error": "no Java_* export found"
+    },
+    {
+      "lib": "armeabi_libsecmain.so",
+      "error": "no Java_* export found"
+    }
+  ],
+  "recovered": [],
+  "status": []
+}

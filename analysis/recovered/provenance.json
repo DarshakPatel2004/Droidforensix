@@ -1,0 +1,17 @@
+{
+  "sample": "RTO.apk",
+  "recovery_method": "unicorn_arm64_emulation_xor_loops",
+  "entrypoint": "Java_Dzhugashvili_jD3P_SUO4__",
+  "lib": "lib/arm64-v8a/libstrangulation.so",
+  "patches": [
+    "str d8,[sp,#-0x70]! -> nop",
+    "mrs x8,tpidr_el0 -> mov x8,#0"
+  ],
+  "blob": {
+    "kind": "base64_line60",
+    "addr": ".data:0x151c60 (abs 0x151c60 BASE=0x100000)",
+    "b64chars": 4440
+  },
+  "dex_sha256": "4848633769faeaf9cb3be087308a3f4afb13fd6027b929e371dd2771c3f7bc74",
+  "dex_size": 3328
+}

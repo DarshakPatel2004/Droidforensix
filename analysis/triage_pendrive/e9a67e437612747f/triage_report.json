@@ -1,0 +1,78 @@
+{
+  "apk_sha256": "e9a67e437612747f8f95a440495311a0815f485e2e1fa85b9014810382a1333c",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/BlockDAGv1.5.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 4.66,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.108353,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 7501160,
+      "total_uncompressed": 69228696,
+      "native_lib_share": 0.7019,
+      "big_asset_count": 6,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.2075,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 16,
+      "total_windows": 1404,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/Inter-Bold.ttf",
+        "assets/fonts/Inter-Light.ttf",
+        "assets/fonts/Inter-Medium.ttf",
+        "assets/fonts/Inter-Regular.ttf",
+        "assets/fonts/Inter-SemiBold.ttf",
+        "assets/index.android.bundle"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.bdag.network.MainApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 7501160,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 229
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/index.android.bundle",
+      "size": 4378916
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

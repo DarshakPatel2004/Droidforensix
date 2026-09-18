@@ -1,0 +1,69 @@
+{
+  "apk_sha256": "d42efd591e07cdb0f71afd9b00346341fa14cb4eca95706bf591849878ff6a69",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Probo.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 5.87,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.620449,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 25022984,
+      "total_uncompressed": 40330418,
+      "native_lib_share": 0.0753,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.4477,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 77,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/continue.json",
+        "assets/match.json"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.in.probopro.application.Probo",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 10890464,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 6
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "pread64",
+        "read"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

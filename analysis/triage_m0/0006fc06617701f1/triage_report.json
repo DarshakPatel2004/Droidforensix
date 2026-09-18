@@ -1,0 +1,55 @@
+{
+  "apk_sha256": "0006fc06617701f138d4a5f9f223ae6cf93dcd124f83b184797727a9939ea2c1",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0006FC06617701F138D4A5F9F223AE6CF93DCD124F83B184797727A9939EA2C1.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 1.487,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.761938,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 5990572,
+      "total_uncompressed": 7862287,
+      "native_lib_share": 0.0,
+      "big_asset_count": 0,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 0.0,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 0,
+      "sampled_capped": false,
+      "candidates": []
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.flavioapp.matandrebicca_girlswallpaper.onesignal.NotificationHandler",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 5990572,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,59 @@
+{
+  "apk_sha256": "0001b06d341866044de23e5205e057ef9118df2aa3249d5bce6937dad015d0d5",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0001B06D341866044DE23E5205E057EF9118DF2AA3249D5BCE6937DAD015D0D5.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 1.65,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.684884,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 7743748,
+      "total_uncompressed": 11306657,
+      "native_lib_share": 0.0,
+      "big_asset_count": 3,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.2052,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 346,
+      "total_windows": 500,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/logoapaisadoalquisaaudiovisuales.jpg",
+        "assets/pantallaled.png",
+        "assets/unilumin.png"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.google.appinventor.components.runtime.multidex.MultiDexApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 7519228,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

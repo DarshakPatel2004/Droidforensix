@@ -1,0 +1,80 @@
+{
+  "apk_sha256": "0ed420c4f23c50d2eeba330b01cdd72f05bd6f5658b42db1bfb55184a1d02d52",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Tubi-0415.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 12.708,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.074718,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 47230564,
+      "total_uncompressed": 632114249,
+      "native_lib_share": 0.07,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 2.9083,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 793,
+      "total_windows": 6144,
+      "sampled_capped": true,
+      "candidates": [
+        "assets/update.apk",
+        "assets/fe66ccb34882150ad513e5190bd0ebe7.dat"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "ucuwr.prnhz.azc.TigerApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 30787948,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 5
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "open64",
+        "openat",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/fe66ccb34882150ad513e5190bd0ebe7.dat",
+      "size": 512000000
+    },
+    {
+      "path": "assets/update.apk",
+      "size": 24104496
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

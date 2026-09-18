@@ -1,0 +1,129 @@
+{
+  "apk_sha256": "004d0ad50f0c8c27563e043d4a4ea9aab0173e4554d1099a83904ae6347d98a2",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/004D0AD50F0C8C27563E043D4A4EA9AAB0173E4554D1099A83904AE6347D98A2.apk",
+  "verdict": "clean_static",
+  "confidence": 0.8,
+  "duration_seconds": 6.183,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.074997,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 18043820,
+      "total_uncompressed": 240593156,
+      "native_lib_share": 0.6999,
+      "big_asset_count": 41,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.0388,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 77,
+      "total_windows": 5534,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/bin/Data/globalgamemanagers.assets.split5",
+        "assets/bin/Data/sharedassets0.assets.split10",
+        "assets/bin/Data/sharedassets0.assets.split12",
+        "assets/bin/Data/sharedassets0.assets.split3",
+        "assets/bin/Data/sharedassets0.assets.split15",
+        "assets/bin/Data/sharedassets0.assets.split4",
+        "assets/bin/Data/sharedassets0.assets.split19",
+        "assets/bin/Data/sharedassets0.assets.split21",
+        "assets/bin/Data/sharedassets0.assets.split20",
+        "assets/bin/Data/sharedassets0.assets.split5",
+        "assets/bin/Data/sharedassets0.assets.split17",
+        "assets/bin/Data/Managed/Metadata/global-metadata.dat",
+        "assets/bin/Data/Managed/etc/mono/browscap.ini",
+        "assets/bin/Data/Managed/Resources/mscorlib.dll-resources.dat",
+        "assets/bin/Data/globalgamemanagers.assets.split0",
+        "assets/bin/Data/sharedassets0.assets.split18",
+        "assets/bin/Data/globalgamemanagers.assets.split1",
+        "assets/bin/Data/sharedassets0.assets.split7",
+        "assets/bin/Data/sharedassets0.assets.split14",
+        "assets/bin/Data/sharedassets0.assets.split9"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": true,
+      "app_class": "com.ano.gshell.AnoApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 8476652,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 24
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "openat",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/bin/Data/Managed/Metadata/global-metadata.dat",
+      "size": 10020908
+    },
+    {
+      "path": "assets/bin/Data/unity default resources",
+      "size": 3705092
+    },
+    {
+      "path": "assets/bin/Data/Resources/unity_builtin_extra",
+      "size": 1141856
+    },
+    {
+      "path": "assets/bin/Data/globalgamemanagers.assets.split5",
+      "size": 1048576
+    },
+    {
+      "path": "assets/bin/Data/sharedassets0.assets.split10",
+      "size": 1048576
+    },
+    {
+      "path": "assets/bin/Data/sharedassets0.assets.split12",
+      "size": 1048576
+    },
+    {
+      "path": "assets/bin/Data/sharedassets0.assets.split3",
+      "size": 1048576
+    },
+    {
+      "path": "assets/bin/Data/sharedassets0.assets.split15",
+      "size": 1048576
+    },
+    {
+      "path": "assets/bin/Data/sharedassets0.assets.split4",
+      "size": 1048576
+    },
+    {
+      "path": "assets/bin/Data/sharedassets0.assets.split19",
+      "size": 1048576
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

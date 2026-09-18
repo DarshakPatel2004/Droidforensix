@@ -1,0 +1,86 @@
+{
+  "apk_sha256": "dbc432f803c1eb429c400f9a02a14e5727adc3e012e2032468b7eef0c7026877",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Batwin (1).apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.974,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.188277,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 5218596,
+      "total_uncompressed": 27717653,
+      "native_lib_share": 0.0022,
+      "big_asset_count": 26,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.1789,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 482,
+      "total_windows": 1404,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/PublicSuffixDatabase.list",
+        "assets/splash.zip",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/internal/import/0c/0c64e8912.42da4.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/kbp_common/index.63388.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/main/index.2c6ce.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/config.e1da9.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/index.e1da9.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/03/03d7c03d-e8b0-41f9-96ac-a6e6c799e86b.3a34e.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/04/049accce-ff72-46cb-a8aa-de07d3d31f9b.d0817.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/06/066e265a-7f6e-471c-836c-5bdbca4d7cec.c422c.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/23/23d88955-8659-48ac-9e7e-091421348289.1bfcb.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/8e/8e7bb382-3229-447f-98af-bb728318aa50.9ab10.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/9f/9f138fcf-b44a-434f-93ef-ab7b2be9acc7.73730.png",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/match/native/d5/d5cfd9ae-8216-453a-a33c-3448673489f1.54ab4.mp3",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/resources/native/32/327a7b71-9f1f-43a6-97b9-f80ed08b0470.b8e42/Roboto-Bold.ttf",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/resources/native/55/5511db4a-ea04-4ae9-9d2b-b55b2abc7fc1.894a2/Roboto-Medium.ttf",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/resources/native/ee/eef8b681-6766-459e-b21a-e6024ffa0d87.f3663/Roboto-Regular.ttf",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/rummy/import/03/033bfaeb6.6db95.json",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/rummy/index.228ee.js",
+        "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/assets/rummy/native/9d/9d9259a3-181b-4766-a065-3f51dc50f16d.323e6.png"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.openvision.come.BaseApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 5218596,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 8
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "mmap"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/www/ab-res-gf237asd.newkbrest8bfd23f.com/res/prod/4/203/1.1.9/cocos-js/_virtual_cc-b2f3a377.js",
+      "size": 2147056
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

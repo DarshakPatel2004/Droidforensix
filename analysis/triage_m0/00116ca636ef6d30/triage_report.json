@@ -1,0 +1,65 @@
+{
+  "apk_sha256": "00116ca636ef6d3067a5d25fb5dd493f06cefde9c6ba80f2c2f3f371050323be",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/00116CA636EF6D3067A5D25FB5DD493F06CEFDE9C6BA80F2C2F3F371050323BE.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.207,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.232258,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 2798300,
+      "total_uncompressed": 12048229,
+      "native_lib_share": 0.0037,
+      "big_asset_count": 1,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.2742,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 792,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/audience_network.dex"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 2,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 4
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/audience_network.dex",
+      "size": 3245500
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

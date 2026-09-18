@@ -1,0 +1,82 @@
+{
+  "apk_sha256": "818c4df23b46708b10b707e558745f1546c7d759b28bb6e4ad9aeeeb5f09471f",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/com.unciv.app_1251.apk",
+  "verdict": "clean_static",
+  "confidence": 0.8,
+  "duration_seconds": 0.74,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.375864,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 21720972,
+      "total_uncompressed": 57789411,
+      "native_lib_share": 0.0122,
+      "big_asset_count": 71,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.7852,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 1799,
+      "total_windows": 2783,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/AbsoluteUnits.png",
+        "assets/ConstructionIcons.png",
+        "assets/EasterEggs.png",
+        "assets/ExtraImages/World_Screen.png",
+        "assets/ExtraImages/banner.png",
+        "assets/Flags.png",
+        "assets/Icons.png",
+        "assets/NationIcons.png",
+        "assets/Tech.png",
+        "assets/Tilesets.atlas",
+        "assets/Tilesets.png",
+        "assets/jsons/Civ V - Gods & Kings/Nations.json",
+        "assets/jsons/translations/Afrikaans.properties",
+        "assets/jsons/translations/Bangla.properties",
+        "assets/jsons/translations/Belarusian.properties",
+        "assets/jsons/translations/Bosnian.properties",
+        "assets/jsons/translations/Brazilian_Portuguese.properties",
+        "assets/jsons/translations/Bulgarian.properties",
+        "assets/jsons/translations/Catalan.properties",
+        "assets/jsons/translations/Croatian.properties"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 59,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 4
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/ExtraImages/World_Screen.png",
+      "size": 3431256
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

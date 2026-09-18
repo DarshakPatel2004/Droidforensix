@@ -1,0 +1,103 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3.apk",
+  "apk_sha256": "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+  "so_count": 4,
+  "native_libs": [
+    {
+      "path": "analysis/dissect_m1/000091f2fac1083d/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3/armeabi_libsecexe.so",
+      "sha256": "0f8e9fda44e56a6e4345c5fa4abdb53caaa95ffdd4db28c50a3445a0d1b69ced",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/000091f2fac1083d/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3/armeabi_libsecmain.so",
+      "sha256": "8845ac230dd5e08ebd3e9e136828b685dc648268e70c948bef7b350e69a2de08",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/000091f2fac1083d/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3/assets_libsecexe.x86.so",
+      "sha256": "02435070dc6c74eb74866556d8e897b46576fa491bca21ee7a90d8bdfad0affc",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/000091f2fac1083d/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3/assets_libsecmain.x86.so",
+      "sha256": "ed8066a715d78dbcfe2fa70578cbc59584398ac11eb13ef4120c2b525f641290",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    }
+  ]
+}

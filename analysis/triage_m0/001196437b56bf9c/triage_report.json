@@ -1,0 +1,74 @@
+{
+  "apk_sha256": "001196437b56bf9cce0dae194e844492c8f45550b7ef90bd990b8d8c3082e905",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/001196437B56BF9CCE0DAE194E844492C8F45550B7EF90BD990B8D8C3082E905.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.647,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.085489,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 4735932,
+      "total_uncompressed": 55398380,
+      "native_lib_share": 0.6666,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 5.7306,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 816,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Gaegu.ttf",
+        "assets/Kaushan Script.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "androidx.multidex.MultiDexApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 4735932,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 18
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/Gaegu.ttf",
+      "size": 3164924
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

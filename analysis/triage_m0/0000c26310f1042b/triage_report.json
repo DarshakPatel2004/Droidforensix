@@ -1,0 +1,61 @@
+{
+  "apk_sha256": "0000c26310f1042ba3c2755a44addd13d1befb90ee1041b47585529eb3757c07",
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000c26310f1042ba3c2755a44addd13d1befb90ee1041b47585529eb3757c07.apk",
+  "verdict": "clean_static",
+  "confidence": 0.85,
+  "duration_seconds": 0.302,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.045683,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 855044,
+      "total_uncompressed": 18716705,
+      "native_lib_share": 0.6683,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.7424,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 84,
+      "total_windows": 93,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/hzechwmdhnvfc.dat",
+        "assets/ftwmamccafddg.dat"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 3
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

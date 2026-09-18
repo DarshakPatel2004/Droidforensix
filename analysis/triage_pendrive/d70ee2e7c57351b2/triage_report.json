@@ -1,0 +1,117 @@
+{
+  "apk_sha256": "d70ee2e7c57351b2387bfe33b1666de5972f2d07b8e686ed5753ecdca5a1bcc9",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/HDVideo_watch_v4.32.62_1556K36.apk",
+  "verdict": "clean_static",
+  "confidence": 0.85,
+  "duration_seconds": 1.684,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.181415,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 18524721,
+      "total_uncompressed": 102112520,
+      "native_lib_share": 0.1672,
+      "big_asset_count": 56,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.8919,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 3535,
+      "total_windows": 3592,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/cldr_strings.pack",
+        "assets/compressed/arm64-v8a/libs.spo",
+        "assets/compressed/armeabi-v7a/libs.spo",
+        "assets/compressed/emojis/emojis.oba",
+        "assets/compressed/strings/strings_am.spo",
+        "assets/compressed/strings/strings_ar.spo",
+        "assets/compressed/strings/strings_az.spo",
+        "assets/compressed/strings/strings_bg.spo",
+        "assets/compressed/strings/strings_bn.spo",
+        "assets/compressed/strings/strings_ca.spo",
+        "assets/compressed/strings/strings_cs.spo",
+        "assets/compressed/strings/strings_de.spo",
+        "assets/compressed/strings/strings_el.spo",
+        "assets/compressed/strings/strings_es.spo",
+        "assets/compressed/strings/strings_et.spo",
+        "assets/compressed/strings/strings_fa.spo",
+        "assets/compressed/strings/strings_fi.spo",
+        "assets/compressed/strings/strings_fr.spo",
+        "assets/compressed/strings/strings_ga.spo",
+        "assets/compressed/strings/strings_gu.spo"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "v40f8cb24.l40f8cb24",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 18524721,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 18
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "openat",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/compressed/armeabi-v7a/libs.spo",
+      "size": 13504392
+    },
+    {
+      "path": "assets/compressed/arm64-v8a/libs.spo",
+      "size": 11505890
+    },
+    {
+      "path": "assets/compressed/emojis/emojis.oba",
+      "size": 6198667
+    },
+    {
+      "path": "assets/l40f8cb24_a64.so",
+      "size": 3230552
+    },
+    {
+      "path": "assets/l40f8cb24_a32.so",
+      "size": 2444256
+    },
+    {
+      "path": "assets/l40f8cb24_x86.so",
+      "size": 2038816
+    },
+    {
+      "path": "assets/l40f8cb24_x64.so",
+      "size": 2028728
+    }
+  ],
+  "allowlist_overrides_applied": []
+}
