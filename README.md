@@ -365,7 +365,7 @@ pytest tests/ -v
 
 ```bash
 cd frontend
-npm test     # 247 tests across 38 test files — all pass
+npm test     # 247 tests across 38 test files — 243 pass, 4 stale in CodeTab.test.jsx (UI labels were refactored; tests not yet updated)
 ```
 
 CI runs both suites on every push and PR.
