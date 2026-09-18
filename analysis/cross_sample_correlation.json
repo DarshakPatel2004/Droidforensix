@@ -1,0 +1,2058 @@
+{
+  "shared_domains": [
+    {
+      "domain": "api.airpush.com",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 70
+    },
+    {
+      "domain": "beta.airpush.com",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "domain": "a.admob.com",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.communication.eraser",
+        "com.droidhen.falldown",
+        "com.macte.JigSaw.Abstract",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8",
+        "org.coolcode.ringtones"
+      ],
+      "count": 7,
+      "total_occurrences": 7
+    },
+    {
+      "domain": "www.searchmobileonline.com",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "kissG.com"
+      ],
+      "count": 6,
+      "total_occurrences": 6
+    },
+    {
+      "domain": "media.admob.com",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.andan.mgtxpmgtx",
+        "com.wSpeedtest1A",
+        "com.zelmamarcelino12.heavygunner",
+        "mema.akngahh"
+      ],
+      "count": 5,
+      "total_occurrences": 19
+    },
+    {
+      "domain": "ad.leadbolt.net",
+      "samples": [
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 5,
+      "total_occurrences": 5
+    },
+    {
+      "domain": "ad.leadboltapps.net",
+      "samples": [
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 5,
+      "total_occurrences": 5
+    },
+    {
+      "domain": "depositmobi.com",
+      "samples": [
+        "com.soft.installer",
+        "com.software.app",
+        "com.software.application",
+        "com.software.install",
+        "com.some.opera"
+      ],
+      "count": 5,
+      "total_occurrences": 15
+    },
+    {
+      "domain": "www.mobi911.ru",
+      "samples": [
+        "com.soft.installer",
+        "com.software.app",
+        "com.software.application",
+        "com.software.install",
+        "com.some.opera"
+      ],
+      "count": 5,
+      "total_occurrences": 20
+    },
+    {
+      "domain": "googleads.g.doubleclick.net",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.communication.eraser",
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 4,
+      "total_occurrences": 12
+    },
+    {
+      "domain": "www.openssl.org",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "cn.net.cnea.transportcapacitycooldemo",
+        "com.omg.wappfame.hbtx",
+        "com.tencent.android.qqdownloader"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "api.admob.com",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "org.coolcode.ringtones",
+        "vrhnjblm.iabewpt.spsju"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "mm.admob.com",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "org.coolcode.ringtones",
+        "vrhnjblm.iabewpt.spsju"
+      ],
+      "count": 4,
+      "total_occurrences": 8
+    },
+    {
+      "domain": "mob.guohead.com",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 18
+    },
+    {
+      "domain": "s.domob.cn",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "www.guohead.com",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "e.domob.cn",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "localhost",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "twitter.com",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.zelmamarcelino12.heavygunner"
+      ],
+      "count": 3,
+      "total_occurrences": 5
+    },
+    {
+      "domain": "data.flurry.com",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 3,
+      "total_occurrences": 7
+    },
+    {
+      "domain": "graph.facebook.com",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 3,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "client.go360days.com",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 57
+    },
+    {
+      "domain": "android.bugly.qq.com",
+      "samples": [
+        "com.selfie.beauty.candy.camera.pro",
+        "com.tencent.android.qqdownloader",
+        "com.ww.share"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "rqd.uu.qq.com",
+      "samples": [
+        "com.selfie.beauty.candy.camera.pro",
+        "com.tencent.android.qqdownloader",
+        "com.ww.share"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "gcc.gnu.org",
+      "samples": [
+        "cn.net.cnea.transportcapacitycooldemo",
+        "com.maatto.quack.ncr",
+        "com.ww.share"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "%s",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx",
+        "com.qingk.fdovdtvswosuscouwofotferesxrquer"
+      ],
+      "count": 3,
+      "total_occurrences": 5
+    },
+    {
+      "domain": "wap.casee.cn",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown",
+        "com.readnovel.book_88488"
+      ],
+      "count": 3,
+      "total_occurrences": 7
+    },
+    {
+      "domain": "www.apperhand.com",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "mmsc.vnet.mobi",
+      "samples": [
+        "com.google.progress",
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "www.adwo.com",
+      "samples": [
+        "com.jx.theme.n678504952",
+        "com.ps.pintu.view",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "r2.adwo.com",
+      "samples": [
+        "com.jx.theme.n678504952",
+        "com.ps.pintu.view",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 3,
+      "total_occurrences": 5
+    },
+    {
+      "domain": "www.googletagmanager.com",
+      "samples": [
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "hostname",
+      "samples": [
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "s3.amazonaws.com",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "ws.tapjoyads.com",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "moboo.magic8"
+      ],
+      "count": 2,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "revmob.com.",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "android.revmob.com",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.facebook.com",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "schemas.applovin.com",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.free_live_wallpapers_hd.madina_lwp"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "d.applovin.com",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.free_live_wallpapers_hd.madina_lwp"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.adobe.com",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 64
+    },
+    {
+      "domain": "settings.adobe.com",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "a.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "adobe.com",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "airdownload.adobe.com",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "www.macromedia.com",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 18
+    },
+    {
+      "domain": "curl.haxx.se",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "airinstall.adobe.com",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "cvt.mydas.mobi",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "androidsdk.ads.mp.mydas.mobi",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 3
+    },
+    {
+      "domain": "i.w.inmobi.com",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "i.w.sandbox.inmobi.com",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.umeng.com",
+      "samples": [
+        "com.readnovel.book_88488",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 2,
+      "total_occurrences": 6
+    },
+    {
+      "domain": "www.umeng.co",
+      "samples": [
+        "com.readnovel.book_88488",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 2,
+      "total_occurrences": 6
+    },
+    {
+      "domain": "amob.acs86.com",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.readnovel.book_88488"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "api.facebook.com",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.paypal.com",
+      "samples": [
+        "com.extend.battery",
+        "com.sdfasdwer.madgear"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "androids-market.ru",
+      "samples": [
+        "com.software.app",
+        "com.software.application"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "ad.flurry.com",
+      "samples": [
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 2,
+      "total_occurrences": 4
+    },
+    {
+      "domain": "m.facebook.com",
+      "samples": [
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "d.wiyun.com",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.casee.cn",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.tvchannelsfree.com",
+      "samples": [
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "my.mobfox.com",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.zelmamarcelino12.heavygunner"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.5j5l.com",
+      "samples": [
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "su.5k3g.com",
+      "samples": [
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "soft.sj.91.com",
+      "samples": [
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "www.google.cn",
+      "samples": [
+        "com.ophone.MiniPlayer",
+        "org.coolcode.ringtones"
+      ],
+      "count": 2,
+      "total_occurrences": 10
+    },
+    {
+      "domain": "blackflyday.com",
+      "samples": [
+        "eng.trickersticks.rappermugshots",
+        "photowithclown.iconosys.eng"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "domain": "smsreplier.net",
+      "samples": [
+        "eng.trickersticks.rappermugshots",
+        "photowithclown.iconosys.eng"
+      ],
+      "count": 2,
+      "total_occurrences": 5
+    }
+  ],
+  "shared_ips": [
+    {
+      "ip": "10.0.0.172",
+      "samples": [
+        "com.perfectlove",
+        "com.taolimogucun.dkdk"
+      ],
+      "count": 2,
+      "total_occurrences": 3
+    }
+  ],
+  "domain_ip_pairs": [],
+  "shared_payload_patterns": [
+    {
+      "pattern": "http:80:/testicon.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/v2/api.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 18
+    },
+    {
+      "pattern": "http:80:/testmsg2.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/redirect.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/model/user/getappinfo.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/api.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/images/adsthumbnail/48.png",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 9,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/320x350.jpg",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.zelmamarcelino12.heavygunner",
+        "kissG.com",
+        "moboo.magic8",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 7,
+      "total_occurrences": 7
+    },
+    {
+      "pattern": "http:80:/f0",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.communication.eraser",
+        "com.droidhen.falldown",
+        "com.macte.JigSaw.Abstract",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8",
+        "org.coolcode.ringtones"
+      ],
+      "count": 7,
+      "total_occurrences": 7
+    },
+    {
+      "pattern": "http:80:/{$CATEGORY$}",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract",
+        "com.mobileriders.butt.sculpting.exercises",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "kissG.com"
+      ],
+      "count": 6,
+      "total_occurrences": 6
+    },
+    {
+      "pattern": "http:80:/,",
+      "samples": [
+        "com.soft.installer",
+        "com.software.app",
+        "com.software.application",
+        "com.software.install",
+        "com.some.opera"
+      ],
+      "count": 5,
+      "total_occurrences": 5
+    },
+    {
+      "pattern": "http:80:/.",
+      "samples": [
+        "com.soft.installer",
+        "com.software.app",
+        "com.software.application",
+        "com.software.install",
+        "com.some.opera"
+      ],
+      "count": 5,
+      "total_occurrences": 10
+    },
+    {
+      "pattern": "http:80:/exclick.php",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 4,
+      "total_occurrences": 7
+    },
+    {
+      "pattern": "http:80:/getInfo.php",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "pattern": "http:80:/custom.php",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "pattern": "http:80:/exmet.php",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "pattern": "http:80:/support/faq.html",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "cn.net.cnea.transportcapacitycooldemo",
+        "com.omg.wappfame.hbtx",
+        "com.tencent.android.qqdownloader"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "pattern": "http:80:/v1/pubcode/android_sdk_emulator_notice",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "org.coolcode.ringtones",
+        "vrhnjblm.iabewpt.spsju"
+      ],
+      "count": 4,
+      "total_occurrences": 4
+    },
+    {
+      "pattern": "http:80:/exfail.php",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/sdk/domob_android_sdk.zip",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.bfonjwq.lobu.dqcpeuoemwpdou",
+        "com.colorme.game.jisushuzipai"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/mraid/v1/mraid_app_interstitial.js",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/mraid/v1/mraid_app_expanded_banner.js",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/mraid/v1/mraid_app_banner.js",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "https:443:/aap.do",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/aap.do",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/down_apk.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/client.php",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 9
+    },
+    {
+      "pattern": "http:80:/report/first_run.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/request/tableclass.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/request/config.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/request/alert.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/request/push.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/return_config.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/return_alert.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/return_push.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/install_list.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/listener.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/report/open_table.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/rqd/async",
+      "samples": [
+        "com.selfie.beauty.candy.camera.pro",
+        "com.tencent.android.qqdownloader",
+        "com.ww.share"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/rqd/sync",
+      "samples": [
+        "com.selfie.beauty.candy.camera.pro",
+        "com.tencent.android.qqdownloader",
+        "com.ww.share"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/bugs.html):",
+      "samples": [
+        "cn.net.cnea.transportcapacitycooldemo",
+        "com.maatto.quack.ncr",
+        "com.ww.share"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/showad.asm",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "com.readnovel.book_88488"
+      ],
+      "count": 3,
+      "total_occurrences": 5
+    },
+    {
+      "pattern": "http:80:/sdk-core-v40.js\\",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.andan.mgtxpmgtx",
+        "com.zelmamarcelino12.heavygunner"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/check_config_update",
+      "samples": [
+        "com.readnovel.book_88488",
+        "com.sdfge.wty",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 3,
+      "total_occurrences": 6
+    },
+    {
+      "pattern": "http:80:/app_logs",
+      "samples": [
+        "com.readnovel.book_88488",
+        "com.sdfge.wty",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 3,
+      "total_occurrences": 6
+    },
+    {
+      "pattern": "http:80:/api/check_app_update",
+      "samples": [
+        "com.readnovel.book_88488",
+        "com.sdfge.wty",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 3,
+      "total_occurrences": 6
+    },
+    {
+      "pattern": "http:80:/engine/download.php",
+      "samples": [
+        "com.software.app",
+        "com.software.application",
+        "com.software.install"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/ProtocolGW/protocol",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/static/android/canvas.html",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "org.coolcode.ringtones"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/static/android/i18n/20101109",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "org.coolcode.ringtones"
+      ],
+      "count": 3,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/mraid/v1/mraid_app_interstitial.js)",
+      "samples": [
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/mraid/v1/mraid_app_expanded_banner.js)",
+      "samples": [
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/mraid/v1/mraid_app_banner.js)",
+      "samples": [
+        "com.wSpeedtest1A",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "https:443:/www.revmob.com/Revmob_i_agree_terms.txt",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "mema.akngahh"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "https:443:/oauth/authorize",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/android/1.0",
+      "samples": [
+        "com.artwall.IntroductionToTheTempleOfTheBlessedVirginMaryWallpapers",
+        "com.free_live_wallpapers_hd.madina_lwp"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/request/index.do",
+      "samples": [
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/request/update.do",
+      "samples": [
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/mt.php",
+      "samples": [
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/picnew.php",
+      "samples": [
+        "com.android_osxgmtmn",
+        "com.perfectlove"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "https:443:/flashplayer/",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/apollo",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/2006/actionscript/flash/proxy",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_de",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_fr",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_fr.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_it",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_es",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_jp",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_kr",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_cn",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_tw",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_cz.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_cz.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_cz",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_cz.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_nl",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_nl",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_nl",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_pl.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_pl.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_pl.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_br",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_br",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_br",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_ru.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_ru.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_ru.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_se.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_se.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_se.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/ac2e1eab_tr.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/strict_policy_files_tr.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/allowscriptaccess_tr.",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/go/getair",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/AS3/2006/builtin",
+      "samples": [
+        "air.com.aaaedu.doubleenphonetic",
+        "com.omg.wappfame.hbtx"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/handleConversion",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/getAd.php5",
+      "samples": [
+        "com.acevireally.firsttvinnytheviking",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 3
+    },
+    {
+      "pattern": "http:80:/mobile/",
+      "samples": [
+        "com.readnovel.book_88488",
+        "org.coolcode.ringtones"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/a.htm",
+      "samples": [
+        "com.droidhen.falldown",
+        "com.readnovel.book_88488"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/oauth/authorize",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/oauth/access_token",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/oauth/request_token",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "https:443:/restserver.php",
+      "samples": [
+        "com.andan.mgtxpmgtx",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "https:443:/cgi-bin/webscr",
+      "samples": [
+        "com.extend.battery",
+        "com.sdfasdwer.madgear"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/register/",
+      "samples": [
+        "com.software.app",
+        "com.software.application"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/unregister/",
+      "samples": [
+        "com.software.app",
+        "com.software.application"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/getCanvas.do",
+      "samples": [
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/getAndroidApp.do",
+      "samples": [
+        "com.quipack.a.b4f37cf05e702c80001004569",
+        "moboo.magic8"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/search",
+      "samples": [
+        "com.ophone.MiniPlayer",
+        "com.quipack.a.b4f37cf05e702c80001004569"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/adv/d",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/mo/SiteAd.ad",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/wlogo.gif",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/mo/fee.jsp",
+      "samples": [
+        "com.androidbox.elsslenovo",
+        "com.droidhen.falldown"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/logtest.php",
+      "samples": [
+        "com.free_live_wallpapers_hd.madina_lwp",
+        "com.macte.JigSaw.Abstract"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/request.php",
+      "samples": [
+        "com.firstrequiem.funnyringtonescollection",
+        "com.zelmamarcelino12.heavygunner"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/ThemeDowner/91pandahome2.apk",
+      "samples": [
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/portal/m/c5/0.ashx",
+      "samples": [
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/pandadesk/\\",
+      "samples": [
+        "com.jx.theme.n2130263353",
+        "com.jx.theme.n678504952"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/ad",
+      "samples": [
+        "com.jx.theme.n678504952",
+        "com.ps.pintu.view"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/adfs",
+      "samples": [
+        "com.jx.theme.n678504952",
+        "verizop.beautyleg.girl.ashely"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/files/anmini.apk",
+      "samples": [
+        "com.software.install",
+        "com.some.opera"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/new/",
+      "samples": [
+        "eng.trickersticks.rappermugshots",
+        "photowithclown.iconosys.eng"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/smsreply/regandwelcome.php",
+      "samples": [
+        "eng.trickersticks.rappermugshots",
+        "photowithclown.iconosys.eng"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/report/uninstall_success.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    },
+    {
+      "pattern": "http:80:/report/install_success.do",
+      "samples": [
+        "com.android_isojdmnddd",
+        "com.android_osxgmtmn"
+      ],
+      "count": 2,
+      "total_occurrences": 2
+    }
+  ],
+  "summary": {
+    "total_samples": 146,
+    "total_unique_domains": 435,
+    "total_shared_domains": 70,
+    "top_shared_domains": [
+      {
+        "domain": "api.airpush.com",
+        "samples_count": 9
+      },
+      {
+        "domain": "beta.airpush.com",
+        "samples_count": 9
+      },
+      {
+        "domain": "a.admob.com",
+        "samples_count": 7
+      },
+      {
+        "domain": "www.searchmobileonline.com",
+        "samples_count": 6
+      },
+      {
+        "domain": "media.admob.com",
+        "samples_count": 5
+      },
+      {
+        "domain": "ad.leadbolt.net",
+        "samples_count": 5
+      },
+      {
+        "domain": "ad.leadboltapps.net",
+        "samples_count": 5
+      },
+      {
+        "domain": "depositmobi.com",
+        "samples_count": 5
+      },
+      {
+        "domain": "www.mobi911.ru",
+        "samples_count": 5
+      },
+      {
+        "domain": "googleads.g.doubleclick.net",
+        "samples_count": 4
+      }
+    ],
+    "top_shared_ips": [
+      {
+        "ip": "10.0.0.172",
+        "samples_count": 2
+      }
+    ]
+  }
+}

@@ -1,0 +1,3 @@
+@echo off
+echo Starting local Ollama service...
+ollama serve

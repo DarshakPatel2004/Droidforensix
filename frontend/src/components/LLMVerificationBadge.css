@@ -1,0 +1,112 @@
+.llm-badge {
+  margin-top: 12px;
+  padding: 12px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 6px;
+  background-color: var(--card-bg, #fafafa);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.llm-badge-disabled {
+  background-color: #FFF3CD;
+  border-left: 3px solid #FFC107;
+}
+
+.llm-badge-error {
+  background-color: #F8D7DA;
+  border-left: 3px solid #F5C6CB;
+}
+
+.llm-badge-warning-icon {
+  margin-right: 6px;
+}
+
+.llm-badge-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+
+.llm-verdict-badge {
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: 2px solid;
+  font-weight: bold;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.llm-confidence-section,
+.llm-fp-risk-section {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+}
+
+.llm-label {
+  color: var(--text-muted, #666);
+}
+
+.llm-confidence-icons {
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
+.llm-confidence-value,
+.llm-fp-risk-value {
+  font-weight: bold;
+}
+
+.llm-latency {
+  font-size: 11px;
+  color: var(--text-muted, #999);
+  margin-left: auto;
+}
+
+.llm-reasoning-box {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: var(--bg-subtle, #f5f5f5);
+  border-left: 3px solid var(--accent, #0066CC);
+  border-radius: 4px;
+}
+
+.llm-reasoning-label {
+  font-weight: bold;
+  color: var(--text-primary, #333);
+  font-size: 12px;
+}
+
+.llm-reasoning-text {
+  margin: 4px 0 0 0;
+  font-size: 12px;
+  color: var(--text-secondary, #555);
+  font-style: italic;
+  line-height: 1.4;
+}
+
+.llm-verbose-details {
+  margin-top: 8px;
+  cursor: pointer;
+}
+
+.llm-verbose-summary {
+  font-size: 11px;
+  color: var(--accent, #0066CC);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.llm-verbose-content {
+  margin-top: 4px;
+  padding: 8px;
+  background-color: var(--bg-code, #f0f0f0);
+  font-size: 10px;
+  overflow: auto;
+  max-height: 200px;
+  border-radius: 4px;
+  font-family: 'Courier New', monospace;
+}

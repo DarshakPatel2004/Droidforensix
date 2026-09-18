@@ -1,0 +1,2277 @@
+====================================================================================
+COMPLETE IOC CATALOG - Android SMS-Banking Trojan Static Analysis
+Scanned: 2386 smali | 68 dex | 4 apk | 250603 binary strings
+String literals: 14294
+====================================================================================
+
+====================================================================================
+1. URLS AND DOMAINS
+====================================================================================
+
+  --- API (64) ---
+    http://client.cmread.com/cmread/portalapi
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:1882
+    http://client.cmread.com/cmread/portalapi
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:2701
+    http://client.cmread.com/cmread/portalapi
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4709
+    http://client.cmread.com/cmread/portalapi
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4967
+    http://client.cmread.com/cmread/portalapi
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:760
+    http://client.cmread.com/cmread/portalapi
+      @ bytes:_apk2\classes.dex
+    https://www.googleapis.com/auth/datastoremobile
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/datastoremobile
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/drive
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/drive
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/drive.appdata
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/drive.appdata
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/drive.apps
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/drive.apps
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/drive.file
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/drive.file
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.activity.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.activity.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.activity.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.activity.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_glucose.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_glucose.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_glucose.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_glucose.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_pressure.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_pressure.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_pressure.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.blood_pressure.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.body.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.body.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.body.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.body.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.body_temperature.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.body_temperature.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.body_temperature.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.body_temperature.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.location.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.location.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.location.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.location.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.nutrition.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.nutrition.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.nutrition.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.nutrition.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.oxygen_saturation.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.oxygen_saturation.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.oxygen_saturation.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.oxygen_saturation.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.reproductive_health.read
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.reproductive_health.read
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/fitness.reproductive_health.write
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/fitness.reproductive_health.write
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/games
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/games
+      @ bytes:_hole5\split1\classes59.dex
+    https://www.googleapis.com/auth/games
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/games
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes59.dex
+    https://www.googleapis.com/auth/games.firstparty
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/games.firstparty
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/games_lite
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/games_lite
+      @ bytes:_hole5\split1\classes59.dex
+    https://www.googleapis.com/auth/games_lite
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/games_lite
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes59.dex
+    https://www.googleapis.com/auth/plus.me
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/plus.me
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+
+  --- Bare Host (decoded/binary) (28) ---
+    Build.id
+      @ bytes:_apk2\classes.dex
+    Context.APP
+      @ bytes:_hole5\split1\classes55.dex
+    android.app
+      @ bytes:_hole5\split1\classes44.dex
+    android.com
+      @ bytes:_hole5\split1\classes55.dex
+    android.intent.extra.CC
+      @ bytes:_apk2\classes.dex
+    android.intent.extra.shortcut.ID
+      @ bytes:_hole5\split1\classes6.dex
+    android.intent.extra.shortcut.NAME
+      @ bytes:_apk2\classes.dex
+    app.2019aj.top
+      @ bytes:_apk2\classes.dex
+    app.jtmtht.com
+      @ bytes:_apk2\classes.dex
+    biss.cmread.com
+      @ bytes:_apk2\classes.dex
+    firebaseinstallations.googleapis.com
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    firebaseio-demo.com
+      @ bytes:_hole5\split1\classes57.dex
+    firebaseio.com
+      @ bytes:_hole5\split1\classes57.dex
+    gcm.n.link
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    google.c.sender.id
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    jarNameInfo.id
+      @ bytes:_apk2\classes.dex
+    log.umsns.com
+      @ bytes:_apk2\classes.dex
+    pay.918ja.com
+      @ bytes:_apk2\classes.dex
+    play.google.com
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    plus.google.com
+      @ bytes:_hole5\split1\classes55.dex
+    sdk.qipagame.cn
+      @ bytes:_apk2\classes.dex
+    sdkj.hzbeyond.com
+      @ bytes:_apk2\classes.dex
+    sdks.hzbeyond.com
+      @ bytes:_apk2\classes.dex
+    wap.cmread.com
+      @ bytes:_apk2\classes.dex
+    wap.tyread.com
+      @ bytes:_apk2\classes.dex
+    www.baidu.com
+      @ bytes:_apk2\classes.dex
+    www.googleapis.com/auth/plus.me
+      @ bytes:_hole5\split1\classes55.dex
+    xzfsdk.zhangxhy.com
+      @ bytes:_apk2\classes.dex
+
+  --- Bare Host (no scheme) (37) ---
+    Build.id
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+    app.2019aj.top
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:105
+    app.jtmtht.com
+      @ _apk2\payload_smali\com\report\Confs.smali:36
+    app.jtmtht.com
+      @ _apk2\payload_smali\com\test\zepasub\MIUN.smali:157
+    app.jtmtht.com
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:61
+    app.jtmtht.com
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\PicUrl$1.smali:59
+    biss.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3307
+    jarNameInfo.id
+      @ _apk2\payload_smali\an\d\t\y\De.smali:1845
+    pay.918ja.com
+      @ _apk2\payload_smali\com\yuanlang\pay\AppTache$1.smali:58
+    sdk.qipagame.cn
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2252
+    sdkj.hzbeyond.com
+      @ _apk2\payload_smali\com\an\it\http\k.smali:37
+    sdks.hzbeyond.com
+      @ _apk2\payload_smali\com\an\it\http\k.smali:33
+    wap.cmread.com
+      @ _apk2\payload_smali\com\an\mp\a.smali:305
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3899
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4124
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:452
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:655
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1100
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1219
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1284
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1411
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1685
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:198
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:267
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:462
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:670
+    wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:762
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:150
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:158
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:222
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:230
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:357
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:365
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:50
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:58
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$c$2.smali:80
+    wap.tyread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$c$2.smali:88
+
+  --- C2 (4) ---
+    http://sdkj.hzbeyond.com/
+      @ _apk2\payload_smali\com\an\it\http\k.smali:37
+    http://sdkj.hzbeyond.com/
+      @ bytes:_apk2\classes.dex
+    http://sdks.hzbeyond.com/
+      @ _apk2\payload_smali\com\an\it\http\k.smali:33
+    http://sdks.hzbeyond.com/
+      @ bytes:_apk2\classes.dex
+
+  --- Config JSON (6) ---
+    http://app.jtmtht.com:89/10000.json?
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:61
+    http://app.jtmtht.com:89/10000.json?
+      @ bytes:_apk2\classes.dex
+    http://app.jtmtht.com:89/ister/ister_url.json
+      @ _apk2\payload_smali\com\test\zepasub\MIUN.smali:157
+    http://app.jtmtht.com:89/ister/ister_url.json
+      @ bytes:_apk2\classes.dex
+    http://app.jtmtht.com:89/zns_conf.json
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\PicUrl$1.smali:59
+    http://app.jtmtht.com:89/zns_conf.json
+      @ bytes:_apk2\classes.dex
+
+  --- Download/Install (12) ---
+    http://app.jtmtht.com:88/app/user_install
+      @ _apk2\payload_smali\com\report\Confs.smali:36
+    http://app.jtmtht.com:88/app/user_install
+      @ bytes:_apk2\classes.dex
+    http://oc.umeng.co/check_config_update
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:69
+    http://oc.umeng.co/check_config_update
+      @ bytes:_apk2\classes.dex
+    http://oc.umeng.com/check_config_update
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:65
+    http://oc.umeng.com/check_config_update
+      @ bytes:_apk2\classes.dex
+    http://oc.umeng.com/v2/check_config_update
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$a.smali:39
+    http://oc.umeng.com/v2/check_config_update
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$a.smali:44
+    http://oc.umeng.com/v2/check_config_update
+      @ bytes:_apk2\classes.dex
+    http://oc.umeng.com/v2/get_update_time
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$c.smali:39
+    http://oc.umeng.com/v2/get_update_time
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$c.smali:44
+    http://oc.umeng.com/v2/get_update_time
+      @ bytes:_apk2\classes.dex
+
+  --- Known Decrypted C2 (f5.txt dict) (4) ---
+    sdkj.hzbeyond.com
+      @ assets/f5.txt (decrypted)
+    sdkjk.idmzone.com
+      @ assets/f5.txt (decrypted)
+    sdkjx.idmzone.com
+      @ assets/f5.txt (decrypted)
+    sdks.hzbeyond.com
+      @ assets/f5.txt (decrypted)
+
+  --- Payment / Carrier Billing SDK (25) ---
+    http://10.235.148.9/middle/mypageorder.jsp
+      @ _apk2\payload_smali\com\hnya\pzgp\cd.smali:30
+    http://10.235.148.9/middle/mypageorder.jsp
+      @ bytes:_apk2\classes.dex
+    http://118.85.194.4:8083/iapSms/ws/v3.0.1/mix/validate
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:576
+    http://118.85.194.4:8083/iapSms/ws/v3.0.1/mix/validate
+      @ bytes:_apk2\classes.dex
+    http://118.85.194.4:8083/iapSms/ws/v3.0.1/sp/validate
+      @ _apk2\payload_smali\com\hnya\pzgp\bf.smali:373
+    http://118.85.194.4:8083/iapSms/ws/v3.0.1/sp/validate
+      @ bytes:_apk2\classes.dex
+    http://120.76.225.59:8091/api/payment
+      @ bytes:_apk2\classes.dex
+    http://hxpay.api.flypush.com/api/payment
+      @ bytes:_apk2\classes.dex
+    http://pay.918ja.com
+      @ bytes:_apk2\classes.dex
+    http://pay.918ja.com:9000/init/error
+      @ _apk2\payload_smali\com\yuanlang\pay\AppTache$1.smali:58
+    http://pay.918ja.com:9000/init/error
+      @ bytes:_apk2\classes.dex
+    http://sdk.qipagame.cn:8088
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2252
+    http://sdk.qipagame.cn:8088
+      @ bytes:_apk2\classes.dex
+    http://vpay.api.eerichina.com/api/payment
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/jb/UserOrderPackage.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:158
+    http://wap.tyread.com:8080/jb/UserOrderPackage.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/jb/UserOrderPackage_result.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:230
+    http://wap.tyread.com:8080/jb/UserOrderPackage_result.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/mh/UserOrderPackage.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:150
+    http://wap.tyread.com:8080/mh/UserOrderPackage.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/mh/UserOrderPackage_result.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:222
+    http://wap.tyread.com:8080/mh/UserOrderPackage_result.aspx
+      @ bytes:_apk2\classes.dex
+    http://xzfsdk.zhangxhy.com:10011/zxhypay/action
+      @ bytes:_apk2\classes.dex
+    https://github.com/firebase/firebase-android-sdk
+      @ bytes:_hole5\split1\classes57.dex
+    https://github.com/firebase/firebase-android-sdk
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes57.dex
+
+  --- SMS Interception (2) ---
+    http://wap.cmread.com/sso/smsautoLogin?e_l=9&client_id=cmread-wap&response_type=token&redirect_uri=http://wap.cmread.com/r/p/myspacedata.jsp?vt=9&aaa_flag=1&rm=
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:187
+    http://wap.cmread.com/sso/smsautoLogin?e_l=9&client_id=cmread-wap&response_type=token&redirect_uri=http://wap.cmread.com/r/p/myspacedata.jsp?vt=9&aaa_flag=1&rm=
+      @ bytes:_apk2\classes.dex
+
+  --- Server Script (24) ---
+    http://139.129.132.111:8001/CrackCaptcha/GetCaptchaValue.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:517
+    http://139.129.132.111:8001/CrackCaptcha/GetCaptchaValue.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$c$3.smali:86
+    http://139.129.132.111:8001/CrackCaptcha/GetCaptchaValue.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$2.smali:139
+    http://139.129.132.111:8001/CrackCaptcha/GetCaptchaValue.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/clt/publish/clt/resource/portal/common/loading.jsp
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:1657
+    http://wap.cmread.com/clt/publish/clt/resource/portal/common/loading.jsp
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/clt/publish/clt/resource/portal/v2/home2.jsp
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:1343
+    http://wap.cmread.com/clt/publish/clt/resource/portal/v2/home2.jsp
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/clt/publish/clt/resource/portal/v2/newsDetailData.jsp
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:1554
+    http://wap.cmread.com/clt/publish/clt/resource/portal/v2/newsDetailData.jsp
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/rbc/p/tsfl.jsp?vt=3&timestamp=
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3610
+    http://wap.cmread.com/rbc/p/tsfl.jsp?vt=3&timestamp=
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/jb/AudioDetail.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:365
+    http://wap.tyread.com:8080/jb/AudioDetail.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/jb/PackageMsgList.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:58
+    http://wap.tyread.com:8080/jb/PackageMsgList.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/jb/VerifyCode.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$c$2.smali:88
+    http://wap.tyread.com:8080/jb/VerifyCode.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/mh/AudioDetail.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:357
+    http://wap.tyread.com:8080/mh/AudioDetail.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/mh/PackageMsgList.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:50
+    http://wap.tyread.com:8080/mh/PackageMsgList.aspx
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com:8080/mh/VerifyCode.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$c$2.smali:80
+    http://wap.tyread.com:8080/mh/VerifyCode.aspx
+      @ bytes:_apk2\classes.dex
+
+  --- Telemetry/Report (15) ---
+    http://alog.umeng.co/app_logs
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:56
+    http://alog.umeng.co/app_logs
+      @ bytes:_apk2\classes.dex
+    http://alog.umeng.com/app_logs
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:52
+    http://alog.umeng.com/app_logs
+      @ bytes:_apk2\classes.dex
+    http://log.umsns.com/
+      @ bytes:_apk2\classes.dex
+    http://log.umsns.com/share/api/
+      @ _apk2\payload_smali\com\umeng\analytics\social\f.smali:443
+    http://log.umsns.com/share/api/
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/clt/clt/registerNew.msp
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:1198
+    http://wap.cmread.com/clt/clt/registerNew.msp
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/sso/p/logindata.jsp?layout=9
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:110
+    http://wap.cmread.com/sso/p/logindata.jsp?layout=9
+      @ bytes:_apk2\classes.dex
+    https://www.googleapis.com/auth/appstate
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/appstate
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.googleapis.com/auth/plus.login
+      @ bytes:_hole5\split1\classes55.dex
+    https://www.googleapis.com/auth/plus.login
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+
+  --- Uncategorized (63) ---
+    http://118.85.194.4:8083/iapSms/ws/v3.0.1/mix/billing
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:56
+    http://118.85.194.4:8083/iapSms/ws/v3.0.1/mix/billing
+      @ bytes:_apk2\classes.dex
+    http://120.26.106.206:8088
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:54
+    http://120.26.106.206:8088
+      @ bytes:_apk2\classes.dex
+    http://121.40.109.196:8088
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2257
+    http://121.40.109.196:8088
+      @ bytes:_apk2\classes.dex
+    http://139.129.132.111:8001/
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:53
+    http://139.129.132.111:8001/
+      @ bytes:_apk2\classes.dex
+    http://app.2019aj.top
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:105
+    http://app.2019aj.top
+      @ bytes:_apk2\classes.dex
+    http://app.2019aj.top/jsyy
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:100
+    http://app.2019aj.top/jsyy
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:95
+    http://app.2019aj.top/jsyy
+      @ bytes:_apk2\classes.dex
+    http://biss.cmread.com:8080/etl/client
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3307
+    http://biss.cmread.com:8080/etl/client
+      @ bytes:_apk2\classes.dex
+    http://m.miguxue.com/c/readView
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$1.smali:100
+    http://m.miguxue.com/c/readView
+      @ bytes:_apk2\classes.dex
+    http://schemas.android.com/apk/res-auto
+      @ bytes:_hole5\split1\classes37.dex
+    http://schemas.android.com/apk/res-auto
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes37.dex
+    http://schemas.android.com/apk/res/android
+      @ bytes:_hole5\split1\classes37.dex
+    http://schemas.android.com/apk/res/android
+      @ bytes:_hole5\split1\classes6.dex
+    http://schemas.android.com/apk/res/android
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes37.dex
+    http://schemas.android.com/apk/res/android
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes6.dex
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\an\mp\a.smali:305
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3899
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4124
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1100
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1219
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1284
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1411
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1685
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:198
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:267
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:462
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:670
+    http://wap.cmread.com
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:762
+    http://wap.cmread.com
+      @ bytes:_apk2\classes.dex
+    http://wap.cmread.com/clt/captcha.jpg?t=14461
+      @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:432
+    http://wap.cmread.com/clt/captcha.jpg?t=14461
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com/baoyueInfoListAction.action
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$1$1.smali:69
+    http://wap.tyread.com/baoyueInfoListAction.action
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com/goPreBuySubmit.action
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$1$1.smali:217
+    http://wap.tyread.com/goPreBuySubmit.action
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com/gossourl.action
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$1$1.smali:238
+    http://wap.tyread.com/gossourl.action
+      @ bytes:_apk2\classes.dex
+    http://wap.tyread.com/identifyingCode
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$2.smali:90
+    http://wap.tyread.com/identifyingCode
+      @ bytes:_apk2\classes.dex
+    http://www.baidu.com
+      @ _apk2\payload_smali\com\test\hown\ML.smali:362
+    http://www.baidu.com
+      @ bytes:_apk2\classes.dex
+    http://zyin.bjmcmj.cn/newzydzver/newzydzver.txt
+      @ bytes:_apk2\classes.dex
+    https://%s/%s/%s
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    https://console.firebase.google.com/.
+      @ bytes:_hole5\split1\classes57.dex
+    https://console.firebase.google.com/.
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes57.dex
+    https://firebase.google.com/docs/database/android/retrieve-data#filtering_data
+      @ bytes:_hole5\split1\classes57.dex
+    https://firebase.google.com/docs/database/android/retrieve-data#filtering_data
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes57.dex
+    https://firebase.google.com/docs/database/ios/structure-data#best_practices_for_data_structure
+      @ bytes:_hole5\split1\classes57.dex
+    https://firebase.google.com/docs/database/ios/structure-data#best_practices_for_data_structure
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes57.dex
+    https://firebase.google.com/support/privacy/init-options.
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    https://play.google.com
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+    https://plus.google.com/
+      @ bytes:_hole5\split1\classes55.dex
+    https://plus.google.com/
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+    https://www.baidu.com
+      @ _apk2\payload_smali\com\hnya\pzgp\bj.smali:61
+    https://www.baidu.com
+      @ bytes:_apk2\classes.dex
+
+  --- WebView / Phishing Page (4) ---
+    http://wap.cmread.com/r/%s/%s.htm?cm=%s
+      @ _apk2\payload_smali\com\hnya\pzgp\d.smali:300
+    http://wap.cmread.com/r/%s/%s.htm?cm=%s
+      @ bytes:_apk2\classes.dex
+    https://www.firebase.com/docs/android/guide/offline-capabilities.html#section-handling-transactions-offline
+      @ bytes:_hole5\split1\classes57.dex
+    https://www.firebase.com/docs/android/guide/offline-capabilities.html#section-handling-transactions-offline
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes57.dex
+
+====================================================================================
+2. PHONE NUMBERS / PREMIUM SHORT CODES
+====================================================================================
+
+  --- Premium SMS Gateway (106) (5) ---
+    106566660020
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:391
+      ctx: 106566660020
+    106566660020
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:419
+      ctx: 106566660020
+    106566660020
+      @ bytes:_apk2\classes.dex
+      ctx: 106566660020
+    10658421
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:141
+      ctx: 10658421
+    10658421
+      @ bytes:_apk2\classes.dex
+      ctx: 10658421
+
+  --- Short Code (10xxx) (16) ---
+    10000
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:7983
+      ctx: (\'N01tZkpNc1pGT1ZjSGNxeWdpZnhlVGFIUjBjRG92TDNCaGVYUmxjM1F4TG0xaGFXMXZZaTV1WlhRV0ZmRm9wd2hJdW9jdk5zRG9YVFZI\',3,10),(\'Nm9hcVdwSmtScER0YUlEW
+    10000
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:8103
+      ctx: (\'OG16dWRBcXFISG5CUkJ1bmJPdGNkWERFQmFIUjBjRG92TDNBeExtbHNZWE4wTG1Oamd5YURKVlFqdUtpS1dQTXFEUHVIT0ZvcQ\',3,10),(\'OWJ3Y1FNcnVmUnpWVGl0V0t1WFN
+    10000
+      @ _apk2\payload_smali\com\nes\dxzfll\PayUtil.smali:643
+      ctx: 10000
+    10000
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:61
+      ctx: http://app.jtmtht.com:89/10000.json?
+    10000
+      @ bytes:_apk2\classes.dex
+      ctx: $http://app.jtmtht.com:89/10000.json?
+    10000
+      @ bytes:_apk2\classes.dex
+      ctx: ('N01tZkpNc1pGT1ZjSGNxeWdpZnhlVGFIUjBjRG92TDNCaGVYUmxjM1F4TG0xaGFXMXZZaTV1WlhRV0ZmRm9wd2hJdW9jdk5zRG9YVFZI',3,10),('Nm9hcVdwSmtScER0YUlEWkF6
+    10000
+      @ bytes:_apk2\classes.dex
+      ctx: ('OG16dWRBcXFISG5CUkJ1bmJPdGNkWERFQmFIUjBjRG92TDNBeExtbHNZWE4wTG1Oamd5YURKVlFqdUtpS1dQTXFEUHVIT0ZvcQ',3,10),('OWJ3Y1FNcnVmUnpWVGl0V0t1WFNTeE
+    10000
+      @ bytes:_apk2\classes.dex
+      ctx: 10000
+    10001
+      @ _apk2\payload_smali\com\hnya\pzgp\NSrvi.smali:51
+      ctx: 10001
+    10001
+      @ bytes:_apk2\classes.dex
+      ctx: 10001
+    10011
+      @ bytes:_apk2\classes.dex
+      ctx: http://xzfsdk.zhangxhy.com:10011/zxhypay/action
+    10086
+      @ _apk2\payload_smali\com\shunpay210\sdk\ShunPay210.smali:664
+      ctx: 10086
+    10086
+      @ bytes:_apk2\classes.dex
+      ctx: 10086
+    10402
+      @ _apk2\payload_smali\com\nes\dxzfll\ChaoyueFu.smali:57
+      ctx: 10402
+    10402
+      @ _apk2\payload_smali\com\nes\dxzfll\ChaoyueFu.smali:99
+      ctx: 10402
+    10402
+      @ bytes:_apk2\classes.dex
+      ctx: 10402
+
+  --- Short Code (12xxx) (3) ---
+    12349
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+      ctx: 12349
+    12841
+      @ _apk2\payload_smali\aaaa\dy\t\an\a.smali:415
+      ctx: C7C4ACB3F12841F8F70A77C917064A0D
+    12841
+      @ bytes:_apk2\classes.dex
+      ctx: C7C4ACB3F12841F8F70A77C917064A0D
+
+  --- Short Code (generic) (2) ---
+    1048576
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+      ctx: !Image exceeds max size of 1048576
+    1048576
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+      ctx: *Content-Length exceeds max size of 1048576
+
+====================================================================================
+3. PACKAGE NAMES (const-strings)
+====================================================================================
+  alog.umeng.co  (1 refs)
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:56
+  alog.umeng.com  (1 refs)
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:52
+  android.R.id.list  (2 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ListFragment.smali:225
+      @ _apk2\payload_smali\android\support\v4\app\ListFragment.smali:247
+  android.intent.action.AIRPLANE_MODE  (2 refs)
+      @ _apk2\payload_smali\com\squareup\picasso\Dispatcher$NetworkBroadcastReceiver.smali:140
+      @ _apk2\payload_smali\com\squareup\picasso\Dispatcher$NetworkBroadcastReceiver.smali:65
+  android.intent.action.BATTERY_CHANGED  (1 refs)
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Op.smali:2161
+  android.intent.action.MAIN  (3 refs)
+      @ _apk2\payload_smali\android\support\v4\app\NavUtils$NavUtilsImplBase.smali:246
+      @ _apk2\payload_smali\android\support\v4\content\IntentCompat$IntentCompatImplBase.smali:41
+      @ _apk2\payload_smali\com\test\zepasub\Util.smali:1065
+  android.intent.action.PACKAGE_ADDED  (2 refs)
+      @ _apk2\payload_smali\com\test\zepasub\MIUN$PackageBroadcast.smali:107
+      @ _apk2\payload_smali\com\test\zepasub\MIUN.smali:296
+  android.intent.action.SEND  (6 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:592
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:838
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:849
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:86
+      ... +2 more
+  android.intent.action.SEND_MULTIPLE  (4 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:577
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:637
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:617
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:653
+  android.intent.action.SIM_STATE_CHANGED  (1 refs)
+      @ _apk2\payload_smali\com\sdk\service\a$1.smali:371
+  android.intent.action.USER_PRESENT  (1 refs)
+      @ _apk2\payload_smali\com\dc\jk\Cr.smali:47
+  android.intent.action.VIEW  (8 refs)
+      @ _apk2\payload_smali\com\test\hown\ML$1.smali:331
+      @ _apk2\payload_smali\com\test\hown\ML.smali:234
+      @ _apk2\payload_smali\com\test\hown\ML.smali:347
+      @ _apk2\payload_smali\com\test\hown\NActivity.smali:88
+      ... +4 more
+  android.intent.category.BROWSABLE  (1 refs)
+      @ _apk2\payload_smali\com\test\hown\ML.smali:357
+  android.intent.category.DEFAULT  (1 refs)
+      @ _apk2\payload_smali\com\test\hown\ML.smali:352
+  android.intent.category.LAUNCHER  (2 refs)
+      @ _apk2\payload_smali\android\support\v4\content\IntentCompat$IntentCompatImplBase.smali:50
+      @ _apk2\payload_smali\com\test\zepasub\Util.smali:1071
+  android.intent.extra.BCC  (4 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:310
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:545
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:740
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:280
+  android.intent.extra.CC  (4 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:351
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:529
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:756
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:296
+  android.intent.extra.EMAIL  (4 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:392
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:513
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:783
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:312
+  android.intent.extra.HTML_TEXT  (2 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:799
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:328
+  android.intent.extra.KEY_EVENT  (1 refs)
+      @ _apk2\payload_smali\android\support\v4\media\TransportMediatorJellybeanMR2$3.smali:44
+  android.intent.extra.STREAM  (12 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:408
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:451
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:612
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:657
+      ... +8 more
+  android.intent.extra.SUBJECT  (2 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:878
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:573
+  android.intent.extra.TEXT  (3 refs)
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:806
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:894
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:589
+  android.intent.extra.shortcut.ICON  (3 refs)
+      @ _apk2\payload_smali\com\test\hown\ML.smali:216
+      @ _apk2\payload_smali\com\test\hown\ML.smali:329
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config.smali:481
+  android.intent.extra.shortcut.INTENT  (3 refs)
+      @ _apk2\payload_smali\com\test\hown\ML.smali:254
+      @ _apk2\payload_smali\com\test\hown\ML.smali:422
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config.smali:514
+  android.intent.extra.shortcut.NAME  (3 refs)
+      @ _apk2\payload_smali\com\test\hown\ML.smali:158
+      @ _apk2\payload_smali\com\test\hown\ML.smali:282
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config.smali:432
+  android.permission.ACCESS_COARSE_LOCATION  (2 refs)
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:219
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:53
+  android.permission.ACCESS_NETWORK_STATE  (3 refs)
+      @ _apk2\payload_smali\com\squareup\picasso\Dispatcher.smali:249
+      @ _apk2\payload_smali\u\aly\bq.smali:1001
+      @ _apk2\payload_smali\u\aly\t.smali:189
+  android.permission.ACCESS_WIFI_STATE  (4 refs)
+      @ _apk2\payload_smali\com\umeng\analytics\social\f.smali:1177
+      @ _apk2\payload_smali\com\umeng\analytics\social\f.smali:1203
+      @ _apk2\payload_smali\u\aly\bq.smali:1459
+      @ _apk2\payload_smali\u\aly\bq.smali:1486
+  android.permission.MOUNT_UNMOUNT_FILESYSTEMS  (1 refs)
+      @ _apk2\payload_smali\d\b.smali:48
+  android.permission.READ_EXTERNAL_STORAGE  (1 refs)
+      @ _apk2\payload_smali\d\b.smali:60
+  android.permission.READ_PHONE_STATE  (7 refs)
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:201
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:37
+      @ _apk2\payload_smali\com\sdk\main\a.smali:117
+      @ _apk2\payload_smali\com\umeng\analytics\social\f.smali:888
+      ... +3 more
+  android.permission.READ_SMS  (4 refs)
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:207
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:61
+      @ _apk2\payload_smali\com\sdk\main\a.smali:123
+      @ _apk2\payload_smali\d\b.smali:36
+  android.permission.RECEIVE_SMS  (2 refs)
+      @ _apk2\payload_smali\com\sdk\main\a.smali:129
+      @ _apk2\payload_smali\d\b.smali:42
+  android.permission.SEND_SMS  (5 refs)
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:213
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:45
+      @ _apk2\payload_smali\com\sdk\b\a\f.smali:250
+      @ _apk2\payload_smali\com\sdk\main\a.smali:111
+      ... +1 more
+  android.permission.WRITE_EXTERNAL_STORAGE  (2 refs)
+      @ _apk2\payload_smali\d\b.smali:54
+      @ _apk2\payload_smali\u\aly\j.smali:179
+  android.telephony.MSimTelephonyManager  (2 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\by.smali:61
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2535
+  android.telephony.SmsManager  (2 refs)
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1505
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1538
+  android.telephony.TelephonyManager  (2 refs)
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2691
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2761
+  app.2019aj.top  (3 refs)
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:100
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:105
+      @ _apk2\payload_smali\com\yplsd\zljsy\util\Conf.smali:95
+  app.jtmtht.com  (4 refs)
+      @ _apk2\payload_smali\com\report\Confs.smali:36
+      @ _apk2\payload_smali\com\test\zepasub\MIUN.smali:157
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:61
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\PicUrl$1.smali:59
+  biss.cmread.com  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3307
+  client.cmread.com  (5 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:1882
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:2701
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4709
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4967
+      ... +1 more
+  cn.utopay.internal.sdk.pay.Pay  (1 refs)
+      @ _apk2\payload_smali\d\a.smali:58
+  confirm_bt.9.png  (2 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cu.smali:1106
+      @ _apk2\payload_smali\com\hnya\pzgp\cu.smali:1256
+  confirm_bt_on.9.png  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cu.smali:1243
+  document.body.appendChild  (8 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bj$1.smali:304
+      @ _apk2\payload_smali\com\hnya\pzgp\bj$1.smali:537
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$1.smali:124
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$b$1.smali:205
+      ... +4 more
+  document.body.innerHTML  (1 refs)
+      @ _apk2\payload_smali\com\dc\jk\b.smali:39
+  document.documentElement.outerHTML  (4 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$1.smali:116
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$b$1.smali:189
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:109
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$1$1.smali:174
+  download.error.code  (2 refs)
+      @ _apk2\payload_smali\com\mgame\main\c.smali:356
+      @ _apk2\payload_smali\com\mgame\main\c.smali:524
+  gsm.version.baseband  (3 refs)
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Op.smali:1038
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:328
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  hm.baidu.com  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:1903
+  http.connection.timeout  (9 refs)
+      @ _apk2\payload_smali\com\an\it\http\e.smali:898
+      @ _apk2\payload_smali\com\an\it\http\m.smali:338
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:142
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:1662
+      ... +5 more
+  http.protocol.cookie  (2 refs)
+      @ _apk2\payload_smali\com\an\it\http\e.smali:912
+      @ _apk2\payload_smali\com\an\it\http\m.smali:356
+  http.route.default  (7 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:1694
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:174
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:987
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:1292
+      ... +3 more
+  http.socket.timeout  (9 refs)
+      @ _apk2\payload_smali\com\an\it\http\e.smali:888
+      @ _apk2\payload_smali\com\an\it\http\m.smali:328
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:132
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:1652
+      ... +5 more
+  inp.outerHTML.indexOf  (5 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$1.smali:100
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$b$1.smali:169
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:93
+      @ _apk2\payload_smali\com\hnya\pzgp\bo$1$1.smali:158
+      ... +1 more
+  libcore.icu.ICU  (1 refs)
+      @ _apk2\payload_smali\android\support\v4\text\ICUCompatIcs.smali:21
+  log.umsns.com  (1 refs)
+      @ _apk2\payload_smali\com\umeng\analytics\social\f.smali:443
+  m.miguxue.com  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bm$1.smali:100
+  main_bg.9.png  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cu.smali:160
+  message_box_bg.9.png  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cs.smali:258
+  message_btn_bg.9.png  (2 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cs$b.smali:79
+      @ _apk2\payload_smali\com\hnya\pzgp\cs.smali:460
+  message_btn_bg_on.9.png  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cs$b.smali:62
+  migu.sendmsg.done  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils.smali:194
+  new.assets.apk  (1 refs)
+      @ _hole5\split1_smali\proj\App.smali:314
+  oc.umeng.co  (1 refs)
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:69
+  oc.umeng.com  (5 refs)
+      @ _apk2\payload_smali\com\umeng\analytics\a.smali:65
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$a.smali:39
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$a.smali:44
+      @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$c.smali:39
+      ... +1 more
+  pay.918ja.com  (1 refs)
+      @ _apk2\payload_smali\com\yuanlang\pay\AppTache$1.smali:58
+  persist.sys.timezone  (1 refs)
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Op.smali:1723
+  ro.board.platform  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:396
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.build.characteristics  (1 refs)
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Op.smali:1579
+  ro.build.description  (1 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:671
+  ro.build.fingerprint  (1 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.build.hidden_ver  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:366
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.mediatek.platform  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:404
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.product.brand.replace  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:428
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.product.cpu.abi  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:350
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.product.cpu.abi2  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:358
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.product.model  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:336
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.product.model.replace  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:420
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  ro.product.real_model  (2 refs)
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:412
+      @ _apk2\payload_smali\com\shunpay210\sdk\SysParams210.smali:436
+  sdk.qipagame.cn  (1 refs)
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2252
+  sdkj.hzbeyond.com  (1 refs)
+      @ _apk2\payload_smali\com\an\it\http\k.smali:37
+  sdks.hzbeyond.com  (1 refs)
+      @ _apk2\payload_smali\com\an\it\http\k.smali:33
+  sun.misc.Unsafe  (1 refs)
+      @ _hole5\split1_smali\top\canyie\pine\utils\Primitives.smali:115
+  top.canyie.pine.entry.Arm32Entry  (1 refs)
+      @ _hole5\split1_smali\top\canyie\pine\Pine.smali:1872
+  top.canyie.pine.entry.Arm64Entry  (1 refs)
+      @ _hole5\split1_smali\top\canyie\pine\Pine.smali:1833
+  top.canyie.pine.entry.X86Entry  (1 refs)
+      @ _hole5\split1_smali\top\canyie\pine\Pine.smali:1895
+  tykj.emp.done  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils.smali:190
+  v3.0.1  (3 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bf.smali:373
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:56
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:576
+  verify_et.9.png  (1 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\cu.smali:870
+  vnd.android.package  (5 refs)
+      @ _apk2\payload_smali\com\test\hown\ML$1.smali:345
+      @ _apk2\payload_smali\com\test\hown\ML.smali:249
+      @ _apk2\payload_smali\com\test\hown\NActivity.smali:102
+      @ _apk2\payload_smali\com\test\zepasub\Util.smali:718
+      ... +1 more
+  wap.cmread.com  (24 refs)
+      @ _apk2\payload_smali\com\an\mp\a.smali:305
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3610
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3899
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:4124
+      ... +20 more
+  wap.tyread.com  (14 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:150
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:158
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:222
+      @ _apk2\payload_smali\com\hnya\pzgp\bn$1.smali:230
+      ... +10 more
+  window.location.href  (2 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bj$1.smali:235
+      @ _apk2\payload_smali\com\hnya\pzgp\bj$1.smali:267
+  window.mhandler.show  (1 refs)
+      @ _apk2\payload_smali\com\dc\jk\b.smali:39
+  www.baidu.com  (2 refs)
+      @ _apk2\payload_smali\com\hnya\pzgp\bj.smali:61
+      @ _apk2\payload_smali\com\test\hown\ML.smali:362
+
+====================================================================================
+4. BROADCAST ACTION STRINGS
+====================================================================================
+  [CUSTOM] DELIVERED_SMS_ACTION_ORDER
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$a.smali:40
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:251
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:359
+  [CUSTOM] DELIVERED_SMS_ACTION_VERIFY
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:277
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:363
+  [CUSTOM] SENT_SMS_ACTION_ORDER
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$b.smali:52
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$c.smali:79
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:191
+  [CUSTOM] SENT_SMS_ACTION_VERIFY
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$c.smali:42
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$b.smali:82
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:225
+  [CUSTOM] SMS_SEND_ACTION_GETPHONENUMBER
+      @ _apk2\payload_smali\com\sdk\main\c.smali:59
+  [CUSTOM] TO_BE_SENT
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:732
+  [CUSTOM] USER_PRESENT
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1248
+  android.app.ActivityThread
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:222
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:240
+      @ _apk2\payload_smali\com\yxp\permission\util\lib\PermissionUtil.smali:319
+  android.app.ActivityThread$ActivityClientRecord
+      @ _apk2\payload_smali\com\yxp\permission\util\lib\PermissionUtil.smali:381
+  android.app.ActivityThread$AppBindData
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:342
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:392
+  android.app.ActivityThread$ProviderClientRecord
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:480
+  android.app.LoadedApk
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:293
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:351
+      @ _apk2\smali\ilf\lviyezs\bbfqia\QROcuMSK.smali:381
+  android.intent.action.AIRPLANE_MODE
+      @ _apk2\payload_smali\com\squareup\picasso\Dispatcher$NetworkBroadcastReceiver.smali:65
+      @ _apk2\payload_smali\com\squareup\picasso\Dispatcher$NetworkBroadcastReceiver.smali:140
+  android.intent.action.BATTERY_CHANGED
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Op.smali:2161
+  android.intent.action.PACKAGE_ADDED
+      @ _apk2\payload_smali\com\test\zepasub\MIUN$PackageBroadcast.smali:107
+      @ _apk2\payload_smali\com\test\zepasub\MIUN.smali:296
+  android.intent.action.SEND
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:86
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:592
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:645
+  android.intent.action.SEND_MULTIPLE
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:577
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentReader.smali:617
+      @ _apk2\payload_smali\android\support\v4\app\ShareCompat$IntentBuilder.smali:637
+  android.intent.action.SIM_STATE_CHANGED
+      @ _apk2\payload_smali\com\sdk\service\a$1.smali:371
+  android.intent.action.USER_PRESENT
+      @ _apk2\payload_smali\com\dc\jk\Cr.smali:47
+  android.intent.action.VIEW
+      @ _apk2\payload_smali\com\test\hown\NActivity.smali:88
+      @ _apk2\payload_smali\com\yplsd\zljsy\adapter\SzAdapter$1$1.smali:197
+      @ _apk2\payload_smali\com\test\hown\ML.smali:234
+  android.provider.Telephony.GSM_SMS_RECEIVED
+      @ _apk2\payload_smali\cn\cuter\main\MyService.smali:51
+  android.provider.Telephony.SMS_RECEIVED
+      @ _apk2\payload_smali\cn\cuter\main\MyService.smali:47
+      @ _apk2\payload_smali\com\y\f\jar\pay\UpdateServices.smali:66
+      @ _apk2\payload_smali\com\dc\jk\Mr.smali:77
+  android.provider.Telephony.SMS_RECEIVED_2
+      @ _apk2\payload_smali\cn\cuter\main\MyService.smali:55
+  android.telephony.MSimTelephonyManager
+      @ _apk2\payload_smali\com\hnya\pzgp\by.smali:61
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2535
+  android.telephony.SmsManager
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1505
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1538
+  android.telephony.TelephonyManager
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2691
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2761
+
+  --- Registered components / permissions from AndroidManifest ---
+  [ACTIVITY] com.xiaom.lx.Bsvity
+      @ _apk2\AndroidManifest_decompiled.xml
+  [ACTIVITY] com.yplsd.zljsy.activity.PhrmdeActivity
+      @ _apk2\AndroidManifest_decompiled.xml
+  [ACTIVITY] com.yplsd.zljsy.activity.SplashActivity
+      @ _apk2\AndroidManifest_decompiled.xml
+  [ACTIVITY] com.yplsd.zljsy.activity.VfanActivity
+      @ _apk2\AndroidManifest_decompiled.xml
+  [ACTIVITY] com.yplsd.zljsy.activity.XiangqActivity
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] com.dc.jk.Cr
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] com.dc.jk.Mr
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] com.xiaom.lx.Asver
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] com.xiaom.lx.Csver
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] com.y.f.jar.pay.InNoticeReceiver
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] org.tk.a.sev.TkR
+      @ _apk2\AndroidManifest_decompiled.xml
+  [RECEIVER] org.tk.a.sev.TkR2
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] cn.cuter.main.MyService
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.boJUF.ac
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.dc.jk.Ls
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.dc.jk.Ms
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.hnya.pzgp.NSrvi
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.test.zepasub.MIUN
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.xiaom.lx.Dsice
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.y.f.jar.pay.UpdateServices
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.yf.y.f.init.service.CoreService
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.yuanlang.pay.JobScheduleService
+      @ _apk2\AndroidManifest_decompiled.xml
+  [SERVICE] com.yuanlang.pay.TheService
+      @ _apk2\AndroidManifest_decompiled.xml
+  android.intent.action.MAIN
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.intent.action.RESPOND_VIA_MESSAGE
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.intent.action.SEND
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.intent.action.SENDTO
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.intent.action.USER_PRESENT
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.net.conn.CONNECTIVITY_CHANGE
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.permission.ACCESS_CACHE_FILESYSTEM
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.ACCESS_COARSE_LOCATION
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.ACCESS_FINE_LOCATION
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.ACCESS_LOCATION_EXTRA_COMMANDS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.ACCESS_MTK_MMHW
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.ACCESS_NETWORK_STATE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.ACCESS_WIFI_STATE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.BROADCAST_STICKY
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.CAMERA
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.CHANGE_CONFIGURATION
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.CHANGE_NETWORK_STATE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.CHANGE_WIFI_STATE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.DISABLE_KEYGUARD
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.FLASHLIGHT
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.GET_ACCOUNTS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.GET_TASKS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.INTERACT_ACROSS_USERS_FULL
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.INTERNET
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.MOUNT_UNMOUNT_FILESYSTEMS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.READ_EXTERNAL_STORAGE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.READ_INTERNAL_STORAGE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.READ_PHONE_STATE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.READ_SETTINGS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.READ_SMS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.READ_USER_DICTIONARY
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.RECEIVE_BOOT_COMPLETED
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.RECEIVE_MMS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.RECEIVE_SMS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.REQUEST_INSTALL_PACKAGES
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.SAMSUNG_TUNTAP
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.SEND_SMS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.SYSTEM_ALERT_WINDOW
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.UPDATE_APP_OPS_STATS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.VIBRATE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WAKE_LOCK
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WRITE_APN_SETTINGS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WRITE_EXTERNAL_STORAGE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WRITE_INTERNAL_STORAGE
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WRITE_SECURE_SETTINGS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WRITE_SETTINGS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.permission.WRITE_SMS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  android.provider.Telephony.SMS_DELIVER
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.provider.Telephony.SMS_RECEIVED
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  android.provider.Telephony.WAP_PUSH_DELIVER
+      @ _apk2\AndroidManifest_decompiled.xml (registered action)
+  com.android.launcher.permission.INSTALL_SHORTCUT
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+  com.oppo.launcher.permission.READ_SETTINGS
+      @ _apk2\AndroidManifest_decompiled.xml (permission)
+
+====================================================================================
+5. SHARED PREFERENCES / SETTINGS KEYS AND FILES
+====================================================================================
+  --- Preference files (getSharedPreferences arg, register-tracked) ---
+    Ldsdk  @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:796
+    Ldsdk  @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:886
+    cmk  @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:29
+    cofnig  @ _apk2\payload_smali\com\sdk\main\WYZFPay.smali:27
+    cofnig  @ _apk2\payload_smali\com\sdk\main\WYZFPay.smali:225
+    ju_conf  @ _apk2\payload_smali\com\test\hown\ML.smali:70
+    ju_conf  @ _apk2\payload_smali\com\yplsd\zljsy\adapter\SzAdapter$1.smali:83
+    ju_conf  @ _apk2\payload_smali\com\test\hown\ML.smali:119
+    pz_sharedpre  @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:27
+    pz_sharedpre  @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:47
+    pz_sharedpre_cmreaderlogininfo  @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:13
+    pz_sharedpre_cmreaderlogininfo  @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:71
+    pz_sharedpre_cmreaderlogininfo  @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:103
+    pz_sharedpre_cmreaderlogininfo  @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:125
+    rxconfig  @ _apk2\payload_smali\com\report\Report.smali:203
+    rxconfig  @ _apk2\payload_smali\com\report\Report.smali:426
+    share_date_  @ _apk2\payload_smali\com\yplsd\zljsy\util\SharedPreferencesUtils.smali:33
+    share_date_  @ _apk2\payload_smali\com\yplsd\zljsy\util\SharedPreferencesUtils.smali:67
+    share_date_  @ _apk2\payload_smali\com\yplsd\zljsy\util\SharedPreferencesUtils.smali:112
+    share_date_  @ _apk2\payload_smali\com\yplsd\zljsy\util\SharedPreferencesUtils.smali:284
+    twc  @ _apk2\payload_smali\bn\tt\a\f.smali:33
+    twc  @ _apk2\payload_smali\bn\tt\a\f.smali:51
+    twc  @ _apk2\payload_smali\bn\tt\a\f.smali:71
+    twc  @ _apk2\payload_smali\bn\tt\a\f.smali:95
+    umeng_general_config  @ _apk2\payload_smali\u\aly\x.smali:31
+    wb  @ _apk2\payload_smali\com\an\df\g.smali:21
+    wb  @ _apk2\payload_smali\com\an\df\g.smali:43
+    wb  @ _apk2\payload_smali\com\an\df\g.smali:67
+    wb  @ _apk2\payload_smali\com\an\df\g.smali:91
+    yfpay  @ _apk2\payload_smali\com\y\f\jar\pay\UpdateSDK.smali:425
+    yfpay  @ _apk2\payload_smali\com\y\f\jar\pay\UpdateSDK.smali:450
+
+  --- Preference keys (Editor.put*/get* args, register-tracked) ---
+    ClientId  (putString) @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:135
+    CurrTime  (putLong) @ _apk2\payload_smali\com\an\df\g.smali:53
+    CurrVersion  (putInt) @ _apk2\payload_smali\com\y\f\jar\pay\UpdateSDK.smali:460
+    Feechanid_type  (putString) @ _apk2\payload_smali\com\an\df\g.smali:581
+    Feechanname_type  (putString) @ _apk2\payload_smali\com\an\df\g.smali:535
+    Feetype_type  (putString) @ _apk2\payload_smali\com\an\df\g.smali:489
+    IsSEndMessage  (putBoolean) @ _apk2\payload_smali\com\an\df\g.smali:101
+    IsStart  (putBoolean) @ _apk2\payload_smali\com\an\df\g.smali:171
+    Siteid_type  (putString) @ _apk2\payload_smali\com\an\df\g.smali:627
+    \u83b7\u53d6\u5230Cookie  (putString) @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:578
+    a_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:114
+    a_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:619
+    a_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:713
+    a_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:870
+    a_start_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:109
+    a_start_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:612
+    a_start_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:708
+    a_start_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:865
+    activities  (putString) @ _apk2\payload_smali\u\aly\z.smali:174
+    activities  (putString) @ _apk2\payload_smali\u\aly\ad.smali:452
+    android.intent.action.VIEW  (putInt) @ _apk2\payload_smali\com\yplsd\zljsy\adapter\SzAdapter$1$1.smali:314
+    android.intent.action.VIEW  (putInt) @ _apk2\payload_smali\com\yplsd\zljsy\adapter\SzAdapter$1$1.smali:402
+    au_p  (putString) @ _apk2\payload_smali\com\umeng\analytics\h.smali:383
+    au_u  (putString) @ _apk2\payload_smali\com\umeng\analytics\h.smali:388
+    chanl_num  (putString) @ _apk2\payload_smali\com\an\df\g.smali:697
+    comment_message  (putString) @ _apk2\payload_smali\com\an\df\g.smali:673
+    date  (putInt) @ _apk2\payload_smali\com\report\Report.smali:463
+    dntr  (putLong) @ _apk2\payload_smali\u\aly\ac.smali:112
+    failed_requests   (putInt) @ _apk2\payload_smali\u\aly\aa.smali:414
+    first_activate_time  (putLong) @ _apk2\payload_smali\u\aly\aa.smali:473
+    imsi  (putString) @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:616
+    invld_id  (putString) @ _apk2\payload_smali\u\aly\d$a.smali:132
+    isFirstRun  (putBoolean) @ _apk2\payload_smali\com\yuanlang\pay\TheService.smali:97
+    isFirstRun  (putBoolean) @ _apk2\payload_smali\com\yuanlang\pay\TheService.smali:299
+    last_req  (putLong) @ _apk2\payload_smali\u\aly\aa.smali:441
+    last_request_spent_ms  (putInt) @ _apk2\payload_smali\u\aly\aa.smali:423
+    last_request_time  (putLong) @ _apk2\payload_smali\u\aly\aa.smali:432
+    last_test_t  (putLong) @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$b.smali:246
+    longtoken  (putString) @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:85
+    msisdn  (putString) @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:89
+    my_imsi  (putString) @ _apk2\payload_smali\com\an\df\g.smali:217
+    my_pno  (putString) @ _apk2\payload_smali\com\an\df\g.smali:147
+    my_uid  (putString) @ _apk2\payload_smali\com\an\df\g.smali:77
+    my_v  (putString) @ _apk2\payload_smali\com\an\df\g.smali:263
+    oc_dc  (putInt) @ _apk2\payload_smali\com\umeng\analytics\h.smali:303
+    oc_ec  (putInt) @ _apk2\payload_smali\com\umeng\analytics\h.smali:588
+    oc_lt  (putInt) @ _apk2\payload_smali\com\umeng\analytics\h.smali:545
+    oc_mdf_t  (putLong) @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$b.smali:350
+    oc_mdf_told  (putLong) @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$b.smali:343
+    oc_req_i  (putLong) @ _apk2\payload_smali\com\umeng\analytics\onlineconfig\a$b.smali:324
+    reg_time  (putString) @ _apk2\payload_smali\com\shunpay210\sdk\LocalInfo210.smali:626
+    reg_time  (putString) @ _apk2\payload_smali\com\shunpay210\sdk\LocalInfo210.smali:1081
+    reportState  (putInt) @ _apk2\payload_smali\com\report\Report.smali:440
+    sdk_log_switch  (putBoolean) @ _apk2\payload_smali\com\sdk\main\WYZFPay.smali:109
+    serial  (putInt) @ _apk2\payload_smali\u\aly\c.smali:282
+    serial  (putInt) @ _apk2\payload_smali\u\aly\c.smali:567
+    session_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:100
+    session_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:718
+    session_end_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:856
+    session_id  (putString) @ _apk2\payload_smali\u\aly\z.smali:86
+    session_id  (putString) @ _apk2\payload_smali\u\aly\z.smali:842
+    session_start_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:95
+    session_start_time  (putLong) @ _apk2\payload_smali\u\aly\z.smali:851
+    signature  (putString) @ _apk2\payload_smali\u\aly\c.smali:292
+    signature  (putString) @ _apk2\payload_smali\u\aly\c.smali:577
+    sms_center  (putString) @ _apk2\payload_smali\com\an\df\g.smali:377
+    sms_key  (putString) @ _apk2\payload_smali\com\an\df\g.smali:333
+    sms_key_type  (putString) @ _apk2\payload_smali\com\an\df\g.smali:309
+    successful_request  (putInt) @ _apk2\payload_smali\u\aly\aa.smali:405
+    time  (putString) @ _apk2\payload_smali\com\an\df\g.smali:443
+    umeng_net_report_interval  (putLong) @ _apk2\payload_smali\com\umeng\analytics\h.smali:344
+    umeng_net_report_policy  (putInt) @ _apk2\payload_smali\com\umeng\analytics\h.smali:337
+    uptr  (putLong) @ _apk2\payload_smali\u\aly\ac.smali:101
+    user_id  (putString) @ _apk2\payload_smali\com\shunpay210\sdk\LocalInfo210.smali:609
+    userid  (putString) @ _apk2\payload_smali\com\hnya\pzgp\bw.smali:81
+
+====================================================================================
+6. EMAIL ADDRESSES, CRYPTO WALLETS, HARDCODED IPs
+====================================================================================
+--- EMAIL ADDRESSES ---
+  android@android.com  @ bytes:_hole5\split1\classes55.dex
+  android@android.com  @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+  android@android.com  @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+
+--- CRYPTO WALLETS ---
+  (none found)
+
+--- HARDCODED IP ADDRESSES ---
+  1.0.0.001  @ _apk2\payload_smali\com\yplsd\zljsy\activity\VfanActivity.smali:164
+  1.0.0.001  @ bytes:_apk2\classes.dex
+  10.0.0.172  @ _apk2\payload_smali\u\aly\t.smali:27
+  10.0.0.172  @ bytes:_apk2\classes.dex
+  10.235.148.9  @ _apk2\payload_smali\com\hnya\pzgp\cd.smali:159
+  10.235.148.9  @ _apk2\payload_smali\com\hnya\pzgp\cd.smali:177
+  10.235.148.9  @ _apk2\payload_smali\com\hnya\pzgp\cd.smali:30
+  10.235.148.9  @ bytes:_apk2\classes.dex
+  118.85.194.4  @ _apk2\payload_smali\com\hnya\pzgp\bf.smali:373
+  118.85.194.4  @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:56
+  118.85.194.4  @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:576
+  118.85.194.4  @ bytes:_apk2\classes.dex
+  120.26.106.206  @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:54
+  120.26.106.206  @ bytes:_apk2\classes.dex
+  120.76.225.59  @ bytes:_apk2\classes.dex
+  121.40.109.196  @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2257
+  121.40.109.196  @ bytes:_apk2\classes.dex
+  123.125.114.144  @ _apk2\payload_smali\com\boJUF\mB\mB\mB\uI.smali:2176
+  123.125.114.144  @ bytes:_apk2\classes.dex
+  139.129.132.111  @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:53
+  139.129.132.111  @ _apk2\payload_smali\com\hnya\pzgp\bl.smali:517
+  139.129.132.111  @ _apk2\payload_smali\com\hnya\pzgp\bn$c$3.smali:86
+  139.129.132.111  @ _apk2\payload_smali\com\hnya\pzgp\bo$2.smali:139
+  139.129.132.111  @ bytes:_apk2\classes.dex
+  39.0.0.0  @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:70
+  39.0.0.0  @ bytes:_apk2\classes.dex
+  5.5.3.0  @ _apk2\payload_smali\com\umeng\analytics\AnalyticsConfig.smali:186
+  5.5.3.0  @ bytes:_apk2\classes.dex
+
+====================================================================================
+7. DOWNLOADED / INSTALLED / LOADED FILES (.apk/.dex/.jar/.so/.zip/.bin/.obb)
+====================================================================================
+  .apk
+      @ _apk2\payload_smali\com\test\hown\Util.smali:821
+      @ bytes:_apk2\classes.dex
+  .dex
+      @ _apk2\payload_smali\com\yf\y\f\init\b\a$c.smali:117
+      @ bytes:_apk2\classes.dex
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\bootstrap.dex
+  .jar
+      @ _apk2\payload_smali\com\yf\y\f\init\dload\SDKManager.smali:168
+      @ bytes:_apk2\classes.dex
+  /yl_plugin.apk
+      @ _apk2\payload_smali\com\yuanlang\pay\plugin\libs\f.smali:601
+      @ bytes:_apk2\classes.dex
+  android.so
+      @ bytes:_hole5\split1\classes55.dex
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes55.dex
+  android.support.so
+      @ bytes:_hole5\split1\classes6.dex
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes6.dex
+  classes.dex
+      @ bytes:_apk2\wQtPQS.dec
+      @ bytes:analysis\recovered\M_PARIWAHAN\kesaj3fo_decrypted.bin
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer.dex
+  classes.jar
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk$1.smali:203
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk$2.smali:147
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk$2.smali:241
+  classesEN.jar
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:111
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:336
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:508
+  com.dyl.pay.ui.apk
+      @ _apk2\payload_smali\an\d\t\y\De.smali:203
+      @ bytes:_apk2\classes.dex
+  com.so
+      @ bytes:_hole5\split1\classes6.dex
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes6.dex
+  gcm.n.so
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+  http.so
+      @ _apk2\payload_smali\com\an\it\http\e.smali:888
+      @ _apk2\payload_smali\com\an\it\http\m.smali:328
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:132
+  lang.so
+      @ _apk2\payload_smali\com\yuanlang\pay\plugin\libs\c.smali:103
+      @ _apk2\payload_smali\com\yuanlang\pay\plugin\libs\c.smali:154
+      @ bytes:_apk2\classes.dex
+  myg0Nimages.zip
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+  myg0Ninstall_library.zip
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\installer_extracted\classes.dex
+  myg0Nminer.apk
+      @ bytes:miner_config.json
+  myg0Npayload_split0.apk
+      @ bytes:payload_config.json
+  myg0Npayload_split1.apk
+      @ bytes:payload_config.json
+  myg0Npayload_split2.apk
+      @ bytes:payload_config.json
+  new.assets.apk
+      @ _hole5\split1_smali\proj\App.smali:314
+      @ bytes:_hole5\split1\classes.dex
+      @ bytes:uploads\44b10841-c0ac-4d21-8979-7227d154896f\rto_extracted\phase4_payload\payload_split1.apk!classes.dex
+  utopay.jar
+      @ _apk2\payload_smali\d\a.smali:340
+      @ _apk2\payload_smali\d\a.smali:35
+      @ bytes:_apk2\classes.dex
+  yf.apk
+      @ _apk2\payload_smali\com\y\f\jar\pay\YFPaySDK.smali:107
+      @ bytes:_apk2\classes.dex
+  yf/dynamiclib.bin
+      @ bytes:_apk2\classes.dex
+  yl_plugin.apk
+      @ _apk2\payload_smali\com\yuanlang\pay\plugin\libs\f.smali:250
+      @ bytes:_apk2\classes.dex
+  yl_plugin.dex
+      @ _apk2\payload_smali\com\yuanlang\pay\plugin\libs\f.smali:575
+      @ bytes:_apk2\classes.dex
+  zyinres.apk
+      @ bytes:_apk2\classes.dex
+
+====================================================================================
+8. CONFIGURATION FILE CONTENTS (phase4_payload)
+====================================================================================
+
+  miner_config.json:
+    {
+      "isRemoteControl": false,
+      "isTestKeyEnabled": false,
+      "splits": [
+        "myg0Nminer.apk"
+      ],
+      "subscriptionEndMillis": 4611686018427387903,
+      "messageAuthenticationCode": "eVAmHju3UqrVWR56gOMaUQ==",
+      "simpleInstaller": "deprecated"
+    }
+
+  payload_config.json:
+    {
+      "isRemoteControl": false,
+      "isTestKeyEnabled": false,
+      "splits": [
+        "myg0Npayload_split0.apk",
+        "myg0Npayload_split1.apk",
+        "myg0Npayload_split2.apk"
+      ],
+      "subscriptionEndMillis": 1782968017708,
+      "messageAuthenticationCode": "1YNvFYz2Q8RhDbm4gbUVsg==",
+      "simpleInstaller": "deprecated"
+    }
+
+====================================================================================
+9. OBFUSCATED IOCS (nested base64 reveals)
+====================================================================================
+
+  --- Hidden IP (1) ---
+    114.215.27.211
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:1875
+      outer: aHR0cDovLzExNC4yMTUuMjcuMjExOjgwMTIvYWxpeXVuLmFzcHg=
+
+  --- Hidden Phone (2) ---
+    13303405600
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:8020
+      outer: (\'QzlDNDg3MjU4MTZCOEI3RTU1Nzk4QjlCQUMxMzMwMzQwNTYwMEMyQjI5MTc2MzJFNjVFRDhBQzNBMDU1NkYzNA==\',1),(\'
+    13303405600
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:8108
+      outer: (\'QzlDNDg3MjU4MTZCOEI3RTU1Nzk4QjlCQUMxMzMwMzQwNTYwMEMyQjI5MTc2MzJFNjVFRDhBQzNBMDU1NkYzNA==\',1),(\'
+
+  --- Hidden URL (7) ---
+    http://114.215.27.211:8012/aliyun.aspx
+      @ _apk2\payload_smali\com\hnya\pzgp\ar.smali:1875
+      outer: aHR0cDovLzExNC4yMTUuMjcuMjExOjgwMTIvYWxpeXVuLmFzcHg=
+    http://log1.ilast.cc
+      @ _apk2\payload_smali\com\boJUF\mB\mB\JO\uI.smali:353
+      outer: NXdGcU1pT1lkZExWTHlqcGFIUjBjRG92TDJ4dlp6RXVhV3hoYzNRdVkyTWhRR3BRaEdPcUNtZU9rWg
+    http://log1.ilast.cc
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:8103
+      outer: (\'OG16dWRBcXFISG5CUkJ1bmJPdGNkWERFQmFIUjBjRG92TDNBeExtbHNZWE4wTG1Oamd5YURKVlFqdUtpS1dQTXFEUHVIT0Zvc
+    http://logtest1.maimob.net
+      @ _apk2\payload_smali\com\boJUF\mB\mB\JO\uI.smali:348
+      outer: NVBHWGxJVUhCY2haSUpZU2FIUjBjRG92TDJ4dlozUmxjM1F4TG0xaGFXMXZZaTV1WlhRRklucGFlRWNFampaa1JP
+    http://logtest1.maimob.net
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:7983
+      outer: (\'N01tZkpNc1pGT1ZjSGNxeWdpZnhlVGFIUjBjRG92TDNCaGVYUmxjM1F4TG0xaGFXMXZZaTV1WlhRV0ZmRm9wd2hJdW9jdk5zR
+    http://p1.ilast.cc
+      @ _apk2\payload_smali\com\boJUF\mB\mB\JO\uI.smali:358
+      outer: OWJ3Y1FNcnVmUnpWVGl0V0t1WFNTeEx6bnJsQmFIUjBjRG92TDNBeExtbHNZWE4wTG1OakRlaEFCUHdkSVFDV2xjUExsSndhd0ZZ
+    http://p1.ilast.cc
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:8103
+      outer: (\'OG16dWRBcXFISG5CUkJ1bmJPdGNkWERFQmFIUjBjRG92TDNBeExtbHNZWE4wTG1Oamd5YURKVlFqdUtpS1dQTXFEUHVIT0Zvc
+
+====================================================================================
+9A. HOLE-5 DECODED MINER-PAYLOAD IOCs (210 constants, cross-validated Java==Python)
+====================================================================================
+  pool.jesfeoqrj3.xyz:8443                                   @ Miner.smali#176 / 0x20fb
+  d-miner                                                      @ Miner.smali#175
+  -o -k --tls --no-color --nicehash                           @ Miner.smali#181-185
+  WorkerName / workerIdKey, yy-MM-dd + plain "-" + hex        @ Miner.smali#186-193
+  direct pool connect failed / direct connection:             @ Miner.smali#178,180
+  aptabase-java@0.0.8                                         @ UHlHhtvMeuW5rzKL1M.smali#0
+  https://aptabase.jesfeoqrj3.xyz:8443                        @ EventsTracker.smali#51
+  A-SH-8430060486 (Aptabase app key)                          @ EventsTracker.smali#50
+  aptabase events: app_installation/successful_miner_installation/
+  successful_payload_installation/app_alive/mining_report/thermal_report
+  https://www.backupdomain2026xxx001..004 (miner binary DL)   @ MinerExecutableDownloader.smali#201-204
+  libmine- / armeabi-v7a                                      @ MinerExecutableDownloader.smali#197-198
+  EXECUTABLE_PREF_NAME / KEY_EXECUTABLE_DOWNLOADED            @ MinerExecutableDownloader.smali#195-196
+  FCM app id: 1:39848184100:android:c44d4f602ecf40683bcbb1    @ FCMSubscriber.smali#96
+  FCM API key: AIzaSyDDRPszQIVKnbIBw9nZuuhferi4-I0xwXU        @ FCMSubscriber.smali#97
+  FCM sender/project: 39848184100 / waking-21b04              @ FCMSubscriber.smali#98,100
+  storage bucket: waking-21b04.firebasestorage.app            @ FCMSubscriber.smali#99
+  FCM topic: subscription_successful                          @ FCMSubscriber.smali#90,91,102
+  asset names: myg0Ninstall_library.zip/myg0Nminer_config.json/
+  myg0Npayload_config.json/i_install_dex                     @ InstallStub.smali
+  config splits: myg0Nminer.apk; myg0Npayload_split0..2.apk   @ *_config.json
+  subscriptionEndMillis 1782968017708 (payload) / 4611686018427387903 (miner)
+
+====================================================================================
+10. SMS COMMAND / KEYWORD STRINGS
+====================================================================================
+  "","operator":"cmcc","sms_content":""
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:3151
+  "",\n"smsCode":""
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:1205
+  "#####.game.SEND_SMS1_SUC"
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils.smali:800
+  "#####.game.SEND_SMS2_SUC"
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils.smali:804
+  "##sendSmsDataMessage:"
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils.smali:1566
+  "##sendSmsMessage:"
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils.smali:1807
+  "; mSmsContent="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:123
+  "; mSmsDate="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:147
+  "; mSmsPerson"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:111
+  "; mSmsPort="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:135
+  "; mSmsServiceCenter="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:171
+  "; mSmsType="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:159
+  "ACTION_SCROLL_FORWARD"
+      @ _apk2\payload_smali\android\support\v4\view\accessibility\AccessibilityNodeInfoCompat.smali:275
+  "ACTIVE_MATCHED_SHILD_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1136
+  "ACTIVE_MATCHED_VERIFY_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1100
+  "ACTIVE_NOEXIST_MATCHED_SHILD_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1140
+  "ACTIVE_NOEXIST_MATCHED_VERIFY_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1104
+  "ACTIVE_SHILD_DELETE_FAIL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1152
+  "ACTIVE_SHILD_DELETE_SUCCESS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1148
+  "ACTIVE_SHILD_READSMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1132
+  "ACTIVE_VERIFY_DELETE_FAIL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1120
+  "ACTIVE_VERIFY_DELETE_SUCCESS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1112
+  "ACTIVE_VERIFY_READSMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1096
+  "APP/AppSMSPayLog.aspx"
+      @ _apk2\payload_smali\com\hnya\pzgp\ae.smali:129
+  "AuthSms"
+      @ _apk2\payload_smali\com\hnya\pzgp\e.smali:140
+  "AuthSms64"
+      @ _apk2\payload_smali\com\hnya\pzgp\e.smali:161
+  "AuthSms64_2"
+      @ _apk2\payload_smali\com\hnya\pzgp\e.smali:224
+  "AuthSms_2"
+      @ _apk2\payload_smali\com\hnya\pzgp\e.smali:203
+  "BROADCASE_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1164
+  "CONTENT_VIEW_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1160
+  "CONVERT_TO_SMSINFO_EXCEPTION:"
+      @ _apk2\payload_smali\com\sdk\d\b.smali:450
+  "DELETE"
+      @ _apk2\payload_smali\com\hnya\pzgp\r$c.smali:89
+  "DELETE MATCH ... "
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:355
+  "DELETE PORT ... "
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:287
+  "DELETE TIME:"
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:234
+  "DELETE_SHIELD_LIST"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1232
+  "DELIVERED_SMS_ACTION_ORDER"
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$a.smali:40
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:251
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:359
+  "DELIVERED_SMS_ACTION_VERIFY"
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:277
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:363
+  "DEL_SMS:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:540
+  "DEL_SMS_ERROR:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:598
+  "DOES NOT HAVE PERMISSION SEND_SMS:"
+      @ _apk2\payload_smali\com\sdk\b\a\f.smali:226
+  "EXCUTESMS_EXCEPTION"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1208
+  "FILTER INFO DELETE:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:1044
+  "FILTER MASK DELETE:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:1082
+  "FILTER PORT DELETE:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:1014
+  "GetSmsReq"
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:996
+  "LOST SEND SMS ... "
+      @ _apk2\payload_smali\com\sdk\service\a.smali:1260
+  "LoginSms"
+      @ _apk2\payload_smali\com\hnya\pzgp\q.smali:109
+  "MiiSmsBean:: mSmsId="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\Ke.smali:101
+  "OrderSms"
+      @ _apk2\payload_smali\com\hnya\pzgp\a.smali:188
+      @ _apk2\payload_smali\com\hnya\pzgp\f.smali:111
+      @ _apk2\payload_smali\com\hnya\pzgp\p.smali:109
+  "OrderSms64"
+      @ _apk2\payload_smali\com\hnya\pzgp\a.smali:200
+      @ _apk2\payload_smali\com\hnya\pzgp\f.smali:132
+  "OrderSms64_2"
+      @ _apk2\payload_smali\com\hnya\pzgp\a.smali:275
+  "OrderSms_2"
+      @ _apk2\payload_smali\com\hnya\pzgp\a.smali:263
+  "PAY_SMS_SIZE:"
+      @ _apk2\payload_smali\com\sdk\e\h.smali:261
+  "Paymentcodesms"
+      @ _apk2\payload_smali\com\hnya\pzgp\ax.smali:168
+  "READ RECEIVER SMS SIZE:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:1265
+  "READ SEND SMS SIZE:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:901
+  "READLOCALSMS_EXCEPTION"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1080
+  "RECEIVER SMS GET PHONE MSG RECEIVER STATE:"
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:805
+  "RECEIVER SMS PORT:"
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:473
+  "RECEIVER SMS STATE LINKID:"
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:558
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:857
+  "RECEIVER SMS STATE OREDERCODE:"
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:506
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:831
+  "RECEIVER SMS STATE SMS_TYPE:"
+      @ _apk2\payload_smali\com\sdk\receiver\e.smali:532
+  "RECEIVE_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1168
+  "RECEIVE_SMS_BROADCAST"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1056
+  "RESTORE SMS IDEN ... "
+      @ _apk2\payload_smali\com\sdk\e\h.smali:699
+  "Required field \'upload_traffic\' was not found in serialized data! Struct: "
+      @ _apk2\payload_smali\u\aly\bm$a.smali:93
+  "SEND DATA SMS EXCEPTION DEFAULT:"
+      @ _apk2\payload_smali\com\sdk\e\j.smali:357
+  "SEND GET PHONE SMS\uff1a"
+      @ _apk2\payload_smali\com\sdk\service\a.smali:497
+  "SEND SMS BASE64 ... "
+      @ _apk2\payload_smali\com\sdk\e\j.smali:25
+  "SEND SMS DEFAULT ... "
+      @ _apk2\payload_smali\com\sdk\e\j.smali:241
+  "SEND SMS INDEX:"
+      @ _apk2\payload_smali\com\sdk\service\a.smali:1163
+  "SEND SMS TEXT BASE64 ... "
+      @ _apk2\payload_smali\com\sdk\e\j.smali:66
+  "SEND SMS TEXT BASE64 EXCEPTION:"
+      @ _apk2\payload_smali\com\sdk\e\j.smali:141
+  "SEND TEXT SMS EXCEPTION DEFAULT ... "
+      @ _apk2\payload_smali\com\sdk\e\j.smali:302
+  "SEND_SMS_ACTION_CMDV---retCode--#####"
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils$19$1.smali:49
+  "SENT_SMS_ACTION"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\Iy\tP\uI.smali:41
+  "SENT_SMS_ACTION_ORDER"  (6 refs)
+  "SENT_SMS_ACTION_VERIFY"
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$b.smali:82
+      @ _apk2\payload_smali\com\hnya\pzgp\cv$c.smali:42
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:225
+      @ _apk2\payload_smali\com\hnya\pzgp\cv.smali:345
+  "SHILD_DELETE_FAIL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1204
+  "SHILD_DELETE_SUCCESS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1200
+  "SMSOrder"
+      @ _apk2\payload_smali\com\hnya\pzgp\b.smali:280
+  "SMSService"
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210.smali:206
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210.smali:604
+  "SMS_CHILD_ORDER"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:808
+  "SMS_DATE_LESS_MATCH"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1028
+  "SMS_DELIVERED_ACTION"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\Iy\tP\uI.smali:45
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210.smali:351
+  "SMS_ID:"
+      @ _apk2\payload_smali\com\sdk\e\i.smali:516
+  "SMS_SEND_ACTIOIN"
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210$SMSServiceReceiver.smali:48
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210.smali:262
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210.smali:341
+  "SMS_SEND_ACTION"
+      @ _apk2\payload_smali\com\sdk\main\c.smali:55
+  "SMS_SEND_ACTION_GETPHONENUMBER"
+      @ _apk2\payload_smali\com\sdk\main\c.smali:59
+  "START_RECEIVE_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1060
+  "START_SEND_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:724
+  "SecCfmSmsType"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1376
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1867
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:873
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:895
+  "SecCfmSmsType1"  (5 refs)
+  "SmsType"
+      @ _apk2\payload_smali\com\hnya\pzgp\a.smali:242
+  "SmsType_2"
+      @ _apk2\payload_smali\com\hnya\pzgp\a.smali:317
+  "SuccSmsKey"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1114
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1136
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1931
+  "UPLOAD"
+      @ _apk2\payload_smali\com\sdk\main\b$a.smali:57
+  "UPLOAD SMS CODE:"
+      @ _apk2\payload_smali\com\sdk\e\h$2.smali:67
+  "UPLOAD SMS FAILED ... "
+      @ _apk2\payload_smali\com\sdk\e\h$2.smali:418
+  "UPLOAD SMS IDEN ... "
+      @ _apk2\payload_smali\com\sdk\e\h.smali:810
+  "UPLOAD SMS RESPONSE PARAM IS NULL ... "
+      @ _apk2\payload_smali\com\sdk\e\h$2.smali:357
+  "UPLOAD SMS SEND:"
+      @ _apk2\payload_smali\com\sdk\e\h$2.smali:226
+  "UPLOAD_TRAFFIC"
+      @ _apk2\payload_smali\u\aly\bm$e.smali:70
+  "VERIFY_DELETE_FAIL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1184
+  "VERIFY_DELETE_SUCCESS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1180
+  "V_SMS_MATCHED"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1036
+  "V_SUBMIT_SMS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1052
+  "android.permission.READ_SMS"
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:207
+      @ _apk2\payload_smali\com\boJUF\Kuox.smali:61
+      @ _apk2\payload_smali\com\sdk\main\a.smali:123
+      @ _apk2\payload_smali\d\b.smali:36
+  "android.permission.RECEIVE_SMS"
+      @ _apk2\payload_smali\com\sdk\main\a.smali:129
+      @ _apk2\payload_smali\d\b.smali:42
+  "android.permission.SEND_SMS"  (5 refs)
+  "android.provider.Telephony.GSM_SMS_RECEIVED"
+      @ _apk2\payload_smali\cn\cuter\main\MyService.smali:51
+  "android.provider.Telephony.SMS_RECEIVED"  (5 refs)
+  "android.provider.Telephony.SMS_RECEIVED_2"
+      @ _apk2\payload_smali\cn\cuter\main\MyService.smali:55
+  "android.telephony.SmsManager"
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1505
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1538
+  "cfmsmskey"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1366
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1711
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:846
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:864
+  "cfmsmskey1"  (5 refs)
+  "cmreadpay_smscode:reqId:"
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:1137
+  "com.yf.billing.InSmsReceiver"
+      @ _apk2\payload_smali\com\y\f\jar\pay\InNoticeReceiver.smali:54
+  "com.yf.billing.SmsServices"
+      @ _apk2\payload_smali\com\y\f\jar\pay\UpdateServices.smali:105
+  "com.yuanlang.pay.service.NewSmsQueueService"
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:185
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:36
+      @ _apk2\payload_smali\com\yuanlang\pay\receiver\BootBroadcastReceiver.smali:28
+  "content://sms"  (15 refs)
+  "content://sms/"
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210.smali:242
+  "content://sms/conversations/"
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210$SmsContent.smali:245
+  "content://sms/inbox"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\uI.smali:826
+      @ _apk2\payload_smali\com\hnya\pzgp\bc.smali:269
+      @ _apk2\payload_smali\com\shunpay210\sdk\SMS210$SmsContent.smali:62
+  "delsms"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1735
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:506
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:524
+  "delsmskey"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1891
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:626
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:650
+  "delsmsspnumber"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1671
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:533
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:557
+  "getPreferredSmsSubscription"
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:1544
+  "getSmsDefaultSim"
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:2697
+  "getsmscode"
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1368
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1917
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:2052
+  "http://118.85.194.4:8083/iapSms/ws/v3.0.1/mix/billing"
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:56
+  "http://118.85.194.4:8083/iapSms/ws/v3.0.1/mix/validate"
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:576
+  "http://118.85.194.4:8083/iapSms/ws/v3.0.1/sp/validate"
+      @ _apk2\payload_smali\com\hnya\pzgp\bf.smali:373
+  "interception"
+      @ _apk2\payload_smali\com\hnya\pzgp\ae.smali:82
+  "isSuccSms"
+      @ _apk2\payload_smali\com\hnya\pzgp\av.smali:483
+  "matchSms"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\tP\oC.smali:53
+  "matched_sms"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\JO\mB\oC.smali:29
+  "pub_client_sms_switch"
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:5038
+  "pub_client_smstoken_switch"
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:2756
+      @ _apk2\payload_smali\com\hnya\pzgp\bk.smali:5022
+  "s_getsmscode"
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1941
+  "s_smscode"
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1947
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:2015
+  "seccfmsms"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1396
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1855
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:935
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:953
+  "seccfmsms1"  (5 refs)
+  "sendSmsMessage....."
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils$5.smali:61
+  "send_sms"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:2192
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:3365
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:902
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\Iy\mB\oC.smali:15
+  "sendsms"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\tP\ac.smali:27
+  "sms rec:"
+      @ _apk2\payload_smali\com\hnya\pzgp\bd.smali:1108
+  "sms:"
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:410
+  "smsCat"  (5 refs)
+  "smsList"
+      @ _apk2\payload_smali\com\sdk\d\e.smali:104
+      @ _apk2\payload_smali\com\sdk\d\e.smali:92
+      @ _apk2\payload_smali\com\sdk\service\a$3$1.smali:110
+  "smsTime"
+      @ _apk2\payload_smali\com\sdk\b\b\a.smali:858
+  "smsTo"
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:139
+  "smsType"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\Iy\tP\Ke.smali:119
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\Iy\tP\uI.smali:766
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\Iy\tP\uI.smali:932
+  "sms_center"
+      @ _apk2\payload_smali\com\an\df\g.smali:235
+      @ _apk2\payload_smali\com\an\df\g.smali:375
+  "sms_content"
+      @ _apk2\payload_smali\com\hnya\pzgp\bc.smali:464
+      @ _apk2\payload_smali\com\hnya\pzgp\bd$1.smali:50
+  "sms_key"
+      @ _apk2\payload_smali\com\an\df\g.smali:189
+      @ _apk2\payload_smali\com\an\df\g.smali:331
+  "sms_key_type"
+      @ _apk2\payload_smali\com\an\df\g.smali:307
+  "sms_pay_list"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:117
+  "sms_pay_list2"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:145
+  "smscenter"
+      @ _apk2\payload_smali\com\an\logic\b.smali:323
+  "smscode"
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:1104
+  "smscode_form"
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1358
+      @ _apk2\payload_smali\com\hnya\pzgp\cc.smali:1425
+  "smsdel"
+      @ _apk2\payload_smali\com\an\logic\b.smali:310
+  "smsdest"
+      @ _apk2\payload_smali\com\sdk\d\b.smali:397
+      @ _apk2\payload_smali\com\sdk\d\b.smali:405
+  "smskey"
+      @ _apk2\payload_smali\com\an\logic\b.smali:291
+  "smskeysuc"
+      @ _apk2\payload_smali\com\an\logic\b.smali:529
+  "smsorder"
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:1907
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:304
+      @ _apk2\payload_smali\com\hnya\pzgp\g.smali:322
+  "smspay"  (26 refs)
+  "uploadUserPhoneInfo"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\vG.smali:403
+  "upload_traffic"
+      @ _apk2\payload_smali\u\aly\bm$e.smali:72
+      @ _apk2\payload_smali\u\aly\bm.smali:106
+      @ _apk2\payload_smali\u\aly\bm.smali:164
+  "upload_traffic:"
+      @ _apk2\payload_smali\u\aly\bm.smali:720
+  "upload_url"
+      @ _apk2\payload_smali\com\sdk\e\g$1.smali:45
+  "verify_intercept_info"  (5 refs)
+  "{\n"msgType":"SmSOrderReq",\n"imei":""
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:1169
+
+====================================================================================
+11. BANKING / FINANCE / CARRIER-BILLING STRINGS
+====================================================================================
+  "",\n"payType":""
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:651
+  "&pay_code="
+      @ _apk2\payload_smali\com\hnya\pzgp\bf.smali:389
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:592
+  ".main.WYZFPay"
+      @ _apk2\payload_smali\com\sdk\main\WYZFPay.smali:169
+  ".pay.SZYTPay"
+      @ _apk2\payload_smali\com\yf\y\f\init\pay\SZYTPay.smali:337
+  "/pay/"
+      @ _apk2\payload_smali\com\sdk\e\g$1.smali:93
+      @ _apk2\payload_smali\com\sdk\e\g.smali:464
+      @ _apk2\payload_smali\com\sdk\service\CoreService.smali:226
+  "/sdcard/"
+      @ _apk2\payload_smali\an\d\t\y\In.smali:75
+  "; mPhoneNumberInSimCard="
+      @ _apk2\payload_smali\com\boJUF\mB\mB\mB\tQ.smali:395
+  "APP/AppPayResultLog.aspx"
+      @ _apk2\payload_smali\com\hnya\pzgp\ad.smali:41
+  "APP/AppPaylog.aspx"
+      @ _apk2\payload_smali\com\hnya\pzgp\as.smali:153
+  "APP/AppSMSPayLog.aspx"
+      @ _apk2\payload_smali\com\hnya\pzgp\ae.smali:129
+  "Android/data/com.door.pay.app/"
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\d\a.smali:89
+  "CURRENT_PAY_TIME"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:720
+  "GET PHONE TRY PAY ... "
+      @ _apk2\payload_smali\com\sdk\service\a$6.smali:63
+  "JmPaySDKInit"
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:539
+  "LAST_PAY_TIME"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:716
+  "MPAY_TIME_OUT"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:708
+  "MixInApp-pay:"
+      @ _apk2\payload_smali\com\hnya\pzgp\bi.smali:154
+  "NEED CONFIRM PAY:"
+      @ _apk2\payload_smali\com\sdk\b\a\f.smali:561
+  "ON NEED CONFIRM PAY ... "
+      @ _apk2\payload_smali\com\sdk\b\a\f$1.smali:39
+  "ORDER_CHECK_NEXT_PAY_TYPE"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:688
+  "PAY COMPLETE:"
+      @ _apk2\payload_smali\com\sdk\c\c.smali:52
+  "PAY PAR:"
+      @ _apk2\payload_smali\com\sdk\main\f.smali:39
+  "PAYTYPE"
+      @ _apk2\payload_smali\com\hnya\pzgp\Utils$6.smali:121
+      @ _apk2\payload_smali\com\hnya\pzgp\cl.smali:63
+  "PAY_LOG"  (13 refs)
+  "PAY_NEXT_PAY_TYPE"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:692
+  "PAY_PARAMS_ILLEGAL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:580
+  "PAY_SMS_SIZE:"
+      @ _apk2\payload_smali\com\sdk\e\h.smali:261
+  "PAY_TIMEOUT:"
+      @ _apk2\payload_smali\com\sdk\receiver\d.smali:238
+      @ _apk2\payload_smali\com\sdk\receiver\d.smali:462
+      @ _apk2\payload_smali\com\sdk\receiver\d.smali:687
+  "PayChannel"  (5 refs)
+  "PayChannel/ReadWap/Confirm.aspx?MyOrderId="
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:1117
+  "PayChannel/ReadWap/Order.aspx?MyOrderId="
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:793
+  "PayConfig"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\XQ.smali:232
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\XQ.smali:290
+  "Paymentcodesms"
+      @ _apk2\payload_smali\com\hnya\pzgp\ax.smali:168
+  "SDK_PAY_ASK_MOP"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1360
+  "SDK_PAY_ASK_MOP_FAIL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1372
+  "SDK_PAY_ASK_MOP_NULL"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1364
+  "SDK_PAY_ASK_MOP_SUCCESS"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1368
+  "SDK_PAY_GET_NEXT"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1376
+  "SDK_PAY_INIT_THIRDPARTY"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1380
+  "SDK_PAY_KX_APPID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1388
+  "SDK_PAY_KX_ID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1392
+  "SDK_PAY_MX_ID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1412
+  "SDK_PAY_TIME_OUT"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1356
+  "SDK_PAY_UPDATE_THIRDPARY"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1384
+  "SDK_PAY_YF_ID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1396
+  "SDK_PAY_YM_ID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1400
+  "SDK_PAY_YY_ID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1404
+  "SDK_PAY_ZZ_ID"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1408
+  "SDK_PAY_ZZ_INIT"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:1416
+  "SERVICE PAY ACTION:"
+      @ _apk2\payload_smali\com\sdk\service\a$1.smali:460
+  "SIM CARD CHANGE ... "
+      @ _apk2\payload_smali\com\sdk\service\a$5.smali:55
+  "START PAY:"
+      @ _apk2\payload_smali\com\sdk\service\a$3$1.smali:213
+      @ _apk2\payload_smali\com\sdk\service\a.smali:119
+  "START_MPAY"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:644
+  "START_PAY"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\tP\uI.smali:640
+  "SimCard Not found or Province Unknown"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Ke.smali:2287
+  "UTOPAY"
+      @ _apk2\payload_smali\c\a.smali:30
+      @ _apk2\payload_smali\c\a.smali:43
+      @ _apk2\payload_smali\c\a.smali:56
+  "WoUniPay"
+      @ _apk2\payload_smali\com\hnya\pzgp\ci.smali:33
+      @ _apk2\payload_smali\com\hnya\pzgp\cw.smali:42
+  "YQWY_PAY_APPID"
+      @ _apk2\payload_smali\a\a.smali:77
+  "YQWY_PAY_CHANNEL"
+      @ _apk2\payload_smali\a\a.smali:111
+  "YiPay/GetOrder.aspx?AppId="
+      @ _apk2\payload_smali\com\hnya\pzgp\ao.smali:153
+  "_def_continur_pay"
+      @ _apk2\payload_smali\com\sdk\main\c.smali:51
+  "_pay.error"
+      @ _apk2\payload_smali\com\sdk\c\c$1.smali:69
+      @ _apk2\payload_smali\com\sdk\e\c.smali:101
+      @ _apk2\payload_smali\com\sdk\e\g.smali:391
+  "_pay.log"
+      @ _apk2\payload_smali\com\sdk\c\c$1.smali:63
+      @ _apk2\payload_smali\com\sdk\e\c.smali:107
+  "_start_pay"
+      @ _apk2\payload_smali\com\sdk\main\c.smali:47
+  "availablePayType"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\XQ.smali:66
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\vG.smali:357
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:1597
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:428
+  "closePay"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:108
+  "cmreadpay_smscode:reqId:"
+      @ _apk2\payload_smali\com\hnya\pzgp\ca.smali:1137
+  "cn.utopay.internal.sdk.pay.Pay"
+      @ _apk2\payload_smali\d\a.smali:58
+  "com.dyl.pay.ui.apk"
+      @ _apk2\payload_smali\an\d\t\y\De.smali:203
+  "com.ldsdk.register.JmPaySDK"
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:134
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:359
+      @ _apk2\payload_smali\com\ldpay\jarpro\LdPaySdk.smali:531
+  "com.yuanlang.pay.impl.AppTacheImpl"
+      @ _apk2\payload_smali\com\yuanlang\pay\AppTache.smali:793
+      @ _apk2\payload_smali\com\yuanlang\pay\TheService.smali:151
+      @ _apk2\payload_smali\com\yuanlang\pay\TheService.smali:349
+  "com.yuanlang.pay.impl.PluginBundle"
+      @ _apk2\payload_smali\com\yuanlang\pay\plugin\libs\f.smali:100
+  "com.yuanlang.pay.service.AstepPayService"
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:181
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:32
+      @ _apk2\payload_smali\com\yuanlang\pay\TheService$1.smali:47
+      @ _apk2\payload_smali\com\yuanlang\pay\receiver\BootBroadcastReceiver.smali:24
+  "com.yuanlang.pay.service.NewSmsQueueService"
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:185
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:36
+      @ _apk2\payload_smali\com\yuanlang\pay\receiver\BootBroadcastReceiver.smali:28
+  "com.yuanlang.pay.service.PushService"
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:189
+      @ _apk2\payload_smali\com\yuanlang\pay\JobScheduleService.smali:40
+      @ _apk2\payload_smali\com\yuanlang\pay\receiver\BootBroadcastReceiver.smali:32
+  "firstpay"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$4$1.smali:78
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$4$2.smali:78
+  "http://pay.918ja.com:9000/init/error"
+      @ _apk2\payload_smali\com\yuanlang\pay\AppTache$1.smali:58
+  "miiPayHt"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\tP\uI.smali:71
+  "no SIM card is available in the device"
+      @ _apk2\payload_smali\com\report\DeviceUtils.smali:244
+  "p0 bPay="
+      @ _apk2\payload_smali\aaaa\dy\t\W.smali:404
+  "pay = "
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\c\a.smali:1172
+      @ _apk2\payload_smali\nuxrg\fkjne\sr85z1j\jk\DdP.smali:465
+  "pay method invoke"
+      @ _apk2\payload_smali\com\yf\y\f\init\pay\SZYTPay.smali:168
+  "payLog=="
+      @ _apk2\payload_smali\com\an\logic\a.smali:42
+  "payRetry"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Ke.smali:636
+  "payTime"
+      @ _apk2\payload_smali\com\sdk\b\b\a.smali:658
+  "payType"  (6 refs)
+  "pay_configure"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:1289
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:1515
+      @ _apk2\payload_smali\com\boJUF\mB\mB\Xd\uI.smali:6005
+  "pay_wait_time"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:136
+  "payconfigure"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\pO\tP\ac.smali:23
+  "payment_interval"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Ke.smali:1468
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\vG.smali:1369
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\vG.smali:447
+  "payvalue"
+      @ _apk2\payload_smali\com\an\logic\h.smali:491
+  "plg pay class not found:"
+      @ _apk2\payload_smali\com\yf\y\f\init\pay\SZYTPay.smali:185
+  "requestPay"  (6 refs)
+  "shunpay"
+      @ _apk2\payload_smali\com\shunpay210\sdk\ShunPay210.smali:477
+  "shunpay_appid"
+      @ _apk2\payload_smali\com\shunpay210\sdk\ShunPay210.smali:150
+  "shunpay_channel"
+      @ _apk2\payload_smali\com\shunpay210\sdk\ShunPay210.smali:171
+  "shunpay_sub_channel"
+      @ _apk2\payload_smali\com\shunpay210\sdk\ShunPay210.smali:192
+  "sms_pay_list"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:117
+  "sms_pay_list2"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:145
+  "smspay"  (26 refs)
+  "startMPay"
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Kd.smali:54
+      @ _apk2\payload_smali\com\boJUF\mB\mB\VD\Ke.smali:214
+  "startPay"
+      @ _apk2\payload_smali\com\yplsd\zljsy\config\Config$1.smali:99
+  "start_pay_time"  (5 refs)
+  "utopay.jar"
+      @ _apk2\payload_smali\d\a.smali:340
+      @ _apk2\payload_smali\d\a.smali:35
+  "wilepay"
+      @ _apk2\payload_smali\com\yplsd\zljsy\MainActivity$3$1.smali:70
+  "yfpay"
+      @ _apk2\payload_smali\com\y\f\jar\pay\UpdateSDK.smali:421
+      @ _apk2\payload_smali\com\y\f\jar\pay\UpdateSDK.smali:446
+  "yfpay.cf"
+      @ _apk2\payload_smali\com\y\f\jar\pay\UpdateSDK.smali:96
+
+====================================================================================
+12. SUMMARY STATISTICS
+====================================================================================
+  smali files:          2386
+  dex files:            68
+  apk files:            4
+  string literals:      14294
+  binary strings:       250603
+  URLs/domains:         288
+  phone numbers:        26
+  package names:        98
+  broadcast actions:    26
+  pref files:           12
+  pref keys:            59
+  emails:               3
+  crypto wallets:       0
+  hardcoded IPs:        11
+  downloadable files:   27
+  obfuscated IOCs:      10
+  decoded hole-5 IOCs:  28   (210 constants -> pool/telemetry/FCM/downloader set)
+  SMS keywords:         175
+
+====================================================================================
+END OF IOC CATALOG
+====================================================================================

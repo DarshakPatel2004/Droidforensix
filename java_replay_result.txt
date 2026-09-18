@@ -1,0 +1,51 @@
+MISMATCH -17516911999494 exp more_info got 盛⪴鳦큶擼⨻鳳퀹擧⨸鳴퀵擼⪦鳻侳監⨥鳱퀷擡⨰便盗⨶鳡퀣擴⨹鳼 len 20410
+MISMATCH -16962861218310 exp bug_fixes got 嚴⩵鳖퀹擧⨧鳰퀵擶⨼鱦퀸撵⨱鳰큶擰⨧鳧퀹擧⨰鳦큶擬⩵鳸퀳擿⨺ len 20356
+MISMATCH -16030853315078 exp Novedades got 盺⨴鳦퀢擊⨠鳥퀲擴⨡鳰依癌⨹鳡퀿擸⨴鲵퀷擶⨡鳠퀷擹⨼鳯퀷擶⨼ len 20414
+MISMATCH -15987903642118 exp whats_new got 盘⨺鳣퀳擱⨴鳱퀳擦侾盺⨴鳦퀢擊⨠鳥퀲擴⨡鳰依癌⨹鳡퀿擸⨴鲵퀷 len 20412
+MISMATCH -12917002025478 exp We're always making changes \u0430\u0578\u0501 improvements t\u03bf this \u2a09\u9ce0\ud064\u64f0\u2a63\u9ca0\u4883\ub083\u4eee\ub6e0\u4f67\ub77c\u4ee0\ub6ad\u4ca2\ub4a8\u4ea5\ub6e0\u4cb0\ub4b6\u4eb2\ub6a5\u4ce3\ub080\u4d7f\ub6b5\u4ce3\ub4a7\u4eaf\ub6ae\u4ce4\ub4b7\u4ee0\ub6ad\u4caa\ub4b0\u4eb3\ub6e0\u4ca2\ub4e3\u4eb4\ub6a8\u4caa\ub4ad\u4ea7\ub6ec\u4ce3\ub4a9\u4eb5\ub6b3\u4cb7\ub4e3\u4eab\ub6a5\u4ca6\ub4b3\u4ee0\ub6b9\u4cac\ub4b6\u4eb2\ub6e0\u4c96\ub4b3\u4ea4\ub6a1\u4cb7\ub4a6\u4eb3\ub6e0\u4cb7\ub4b6\u4eb2\ub6ae\u4ca6 got 盁⨰鲲퀤擰⩵鳴퀺擢⨴鳬퀥撵⨸鳴퀽擼⨻鳲큶擶⨽鳴퀸擲⨰鳦큶悥⼭ len 20277
+MISMATCH -12852577516038 exp keep_update_on got 盽⨰鳰퀦擊⨠鳥퀲擴⨡鳰퀉擺⨻伵盁⨰鲲퀤擰⩵鳴퀺擢⨴鳬퀥撵⨸鳴 len 20411
+MISMATCH -12736613399046 exp Last updated Jan 4th, 2026 got 盚⨴鳦퀢撵⨠鳥퀲擴⨡鳰퀲撵⨟鳴퀸撵⩡鳡퀾撹⩵鲧큦撧⩣侻盽⨰鳰 len 20399
+MISMATCH -12685073791494 exp last_update got 盺⨴鳦퀢擊⨠鳥퀲擴⨡鳰侯盚⨴鳦퀢撵⨠鳥퀲擴⨡鳰퀲撵⨟鳴퀸撵⩡ len 20414
+MISMATCH -12637829151238 exp What's new got 盁⨽鳴퀢撲⨦鲵퀸擰⨢侾盺⨴鳦퀢擊⨠鳥퀲擴⨡鳰侯盚⨴鳦퀢撵⨠鳥 len 20415
+MISMATCH -12594879478278 exp whats_new got 盡⨽鳴퀢擦⨊鳻퀳擢便盁⨽鳴퀢撲⨦鲵퀸擰⨢侾盺⨴鳦퀢擊⨠鳥퀲擴 len 20412
+MISMATCH -12556224772614 exp Everyone got 盓⨣鳰퀤擬⨺鳻퀳侼盡⨽鳴퀢擦⨊鳻퀳擢便盁⨽鳴퀢撲⨦鲵퀸擰⨢侾 len 20413
+MISMATCH -12517570066950 exp everyone got 盳⨣鳰퀤擬⨺鳻퀳侽盓⨣鳰퀤擬⨺鳻퀳侼盡⨽鳴퀢擦⨊鳻퀳擢便盁⨽ len 20413
+MISMATCH -12320001571334 exp To use this app, download the latest version. got 盂⨺鲵퀣擦⨰鲵퀢擽⨼鳦큶擴⨥鳥큺撵⨱鳺퀡擻⨹鳺퀷擱⩵鳡퀾擰⩵ len 20376
+MISMATCH -12251282094598 exp download_latest got 盲⨺鳢퀸擹⨺鳴퀲擊⨹鳴퀢擰⨦鳡侘盂⨺鲵퀣擦⨰鲵퀢擽⨼鳦큶擴⨥ len 20410
+MISMATCH -12178267650566 exp Update Available got 盃⨥鳱퀷擡⨰鲵퀗擣⨴鳼퀺擴⨷鳹퀳侺盲⨺鳢퀸擹⨺鳴퀲擊⨹鳴퀢擰 len 20389
+MISMATCH -12105253206534 exp update_available got 監⨥鳱퀷擡⨰鳊퀷擣⨴鳼퀺擴⨷鳹퀳侥盃⨥鳱퀷擡⨰鲵퀗擣⨴鳼퀺擴 len 20389
+MISMATCH -11937749481990 exp Information not provided by developer. got 盟⨻鳳퀹擧⨸鳴퀢擼⨺鳻큶擻⨺鳡큶擥⨧鳺퀠擼⨱鳰퀲撵⨷鳬큶擱⨰ len 20371
+MISMATCH -11830375299590 exp information_not_provided got 盿⨻鳳퀹擧⨸鳴퀢擼⨺鳻퀉擻⨺鳡퀉擥⨧鳺퀠擼⨱鳰퀲侓盟⨻鳳퀹擧 len 20397
+MISMATCH -11727296084486 exp subscription_successful got 盥⨠鳷퀥擶⨧鳼퀦擡⨼鳺퀸擊⨦鳠퀵擶⨰鳦퀥擳⨠鳹侭盿⨻鳳퀹擧⨸ len 20386
+MISMATCH -11667166542342 exp FCMSubscriber got 盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳擧侢盥⨠鳷퀥擶⨧鳼퀦擡⨼鳺퀸擊⨦鳠퀵 len 20408
+MISMATCH -11469598046726 exp subscribed, we'll receive messages, topic is  got 盥⨠鳷퀥擶⨧鳼퀴擰⨱鲹큶擢⨰鲲퀺擹⩵鳧퀳擶⨰鳼퀠擰⩵鳸퀳擦⨦ len 20376
+MISMATCH -11409468504582 exp FCMSubscriber got 盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳擧侘盥⨠鳷퀥擶⨧鳼퀴擰⨱鲹큶擢⨰鲲퀺 len 20408
+MISMATCH -11306389289478 exp subscription_successful got 盥⨠鳷퀥擶⨧鳼퀦擡⨼鳺퀸擊⨦鳠퀵擶⨰鳦퀥擳⨠鳹侸盐⨖鳘퀅擠⨷ len 20386
+MISMATCH -11177540270598 exp failed to subscribe. reason:  got 盰⨴鳼퀺擰⨱鲵퀢擺⩵鳦퀣擷⨦鳶퀤擼⨷鳰큸撵⨧鳰퀷擦⨺鳻크撵侢 len 20392
+MISMATCH -11117410728454 exp FCMSubscriber got 盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳擧侨盰⨴鳼퀺擰⨱鲵퀢擺⩵鳦퀣擷⨦鳶퀤 len 20408
+MISMATCH -10992856676870 exp another trying to subscribe. got 盷⨻鳺퀢擽⨰鳧큶擡⨧鳬퀿擻⨲鲵퀢擺⩵鳦퀣擷⨦鳶퀤擼⨷鳰큸侸盐 len 20393
+MISMATCH -10932727134726 exp FCMSubscriber got 盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳擧侩盷⨻鳺퀢擽⨰鳧큶擡⨧鳬퀿擻⨲鲵퀢 len 20408
+MISMATCH -10906957330950 exp topic got 盢⨺鳥퀿擶侸盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳擧侩盷⨻鳺퀢擽⨰鳧큶擡⨧ len 20400
+MISMATCH -10881187527174 exp topic got 盢⨺鳥퀿擶侰盢⨺鳥퀿擶侸盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳擧侩盷⨻鳺퀢 len 20400
+MISMATCH -10855417723398 exp topic got 盢⨺鳥퀿擶侰盢⨺鳥퀿擶侰盢⨺鳥퀿擶侸盐⨖鳘퀅擠⨷鳦퀵擧⨼鳷퀳 len 20400
+MISMATCH -10752338508294 exp subscription_successful got 盥⨠鳷퀥擶⨧鳼퀦擡⨼鳺퀸擊⨦鳠퀵擶⨰鳦퀥擳⨠鳹侰盢⨺鳥퀿擶侰 len 20386
+MISMATCH -10735158639110 exp fcm got 盰⨶鳸侢盥⨠鳷퀥擶⨧鳼퀦擡⨼鳺퀸擊⨦鳠퀵擶⨰鳦퀥擳⨠鳹侰盢⨺ len 20406
+MISMATCH -10679324064262 exp waking-21b04 got 盡⨴鳾퀿擻⨲鲸큤撤⨷鲥큢侶盰⨶鳸侢盥⨠鳷퀥擶⨧鳼퀦擡⨼鳺퀸擊 len 20409
+MISMATCH -10537590143494 exp waking-21b04.firebasestorage.app got 盡⨴鳾퀿擻⨲鲸큤撤⨷鲥큢撻⨳鳼퀤擰⨷鳴퀥擰⨦鳡퀹擧⨴鳲퀳撻⨴ len 20373
+MISMATCH -10486050535942 exp 39848184100 got 皥⩬鲭큢播⩤鲭큢撤⩥鲥侕盡⨴鳾퀿擻⨲鲸큤撤⨷鲥큢撻⨳鳼퀤擰⨷ len 20414
+MISMATCH -10314251844102 exp AIzaSyDDRPszQIVKnbIBw9nZuuhferi4-I0xwXU got 盗⨜鳯퀷擆⨬鳑퀒擇⨅鳦퀬擄⨜鳃퀝擻⨷鳜퀔擢⩬鳻퀌擠⨠鳽퀰擰⨧ len 20370
+MISMATCH -10120978315782 exp 1:39848184100:android:c44d4f602ecf40683bcbb1 got 皧⩯鲦큯播⩡鲭큧播⩡鲤큦撥⩯鳴퀸擱⨧鳺퀿擱⩯鳶큢撡⨱鲡퀰撣⩥ len 20377
+MISMATCH -10047963871750 exp FCM init ERROR:  got 盐⨖鳘큶擼⨻鳼퀢撵⨐鳇퀄據⨇鲯큶侙皧⩯鲦큯播⩡鲭큧播⩡鲤큦撥 len 20389
+MISMATCH -10030784002566 exp FCM got 盐⨖鳘侥盐⨖鳘큶擼⨻鳼퀢撵⨐鳇퀄據⨇鲯큶侙皧⩯鲦큯播⩡鲭큧播 len 20406
+MISMATCH -9927704787462 exp app not yet initialized got 盷⨥鳥큶擻⨺鳡큶擬⨰鳡큶擼⨻鳼퀢擼⨴鳹퀿擯⨰鳱侶盐⨖鳘侥盐⨖ len 20386
+MISMATCH -9889050081798 exp reporter got 盤⨰鳥퀹擧⨡鳰퀤侢盷⨥鳥큶擻⨺鳡큶擬⨰鳡큶擼⨻鳼퀢擼⨴鳹퀿擯 len 20413
+MISMATCH -9730136291846 exp https://aptabase.jesfeoqrj3.xyz:8443 got 盾⨡鳡퀦擦⩯鲺큹擴⨥鳡퀷擷⨴鳦퀳撻⨿鳰퀥擳⨰鳺퀧擧⨿鲦큸擭⨬ len 20369
+MISMATCH -9661416815110 exp A-SH-8430060486 got 盗⩸鳆퀞撸⩭鲡큥撥⩥鲣큦撡⩭鲣侑盾⨡鳡퀦擦⩯鲺큹擴⨥鳡퀷擷⨴ len 20410
+MISMATCH -9596992305670 exp thermal_report got 盢⨽鳰퀤擸⨴鳹퀉擧⨰鳥퀹擧⨡侺盗⩸鳆퀞撸⩭鲡큥撥⩥鲣큦撡⩭鲣 len 20411
+MISMATCH -9536862763526 exp mining_report got 盻⨼鳻퀿擻⨲鳊퀤擰⨥鳺퀤擡侻盢⨽鳰퀤擸⨴鳹퀉擧⨰鳥퀹擧⨡侺盗 len 20408
+MISMATCH -9493913090566 exp app_alive got 盷⨥鳥퀉擴⨹鳼퀠擰侸盻⨼鳻퀿擻⨲鳊퀤擰⨥鳺퀤擡侻盢⨽鳰퀤擸⨴ len 20412
+MISMATCH -9356474137094 exp successful_payload_installation got 盥⨠鳶퀵擰⨦鳦퀰擠⨹鳊퀦擴⨬鳹퀹擴⨱鳊퀿擻⨦鳡퀷擹⨹鳴퀢擼⨺ len 20394
+MISMATCH -9227625118214 exp successful_miner_installation got 盥⨠鳶퀵擰⨦鳦퀰擠⨹鳊퀻擼⨻鳰퀤擊⨼鳻퀥擡⨴鳹퀺擴⨡鳼퀹擻侪 len 20392
+MISMATCH -9154610674182 exp app_installation got 盷⨥鳥퀉擼⨻鳦퀢擴⨹鳹퀷擡⨼鳺퀸侨盥⨠鳶퀵擰⨦鳦퀰擠⨹鳊퀻擼 len 20389
+
+Matches 0 Mism 180

@@ -1,0 +1,89 @@
+Family,GT Count,Correct,Accuracy,Source(s),Confidence,Catch-all
+unknown,40,40,1.0,AndroZoo;MalwareBazaar;abusech;androzoo;modern_eval,high:28; medium:8; low:4,True
+FakeInstaller,25,0,0.0,AndroZoo-Drebin,high:25,False
+Opfake,21,0,0.0,AndroZoo-Drebin,high:21,False
+Plankton,17,0,0.0,AndroZoo-Drebin,high:17,False
+DroidKungFu,16,0,0.0,AndroZoo-Drebin,high:16,False
+GinMaster,15,0,0.0,AndroZoo;AndroZoo-Drebin,high:15,False
+NGate,15,12,0.8,MalwareBazaar;abusech,high:15,False
+SpyNote,14,0,0.0,MalwareBazaar;modern_eval,high:7; medium:7,False
+TeaBot,13,0,0.0,MalwareBazaar;abusech,high:13,False
+Ermac,12,0,0.0,MalwareBazaar;abusech,high:11; medium:1,False
+FakeTikTok,11,0,0.0,MalwareBazaar;modern_eval,high:5; medium:6,False
+Hydra,11,0,0.0,MalwareBazaar,high:11,False
+BaseBridge,10,0,0.0,AndroZoo-Drebin,high:10,False
+mParivahan,9,0,0.0,MalwareBazaar;modern_eval,medium:9,False
+FluBot,8,0,0.0,MalwareBazaar;abusech,high:8,False
+FantasyHub,6,6,1.0,modern_eval,medium:6,False
+GhostBat,5,0,0.0,modern_eval,high:1; medium:4,False
+Bradesco,4,0,0.0,modern_eval,high:3; medium:1,False
+FakeChrome,4,0,0.0,MalwareBazaar,high:4,False
+Imlog,4,0,0.0,AndroZoo-Drebin,high:4,False
+Kmin,4,0,0.0,AndroZoo-Drebin,high:4,False
+Andr/Banker-HDY,3,0,0.0,MalwareBazaar;abusech,high:3,False
+Exobot,3,0,0.0,MalwareBazaar,high:3,False
+Iconosys,3,0,0.0,AndroZoo-Drebin,high:3,False
+Indusind,3,0,0.0,modern_eval,medium:3,False
+Jiagu,3,0,0.0,AndroZoo,high:1; medium:2,False
+MobileTx,3,0,0.0,AndroZoo-Drebin,high:3,False
+PixRevolution,3,0,0.0,MalwareBazaar,high:3,False
+SendPay,3,0,0.0,AndroZoo-Drebin,high:3,False
+Adrd,2,0,0.0,AndroZoo-Drebin,high:2,False
+Alien,2,0,0.0,abusech,high:2,False
+AppRisk,2,0,0.0,AndroZoo;MalwareBazaar,medium:2,False
+BankBot,2,0,0.0,abusech,high:2,False
+Dowgin,2,2,1.0,AndroZoo,high:2,False
+FakeDoc,2,0,0.0,AndroZoo-Drebin,high:2,False
+FakeRun,2,0,0.0,AndroZoo-Drebin,high:2,False
+HyPay,2,0,0.0,modern_eval,high:2,False
+ICICI,2,0,0.0,abusech,high:2,False
+Konfety,2,0,0.0,MalwareBazaar,high:2,False
+SMSreg,2,0,0.0,AndroZoo-Drebin;modern_eval,high:2,False
+Secapk,2,0,0.0,AndroZoo,high:2,False
+40094400,1,0,0.0,MalwareBazaar,high:1,True
+AdLibrary,1,0,0.0,abusech,medium:1,False
+Adsms,1,0,0.0,AndroZoo-Drebin,high:1,False
+Andr/NGate-G,1,1,1.0,MalwareBazaar,high:1,False
+Android/Packed,1,0,0.0,AndroZoo,high:1,True
+Aversefalc,1,0,0.0,modern_eval,high:1,False
+BeatBanker,1,0,0.0,MalwareBazaar,high:1,False
+Bian,1,0,0.0,abusech,high:1,False
+Boogr,1,1,1.0,MalwareBazaar,high:1,False
+Boxer,1,0,0.0,AndroZoo-Drebin,high:1,False
+BtmobRAT,1,0,0.0,modern_eval,high:1,False
+Cerberus,1,0,0.0,abusech,high:1,False
+Cnzz,1,0,0.0,AndroZoo,high:1,False
+Copycat,1,0,0.0,AndroZoo-Drebin,high:1,False
+CraxsRAT,1,0,0.0,modern_eval,medium:1,False
+Dougalek,1,0,0.0,AndroZoo-Drebin,high:1,False
+DroidDream,1,0,0.0,AndroZoo-Drebin,high:1,False
+Escobar,1,0,0.0,MalwareBazaar,high:1,False
+Eventbot,1,0,0.0,abusech,high:1,False
+Evo-gen [Trj],1,0,0.0,MalwareBazaar,high:1,True
+ExploitLinuxLotoor,1,0,0.0,AndroZoo-Drebin,high:1,False
+FaceNiff,1,0,0.0,AndroZoo-Drebin,high:1,False
+FakeInst,1,0,0.0,AndroZoo,high:1,False
+FakeTelegram,1,0,0.0,MalwareBazaar,high:1,False
+FakeTimer,1,0,0.0,AndroZoo-Drebin,high:1,False
+Geinimi,1,0,0.0,AndroZoo-Drebin,high:1,False
+HEUR,1,0,0.0,abusech,medium:1,True
+Hamob,1,0,0.0,AndroZoo-Drebin,high:1,False
+Joker,1,0,0.0,abusech,high:1,False
+Lemon,1,0,0.0,AndroZoo-Drebin,high:1,False
+Mirax,1,0,0.0,modern_eval,medium:1,False
+Nandrobox,1,0,0.0,AndroZoo-Drebin,high:1,False
+NickiSpy,1,0,0.0,AndroZoo-Drebin,high:1,False
+Nisev,1,0,0.0,AndroZoo-Drebin,high:1,False
+Nyleaker,1,0,0.0,AndroZoo-Drebin,high:1,False
+Ollvm,1,0,0.0,MalwareBazaar,high:1,False
+Penetho,1,0,0.0,AndroZoo-Drebin,high:1,False
+Serbg,1,0,0.0,AndroZoo-Drebin,high:1,False
+SmForw,1,0,0.0,AndroZoo-Drebin,high:1,False
+SmsSend,1,0,0.0,modern_eval,high:1,False
+Spitmo,1,0,0.0,AndroZoo-Drebin,high:1,False
+SpyHasb,1,0,0.0,AndroZoo-Drebin,high:1,False
+SpyMax,1,0,0.0,MalwareBazaar,low:1,False
+Stiniter,1,0,0.0,AndroZoo-Drebin,high:1,False
+Tiramisu,1,0,0.0,MalwareBazaar,high:1,False
+Typstu,1,0,0.0,AndroZoo-Drebin,high:1,False
+Zsone,1,0,0.0,AndroZoo-Drebin,high:1,False

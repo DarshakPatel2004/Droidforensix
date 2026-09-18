@@ -1,0 +1,559 @@
+{
+  "summary": {
+    "total_apks": 359,
+    "families_profiled": 41,
+    "high_stability": 6,
+    "thresholds": {
+      "high": 0.7,
+      "medium": 0.4
+    }
+  },
+  "profiles": {
+    "FakeDoc": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Organizational Unit: Battery Upgrade",
+      "top_issuer_coverage": 1.0,
+      "issuer_patterns": [
+        "Organizational Unit: Battery Upgrade"
+      ],
+      "stability": "HIGH"
+    },
+    "HyPay": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: huoshu, Organizational Unit: huoshu",
+      "top_issuer_coverage": 1.0,
+      "issuer_patterns": [
+        "Common Name: huoshu, Organizational Unit: huoshu"
+      ],
+      "stability": "HIGH"
+    },
+    "Iconosys": {
+      "sample_count": 3,
+      "cert_extracted": 3,
+      "top_issuer": "Common Name: Vasudev, Organizational Unit: Dev Corp, Organization: Dev Corp, Locality: Bangalore, State/Province: KA, Country: IN",
+      "top_issuer_coverage": 1.0,
+      "issuer_patterns": [
+        "Common Name: Vasudev, Organizational Unit: Dev Corp, Organization: Dev Corp, Locality: Bangalore, State/Province: KA, Country: IN"
+      ],
+      "stability": "HIGH"
+    },
+    "Kmin": {
+      "sample_count": 4,
+      "cert_extracted": 4,
+      "top_issuer": "Common Name: ddm",
+      "top_issuer_coverage": 1.0,
+      "issuer_patterns": [
+        "Common Name: ddm"
+      ],
+      "stability": "HIGH"
+    },
+    "KungFu": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+      "top_issuer_coverage": 1.0,
+      "issuer_patterns": [
+        "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn"
+      ],
+      "stability": "HIGH"
+    },
+    "MobileTx": {
+      "sample_count": 3,
+      "cert_extracted": 3,
+      "top_issuer": "Common Name: tx, Locality: shanghai",
+      "top_issuer_coverage": 1.0,
+      "issuer_patterns": [
+        "Common Name: tx, Locality: shanghai"
+      ],
+      "stability": "HIGH"
+    },
+    "BankBot": {
+      "sample_count": 3,
+      "cert_extracted": 2,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.667,
+      "issuer_patterns": [
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "DroidKungFu": {
+      "sample_count": 6,
+      "cert_extracted": 6,
+      "top_issuer": "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+      "top_issuer_coverage": 0.667,
+      "issuer_patterns": [
+        "Common Name: 12, Organizational Unit: 12, Organization: 12, Locality: 12, State/Province: 12, Country: 12",
+        "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+        "Common Name: alan"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Opfake": {
+      "sample_count": 14,
+      "cert_extracted": 14,
+      "top_issuer": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+      "top_issuer_coverage": 0.643,
+      "issuer_patterns": [
+        "Common Name: AgeWap, Organizational Unit: AgeWap Corp., Organization: AgeWap, Locality: Moscow, State/Province: Unknown, Country: RU",
+        "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+        "Common Name: Unknown, Organizational Unit: Unknown, Organization: WapCash, Locality: Unknown, State/Province: Unknown, Country: Unknown"
+      ],
+      "stability": "MEDIUM"
+    },
+    "GinMaster": {
+      "sample_count": 12,
+      "cert_extracted": 12,
+      "top_issuer": "Common Name: android",
+      "top_issuer_coverage": 0.583,
+      "issuer_patterns": [
+        "Common Name: android",
+        "Common Name: picshow1, Country: CN",
+        "Country: CN"
+      ],
+      "stability": "MEDIUM"
+    },
+    "BaseBridge": {
+      "sample_count": 7,
+      "cert_extracted": 7,
+      "top_issuer": "Common Name: kejikeji, Organizational Unit: kejikeji, Organization: kejikeji, Locality: kejikeji, State/Province: kejikeji, Country: kejikeji",
+      "top_issuer_coverage": 0.571,
+      "issuer_patterns": [
+        "Common Name: android, Organizational Unit: google, Organization: google, Locality: beijing, State/Province: beijing, Country: cn",
+        "Common Name: kejikeji, Organizational Unit: kejikeji, Organization: kejikeji, Locality: kejikeji, State/Province: kejikeji, Country: kejikeji",
+        "Country: keji0003"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Adrd": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: lzq, Organizational Unit: lzq, Organization: kdsjfkl, Locality: dlkfjkl, State/Province: fwekfj, Country: 430034",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: lzq, Organizational Unit: lzq, Organization: kdsjfkl, Locality: dlkfjkl, State/Province: fwekfj, Country: 430034",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Android/Agent": {
+      "sample_count": 2,
+      "cert_extracted": 1,
+      "top_issuer": "Common Name: ubgZsRH",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: ubgZsRH"
+      ],
+      "stability": "MEDIUM"
+    },
+    "AppRisk": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: Android QZone Team, Organizational Unit: Tencent Company, Organization: QZone Team of Tencent Company, Locality: Beijing City, State/Province: Beijing City, Country: 86",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: Android QZone Team, Organizational Unit: Tencent Company, Organization: QZone Team of Tencent Company, Locality: Beijing City, State/Province: Beijing City, Country: 86",
+        "Common Name: Release, Organization: Android, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Dowgin": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+        "Email Address: taco@163.com, Common Name: SKYCADE, Organizational Unit: BADCNA, Organization: RTop, Locality: CD, State/Province: sc, Country: CN"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Dropper": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Locality: Lzgbe, Organization: Gnphkbx, Common Name: Nkhglaqxjomtl, Country: IN, State/Province: Ukkbymdxjphdt",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Locality: Cgynk, State/Province: Tnluzpx, Country: JW, Organizational Unit: Smmxzeejy, Organization: Ljzpn",
+        "Locality: Lzgbe, Organization: Gnphkbx, Common Name: Nkhglaqxjomtl, Country: IN, State/Province: Ukkbymdxjphdt"
+      ],
+      "stability": "MEDIUM"
+    },
+    "FakeRun": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: zelmamarcelino12@gmail.com",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: tube mate",
+        "Common Name: zelmamarcelino12@gmail.com"
+      ],
+      "stability": "MEDIUM"
+    },
+    "General": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: android",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Imlog": {
+      "sample_count": 4,
+      "cert_extracted": 4,
+      "top_issuer": "Common Name: ysler.com, Organizational Unit: ysler, Organization: ysler, Locality: ysler, State/Province: china, Country: 86",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: wallpapers, Organizational Unit: wallpapers, Organization: wallpapers, Locality: wallpapers, State/Province: wallpapers",
+        "Common Name: ysler.com, Organizational Unit: ysler, Organization: ysler, Locality: ysler, State/Province: china, Country: 86",
+        "Common Name: zhangtao, Organizational Unit: eoemarket, Organization: eoe, Locality: beijing, State/Province: beijing, Country: zh"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Secapk": {
+      "sample_count": 2,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: a",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: a",
+        "Common Name: lzs, Organizational Unit: lzs, Organization: lzs, Locality: lzs, State/Province: lzs, Country: lzs"
+      ],
+      "stability": "MEDIUM"
+    },
+    "SpyMax": {
+      "sample_count": 6,
+      "cert_extracted": 6,
+      "top_issuer": "Common Name: Android Debug, Organizational Unit: Android, Organization: US, Locality: US, State/Province: US, Country: US",
+      "top_issuer_coverage": 0.5,
+      "issuer_patterns": [
+        "Common Name: Android Debug, Organization: Android, Country: US",
+        "Common Name: Android Debug, Organizational Unit: Android, Organization: US, Locality: US, State/Province: US, Country: US",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Agent": {
+      "sample_count": 15,
+      "cert_extracted": 15,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.467,
+      "issuer_patterns": [
+        "Common Name: Android Debug, Organizational Unit: Android, Organization: Unknown, Locality: Unknown, State/Province: Unknown, Country: US",
+        "Common Name: Android Developer, Organizational Unit: Telegram, Organization: Telegram, Locality: Unknown, State/Province: Unknown, Country: Unknown",
+        "Common Name: Client App, Organizational Unit: Mobile Team, Organization: Cloud Systems, Locality: Rio de Janeiro, State/Province: RJ, Country: BR",
+        "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+        "Common Name: Service Platform, Organizational Unit: Backend Team, Organization: Lumen Tech, Locality: Maceió, State/Province: AL, Country: BR",
+        "Common Name: np, Organizational Unit: np, Organization: np, Locality: 南京, State/Province: 江苏, Country: 中国",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+        "Organizational Unit: gsr"
+      ],
+      "stability": "MEDIUM"
+    },
+    "FakeInstaller": {
+      "sample_count": 9,
+      "cert_extracted": 9,
+      "top_issuer": "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+      "top_issuer_coverage": 0.444,
+      "issuer_patterns": [
+        "Common Name: Alex Popov, Organizational Unit: inc, Organization: Moskow Droid Development, Locality: Moskow, State/Province: Moskow, Country: RU",
+        "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+        "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+        "Common Name: tech, Organizational Unit: Tech, Organization: ADV, Locality: Los Angeles, State/Province: CA, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "Gen": {
+      "sample_count": 12,
+      "cert_extracted": 11,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.417,
+      "issuer_patterns": [
+        "Common Name: B7UEYV, Organizational Unit: 41E5F2, Organization: APUCKE, Locality: 1IOX80, State/Province: 94RECT, Country: G42QNO",
+        "Common Name: George Thomas, Organizational Unit: Data Science, Organization: TechCorp, Locality: São Paulo, State/Province: São Paulo, Country: BR",
+        "Common Name: NFC Receiver, Organizational Unit: Mobile, Organization: NFC Systems, Locality: SP, State/Province: SP, Country: BR",
+        "Common Name: Shadow, Organizational Unit: Dev, Organization: Shadow, Locality: Unknown, State/Province: Unknown, Country: XX",
+        "Common Name: xxrjy, Locality: 湖北武汉",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "MEDIUM"
+    },
+    "FakeInst": {
+      "sample_count": 17,
+      "cert_extracted": 17,
+      "top_issuer": "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+      "top_issuer_coverage": 0.412,
+      "issuer_patterns": [
+        "Common Name: Bruce Key, Organizational Unit: Mobile Services, Organization: Mobile Sevices, Locality: Arizona, State/Province: Arizona, Country: US",
+        "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+        "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+        "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+        "Common Name: Roman Zabelin, Organizational Unit: ConvertLab, Organization: LLC ConvertLab, Locality: Moscow, Country: 07"
+      ],
+      "stability": "MEDIUM"
+    },
+    "GenericKD": {
+      "sample_count": 19,
+      "cert_extracted": 18,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.368,
+      "issuer_patterns": [
+        "Common Name: Abu Aziz, Organizational Unit: Unknown, Organization: Unknown, Locality: Bekasi, State/Province: West Java, Country: ID",
+        "Common Name: Android Debug, Organizational Unit: Android, Organization: Unknown, Locality: Unknown, State/Province: Unknown, Country: US",
+        "Common Name: Google, Organizational Unit: Google, Organization: Google, Locality: San Francisco, State/Province: US, Country: US",
+        "Common Name: Su MuCheng",
+        "Common Name: Zhengfa Dang, Organizational Unit: Zhengfa, Locality: Beijing, State/Province: Beijing, Country: CN",
+        "Common Name: np, Organizational Unit: np, Organization: np, Locality: 南京, State/Province: 江苏, Country: 中国",
+        "Common Name: x, Organizational Unit: y, Organization: z, Locality: x, State/Province: y, Country: z",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "Andr/Banker-HDY": {
+      "sample_count": 3,
+      "cert_extracted": 3,
+      "top_issuer": "Common Name: HPLaPyqtAZF",
+      "top_issuer_coverage": 0.333,
+      "issuer_patterns": [
+        "Common Name: HPLaPyqtAZF",
+        "Common Name: MVhrXL",
+        "Common Name: PoRzzkLP"
+      ],
+      "stability": "LOW"
+    },
+    "Jiagu": {
+      "sample_count": 3,
+      "cert_extracted": 3,
+      "top_issuer": "Common Name: 3Aapp, Organizational Unit: 3Aapp.com, Organization: anobas, Country: CN",
+      "top_issuer_coverage": 0.333,
+      "issuer_patterns": [
+        "Common Name: 3Aapp, Organizational Unit: 3Aapp.com, Organization: anobas, Country: CN",
+        "Common Name: cnea, Organization: cnea",
+        "Common Name: qingk, Organizational Unit: NewMeiTi, Organization: China, Locality: Shandong"
+      ],
+      "stability": "LOW"
+    },
+    "Banker": {
+      "sample_count": 13,
+      "cert_extracted": 13,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.308,
+      "issuer_patterns": [
+        "Common Name: Kasoft Technology, Organizational Unit: Android, Organization: Google, Locality: Sonora, State/Province: Texas, Country: US",
+        "Common Name: editor",
+        "Common Name: fofxuhrl, Organizational Unit: etddp, Organization: hrcceu, Locality: mtwzrr, State/Province: lbfpc, Country: US",
+        "Common Name: kolifiroyomu, Organization: kazezovulorace, Country: US",
+        "Common Name: kuwuxiwe, Organization: dudojeze, Country: US",
+        "Common Name: mogo, Organization: zegu, Country: US",
+        "Common Name: np, Organizational Unit: np, Organization: np, Locality: 南京, State/Province: 江苏, Country: 中国",
+        "Common Name: sawuya, Organization: cilola, Country: US",
+        "Common Name: zalelukufeho, Organization: mafowusodori, Country: US",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "Backdoor": {
+      "sample_count": 7,
+      "cert_extracted": 7,
+      "top_issuer": "Country: keji0003",
+      "top_issuer_coverage": 0.286,
+      "issuer_patterns": [
+        "Common Name: Alan",
+        "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+        "Common Name: android",
+        "Common Name: kejikeji, Organizational Unit: kejikeji, Organization: kejikeji, Locality: kejikeji, State/Province: kejikeji, Country: kejikeji",
+        "Country: keji0003",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "GhostBat": {
+      "sample_count": 4,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: MMDPVVUA PAKZRCIM, Organizational Unit: RXNOXV_Y1PLSO, Organization: RXNOXV_Y1PLSO, Locality: CNIMLRYL, State/Province: VFOVODFSYU, Country: KA",
+      "top_issuer_coverage": 0.25,
+      "issuer_patterns": [
+        "Common Name: MMDPVVUA PAKZRCIM, Organizational Unit: RXNOXV_Y1PLSO, Organization: RXNOXV_Y1PLSO, Locality: CNIMLRYL, State/Province: VFOVODFSYU, Country: KA",
+        "Common Name: fuckubgjjh, Organizational Unit: bloodhoundhgg, Organization: tohvcdfghb, Locality: toughbbh87, State/Province: upbvv, Country: gcxcccc"
+      ],
+      "stability": "LOW"
+    },
+    "NGate": {
+      "sample_count": 4,
+      "cert_extracted": 4,
+      "top_issuer": "Common Name: APK Shield, Organization: APK Shield Platform, Organizational Unit: Hardening, Country: CN",
+      "top_issuer_coverage": 0.25,
+      "issuer_patterns": [
+        "Common Name: APK Shield, Organization: APK Shield Platform, Organizational Unit: Hardening, Country: CN",
+        "Common Name: Giovanni Colombo, Organizational Unit: 595, Organization: TechCorp, Locality: Firenze, State/Province: Firenze, Country: IT",
+        "Common Name: Luigi Bianchi, Organizational Unit: 509, Organization: TechCorp, Locality: Torino, State/Province: Torino, Country: IT",
+        "Common Name: ghgytioiouifddd, Organizational Unit: ghgytioiouifddd, Organization: ghgytioiouifddd, Locality: ghgytioiouifddd, State/Province: ghgytioiouifddd, Country: ghgytioiouifddd"
+      ],
+      "stability": "LOW"
+    },
+    "a": {
+      "sample_count": 4,
+      "cert_extracted": 4,
+      "top_issuer": "Common Name: Alexander Vasiliev, Organizational Unit: Unknown, Organization: AlDiApps, Locality: Unknown, State/Province: Unknown, Country: Unknown",
+      "top_issuer_coverage": 0.25,
+      "issuer_patterns": [
+        "Common Name: Alexander Vasiliev, Organizational Unit: Unknown, Organization: AlDiApps, Locality: Unknown, State/Province: Unknown, Country: Unknown",
+        "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+        "Common Name: vill",
+        "Organizational Unit: Google Inc., Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "Adware": {
+      "sample_count": 10,
+      "cert_extracted": 10,
+      "top_issuer": "Common Name: Gp Imports, Organizational Unit: Gp Imports, Organization: Gp Imports, Locality: Miami, State/Province: Fl, Country: US",
+      "top_issuer_coverage": 0.2,
+      "issuer_patterns": [
+        "Common Name: Gp Imports, Organizational Unit: Gp Imports, Organization: Gp Imports, Locality: Miami, State/Province: Fl, Country: US",
+        "Common Name: Inforbit di Garozzo Angelo Antonio, Organizational Unit: Inforbit Android Apps, Organization: Inforbit, Locality: Catania, State/Province: Italy, Country: 95100",
+        "Common Name: asda, Organizational Unit: adas, Organization: asdas, Locality: asdasd, State/Province: asdas, Country: 10",
+        "Common Name: eastedge",
+        "Common Name: eman ana",
+        "Common Name: thirdparty",
+        "Common Name: xyao, Organizational Unit: xy, Organization: xy, Locality: china, State/Province: js, Country: cn",
+        "Common Name: yyjn",
+        "Email Address: yadfewq@163.com, Common Name: Tacasdf, Organizational Unit: Tacasdf, Organization: Tacasdf, Locality: adf, State/Province: Cafdf, Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "AndroidOS": {
+      "sample_count": 53,
+      "cert_extracted": 53,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.189,
+      "issuer_patterns": [
+        "Common Name: Andrea Colombo, Organizational Unit: 337, Organization: SoftwareLab, Locality: Firenze, State/Province: Firenze, Country: IT",
+        "Common Name: Andrea Colombo, Organizational Unit: 921, Organization: DigitalTech, Locality: Milano, State/Province: Milano, Country: IT",
+        "Common Name: Andrea Ferrari, Organizational Unit: 203, Organization: SoftwareLab, Locality: Napoli, State/Province: Napoli, Country: IT",
+        "Common Name: Andrea Verdi, Organizational Unit: 138, Organization: MobileSolutions, Locality: Milano, State/Province: Milano, Country: IT",
+        "Common Name: Android Debug, Organization: Android, Country: US",
+        "Common Name: Android, Organizational Unit: Android, Organization: Google Inc., Locality: Mountain View, State/Province: California, Country: US",
+        "Common Name: Apache Software Foundation, Organizational Unit: Infrastructure, Organization: Apache Software Foundation, Locality: Wakefield, State/Province: Massachusetts, Country: US",
+        "Common Name: Code Distribution Certificate 3949, Organizational Unit: Systems-257, Organization: Sync Forge Global, Locality: Ahmedabad, State/Province: Maharashtra, Country: IN",
+        "Common Name: Hao Wang, Organizational Unit: Rhythm, Organization: Rhythm, Locality: beijing, State/Province: beijing, Country: china",
+        "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+        "Common Name: JHMVvZy",
+        "Common Name: Jiemai Technology, Organizational Unit: jiemai-tech, Organization: jiemai-tech, Locality: Chengdu, State/Province: Sichuan, Country: CN",
+        "Common Name: Luigi Ferrari, Organizational Unit: 715, Organization: SoftwareLab, Locality: Roma, State/Province: Roma, Country: IT",
+        "Common Name: Marco Verdi, Organizational Unit: 587, Organization: TechCorp, Locality: Bologna, State/Province: Bologna, Country: IT",
+        "Common Name: Mario Romano, Organizational Unit: 263, Organization: DigitalTech, Locality: Firenze, State/Province: Firenze, Country: IT",
+        "Common Name: Mario Rossi, Organizational Unit: 884, Organization: TechCorp, Locality: Roma, State/Province: Roma, Country: IT",
+        "Common Name: Netmite, Organizational Unit: Android, Organization: Netmite, Locality: Sunnyvale, State/Province: CA, Country: US",
+        "Common Name: P9W5NM, Organizational Unit: L4T296, Organization: QAN8CC, Locality: EVCB5B, State/Province: 43BI2I, Country: DYBZ97",
+        "Common Name: Paolo Verdi, Organizational Unit: 923, Organization: MobileSolutions, Locality: Bologna, State/Province: Bologna, Country: IT",
+        "Common Name: Release, Organization: Android, Country: US",
+        "Common Name: TztQBoQX",
+        "Common Name: UDHE",
+        "Common Name: Wikimedia Foundation, Organizational Unit: Mobile, Organization: Wikimedia Foundation, Locality: San Francisco, State/Province: California, Country: US",
+        "Common Name: androidtop, Organizational Unit: androidtop, Organization: androidtop, Locality: androidtop, State/Province: androidtop, Country: 1",
+        "Common Name: go108, Organizational Unit: go108, Organization: go108.com.cn, Locality: changsha, State/Province: hunan, Country: 86",
+        "Common Name: hu",
+        "Common Name: inoXapps",
+        "Common Name: np, Organizational Unit: np, Organization: np, Locality: 南京, State/Province: 江苏, Country: 中国",
+        "Common Name: pkdeveloper",
+        "Common Name: vmgrirz, Organizational Unit: sl, Organization: og, Locality: cz, State/Province: hu, Country: zo",
+        "Common Name: wangwei, Organizational Unit: wangwei, Organization: china, Locality: nj, State/Province: js",
+        "Common Name: xxrjy, Locality: 湖北武汉",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+        "Organization: j4velin development",
+        "Organizational Unit: Google Inc., Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "FantasyHub": {
+      "sample_count": 6,
+      "cert_extracted": 2,
+      "top_issuer": "Common Name: QDIV9871, Organizational Unit: QDIV9871, Organization: QDIV9871, Locality: QDIV9871, State/Province: QDIV9871, Country: US",
+      "top_issuer_coverage": 0.167,
+      "issuer_patterns": [
+        "Common Name: J82PX5, Organizational Unit: J82PX5, Organization: J82PX5, Locality: J82PX5, State/Province: J82PX5, Country: UK",
+        "Common Name: QDIV9871, Organizational Unit: QDIV9871, Organization: QDIV9871, Locality: QDIV9871, State/Province: QDIV9871, Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "Linux": {
+      "sample_count": 6,
+      "cert_extracted": 4,
+      "top_issuer": "Common Name: zsw, Organizational Unit: gg, Organization: gg, Locality: changsha, State/Province: hunan, Country: china",
+      "top_issuer_coverage": 0.167,
+      "issuer_patterns": [
+        "Common Name: cxjf.com",
+        "Common Name: zhong, Organizational Unit: nanao, Organization: hunannano, Locality: china, State/Province: hunan, Country: changsha",
+        "Common Name: zsw, Organizational Unit: gg, Organization: gg, Locality: changsha, State/Province: hunan, Country: china",
+        "Organizational Unit: Google Inc., Country: US"
+      ],
+      "stability": "LOW"
+    },
+    "unknown": {
+      "sample_count": 24,
+      "cert_extracted": 17,
+      "top_issuer": "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+      "top_issuer_coverage": 0.167,
+      "issuer_patterns": [
+        "Common Name: 38CTWYQ8, Organizational Unit: 38CTWYQ8, Organization: 38CTWYQ8, Locality: 38CTWYQ8, State/Province: 38CTWYQ8, Country: UK",
+        "Common Name: 9OBORW, Organizational Unit: 7STDIA, Organization: ISYNB2, Locality: EBAYYW, State/Province: 54UL0P, Country: 6K23LP",
+        "Common Name: Android Debug, Organization: Android, Country: US",
+        "Common Name: Rubizh, Organizational Unit: IT, Organization: Rubizh, Locality: Rivne, State/Province: Rivne, Country: UA",
+        "Common Name: Service Update, Organizational Unit: Updates, Organization: Update Authority, Locality: NA, State/Province: NA, Country: US",
+        "Common Name: com_android_nfc, Organizational Unit: Android, Organization: Google Inc., Locality: Mountain View, State/Province: California, Country: US",
+        "Common Name: dog, Organization: Org, Locality: City, State/Province: State, Country: RS",
+        "Common Name: fuckubgjjh, Organizational Unit: bloodhoundhgg, Organization: tohvcdfghb, Locality: toughbbh87, State/Province: upbvv, Country: gcxcccc",
+        "Common Name: np, Organizational Unit: np, Organization: np, Locality: 南京, State/Province: 江苏, Country: 中国",
+        "Common Name: İnat Box, Organizational Unit: Beyazport, Organization: Beyazport, Locality: Turkey, State/Province: Istanbul, Country: 90",
+        "Email Address: android@android.com, Common Name: Android, Organizational Unit: Android, Organization: Android, Locality: Mountain View, State/Province: California, Country: US",
+        "Email Address: reza@naja.ir, Surname: Ranjbar, Given Name: Reza, Serial Number: 4431791518, Organization: Naja, Common Name: Manager, Country: IR"
+      ],
+      "stability": "LOW"
+    },
+    "Plankton": {
+      "sample_count": 9,
+      "cert_extracted": 9,
+      "top_issuer": "Common Name: Gp Imports, Organizational Unit: Gp Imports, Organization: Gp Imports, Locality: Miami, State/Province: Fl, Country: US",
+      "top_issuer_coverage": 0.111,
+      "issuer_patterns": [
+        "Common Name: Gp Imports, Organizational Unit: Gp Imports, Organization: Gp Imports, Locality: Miami, State/Province: Fl, Country: US",
+        "Common Name: Mike, Organizational Unit: Macte Russia, Organization: Macte, Locality: Novosibirsk, State/Province: Novosibirskaya Oblast, Country: RU",
+        "Common Name: Mosy, Organizational Unit: Individual, Organization: Mosy Apps, Locality: India, State/Province: U.P., Country: 91",
+        "Common Name: Quipper, Organizational Unit: Quipper, Organization: Quipper, Locality: London, State/Province: Unknown, Country: GB",
+        "Common Name: Toni Velkovski, Organizational Unit: none, Organization: FirstRequiem, Locality: Skopje, State/Province: mkd, Country: 389",
+        "Common Name: mobile riders, Organizational Unit: android, Organization: mobileriders, Locality: hyderabad, State/Province: andhra pradesh, Country: IN",
+        "Common Name: moboo, Organizational Unit: moboo, Organization: moboo, Locality: moboo, State/Province: moboo, Country: 1",
+        "Common Name: verizop, Organizational Unit: verizop, Organization: verizop, Locality: verizop, State/Province: verizop, Country: TW",
+        "Email Address: Crazy Apps, Common Name: Crazy Apps, Organizational Unit: Crazy Apps, Organization: Crazy Apps, Locality: Floriana, State/Province: Malta, Country: MT"
+      ],
+      "stability": "LOW"
+    },
+    "SpyNote": {
+      "sample_count": 9,
+      "cert_extracted": 4,
+      "top_issuer": "Common Name: android",
+      "top_issuer_coverage": 0.111,
+      "issuer_patterns": [
+        "Common Name: Caralie, Organizational Unit: Envirotecture Design, Organization: Success Is Yours, Locality: Olimpo, State/Province: West Bengal, Country: XK",
+        "Common Name: Meta, Organizational Unit: Meta, Organization: Meta@android.com, Locality: CA, State/Province: USA, Country: US",
+        "Common Name: android",
+        "Common Name: ql7RsCkB, Organizational Unit: N5GYLI9e, Organization: dC0ygaw9, Locality: V4lUxQVH, State/Province: VdRAixHd, Country: Kr"
+      ],
+      "stability": "LOW"
+    },
+    "Andr/Xgen2-AYJ": {
+      "sample_count": 2,
+      "cert_extracted": 0,
+      "top_issuer": null,
+      "top_issuer_coverage": 0.0,
+      "issuer_patterns": [],
+      "stability": "UNKNOWN"
+    }
+  }
+}
