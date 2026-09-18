@@ -170,7 +170,24 @@ python -m pytest tests/test_stage3_replay.py -v
 
 ---
 
-## 4. Tests
+## 4. Command-line interface
+
+A thin CLI wraps the core entry points (no install required — run from the repo root):
+
+```bash
+python -m droidforensix analyze <apk> [--workdir dir] [--json]   # full offline pipeline
+python -m droidforensix classify <apk> [--timeout 600]           # fast mal/ben verdict
+python -m droidforensix serve [--host 0.0.0.0 --port 8000 --reload]
+python -m droidforensix unpack <apk> [--workdir dir] [--out file]
+python -m droidforensix version
+```
+
+After `pip install .`, the same commands are available as `droidforensix ...`.
+Smoke tests: `python -m pytest tests/test_cli.py -v`.
+
+---
+
+## 5. Tests
 
 ```bash
 # Python backend + pipeline (533 tests)

@@ -12,8 +12,11 @@ requires-python = ">=3.10"
 [project.urls]
 Source = "https://github.com/DarshakPatel2004/project-zero"
 
+[project.scripts]
+droidforensix = "droidforensix.cli:main"
+
 [tool.setuptools]
-packages = ["analysis", "backend", "backend.core"]
+packages = ["analysis", "backend", "backend.core", "droidforensix"]
 py-modules = [
     "stage3_replay",
     "droidforensix_llm",
