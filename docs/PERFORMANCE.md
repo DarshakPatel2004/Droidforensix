@@ -45,8 +45,12 @@ PY
 Existing levers for oversized/giant APKs (documented in `run_pipeline`):
 - `stop_after=8` → stops after LLM assessment (no family/forensics steps).
 - `skip_steps=frozenset({3})` → skip encoding detection on giant samples.
-- Per-step JSON caches (`step*.json`) already short-circuit re-analysis within a
-  work dir; reuse them instead of deleting `analysis/work/<sha>/`.
+- Result cache (default on): `run_pipeline` short-circuits when the exact APK
+  (same sha256 dir, same mtime/size, same options) was already analyzed. The
+  cached `pipeline_result.json` is returned instantly instead of re-running all
+  18 steps — a full re-analyze of an unchanged 108 KB sample drops from ~8.3 s
+  to ~1.0 s (mostly interpreter startup + hash). Delete the sample's work dir or
+  replace the APK to force a fresh run. Validity stamp: `pipeline_meta.json`.
 
 ## Notes
 

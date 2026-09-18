@@ -19,6 +19,7 @@ import json
 import logging
 import threading
 import time
+from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Optional
 
@@ -141,6 +142,82 @@ def _emit(emitter: EventEmitter, event_type: str, data: dict):
             logger.debug("Event emitter failed for %s", event_type)
 
 
+CACHE_META_NAME = "pipeline_meta.json"
+
+
+def _cache_signature(apk_path: Path, apk_size: int, stop_after: int, skip_steps: frozenset) -> dict:
+    """Snapshot key for a cached pipeline result (validates it is reusable)."""
+    return {
+        "apk_size": apk_size,
+        "apk_mtime_ns": apk_path.stat().st_mtime_ns,
+        "stop_after": stop_after,
+        "skip_steps": sorted(skip_steps),
+    }
+
+
+def _save_pipeline_result(result: dict, result_path: Path, apk_path: Path, apk_size: int,
+                          stop_after: int, skip_steps: frozenset) -> None:
+    """Write the finished result plus a cache-validation sidecar."""
+    result_path.parent.mkdir(parents=True, exist_ok=True)
+    with open(result_path, "w", encoding="utf-8") as f:
+        json.dump(result, f, indent=2, default=str)
+    meta = _cache_signature(apk_path, apk_size, stop_after, skip_steps)
+    meta["written_utc"] = datetime.now(timezone.utc).isoformat()
+    with open(result_path.with_name(CACHE_META_NAME), "w", encoding="utf-8") as f:
+        json.dump(meta, f, indent=2)
+
+
+def _load_cached_pipeline_result(apk_path: Path, apk_size: int, work_dir: Path,
+                                 stop_after: int, skip_steps: frozenset) -> Optional[dict]:
+    """Return the previous complete result when the APK is byte-identical.
+
+    Cache key: sha256(apk) directory plus the mtime/size stamped at write time,
+    so a replaced or modified file at the same path forces a fresh analysis.
+    Re-running an unchanged APK therefore skips all 18 steps (dashboard
+    re-analysis / CLI re-run path).
+    """
+    from analysis.step1_apk_extraction import compute_sha256
+
+    sample_dir = Path(work_dir) / compute_sha256(str(apk_path))
+    result_path = sample_dir / "pipeline_result.json"
+    meta_path = sample_dir / CACHE_META_NAME
+    if not result_path.is_file() or not meta_path.is_file():
+        return None
+    try:
+        signature = _cache_signature(apk_path, apk_size, stop_after, skip_steps)
+        meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        if any(meta.get(k) != v for k, v in signature.items()):
+            return None
+        stored = json.loads(result_path.read_text(encoding="utf-8"))
+        if stored.get("sample_id") != sample_dir.name:
+            return None
+        return stored
+    except Exception as e:
+        logger.debug("Pipeline cache read failed, re-running: %s", e)
+        return None
+
+
+def _emit_cached_complete(emitter: EventEmitter, cached: dict, apk_path: Path, apk_size: int) -> None:
+    """Emit start/complete so WS listeners still see a lifecycle on cache hits."""
+    sample_id = cached.get("sample_id")
+    _emit(emitter, "analysis_started", {
+        "sample_id": sample_id,
+        "sample_name": (cached.get("extraction") or {}).get("sample_name") or Path(apk_path).stem,
+        "file_size_bytes": apk_size,
+        "total_steps": TOTAL_STEPS,
+        "predicted_eta_seconds": 0.0,
+        "cached": True,
+    })
+    _emit(emitter, "analysis_complete", {
+        "sample_id": sample_id,
+        "total_duration_seconds": 0.0,
+        "step_timings": {},
+        "final_verdict": (cached.get("llm_assessment") or {}).get("severity", "unknown"),
+        "risk_score": (cached.get("llm_assessment") or {}).get("risk_score", 0),
+        "cached": True,
+    })
+
+
 def _estimate_remaining_eta(apk_size: int, remaining_steps: int) -> float:
     """
     Estimate remaining analysis time based on APK size.
@@ -256,6 +333,14 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     global_start = time.time()
     timeline = {}
     apk_size = Path(apk_path).stat().st_size
+
+    # Short-circuit: return the previous result when this exact APK was already
+    # analyzed with identical options (file unchanged since). Keeps re-analysis
+    # of an existing sample instant instead of re-running all steps.
+    cached = _load_cached_pipeline_result(Path(apk_path), apk_size, Path(work_dir), stop_after, skip_steps)
+    if cached is not None:
+        _emit_cached_complete(event_emitter, cached, Path(apk_path), apk_size)
+        return cached
 
     # Step 1: APK Extraction (special: sample_id unknown until finished)
     step_num = 1
@@ -590,9 +675,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         from backend.transformers import _strip_surrogates
         result = _strip_surrogates(result)
         result_path = Path(work_dir) / sample_id / "pipeline_result.json"
-        result_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(result_path, "w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2, default=str)
+        _save_pipeline_result(result, result_path, Path(apk_path), apk_size, stop_after, skip_steps)
         _emit(event_emitter, "analysis_complete", {
             "sample_id": sample_id,
             "total_duration_seconds": duration,
@@ -741,9 +824,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         from backend.transformers import _strip_surrogates
         result = _strip_surrogates(result)
         result_path = Path(work_dir) / sample_id / "pipeline_result.json"
-        result_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(result_path, "w", encoding="utf-8") as f:
-            json.dump(result, f, indent=2, default=str)
+        _save_pipeline_result(result, result_path, Path(apk_path), apk_size, stop_after, skip_steps)
         _emit(event_emitter, "analysis_complete", {
             "sample_id": sample_id,
             "total_duration_seconds": duration,
@@ -918,9 +999,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     result = _strip_surrogates(result)
 
     result_path = Path(work_dir) / sample_id / "pipeline_result.json"
-    result_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(result_path, "w", encoding="utf-8") as f:
-        json.dump(result, f, indent=2, default=str)
+    _save_pipeline_result(result, result_path, Path(apk_path), apk_size, stop_after, skip_steps)
 
     _emit(event_emitter, "analysis_complete", {
         "sample_id": sample_id,
