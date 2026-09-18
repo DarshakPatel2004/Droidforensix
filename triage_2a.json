@@ -1,0 +1,76 @@
+{
+  "apk_sha256": "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+  "apk_path": "D:\\DroidForensix\\samples\\malware\\androzoo\\0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c.apk",
+  "verdict": "packed_known(360Jiagu)",
+  "confidence": 0.95,
+  "suspect_reasons": [],
+  "duration_seconds": 0.154,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.557168,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 2389548,
+      "total_uncompressed": 4288741,
+      "native_lib_share": 0.2598,
+      "big_asset_count": 2,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.6291,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 202,
+      "total_windows": 234,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/libjiagu.so",
+        "assets/libjiagu_x86.so"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": true,
+      "app_class": "com.stub.StubApp",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 2389548,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 3
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "360Jiagu",
+          "markers": [
+            "libjiagu.so",
+            "libjiagu_x86.so"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "mmap",
+        "open",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

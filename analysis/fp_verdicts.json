@@ -1,0 +1,1864 @@
+{
+  "total_fps": 40,
+  "verdicts": [
+    {
+      "sha256": "00001f58c32e40376f64cc88b70f8fad2fda054e0863abd5e41f4c6f18a65da2",
+      "gt_family": "Adware",
+      "gt_source": "AndroZoo",
+      "predicted_family": "GinMaster",
+      "confidence": 0.75,
+      "domains": [
+        "e.domob.cn",
+        "mob.guohead.com",
+        "r.domob.cn",
+        "s.domob.cn",
+        "www.guohead.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "e.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "mob.guohead.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "s.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.guohead.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+      "gt_family": "Android/Packed",
+      "gt_source": "AndroZoo",
+      "predicted_family": "Jiagu",
+      "confidence": 0.75,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+      "gt_family": "Adware",
+      "gt_source": "AndroZoo",
+      "predicted_family": "Secapk",
+      "confidence": 0.75,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
+      "gt_family": "AndroidOS",
+      "gt_source": "AndroZoo",
+      "predicted_family": "DroidDream",
+      "confidence": 0.8,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "090a30252991830596c75a945885ca3100d7a40edf4a16d78abd5bbfd90ba268",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "091870b3f90c9a98000e0d14a67be2db5891ce98a0b1e24b721e3d96241620a5",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "0ca64e19e09d8af20a7a9269aca259da3406c5fd1c3627f92fb601af2c2d7d9a",
+      "gt_family": "a",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        "www.apperhand.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "www.apperhand.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "confirmed_fp",
+      "reasoning": "All domains are ad networks; signature matched on ad SDK, not malware C2"
+    },
+    {
+      "sha256": "13792ea5da63cc800e9c1cb1944d2ed66dedc2a2dfa940dbcd8828aa47c8b6ea",
+      "gt_family": "a",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        "ad.leadboltads.net"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "ad.leadboltads.net",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "22670788ea0108e1e205f34e0a039f994bc94f19563b6f09784074b41f61cc53",
+      "gt_family": "Backdoor",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "DroidKungFu",
+      "confidence": 0.95,
+      "domains": [
+        "ads.wapx.cn",
+        "app",
+        "app.wapx.cn",
+        "blk.adsmogo.com",
+        "cfg.adsmogo.com",
+        "clk.adsmogo.com",
+        "cus.adsmogo.com",
+        "e.domob.cn",
+        "geekadoo.com",
+        "gmail.com",
+        "imp.adsmogo.com",
+        "r.domob.cn",
+        "r2.adwo.com",
+        "req.adsmogo.com",
+        "www.adsmogo.com",
+        "www.adwo.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "ads.wapx.cn",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "app",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "app.wapx.cn",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "blk.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cfg.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "clk.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cus.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "e.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "geekadoo.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "gmail.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "imp.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r2.adwo.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "req.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.adwo.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "21c91c4cb01c7fd286dc8fa6122f6c43a5227677ffbe3566aa37204cd9e494fe",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "3c81526bcb801d7dcfaea7f379528471d745a36e3c1bdc41877b4bed34b5dce6",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "48f7ecd18cadc12914b89e91336b9885131d4151a9ed1975f6456e7951633583",
+      "gt_family": "AndroidOS",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "54f2a636e000c55bb725d7e552a22117837c1676fb4b96decd135ae10e6f7049",
+      "gt_family": "BaseBridge",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "DroidDream",
+      "confidence": 0.8,
+      "domains": [
+        "4.0.4.android",
+        "clk"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "4.0.4.android",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "clk",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "5b6f0757e98303cf337d10b6f8c7378bdfd4de30dea624545207dd01a85b6c37",
+      "gt_family": "BaseBridge",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "DroidDream",
+      "confidence": 0.8,
+      "domains": [
+        "im.jjdd.com",
+        "mapi.jjdd.com",
+        "zdevl.mapi.jjdd.com",
+        "ztest.mapi.jjdd.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "im.jjdd.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "mapi.jjdd.com",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "zdevl.mapi.jjdd.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "ztest.mapi.jjdd.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "63371a25c79264de99fb9f55dee9f893625b8f2b3e8ea97da43e60518aee8509",
+      "gt_family": "Adware",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        "www.apperhand.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "www.apperhand.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "confirmed_fp",
+      "reasoning": "All domains are ad networks; signature matched on ad SDK, not malware C2"
+    },
+    {
+      "sha256": "6a02832c97ad6c0f2ddb813acb52ef002ef616be2a7ded5a0a69b7dbdf2f7aff",
+      "gt_family": "GinMaster",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "DroidDream",
+      "confidence": 0.8,
+      "domains": [
+        "a.mobclix.com",
+        "ads.mobclix.com",
+        "api.itunes-game.com",
+        "data.mobclix.com",
+        "gmail.com",
+        "vc.mobclix.com",
+        "www.mobclix.com",
+        "www.umeng.co",
+        "www.umeng.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "a.mobclix.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "ads.mobclix.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "api.itunes-game.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "data.mobclix.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "gmail.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "vc.mobclix.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.mobclix.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.umeng.co",
+          "category": "legitimate",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.umeng.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "6e9848008c42128623d1077f0cc75c0861e2b3d0fb76e68c5fc9ec8f69361572",
+      "gt_family": "FakeRun",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        "api.mixpanel.com",
+        "my.mobfox.com",
+        "www.android-supermarket.com",
+        "www.droidsettings.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "api.mixpanel.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "my.mobfox.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.android-supermarket.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.droidsettings.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "75b06872276a85812c28398d125938fc420fa84774576ea8221592db612cb1b2",
+      "gt_family": "AndroidOS",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "752f3cacdad6753d4c02bb8e40ef3e0990b55466c18a7b80ec6fa7b9706e40ab",
+      "gt_family": "Andr/NGate-G",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "7fb836c08ff527443b06d1c20afb6a4b0f51eb373013f211e0d3200bf26527b7",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "7e8693dfed67a88db885ac0ffd94b73351d1f910cafc6425e8f1b4ab0e24c2a8",
+      "gt_family": "Gen",
+      "gt_source": "abusech",
+      "predicted_family": "Adrd",
+      "confidence": 0.8,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "85cafe005c7f893cae65fa0a5ebf1c103eca579529ebd5d531c672408acdb9d0",
+      "gt_family": "Linux",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "KungFu",
+      "confidence": 0.9,
+      "domains": [
+        "ad.imadpush.com",
+        "amob.acs86.com",
+        "cast.ra.imocha.com",
+        "d.wiyun.com",
+        "dd.phonego8.com",
+        "e.domob.cn",
+        "n.wiyun.com",
+        "proxy.youdraw.cn",
+        "r.domob.cn",
+        "r2.adwo.com",
+        "{0}"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "ad.imadpush.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "amob.acs86.com",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cast.ra.imocha.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "d.wiyun.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "dd.phonego8.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "e.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "n.wiyun.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "proxy.youdraw.cn",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r2.adwo.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "{0}",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "877ab7dbbef2267a39513d1ad777b5c469f76f2a110be547100cb339d76a3f1f",
+      "gt_family": "Backdoor",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "BaseBridge",
+      "confidence": 0.8,
+      "domains": [
+        "mobile.91.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "mobile.91.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "confirmed_fp",
+      "reasoning": "All domains are legitimate services; signature matched on benign infrastructure"
+    },
+    {
+      "sha256": "908ed30161b44d20bb4e286de7fb8203b2b8a2a807c6638ee9d9830de3a0f913",
+      "gt_family": "AndroidOS",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "SendPay",
+      "confidence": 0.75,
+      "domains": [
+        "api.go108.cn",
+        "d.wiyun.com",
+        "www.go108.com.cn"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "api.go108.cn",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "d.wiyun.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.go108.com.cn",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "9628acabe739b5419f08c5a5c3cd776268bf4a3c25c978341e403bde442e0ece",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "9e95912f1a5fdba5050723f095b7031770b7e2f9627fb60544b41adcbb5b3306",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
+      "gt_family": "Adrd",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "GinMaster",
+      "confidence": 0.75,
+      "domains": [
+        "bawbaw.icittys.com",
+        "cache.icittys.com",
+        "cloud-rpc-",
+        "coolcode.org",
+        "ditu.google.cn",
+        "gw.youmi.net",
+        "hot.icittys.com",
+        "static.youmi.net",
+        "www.coolcode.org",
+        "www.google.cn",
+        "xxx.huanhaola.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "bawbaw.icittys.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cache.icittys.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cloud-rpc-",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "coolcode.org",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "ditu.google.cn",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "gw.youmi.net",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "hot.icittys.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "static.youmi.net",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.coolcode.org",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.google.cn",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "xxx.huanhaola.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "a0bffc11168c65beb59c326d88f144f0d750634252a507ffe039c84e354e3704",
+      "gt_family": "A",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "SendPay",
+      "confidence": 0.75,
+      "domains": [
+        "api.go108.cn",
+        "d.wiyun.com",
+        "www.go108.com.cn"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "api.go108.cn",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "d.wiyun.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.go108.com.cn",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "a023fa166051294fe5a569f26092588fdf24a060de46e5cd5be9a5c5bb3b0204",
+      "gt_family": "Backdoor",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "DroidKungFu",
+      "confidence": 0.95,
+      "domains": [
+        "4.0.4.android",
+        "ads",
+        "ads.waps.cn",
+        "app",
+        "app.waps.cn",
+        "beta.vpon.com",
+        "blk.adsmogo.com",
+        "cfg.adsmogo.com",
+        "clk",
+        "clk.adsmogo.com",
+        "cn.ad.adon.vpon.com",
+        "cus.adsmogo.com",
+        "ditu.google.cn",
+        "gad.ju6666.com",
+        "imp.adsmogo.com",
+        "maps.google",
+        "r2.adwo.com",
+        "req.adsmogo.com",
+        "tw.ad.adon.vpon.com",
+        "uh.9ria.com",
+        "vpon.com",
+        "www.adsmogo.com",
+        "www.adwo.com",
+        "www.vpon.com",
+        "www.youmi.net"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "4.0.4.android",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "ads",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "ads.waps.cn",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "app",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "app.waps.cn",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "beta.vpon.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "blk.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cfg.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "clk",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "clk.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cn.ad.adon.vpon.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cus.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "ditu.google.cn",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "gad.ju6666.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "imp.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "maps.google",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r2.adwo.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "req.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "tw.ad.adon.vpon.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "uh.9ria.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "vpon.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.adsmogo.com",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.adwo.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.vpon.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.youmi.net",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "a83a003b989c2dcd12fb0f80dfd458a099f33c1a1f052b2c53ece5f719063495",
+      "gt_family": "Backdoor",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "GinMaster",
+      "confidence": 0.75,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "a945198c086ad3fe0c5dbbce5ef410ea12986c9c160295d76be881c5f8ae0880",
+      "gt_family": "FakeRun",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        ";https",
+        "api.mixpanel.com",
+        "my.mobfox.com",
+        "prod.sellaring.com",
+        "urlsfound",
+        "urlsnotfound",
+        "www.android-supermarket.com",
+        "www.droidsettings.com",
+        "www.jp-droidsettings.com",
+        "www.uk-droidsettings.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": ";https",
+          "category": "garbage",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "api.mixpanel.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "my.mobfox.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "prod.sellaring.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "urlsfound",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "urlsnotfound",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.android-supermarket.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.droidsettings.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.jp-droidsettings.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.uk-droidsettings.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "aa8127463312dac0158e74d56a3e3c2f50d9cf98c09942a27cf95081348874a3",
+      "gt_family": "Adware",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        "ads.mp.mydas.mobi",
+        "androidsdk.ads.mp.mydas.mobi",
+        "cvt.mydas.mobi",
+        "farm.rob.sproutinc.com",
+        "hosting.sproutbuilder.com",
+        "my.mobfox.com",
+        "www.inforbit.it"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "ads.mp.mydas.mobi",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "androidsdk.ads.mp.mydas.mobi",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cvt.mydas.mobi",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "farm.rob.sproutinc.com",
+          "category": "suspicious",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "hosting.sproutbuilder.com",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "my.mobfox.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.inforbit.it",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "be4ada35dec3ef666681ddcf440be04f370067ee588734cabf630295742d1fd9",
+      "gt_family": "Linux",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "DroidDream",
+      "confidence": 0.8,
+      "domains": [
+        "search.gongfu-android.com",
+        "www.9ienglish.com",
+        "www.umeng.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "search.gongfu-android.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.9ienglish.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "www.umeng.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "c2c1902b3021355c1619b281875da45fe8a3f0dc26f35c4129e44de3fc3ea810",
+      "gt_family": "Backdoor",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "BaseBridge",
+      "confidence": 0.8,
+      "domains": [
+        "clock.isc.org",
+        "wap.soso.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "clock.isc.org",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "wap.soso.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "cb147e7ce69723523f604da875d78ca4738e5f416d2297910ee179a5067e79fe",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "d7233e269b529198362c29b5f8a15f09e7e4e282c8e35eb68b45b57978f63dd2",
+      "gt_family": "AndroidOS",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "KungFu",
+      "confidence": 0.9,
+      "domains": [
+        "ad.gongfu-android.com",
+        "amob.acs86.com",
+        "cast.ra.imocha.com",
+        "data.gfan.com",
+        "e.domob.cn",
+        "proxy.youdraw.cn",
+        "r.domob.cn",
+        "r2.adwo.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "ad.gongfu-android.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "amob.acs86.com",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cast.ra.imocha.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "data.gfan.com",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "e.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "proxy.youdraw.cn",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r.domob.cn",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "r2.adwo.com",
+          "category": "ad_network",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "gt_label_issue",
+      "reasoning": "Suspicious domain pattern; GT label may be too generic"
+    },
+    {
+      "sha256": "d5624c7f869504a65986278f6b7921726aa08355d1f203beaee6e6a8869505f4",
+      "gt_family": "AndroidOS",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Plankton",
+      "confidence": 0.85,
+      "domains": [
+        "ads.mp.mydas.mobi",
+        "androidsdk.ads.mp.mydas.mobi",
+        "appenda.com",
+        "cvt.mydas.mobi",
+        "inoxapps.com",
+        "w.sandbox.mkhoj.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "ads.mp.mydas.mobi",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "androidsdk.ads.mp.mydas.mobi",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "appenda.com",
+          "category": "unknown",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "cvt.mydas.mobi",
+          "category": "ad_network",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "inoxapps.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        },
+        {
+          "domain": "w.sandbox.mkhoj.com",
+          "category": "unknown",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "inconclusive",
+      "reasoning": "Mixed domain categories; needs further analysis"
+    },
+    {
+      "sha256": "d29295f1504676003fd3ccbd3e41a53aabbe80d2025bfb3a6ef9a9fcff97b6cd",
+      "gt_family": "AndroidOS",
+      "gt_source": "abusech",
+      "predicted_family": "NGate",
+      "confidence": 0.85,
+      "domains": [
+        "nfck.loseyourip.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "nfck.loseyourip.com",
+          "category": "suspicious",
+          "temporal_verdict": "DEAD",
+          "dns_resolves": false,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "documented_limitation",
+      "reasoning": "All C2 domains are dead; can't verify intent"
+    },
+    {
+      "sha256": "e09615bfdc10f44d5250edeb3a0d032f83177737a15352e9c1e552543f5f756d",
+      "gt_family": "Agent",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "Opfake",
+      "confidence": 0.85,
+      "domains": [],
+      "domain_verdicts": [],
+      "verdict": "no_domains",
+      "reasoning": "No C2 domains extracted; match is on strings/permissions only"
+    },
+    {
+      "sha256": "e847ffd29dca357027e2fb59eeb5abbce395ea1c819113c3a4e07c5839a7bded",
+      "gt_family": "Backdoor",
+      "gt_source": "androzoo_drebin",
+      "predicted_family": "BaseBridge",
+      "confidence": 0.8,
+      "domains": [
+        "mobile.91.com"
+      ],
+      "domain_verdicts": [
+        {
+          "domain": "mobile.91.com",
+          "category": "legitimate",
+          "temporal_verdict": "UNKNOWN",
+          "dns_resolves": true,
+          "urlhaus_listed": false,
+          "vt_malicious": 0
+        }
+      ],
+      "verdict": "confirmed_fp",
+      "reasoning": "All domains are legitimate services; signature matched on benign infrastructure"
+    }
+  ],
+  "summary": {
+    "gt_label_issue": [
+      "00001f58c32e40376f64cc88b70f8fad2fda054e0863abd5e41f4c6f18a65da2",
+      "6e9848008c42128623d1077f0cc75c0861e2b3d0fb76e68c5fc9ec8f69361572",
+      "85cafe005c7f893cae65fa0a5ebf1c103eca579529ebd5d531c672408acdb9d0",
+      "a022c24d8295dee70c0f090e4328063971170c33f7bf313b4debbc51d1a2b127",
+      "a023fa166051294fe5a569f26092588fdf24a060de46e5cd5be9a5c5bb3b0204",
+      "a945198c086ad3fe0c5dbbce5ef410ea12986c9c160295d76be881c5f8ae0880",
+      "aa8127463312dac0158e74d56a3e3c2f50d9cf98c09942a27cf95081348874a3",
+      "d7233e269b529198362c29b5f8a15f09e7e4e282c8e35eb68b45b57978f63dd2"
+    ],
+    "no_domains": [
+      "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+      "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+      "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
+      "48f7ecd18cadc12914b89e91336b9885131d4151a9ed1975f6456e7951633583",
+      "75b06872276a85812c28398d125938fc420fa84774576ea8221592db612cb1b2",
+      "7e8693dfed67a88db885ac0ffd94b73351d1f910cafc6425e8f1b4ab0e24c2a8",
+      "a83a003b989c2dcd12fb0f80dfd458a099f33c1a1f052b2c53ece5f719063495",
+      "e09615bfdc10f44d5250edeb3a0d032f83177737a15352e9c1e552543f5f756d"
+    ],
+    "documented_limitation": [
+      "090a30252991830596c75a945885ca3100d7a40edf4a16d78abd5bbfd90ba268",
+      "091870b3f90c9a98000e0d14a67be2db5891ce98a0b1e24b721e3d96241620a5",
+      "21c91c4cb01c7fd286dc8fa6122f6c43a5227677ffbe3566aa37204cd9e494fe",
+      "3c81526bcb801d7dcfaea7f379528471d745a36e3c1bdc41877b4bed34b5dce6",
+      "54f2a636e000c55bb725d7e552a22117837c1676fb4b96decd135ae10e6f7049",
+      "752f3cacdad6753d4c02bb8e40ef3e0990b55466c18a7b80ec6fa7b9706e40ab",
+      "7fb836c08ff527443b06d1c20afb6a4b0f51eb373013f211e0d3200bf26527b7",
+      "908ed30161b44d20bb4e286de7fb8203b2b8a2a807c6638ee9d9830de3a0f913",
+      "9628acabe739b5419f08c5a5c3cd776268bf4a3c25c978341e403bde442e0ece",
+      "9e95912f1a5fdba5050723f095b7031770b7e2f9627fb60544b41adcbb5b3306",
+      "a0bffc11168c65beb59c326d88f144f0d750634252a507ffe039c84e354e3704",
+      "cb147e7ce69723523f604da875d78ca4738e5f416d2297910ee179a5067e79fe",
+      "d29295f1504676003fd3ccbd3e41a53aabbe80d2025bfb3a6ef9a9fcff97b6cd"
+    ],
+    "confirmed_fp": [
+      "0ca64e19e09d8af20a7a9269aca259da3406c5fd1c3627f92fb601af2c2d7d9a",
+      "63371a25c79264de99fb9f55dee9f893625b8f2b3e8ea97da43e60518aee8509",
+      "877ab7dbbef2267a39513d1ad777b5c469f76f2a110be547100cb339d76a3f1f",
+      "e847ffd29dca357027e2fb59eeb5abbce395ea1c819113c3a4e07c5839a7bded"
+    ],
+    "inconclusive": [
+      "13792ea5da63cc800e9c1cb1944d2ed66dedc2a2dfa940dbcd8828aa47c8b6ea",
+      "22670788ea0108e1e205f34e0a039f994bc94f19563b6f09784074b41f61cc53",
+      "5b6f0757e98303cf337d10b6f8c7378bdfd4de30dea624545207dd01a85b6c37",
+      "6a02832c97ad6c0f2ddb813acb52ef002ef616be2a7ded5a0a69b7dbdf2f7aff",
+      "be4ada35dec3ef666681ddcf440be04f370067ee588734cabf630295742d1fd9",
+      "c2c1902b3021355c1619b281875da45fe8a3f0dc26f35c4129e44de3fc3ea810",
+      "d5624c7f869504a65986278f6b7921726aa08355d1f203beaee6e6a8869505f4"
+    ]
+  },
+  "counts": {
+    "gt_label_issue": 8,
+    "no_domains": 8,
+    "documented_limitation": 13,
+    "confirmed_fp": 4,
+    "inconclusive": 7
+  }
+}

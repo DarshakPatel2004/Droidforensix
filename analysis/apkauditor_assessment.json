@@ -1,0 +1,274 @@
+{
+  "samples": [
+    {
+      "sha": "21ea92178eccae3f448345dcab84d98f21a6b32ea412265d858665973874b5df",
+      "role": "outcompeted",
+      "gt": "FakeInst",
+      "gt_family": "FakeInst",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+            "subject": "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "5e7116ea24dee71abac470b432a62c41e0fd680663162a486ab2b6fe25ccf367",
+      "role": "outcompeted",
+      "gt": "FakeInst",
+      "gt_family": "FakeInst",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+            "subject": "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "f2305198a4789bc0f74afb7627bf998c2739d00d754eaff51aa2f538ab0329b4",
+      "role": "outcompeted",
+      "gt": "FakeInst",
+      "gt_family": "FakeInst",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+            "subject": "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "07e47fbf43c585155ddcdae49c3330c00ceceedf6c9f98432cf631769a21b206",
+      "role": "outcompeted",
+      "gt": "Opfake",
+      "gt_family": "Opfake",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+            "subject": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "315e29c580f1720dfc0f7ef7d48beeb3321f3bf343646e022420af119ad7a370",
+      "role": "outcompeted",
+      "gt": "Opfake",
+      "gt_family": "Opfake",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+            "subject": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "6725dfc3cb9b8f2103ebb129f0d4816ae836c15103229e8fda0151aa390d33ad",
+      "role": "outcompeted",
+      "gt": "Opfake",
+      "gt_family": "Opfake",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+            "subject": "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "80ae30136ea55e936c66cd61cbf1de428d8d20d76fec06c1e4c0217472e6e089",
+      "role": "outcompeted",
+      "gt": "KungFu",
+      "gt_family": "KungFu",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+            "subject": "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": [
+        "libnative.so"
+      ]
+    },
+    {
+      "sha": "b8ed964e21a6f480dccb593f85854b835f0693472c5857d52af3efa5a4cc244b",
+      "role": "outcompeted",
+      "gt": "KungFu",
+      "gt_family": "KungFu",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+            "subject": "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": [
+        "libnative.so"
+      ]
+    },
+    {
+      "sha": "352e2e2b57138099966a3a558f9eb3d6a88c27fa6d401f767b36e5cf3440f06a",
+      "role": "baseline_correct",
+      "gt": "FakeInst",
+      "gt_family": "FakeInst",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+            "subject": "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    },
+    {
+      "sha": "022c88f2397b59ef6394db385163b1ed44c5a4b720f667ca3b91983b04f89433",
+      "role": "baseline_correct",
+      "gt": "Opfake",
+      "gt_family": "Opfake",
+      "manifest": {
+        "error": "'lxml.etree._Element' object has no attribute 'decode'"
+      },
+      "cert": {
+        "certs": [
+          {
+            "issuer": "Common Name: Unknown, Organizational Unit: Unknown, Organization: WapCash, Locality: Unknown, State/Province: Unknown, Country: Unknown",
+            "subject": "Common Name: Unknown, Organizational Unit: Unknown, Organization: WapCash, Locality: Unknown, State/Province: Unknown, Country: Unknown",
+            "self_signed": true
+          }
+        ]
+      },
+      "native_libs": []
+    }
+  ],
+  "discriminator_assessment": {
+    "per_family": {
+      "FakeInst": {
+        "all_actions": [],
+        "cert_issuers": [
+          "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD",
+          "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA"
+        ],
+        "native_libs": [],
+        "receiver_names": []
+      },
+      "Opfake": {
+        "all_actions": [],
+        "cert_issuers": [
+          "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+          "Common Name: Unknown, Organizational Unit: Unknown, Organization: WapCash, Locality: Unknown, State/Province: Unknown, Country: Unknown"
+        ],
+        "native_libs": [],
+        "receiver_names": []
+      },
+      "KungFu": {
+        "all_actions": [],
+        "cert_issuers": [
+          "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn"
+        ],
+        "native_libs": [
+          "libnative.so"
+        ],
+        "receiver_names": []
+      }
+    },
+    "notes": [
+      {
+        "comparison": "FakeInst vs Opfake intent actions",
+        "FakeInst_only": [],
+        "Opfake_only": [],
+        "shared": [],
+        "verdict": "NO-DISCRIMINATOR"
+      },
+      {
+        "comparison": "FakeInst cert issuers",
+        "issuers": [
+          "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+          "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+          "Common Name: Developer, Organizational Unit: Development, Organization: LLC, Locality: City, State/Province: State, Country: CA",
+          "Common Name: Code Coder, Organizational Unit: UI, Organization: Reti, Locality: New York, State/Province: WW, Country: SD"
+        ]
+      },
+      {
+        "comparison": "Opfake cert issuers",
+        "issuers": [
+          "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+          "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+          "Common Name: Ivan Ivan, Organizational Unit: Opera, Organization: Opera, Locality: Moscow, State/Province: Moscom, Country: 01",
+          "Common Name: Unknown, Organizational Unit: Unknown, Organization: WapCash, Locality: Unknown, State/Province: Unknown, Country: Unknown"
+        ]
+      },
+      {
+        "comparison": "KungFu cert issuers",
+        "issuers": [
+          "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn",
+          "Common Name: PhoneSniper, Organizational Unit: Phone, Organization: Phone, Locality: china, State/Province: shenzhen, Country: cn"
+        ]
+      },
+      {
+        "comparison": "KungFu native libs",
+        "libs": [
+          "libnative.so"
+        ]
+      }
+    ]
+  },
+  "conclusion": {
+    "would_apkauditor_help_36": null,
+    "recommendation": "See discriminator_assessment.notes for family-specific patterns"
+  }
+}

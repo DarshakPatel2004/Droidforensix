@@ -1,0 +1,237 @@
+.tcs-container {
+  padding: 16px;
+  background-color: var(--bg-primary, #fff);
+  border-radius: 8px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+.tcs-no-report {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted, #999);
+}
+
+.tcs-classification-card {
+  padding: 16px;
+  border: 2px solid;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.tcs-classification-header h2 {
+  margin: 0 0 8px 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.tcs-classification-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 12px;
+}
+
+.tcs-metric {
+  padding: 8px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+.tcs-metric-label {
+  font-weight: bold;
+  margin-right: 8px;
+  font-size: 12px;
+  color: var(--text-muted, #666);
+}
+
+.tcs-metric-value {
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--text-primary, #333);
+}
+
+.tcs-section {
+  margin-bottom: 16px;
+  border: 1px solid var(--border-color, #ddd);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.tcs-section-header {
+  padding: 12px;
+  background-color: var(--bg-subtle, #f5f5f5);
+  border-bottom: 1px solid var(--border-color, #ddd);
+  cursor: pointer;
+  user-select: none;
+}
+
+.tcs-section-title {
+  font-weight: bold;
+  font-size: 13px;
+  color: var(--text-primary, #333);
+}
+
+.tcs-section-content {
+  padding: 12px;
+}
+
+.tcs-stage-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+}
+
+.tcs-stage-card {
+  padding: 12px;
+  border: 1px solid var(--border-color, #ddd);
+  border-left: 4px solid;
+  border-radius: 4px;
+  background-color: var(--bg-card, #fafafa);
+}
+
+.tcs-stage-card-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.tcs-stage-icon {
+  font-size: 16px;
+}
+
+.tcs-stage-name {
+  font-weight: bold;
+  font-size: 12px;
+  color: var(--text-primary, #333);
+}
+
+.tcs-stage-verdict {
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.tcs-stage-confidence {
+  font-size: 11px;
+  color: var(--text-muted, #666);
+  margin-bottom: 8px;
+}
+
+.tcs-synthesis-box {
+  padding: 12px;
+  background-color: var(--bg-subtle, #f9f9f9);
+  border-left: 3px solid var(--accent, #0066CC);
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.tcs-synthesis-label {
+  font-weight: bold;
+  color: var(--text-primary, #333);
+  font-size: 12px;
+}
+
+.tcs-synthesis-text {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: var(--text-secondary, #555);
+  line-height: 1.5;
+}
+
+.tcs-actions-list {
+  padding-left: 20px;
+  font-size: 13px;
+  color: var(--text-primary, #333);
+  line-height: 1.8;
+}
+
+.tcs-action-item {
+  margin-bottom: 8px;
+}
+
+.tcs-no-data {
+  font-size: 12px;
+  color: var(--text-muted, #999);
+  font-style: italic;
+}
+
+.tcs-ioc-summary {
+  padding: 8px;
+  background-color: var(--bg-subtle, #f5f5f5);
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.tcs-ioc-list {
+  display: grid;
+  gap: 8px;
+}
+
+.tcs-ioc-card {
+  padding: 12px;
+  border: 1px solid var(--border-color, #ddd);
+  border-left: 3px solid #FF3333;
+  border-radius: 4px;
+  background-color: #FFF5F5;
+}
+
+.tcs-ioc-ip {
+  font-family: 'Courier New', monospace;
+  font-weight: bold;
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.tcs-ioc-meta {
+  display: flex;
+  gap: 12px;
+  font-size: 11px;
+  color: var(--text-muted, #666);
+}
+
+.tcs-ioc-meta-item {
+  white-space: nowrap;
+}
+
+.tcs-more-iocs {
+  margin-top: 8px;
+  font-size: 11px;
+  color: var(--text-muted, #999);
+  font-style: italic;
+}
+
+.tcs-export-section {
+  margin-top: 16px;
+  padding: 16px;
+  background-color: var(--bg-subtle, #f5f5f5);
+  border-radius: 6px;
+  text-align: center;
+}
+
+.tcs-download-button {
+  padding: 12px 24px;
+  background-color: var(--accent, #0066CC);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 12px;
+  transition: background-color 0.2s;
+}
+
+.tcs-download-button:hover {
+  background-color: #0052A3;
+}
+
+.tcs-report-meta {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-muted, #999);
+}

@@ -1,0 +1,1398 @@
+{
+  "4.0.4.android": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  ";https": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "a.mobclix.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.0.2.1"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "ad.gongfu-android.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ad.imadpush.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ad.leadboltads.net": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "64.31.3.238"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "ads": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ads.mobclix.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.0.2.1"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "ads.mp.mydas.mobi": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ads.waps.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ads.wapx.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "amob.acs86.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "38.146.219.28"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "androidsdk.ads.mp.mydas.mobi": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "api.go108.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "api.itunes-game.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "api.mixpanel.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "35.190.25.25",
+        "130.211.34.183",
+        "107.178.240.159"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "app": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "app.waps.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "app.wapx.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "appenda.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "15.197.148.33",
+        "3.33.130.190"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "bawbaw.icittys.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "76.223.54.146",
+        "13.248.169.48"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "beta.vpon.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "220.130.162.19"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "blk.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "cache.icittys.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "76.223.54.146",
+        "13.248.169.48"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "cast.ra.imocha.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "cfg.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "clk": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "clk.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "clock.isc.org": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "204.93.207.11",
+        "64.62.194.189",
+        "64.62.194.188"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "cloud-rpc-": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "cn.ad.adon.vpon.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "coolcode.org": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "185.199.110.153",
+        "185.199.108.153",
+        "185.199.109.153"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "cus.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "cvt.mydas.mobi": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "d.wiyun.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "data.gfan.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "117.79.80.5"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "data.mobclix.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.0.2.1"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "dd.phonego8.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ditu.google.cn": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.178.158.110"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "e.domob.cn": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "120.133.56.70"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "farm.rob.sproutinc.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "16.182.40.200",
+        "16.15.253.144",
+        "54.231.224.48"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "gad.ju6666.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "54.243.117.197",
+        "13.223.25.84"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "geekadoo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "gmail.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.178.134.17",
+        "192.178.134.19",
+        "192.178.134.83"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "gw.youmi.net": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "hosting.sproutbuilder.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "54.208.89.174"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "hot.icittys.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "76.223.54.146",
+        "13.248.169.48"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "im.jjdd.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "imp.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "inoxapps.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "mapi.jjdd.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "221.228.203.37",
+        "221.228.203.35"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "maps.google": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "mob.guohead.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "156.247.72.224"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "mobile.91.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "157.0.146.135",
+        "103.211.221.12",
+        "157.0.146.108"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "my.mobfox.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "8.2.110.192",
+        "8.2.110.215",
+        "8.2.111.148"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "n.wiyun.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "nfck.loseyourip.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "prod.sellaring.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "76.223.54.146",
+        "13.248.169.48"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "proxy.youdraw.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "r.domob.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "r2.adwo.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "42.62.76.40"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "req.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "s.domob.cn": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "120.133.56.70",
+        "120.133.56.80"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "search.gongfu-android.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "static.youmi.net": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "54.223.38.28"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "tw.ad.adon.vpon.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "uh.9ria.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "urlsfound": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "urlsnotfound": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "vc.mobclix.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.0.2.1"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "vpon.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "3.5.159.63",
+        "52.219.172.83",
+        "3.5.157.209"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "w.sandbox.mkhoj.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "wap.soso.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "43.153.236.147"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.9ienglish.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.adsmogo.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.adwo.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "49.232.84.161"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.android-supermarket.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.apperhand.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "217.65.36.152"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.coolcode.org": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "185.199.110.153",
+        "185.199.108.153",
+        "185.199.109.153"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.droidsettings.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "178.62.36.9"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.go108.com.cn": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.google.cn": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "192.178.177.110"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.guohead.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "156.247.72.224"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.inforbit.it": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "31.11.35.205"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.jp-droidsettings.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.mobclix.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "104.21.45.168",
+        "172.67.217.3"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.uk-droidsettings.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.umeng.co": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "www.umeng.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "106.11.253.97",
+        "203.107.1.130",
+        "106.11.253.98"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.vpon.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "184.85.220.139",
+        "184.85.220.238"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "www.youmi.net": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "106.14.141.163"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "xxx.huanhaola.com": {
+    "dns": {
+      "resolves": true,
+      "ips": [
+        "67.230.189.41",
+        "104.194.94.177",
+        "64.186.252.39"
+      ]
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "UNKNOWN"
+  },
+  "zdevl.mapi.jjdd.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "ztest.mapi.jjdd.com": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  },
+  "{0}": {
+    "dns": {
+      "resolves": false
+    },
+    "urlhaus": {
+      "error": "HTTP 401"
+    },
+    "virustotal": {
+      "skipped": true,
+      "reason": "no API key"
+    },
+    "verdict": "DEAD"
+  }
+}

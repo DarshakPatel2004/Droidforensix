@@ -1,0 +1,39 @@
+{
+  "n": 509,
+  "acc": 0.8922,
+  "precision": 0.9383,
+  "recall": 0.9268,
+  "f1": 0.9325,
+  "confusion": [
+    [
+      15,
+      5
+    ],
+    [
+      6,
+      76
+    ]
+  ],
+  "importance": {
+    "decompiled_classes": 0.2057,
+    "total_strings": 0.1411,
+    "num_dangerous_perms": 0.1319,
+    "file_size_kb": 0.1022,
+    "num_permissions": 0.0816,
+    "native_libs_found": 0.0717,
+    "num_encodings": 0.0514,
+    "num_payloads": 0.0478,
+    "num_chains": 0.0468,
+    "num_c2": 0.0429,
+    "num_c2_real": 0.038,
+    "master_key_e_coded": 0.0143,
+    "num_c2_fb_ip": 0.0115,
+    "secret_risk_score": 0.0047,
+    "num_secrets": 0.0045,
+    "master_key_verdict_recovered": 0.0033,
+    "crypter_stub": 0.0005,
+    "target_sdk": 0.0,
+    "min_sdk": 0.0,
+    "apktool_success": 0.0
+  }
+}

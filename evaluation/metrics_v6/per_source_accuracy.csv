@@ -1,0 +1,5 @@
+Source,Total,Catch-all %,Specific %,Pipeline Accuracy Overall,Pipeline Accuracy on Specific
+androzoo_drebin,149,20.1,79.9,0.6779,0.8487
+abusech,121,81.8,18.2,0.0661,0.3636
+AndroZoo,76,82.9,17.1,0.4605,0.8462
+modern_eval,63,57.1,42.9,0.4444,0.6667

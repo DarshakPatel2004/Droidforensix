@@ -1,0 +1,74 @@
+[
+ {
+  "sha256": "0000da2338c5b466fc1a52ac2da80dfcfc699e49fb3681a4468003aa204109b5",
+  "prediction": "Bradesco",
+  "confidence": 0.8,
+  "method": "signature_v3",
+  "reasoning": "3 signals matched: perms(1.90); classes:265; native:no",
+  "candidates": [
+   {
+    "family": "Bradesco",
+    "source": "signature_v3",
+    "confidence": 0.8,
+    "reasoning": "perms(1.90); classes:265; native:no",
+    "signals_matched": 3,
+    "signals_required": 3
+   }
+  ],
+  "status": "success"
+ },
+ {
+  "sha256": "0f021e137e7d3ef426d85f373f64ac53f1ee6c26efd2772cdc9ccb95ff09f9e4",
+  "prediction": "BaseBridge",
+  "confidence": 0.9500000000000001,
+  "method": "signature_v3",
+  "reasoning": "6 signals matched: string:\"androidterm\"; c2:mobile.91.com; perms(4.25); class_boost:range; classes:150; native:yes; jni:socket_connect_send_recv",
+  "candidates": [
+   {
+    "family": "BaseBridge",
+    "source": "signature_v3",
+    "confidence": 0.9500000000000001,
+    "reasoning": "string:\"androidterm\"; c2:mobile.91.com; perms(4.25); class_boost:range; classes:150; native:yes; jni:socket_connect_send_recv",
+    "signals_matched": 6,
+    "signals_required": 3
+   }
+  ],
+  "status": "success"
+ },
+ {
+  "sha256": "0000fb9153e00d6e2c8cf6a2b82d8b0f1c828080fdeb575dc600a5a49d045f5f",
+  "prediction": "TeaBot",
+  "confidence": 0.8,
+  "method": "signature_v3",
+  "reasoning": "3 signals matched: string:\"tea\"; perms(0.95); classes:472",
+  "candidates": [
+   {
+    "family": "TeaBot",
+    "source": "signature_v3",
+    "confidence": 0.8,
+    "reasoning": "string:\"tea\"; perms(0.95); classes:472",
+    "signals_matched": 3,
+    "signals_required": 3
+   }
+  ],
+  "status": "success"
+ },
+ {
+  "sha256": "0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541",
+  "prediction": "Jiagu",
+  "confidence": 0.9,
+  "method": "knowledge_base",
+  "reasoning": "KB score 19.98 from 20 discriminating tokens: n0113120; n111333320; interface17; jgdtc; getstring2; interface14; n011331133; n011212",
+  "candidates": [
+   {
+    "family": "Jiagu",
+    "source": "knowledge_base",
+    "confidence": 0.9,
+    "reasoning": "n0113120; n111333320; interface17; jgdtc; getstring2; interface14; n011331133; n011212",
+    "kb_score": 19.976,
+    "kb_samples": 3
+   }
+  ],
+  "status": "success"
+ }
+]

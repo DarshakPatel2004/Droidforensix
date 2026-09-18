@@ -1,0 +1,234 @@
+# ==========================================
+# DroidForensix Gitignore Configuration
+# Allowlist-based approach: explicitly exclude only what we don't want
+# ==========================================
+
+# Environment and secrets (NEVER commit these)
+.env
+.env.*
+keys.txt
+setenv.sh
+
+# Kaggle bundle artifacts (rebuilt via kaggle/build_bundle.py)
+kaggle/*.zip
+
+# IDE & Editor files
+.vscode/
+.idea/
+.mcp.json
+.windsurfrules
+.cursor/
+.jetro/
+.claude/
+.gemini/
+.kiro/
+.qoder/
+.agents/
+.codex/
+.cursorrules
+.github/code-review-graph.instruction.md
+.opencode.json
+AGENTS.md
+GEMINI.md
+QODER.md
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.pytest_cache/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Node modules
+node_modules/
+
+# Build & dist
+dist/
+build/
+*.egg-info/
+
+# Local development directories
+.worktrees/
+.vite/
+ss/
+.code-review-graph/
+claude_files/
+reports/
+data/
+samples/
+CICAndMal2017/
+koodous/
+analysis/work/
+
+# Local tools bin directory
+tools/
+
+# OS files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Temporary/scratch files
+*.log
+*.tmp
+*.bak
+
+# Root research / investigation scripts
+_*.py
+
+# Debug / experimental scripts
+debug_*.py
+temp_*.py
+tmp_*.py
+analysis/diagnose_gap.py
+analysis/re_run_step7_openrouter.py
+build_final_outputs.py
+check_*.py
+diag_*.py
+download_launcher.py
+enrich_*.py
+main_downloader.py
+report_activity.py
+reprocess_validation.py
+run_fix_verification.py
+run_pendrive_samples.py
+watch_and_reid.py
+test_circl.py
+test_pipeline.py
+
+# Scratch output
+evaluation/balanced_results_v2.json
+reprocess_status.json
+validation_metrics_report.json
+validation_sample_summary.json
+output.txt
+mal.apk
+RTO.apk
+mal_analysis_result.json
+fdroid_*.json
+VALIDATION_REPORT.md
+
+# Dev artifact directories
+Newfix/
+Repairs/
+changes/
+files (3)/
+files (4)/
+cache/
+ss_ocr/
+work/
+
+# Obsolete batch scripts
+run_analysis.ps1
+run_analysis_fixed.ps1
+run_analysis_fixed2.ps1
+run_androzoo.ps1
+run_downloads.ps1
+run_full_downloads.ps1
+run_koodous.ps1
+
+# One-off / investigation scripts
+scripts/investigate_*.py
+scripts/reprocess_*.py
+scripts/clear_*.py
+scripts/count_benign.py
+scripts/curate_benign.py
+scripts/fetch_modern_samples.py
+scripts/fresh_analysis.py
+scripts/test_single.py
+scripts/article_screenshots.py
+scripts/run_benign_pipeline.py
+scripts/run_fast_pipeline.py
+scripts/compute_metrics.py
+scripts/download_benign.py
+scripts/trace_*.py
+scripts/androguard_fallback.py
+
+# Generated article assets
+article_assets/
+
+# Uploaded APKs
+uploads/
+
+# Unused YARA rules (20K+ lines, dead file)
+analysis/yara_rules.yar
+
+# Generated pipeline output dirs (long paths, generated artifacts)
+analysis/ground_truth_phase1/
+analysis/work_empty/
+evaluation/validation_359/
+evaluation/validation_359_full/
+evaluation/validation_359_smoke/
+evaluation/validation_359_smoke2/
+evaluation/validation_359_smoke3/
+
+# Runtime logs
+analysis/logs/
+backend/analysis/logs/
+logs/
+
+gstack/
+# Forum scraper artifacts
+forum_scraper.db
+c2_forum_links.csv
+
+# opencode: heavy pipeline extraction intermediates (regenerable, 2.3M files)
+analysis/work_old/
+analysis/work_mining/
+analysis/work_mining_smoke/
+evaluation/validation_359_fixed/
+evaluation/validation_359_fixed2/
+evaluation/validation_359_fixed3/
+
+# opencode: regenerable extraction cache + scratch outputs
+analysis/gap_features_cache.json
+analysis/obfuscation_work/
+kali result/
+session-ses_006c.md
+
+# DroidForensix classifier artifacts (regenerable, GBs of apktool output)
+evaluation/classifier_data/work/
+evaluation/__pycache__/
+
+
+# Binaries & evidence bundles (never in git; GitHub blocks >100MB)
+*.apk
+*.xapk
+APK/
+PENDRIVE DATA/
+vault/
+analysis/repaired_flags/
+analysis/recovered/
+analysis/dissect_*/
+analysis/emulate_*/
+analysis/triage_*/
+analysis/unpack_*/
+rto_analysis/
+
+# External tool bundles & decompile output (installed/extracted locally, not source)
+android.jar
+baksmali.jar
+cfr.jar
+d8.jar
+smali.jar
+dex-tools.jar
+dex-tools.zip
+enjarify.zip
+jadx.zip
+jadx/
+jadx_out/
+smali_out/
+
+# Generated analysis / reversing scratch (regenerable, multi-100MB)
+evaluation_results/
+defpackage/
+_apk2/
+_hole1_smali/
+_hole5/
+

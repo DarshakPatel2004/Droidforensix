@@ -1,0 +1,30 @@
+DF key      -11830375299590 = information_not_provided           | val      -11937749481990 = Information not provided by developer.
+DF key      -12105253206534 = update_available                   | val      -12178267650566 = Update Available
+DF key      -12251282094598 = download_latest                    | val      -12320001571334 = To use this app, download the latest version.
+DF key      -12517570066950 = everyone                           | val      -12556224772614 = Everyone
+DF key      -12594879478278 = whats_new                          | val      -12637829151238 = What's new
+DF key      -12685073791494 = last_update                        | val      -12736613399046 = Last updated Jan 4th, 2026
+DF key      -12852577516038 = keep_update_on                     | val      -12917002025478 = We're always making changes аոԁ improvements tο this арр. Το make sure уοu don't miss a thing, just keep your Updates turned οո.
+DF key      -13471052806662 = bug_fixes                          | val      -13514002479622 = • Вuɡ fixes аոԁ performance improvements.
+DF key      -13694391106054 = vulnerability_patch                | val      -13780290451974 = • Critical security vulnerability patch.
+DF key      -13956384111110 = more_info                          | val      -13999333784070 = More Info
+DF key      -14042283457030 = update                             | val      -14072348228102 = Update
+DF key      -14102412999174 = ratings_and_review                 | val      -14184017377798 = Ratings and Review
+DF key      -14265621756422 = ratings_and_review_explained       | val      -14390175808006 = Ratings аոԁ review аrе verified аոԁ аrе from people whο usе thе same type οf device that уοu usе.
+DF key      -14811082603014 = installing                         | val      -14858327243270 = Installing
+ES key      -15043010836998 = information_not_provided           | val      -15150385019398 = Información no proporcionada por el desarrollador.
+ES key      -15369428351494 = update_available                   | val      -15442442795526 = Actualización disponible
+ES key      -15549816977926 = download_latest                    | val      -15618536454662 = Para usar esta aplicación, descarga la versión más reciente.
+ES key      -15880529459718 = everyone                           | val      -15919184165382 = Todos
+ES key      -15944953969158 = whats_new                          | val      -15987903642118 = Novedades
+ES key      -16030853315078 = last_update                        | val      -16082392922630 = Última actualización: 4 de enero de 2026
+ES key      -16258486581766 = keep_update_on                     | val      -16322911091206 = Siempre estamos haciendo cambios y mejoras en esta aplicación. Para no perderte nada, asegúrate de mantener las actualizaciones activadas.
+ES key      -16919911545350 = bug_fixes                          | val      -16962861218310 = • Corrección de errores y mejoras de rendimiento.
+ES key      -17177609583110 = vulnerability_patch                | val      -17263508929030 = • Parche de vulnerabilidad de seguridad crítica.
+ES key      -17473962326534 = more_info                          | val      -17516911999494 = Más información
+ES key      -17585631476230 = update                             | val      -17615696247302 = Actualizar
+ES key      -17662940887558 = ratings_and_review                 | val      -17744545266182 = Valoraciones y reseñas
+ES key      -17843329513990 = ratings_and_review_explained       | val      -17967883565574 = Las valoraciones y reseñas están verificadas y provienen de personas que usan el mismo tipo de dispositivo que tú.
+ES key      -18461804804614 = installing                         | val      -18509049444870 = Instalando
+
+Mismatch seed 3rd slot in GT: -1629827971590 -> \A

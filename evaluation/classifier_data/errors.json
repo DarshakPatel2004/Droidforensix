@@ -1,0 +1,17 @@
+[
+  {
+    "sha256": "0001cd8eed5566d323bb95eb41b0301cc1a6d072290334738826985767a7e4ae",
+    "error": "PipelineError: Step 3 (Encoding Detection) timed out after 600s.\n\nOptions:\n  1. Increase timeout for this step in STEP_TIMEOUTS (analysis/pipeline.py)\n  2. If step 3 repeatedly times out, the APK may be too large or obfuscated\n  3. Re-run with --skip-step=3 if this step is optional",
+    "is_malware": 1
+  },
+  {
+    "sha256": "17ccc6c320561c403a76487436fc418d206064542319c3476741b0f8efed01fa",
+    "error": "PipelineError: Step 3 (Encoding Detection) timed out after 600s.\n\nOptions:\n  1. Increase timeout for this step in STEP_TIMEOUTS (analysis/pipeline.py)\n  2. If step 3 repeatedly times out, the APK may be too large or obfuscated\n  3. Re-run with --skip-step=3 if this step is optional",
+    "is_malware": 0
+  },
+  {
+    "sha256": "c6520e0811bea524c03177e9c5840fac00f064aa3b812536bc04d68e4e3e1d6f",
+    "error": "PipelineError: Pipeline timed out after 1807s (limit: 1800s).\n\nOptions:\n  1. Increase pipeline_timeout (default 600s) in run_pipeline() call\n  2. APK is very large \u2014 run individual steps instead\n  3. APK is very large \u2014 run individual steps instead",
+    "is_malware": 0
+  }
+]

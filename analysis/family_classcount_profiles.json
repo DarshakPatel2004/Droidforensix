@@ -1,0 +1,306 @@
+{
+  "Secapk": {
+    "class_count_min": 6,
+    "class_count_max": 14,
+    "class_count_iq1": 6,
+    "class_count_iq3": 14,
+    "class_count_median": 10.0,
+    "sample_count": 2
+  },
+  "AndroidOS": {
+    "class_count_min": 2,
+    "class_count_max": 18843,
+    "class_count_iq1": 79,
+    "class_count_iq3": 5446,
+    "class_count_median": 1459,
+    "sample_count": 49
+  },
+  "GinMaster": {
+    "class_count_min": 76,
+    "class_count_max": 410,
+    "class_count_iq1": 123,
+    "class_count_iq3": 296,
+    "class_count_median": 146.0,
+    "sample_count": 12
+  },
+  "Agent": {
+    "class_count_min": 44,
+    "class_count_max": 38754,
+    "class_count_iq1": 1347,
+    "class_count_iq3": 13911,
+    "class_count_median": 2980,
+    "sample_count": 13
+  },
+  "Jiagu": {
+    "class_count_min": 9,
+    "class_count_max": 10,
+    "class_count_iq1": 9,
+    "class_count_iq3": 10,
+    "class_count_median": 9,
+    "sample_count": 3
+  },
+  "FakeInst": {
+    "class_count_min": 14,
+    "class_count_max": 41,
+    "class_count_iq1": 23,
+    "class_count_iq3": 38,
+    "class_count_median": 27,
+    "sample_count": 17
+  },
+  "Dowgin": {
+    "class_count_min": 163,
+    "class_count_max": 758,
+    "class_count_iq1": 163,
+    "class_count_iq3": 758,
+    "class_count_median": 460.5,
+    "sample_count": 2
+  },
+  "Opfake": {
+    "class_count_min": 6,
+    "class_count_max": 46,
+    "class_count_iq1": 16,
+    "class_count_iq3": 46,
+    "class_count_median": 30.0,
+    "sample_count": 14
+  },
+  "Kmin": {
+    "class_count_min": 142,
+    "class_count_max": 411,
+    "class_count_iq1": 149,
+    "class_count_iq3": 411,
+    "class_count_median": 255.5,
+    "sample_count": 4
+  },
+  "Plankton": {
+    "class_count_min": 56,
+    "class_count_max": 1915,
+    "class_count_iq1": 774,
+    "class_count_iq3": 951,
+    "class_count_median": 855,
+    "sample_count": 9
+  },
+  "FakeInstaller": {
+    "class_count_min": 18,
+    "class_count_max": 41,
+    "class_count_iq1": 23,
+    "class_count_iq3": 34,
+    "class_count_median": 34,
+    "sample_count": 9
+  },
+  "BaseBridge": {
+    "class_count_min": 150,
+    "class_count_max": 659,
+    "class_count_iq1": 175,
+    "class_count_iq3": 247,
+    "class_count_median": 177,
+    "sample_count": 7
+  },
+  "Linux": {
+    "class_count_min": 4,
+    "class_count_max": 128,
+    "class_count_iq1": 4,
+    "class_count_iq3": 128,
+    "class_count_median": 50.5,
+    "sample_count": 4
+  },
+  "Iconosys": {
+    "class_count_min": 10,
+    "class_count_max": 49,
+    "class_count_iq1": 10,
+    "class_count_iq3": 49,
+    "class_count_median": 39,
+    "sample_count": 3
+  },
+  "a": {
+    "class_count_min": 14,
+    "class_count_max": 759,
+    "class_count_iq1": 158,
+    "class_count_iq3": 759,
+    "class_count_median": 433.0,
+    "sample_count": 4
+  },
+  "AppRisk": {
+    "class_count_min": 7127,
+    "class_count_max": 17566,
+    "class_count_iq1": 7127,
+    "class_count_iq3": 17566,
+    "class_count_median": 12346.5,
+    "sample_count": 2
+  },
+  "Gen": {
+    "class_count_min": 14,
+    "class_count_max": 8951,
+    "class_count_iq1": 38,
+    "class_count_iq3": 4485,
+    "class_count_median": 1907,
+    "sample_count": 9
+  },
+  "NGate": {
+    "class_count_min": 11,
+    "class_count_max": 1987,
+    "class_count_iq1": 1459,
+    "class_count_iq3": 1987,
+    "class_count_median": 1459.0,
+    "sample_count": 4
+  },
+  "Imlog": {
+    "class_count_min": 32,
+    "class_count_max": 287,
+    "class_count_iq1": 32,
+    "class_count_iq3": 287,
+    "class_count_median": 136.0,
+    "sample_count": 4
+  },
+  "Banker": {
+    "class_count_min": 544,
+    "class_count_max": 7165,
+    "class_count_iq1": 2628,
+    "class_count_iq3": 5632,
+    "class_count_median": 3595.0,
+    "sample_count": 12
+  },
+  "HyPay": {
+    "class_count_min": 7870,
+    "class_count_max": 8002,
+    "class_count_iq1": 7870,
+    "class_count_iq3": 8002,
+    "class_count_median": 7936.0,
+    "sample_count": 2
+  },
+  "Dropper": {
+    "class_count_min": 255,
+    "class_count_max": 255,
+    "class_count_iq1": 255,
+    "class_count_iq3": 255,
+    "class_count_median": 255.0,
+    "sample_count": 2
+  },
+  "SpyMax": {
+    "class_count_min": 1553,
+    "class_count_max": 7437,
+    "class_count_iq1": 1731,
+    "class_count_iq3": 2661,
+    "class_count_median": 1731.0,
+    "sample_count": 6
+  },
+  "unknown": {
+    "class_count_min": 1,
+    "class_count_max": 11056,
+    "class_count_iq1": 61,
+    "class_count_iq3": 5111,
+    "class_count_median": 1192.5,
+    "sample_count": 10
+  },
+  "MobileTx": {
+    "class_count_min": 25,
+    "class_count_max": 60,
+    "class_count_iq1": 25,
+    "class_count_iq3": 60,
+    "class_count_median": 25,
+    "sample_count": 3
+  },
+  "GenericKD": {
+    "class_count_min": 33,
+    "class_count_max": 8348,
+    "class_count_iq1": 553,
+    "class_count_iq3": 6436,
+    "class_count_median": 1539.5,
+    "sample_count": 18
+  },
+  "Andr/Banker-HDY": {
+    "class_count_min": 9,
+    "class_count_max": 9,
+    "class_count_iq1": 9,
+    "class_count_iq3": 9,
+    "class_count_median": 9,
+    "sample_count": 3
+  },
+  "DroidKungFu": {
+    "class_count_min": 51,
+    "class_count_max": 719,
+    "class_count_iq1": 78,
+    "class_count_iq3": 372,
+    "class_count_median": 189.5,
+    "sample_count": 6
+  },
+  "BankBot": {
+    "class_count_min": 552,
+    "class_count_max": 3461,
+    "class_count_iq1": 552,
+    "class_count_iq3": 3461,
+    "class_count_median": 2006.5,
+    "sample_count": 2
+  },
+  "Adrd": {
+    "class_count_min": 244,
+    "class_count_max": 408,
+    "class_count_iq1": 244,
+    "class_count_iq3": 408,
+    "class_count_median": 326.0,
+    "sample_count": 2
+  },
+  "Andr/Xgen2-AYJ": {
+    "class_count_min": 2,
+    "class_count_max": 2,
+    "class_count_iq1": 2,
+    "class_count_iq3": 2,
+    "class_count_median": 2.0,
+    "sample_count": 2
+  },
+  "GhostBat": {
+    "class_count_min": 5792,
+    "class_count_max": 5792,
+    "class_count_iq1": 5792,
+    "class_count_iq3": 5792,
+    "class_count_median": 5792.0,
+    "sample_count": 2
+  },
+  "FakeDoc": {
+    "class_count_min": 272,
+    "class_count_max": 363,
+    "class_count_iq1": 272,
+    "class_count_iq3": 363,
+    "class_count_median": 317.5,
+    "sample_count": 2
+  },
+  "FakeRun": {
+    "class_count_min": 940,
+    "class_count_max": 1128,
+    "class_count_iq1": 940,
+    "class_count_iq3": 1128,
+    "class_count_median": 1034.0,
+    "sample_count": 2
+  },
+  "KungFu": {
+    "class_count_min": 96,
+    "class_count_max": 203,
+    "class_count_iq1": 96,
+    "class_count_iq3": 203,
+    "class_count_median": 149.5,
+    "sample_count": 2
+  },
+  "SpyNote": {
+    "class_count_min": 16,
+    "class_count_max": 4660,
+    "class_count_iq1": 16,
+    "class_count_iq3": 4660,
+    "class_count_median": 676,
+    "sample_count": 3
+  },
+  "General": {
+    "class_count_min": 2,
+    "class_count_max": 873,
+    "class_count_iq1": 2,
+    "class_count_iq3": 873,
+    "class_count_median": 437.5,
+    "sample_count": 2
+  },
+  "FantasyHub": {
+    "class_count_min": 10632,
+    "class_count_max": 10632,
+    "class_count_iq1": 10632,
+    "class_count_iq3": 10632,
+    "class_count_median": 10632.0,
+    "sample_count": 2
+  }
+}

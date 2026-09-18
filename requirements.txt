@@ -1,0 +1,48 @@
+# For pinned reproducible build, use: pip install -r requirements-lock.txt
+# Web Framework & Server
+# fastapi>=0.119 is required for Starlette 1.x compatibility (the mcp /
+# sse-starlette deps pull Starlette >=1.0, which dropped the on_startup kwarg
+# that older FastAPI passed to Router.__init__).
+fastapi>=0.119
+uvicorn[standard]
+websockets
+python-multipart
+
+# Data Validation
+pydantic
+pydantic-settings
+
+# HTTP Client
+requests
+aiohttp
+
+# Phone Number Validation
+phonenumbers
+
+# LLM Client
+ollama
+openai
+
+# DEX / APK Analysis
+androguard
+yara-python
+
+# Testing
+pytest
+pytest-asyncio
+httpx
+
+# Report Generation (PDF)
+reportlab
+
+# Utilities
+python-dotenv
+
+# GeoIP (offline MaxMind GeoLite2)
+geoip2
+
+# Encrypted / AES-ZIP extraction (MalwareBazaar passworded samples)
+pyzipper
+
+PyYAML
+
