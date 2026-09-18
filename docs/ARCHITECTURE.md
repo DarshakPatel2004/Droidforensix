@@ -182,7 +182,8 @@ DroidForensix/
 ├── samples/, APK/, data/…   Datasets (gitignored)
 ├── stage3_replay.py    RTO stage-3 bytecode replay
 ├── ioc_scanner.py      IOC scanning utility
-└── pyproject.toml      Packaging manifest / future CLI entry point
+├── droidforensix/      CLI package (python -m droidforensix <analyze|classify|serve|unpack>)
+└── pyproject.toml      Packaging manifest + [project.scripts] entry point
 ```
 
 Generated analysis artifacts (`analysis/work/`, `uploads/`, `evaluation_results/`, smali/JADX
