@@ -149,8 +149,8 @@ Model files for the mal/ben classifier: `analysis/classify_fast.py` and `analysi
 
 DroidForensix reconstructs protected payloads statically — no emulator required:
 
-- **Detection:** entropy + DEX-structure heuristics (`analysis/step10_binary_packing.py`) and
-  marker signatures (`data/packer_markers.json`).
+- **Detection:** entropy + DEX-structure heuristics (`analysis/step10_binary_packing.py`) plus
+  brand-marker matching against `data/packer_markers.json` (emits `packer_brands`).
 - **Dispatch / recovery:** `scripts/unpack.py` is the packer-agnostic dispatcher with typed
   error codes; `scripts/dissect.py` and `scripts/emulate.py` provide per-artifact reversal.
 - **Ijiami:** native-library embedding probed via `scripts/ijiami_oracle.py`.
