@@ -6,6 +6,8 @@
     {"name": "360Jiagu", "markers": ["com.qihoo.util", "libjiagu.so", "libjiagu_art.so", "libjiagu_x86.so", "libprotectclass.so"]},
     {"name": "NQShield", "markers": ["com.netqin.android.dopt", "libnqshield.so"]},
     {"name": "Wangsu", "markers": ["libkwsgmain.so", "libkdp.so"]},
-    {"name": "Ali", "markers": ["libmobisec.so", "ali.protect"]}
+    {"name": "Ali", "markers": ["libmobisec.so", "ali.protect"]},
+    {"name": "BaiduEnhancer", "markers": ["libbaiduprotect.so", "libbaiduprotect_x86.so", "com.baidu.protect"]},
+    {"name": "DexProtector", "markers": ["com.licel", "org.licel"]}
   ]
 }

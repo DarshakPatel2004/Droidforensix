@@ -1,10 +1,15 @@
+import json
 import logging
 import math
 import zipfile
+from functools import lru_cache
 from pathlib import Path
 from typing import Dict, List, Any
 
 logger = logging.getLogger(__name__)
+
+MARKERS_PATH = Path(__file__).resolve().parent.parent / "data" / "packer_markers.json"
+MARKER_SCAN_BYTES = 256 * 1024  # per-DEX cap for marker scanning
 
 PACKING_INDICATORS = [
     {"name": "oversized_dex_section", "weight": 30,
@@ -92,6 +97,38 @@ def detect_dex_in_dex(entry_names: List[str]) -> Dict[str, Any]:
     }
 
 
+@lru_cache(maxsize=1)
+def _load_brands() -> List[Dict[str, Any]]:
+    """Load the packer brand markers from data/packer_markers.json."""
+    try:
+        with open(MARKERS_PATH, "r", encoding="utf-8") as f:
+            return json.load(f).get("brands", [])
+    except (FileNotFoundError, json.JSONDecodeError) as e:
+        logger.warning("packer markers unavailable: %s", e)
+        return []
+
+
+def match_packer_brands(
+    entry_names: List[str], dex_blobs: List[bytes]
+) -> List[Dict[str, str]]:
+    """Return [{"name", "markers"}] for brands whose markers appear in
+    zip entry names or the first bytes of each DEX."""
+    joined_names = " ".join(entry_names).lower()
+    names_alt = joined_names.replace("/", ".")
+    matched = []
+    for brand in _load_brands():
+        hits = []
+        for marker in brand.get("markers", []):
+            needle = marker.lower()
+            if needle in joined_names or needle in names_alt or any(
+                needle.encode() in blob.lower() for blob in dex_blobs
+            ):
+                hits.append(marker)
+        if hits:
+            matched.append({"name": brand["name"], "markers": hits})
+    return matched
+
+
 def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
     apk_path = apk_info.get("apk_path", "")
     if not apk_path or not Path(apk_path).exists():
@@ -100,6 +137,7 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
             "obfuscation_score": 0.0,
             "indicators": [],
             "scored_indicators": [],
+            "packer_brands": [],
             "error": "apk_path not provided or does not exist",
         }
 
@@ -114,6 +152,7 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
             all_indicators.extend(dex_result.get("scored_indicators", []))
 
             sections = {}
+            marker_blobs = []
             for name in entry_names:
                 if name.endswith(".dex"):
                     info = zf.getinfo(name)
@@ -122,6 +161,7 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
                         "size": info.file_size,
                         "entropy": shannon_entropy(data),
                     }
+                    marker_blobs.append(data[:MARKER_SCAN_BYTES])
 
             section_result = analyze_dex_sections(sections)
             all_indicators.extend(section_result.get("scored_indicators", []))
@@ -135,12 +175,15 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
                         "detail": f"{lib_name}: {lib_info.file_size} bytes",
                     })
 
+        packer_brands = match_packer_brands(entry_names, marker_blobs)
+
     except zipfile.BadZipFile as e:
         return {
             "packing_detected": True,
             "obfuscation_score": 50.0,
             "indicators": [{"type": "bad_zip", "detail": str(e)}],
             "scored_indicators": [{"type": "bad_zip", "detail": str(e)}],
+            "packer_brands": [],
             "error": None,
         }
     except Exception as e:
@@ -149,6 +192,7 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
             "obfuscation_score": 0.0,
             "indicators": [],
             "scored_indicators": [],
+            "packer_brands": [],
             "error": str(e),
         }
 
@@ -164,5 +208,6 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
         "obfuscation_score": min(total_score, 100),
         "indicators": [i["type"] for i in all_indicators],
         "scored_indicators": all_indicators,
+        "packer_brands": packer_brands,
         "error": None,
     }
