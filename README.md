@@ -385,6 +385,13 @@ tests/            — Python backend tests (pytest)
 docs/             — Dashboard guide, codebase reference, superpower plans
 ```
 
+### Documentation
+
+- **[Usage guide](docs/USAGE.md)** — install, run the dashboard/API/offline pipeline, tests, troubleshooting
+- **[Architecture](docs/ARCHITECTURE.md)** — layers, module map, pipeline, ML artifacts, packer handling
+- **[Dashboard guide](docs/dashboard-guide.md)** — frontend views
+- **[Codebase reference](docs/codebase-reference.md)** — module-by-module tour
+
 ---
 
 ## Environment Variables
