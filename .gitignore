@@ -209,6 +209,7 @@ analysis/dissect_*/
 analysis/emulate_*/
 analysis/triage_*/
 analysis/unpack_*/
+analysis/ac4/
 rto_analysis/
 
 # External tool bundles & decompile output (installed/extracted locally, not source)
