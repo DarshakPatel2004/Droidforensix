@@ -236,6 +236,23 @@ def extract_androguard_strings(apk_path: str) -> List[Dict[str, Any]]:
     return results
 
 
+def _filter_dex_strings(values: set) -> List[Dict[str, Any]]:
+    """Turn raw DEX strings into categorized entries (used on Step 1 output)."""
+    results = []
+    for string in values:
+        if not string:
+            continue
+        if is_noisy_string(string) or is_dex_noise(string):
+            continue
+        results.append({
+            "category": "string_literal",
+            "value": string,
+            "entropy": round(entropy_of_string(string), 4),
+            "source": "dex",
+        })
+    return results
+
+
 def enumerate_strings(extraction_result: dict) -> dict:
     """
     Full Step 2: Enumerate strings from extracted APK output.
@@ -260,10 +277,18 @@ def enumerate_strings(extraction_result: dict) -> dict:
 
     all_strings = []
 
-    # Primary: Androguard DEX strings (fast, ~5s)
-    if apk_path:
+    # Primary: reuse the DEX strings Step 1 already parsed with AndroGuard
+    # (avoids re-parsing the APK — the measured step1 hotspot). Falls back
+    # to a direct AndroGuard pass when Step 1 produced none (e.g. AndroGuard
+    # failed there but apk_path is present).
+    dex_strings = extraction_result.get("dex_strings") or []
+    if dex_strings:
+        andro_strings = _filter_dex_strings(set(dex_strings))
+    elif apk_path:
         andro_strings = extract_androguard_strings(apk_path)
-        all_strings.extend(andro_strings)
+    else:
+        andro_strings = []
+    all_strings.extend(andro_strings)
 
     # Fallback: smali strings from apktool if Androguard produced nothing
     if apktool_dir and not all_strings:
