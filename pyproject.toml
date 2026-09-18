@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "droidforensix"
+version = "0.1.0"
+description = "Offline Android malware analysis and unpacking"
+readme = "README.md"
+requires-python = ">=3.10"
+
+[project.urls]
+Source = "https://github.com/DarshakPatel2004/project-zero"
+
+[tool.setuptools]
+packages = ["analysis", "backend", "backend.core"]
+py-modules = [
+    "stage3_replay",
+    "droidforensix_llm",
+    "ioc_scanner",
+    "batch_classify",
+    "classify_malware_batch",
+    "classify_all_legitimate",
+    "metrics_summary",
+    "decompile_java",
+    "brute_replay",
+]
