@@ -1,0 +1,133 @@
+{
+  "apk_sha256": "2ced80c56809f73a21726cefc406233cc143566333cea6882af67576a0852407",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/org.xbmc.kodi_2103001.apk",
+  "verdict": "clean_static",
+  "confidence": 0.85,
+  "duration_seconds": 3.403,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.003704,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1042724,
+      "total_uncompressed": 281519505,
+      "native_lib_share": 0.3752,
+      "big_asset_count": 268,
+      "allowlist_overrides_applied": [
+        "native_share:0.38"
+      ]
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9088,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 830,
+      "total_windows": 834,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/addons/game.controller.default/resources/icon.png",
+        "assets/addons/game.controller.default/resources/layout.png",
+        "assets/addons/game.controller.keyboard/resources/icon.png",
+        "assets/addons/game.controller.keyboard/resources/layout.png",
+        "assets/addons/game.controller.mouse/resources/icon.png",
+        "assets/addons/game.controller.mouse/resources/layout.png",
+        "assets/addons/game.controller.snes/resources/icon.png",
+        "assets/addons/game.controller.snes/resources/layout.png",
+        "assets/addons/game.libretro.mrboom/resources/icon.png",
+        "assets/addons/resource.images.weathericons.default/resources/1.png",
+        "assets/addons/resource.images.weathericons.default/resources/10.png",
+        "assets/addons/resource.images.weathericons.default/resources/12.png",
+        "assets/addons/resource.images.weathericons.default/resources/13.png",
+        "assets/addons/resource.images.weathericons.default/resources/15.png",
+        "assets/addons/resource.images.weathericons.default/resources/16.png",
+        "assets/addons/resource.images.weathericons.default/resources/17.png",
+        "assets/addons/resource.images.weathericons.default/resources/18.png",
+        "assets/addons/resource.images.weathericons.default/resources/3.png",
+        "assets/addons/resource.images.weathericons.default/resources/35.png",
+        "assets/addons/resource.images.weathericons.default/resources/38.png"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 84
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "openat",
+        "pread",
+        "pread64",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/media/Fonts/arial.ttf",
+      "size": 4641248
+    },
+    {
+      "path": "assets/python3.11/lib/python3.11/ensurepip/_bundled/pip-23.2.1-py3-none-any.whl",
+      "size": 2086091
+    },
+    {
+      "path": "assets/addons/screensaver.shadertoy/resources/tex01.png",
+      "size": 2072061
+    },
+    {
+      "path": "assets/addons/screensaver.shadertoy/resources/tex09.png",
+      "size": 2029009
+    },
+    {
+      "path": "assets/addons/screensaver.shadertoy/resources/tex05.png",
+      "size": 1866047
+    },
+    {
+      "path": "assets/addons/screensaver.shadertoy/resources/tex06.png",
+      "size": 1834720
+    },
+    {
+      "path": "assets/addons/skin.estuary/media/Textures.xbt",
+      "size": 1277725
+    },
+    {
+      "path": "assets/python3.11/lib/python3.11/ensurepip/_bundled/setuptools-65.5.0-py3-none-any.whl",
+      "size": 1232695
+    },
+    {
+      "path": "assets/addons/webinterface.default/js/kodi-webinterface.js",
+      "size": 1219497
+    },
+    {
+      "path": "assets/addons/webinterface.default/themes/base/fonts/opensans/opensans-light-webfont.svg",
+      "size": 1159184
+    }
+  ],
+  "allowlist_overrides_applied": [
+    "native_share:0.38"
+  ]
+}

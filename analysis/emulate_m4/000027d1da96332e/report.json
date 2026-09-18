@@ -1,0 +1,39 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7.apk",
+  "apk_sha256": "000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7",
+  "libs_tried": [
+    {
+      "lib": "armeabi_libcrypt_sign.so",
+      "entry": "Java_com_ffcs_crypt_CryptSign_authSign",
+      "entry_va": "0x102170",
+      "arch": "arm",
+      "status": "abort",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi_libdnlocal.so",
+      "entry": "Java_com_door_frame_utils_CmmUtils_getSystemRawVar",
+      "entry_va": "0x101585",
+      "arch": "arm",
+      "status": "abort",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi_libshunpay.so",
+      "entry": "Java_com_shunpay210_sdk_CppAdapter210_pay",
+      "entry_va": "0x109c49",
+      "arch": "arm",
+      "status": "abort",
+      "heap_used": 671088880,
+      "jni_calls": 0
+    }
+  ],
+  "recovered": [],
+  "status": [
+    "abort",
+    "abort",
+    "abort"
+  ]
+}

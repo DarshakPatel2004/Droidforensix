@@ -1,0 +1,84 @@
+{
+  "apk_sha256": "37bac216be031f33a1bfb936b1d7c09e0730ffdc32bc1c5afdb8c685a30aa80d",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Black mail/Vedu1.0.9.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.322,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.534078,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 34248276,
+      "total_uncompressed": 64125953,
+      "native_lib_share": 0.1854,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.4598,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 1024,
+      "total_windows": 2279,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/.etvetyu.dex",
+        "assets/ad-viewer/ad-viewer-vendors.7605fb4c.js",
+        "assets/ad-viewer/adViewer.97f5ff34.js",
+        "assets/audience_network.dex"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.liapp.x",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 5770456,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 42
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "pread64",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/.etvetyu.dex",
+      "size": 7157483
+    },
+    {
+      "path": "assets/audience_network.dex",
+      "size": 3407012
+    },
+    {
+      "path": "assets/ad-viewer/adViewer.97f5ff34.js",
+      "size": 1100838
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

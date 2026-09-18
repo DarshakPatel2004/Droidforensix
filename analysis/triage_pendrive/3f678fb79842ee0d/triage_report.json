@@ -1,0 +1,55 @@
+{
+  "apk_sha256": "3f678fb79842ee0dd0a2e136c2baf7b3b3b99cebeaf330fd4aab5ec26bddd08e",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/pick11-B04 (1).apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.676,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.650311,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 3144700,
+      "total_uncompressed": 4835683,
+      "native_lib_share": 0.0,
+      "big_asset_count": 0,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 0.0,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 0,
+      "total_windows": 0,
+      "sampled_capped": false,
+      "candidates": []
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.example.webviewcontainer.Application",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 3144700,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,88 @@
+{
+  "apk_sha256": "5938adfcaae3937ee1428f0ed554390326b2c4b9c54eebbb60899fd6f2685a4b",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/new apk files/AmazonFlexAndroidApp.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 5.346,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.311117,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 53883072,
+      "total_uncompressed": 173192401,
+      "native_lib_share": 0.3602,
+      "big_asset_count": 16,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.9393,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 2,
+      "total_windows": 1336,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/BasicClean.json",
+        "assets/RabbitPlayReactNativeJS.bundle",
+        "assets/fonts/OpenSans-Bold.ttf",
+        "assets/fonts/OpenSans-BoldItalic.ttf",
+        "assets/fonts/OpenSans-ExtraBold.ttf",
+        "assets/fonts/OpenSans-ExtraBoldItalic.ttf",
+        "assets/fonts/OpenSans-Italic.ttf",
+        "assets/fonts/OpenSans-Light.ttf",
+        "assets/fonts/OpenSans-LightItalic.ttf",
+        "assets/fonts/OpenSans-Regular.ttf",
+        "assets/fonts/OpenSans-Semibold.ttf",
+        "assets/fonts/OpenSans-SemiboldItalic.ttf",
+        "assets/fonts/Roboto-Bold.ttf",
+        "assets/fonts/Roboto-Medium.ttf",
+        "assets/legal/additional_terms_en.html",
+        "assets/legal/additional_terms_maps2.0_en.html"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.amazon.rabbit.android.RabbitApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 9955756,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 39
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/RabbitPlayReactNativeJS.bundle",
+      "size": 2426334
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

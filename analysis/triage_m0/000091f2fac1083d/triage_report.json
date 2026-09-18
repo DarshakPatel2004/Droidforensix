@@ -1,0 +1,68 @@
+{
+  "apk_sha256": "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3.apk",
+  "verdict": "packed_known(Bangcle/SecNeo)",
+  "confidence": 0.95,
+  "duration_seconds": 0.061,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.007345,
+      "threshold": 0.05,
+      "hit": true,
+      "dex_bytes": 20124,
+      "total_uncompressed": 2739913,
+      "native_lib_share": 0.1487,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.2729,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 155,
+      "total_windows": 194,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/bangcle_classes.jar",
+        "assets/d0.wav",
+        "assets/libsecmain.x86.so",
+        "assets/z.bin"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.secapk.wrapper.ApplicationWrapper",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 20124,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": [
+        {
+          "brand": "Bangcle/SecNeo",
+          "markers": [
+            "libsecexe.so",
+            "libsecmain.so"
+          ]
+        }
+      ]
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

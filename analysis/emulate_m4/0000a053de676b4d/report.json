@@ -1,0 +1,49 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465.apk",
+  "apk_sha256": "0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465",
+  "libs_tried": [
+    {
+      "lib": "armeabi_libandroidgl20.so",
+      "entry": "Java_com_badlogic_gdx_backends_android_AndroidGL20_init",
+      "entry_va": "0x106120",
+      "arch": "arm",
+      "status": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+      "heap_used": 0,
+      "jni_calls": 188
+    },
+    {
+      "lib": "armeabi_libgdx.so",
+      "entry": "Java_com_badlogic_gdx_math_Matrix4_det",
+      "entry_va": "0x140884",
+      "arch": "arm",
+      "status": "Invalid instruction (UC_ERR_INSN_INVALID)",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi-v7a_libandroidgl20.so",
+      "entry": "Java_com_badlogic_gdx_backends_android_AndroidGL20_init",
+      "entry_va": "0x106120",
+      "arch": "arm",
+      "status": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+      "heap_used": 0,
+      "jni_calls": 188
+    },
+    {
+      "lib": "armeabi-v7a_libgdx.so",
+      "entry": "Java_com_badlogic_gdx_math_Matrix4_det",
+      "entry_va": "0x12cf50",
+      "arch": "arm",
+      "status": "Invalid instruction (UC_ERR_INSN_INVALID)",
+      "heap_used": 0,
+      "jni_calls": 0
+    }
+  ],
+  "recovered": [],
+  "status": [
+    "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+    "Invalid instruction (UC_ERR_INSN_INVALID)",
+    "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+    "Invalid instruction (UC_ERR_INSN_INVALID)"
+  ]
+}

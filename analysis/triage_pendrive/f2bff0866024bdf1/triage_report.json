@@ -1,0 +1,58 @@
+{
+  "apk_sha256": "f2bff0866024bdf1aab366a4f2c2aa0538aeef2c48f20c3c57be6f57e5dae079",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Delhi board  39420/DELHI JAL BOARD METER UPDATE.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.116,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.254465,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 601212,
+      "total_uncompressed": 2362649,
+      "native_lib_share": 0.2442,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 4.4933,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 277,
+      "total_windows": 560,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/libnative_utils.so",
+        "assets/core_cache.bin",
+        "assets/font_subset.ttf",
+        "assets/classes2.dex"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "",
+      "reason": "no_application_class"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,203 @@
+{
+  "report_metadata": {
+    "generated_at": "2026-08-27T16:53:35.406741+00:00",
+    "pipeline_version": "6-stage-forensic-v1.0",
+    "apk_path": "RTO.apk",
+    "package_name": "com.lqbczc.szubinocgulatizofn",
+    "sha256": "348f8b090b51ba27e9042f19730a61c04bb31691d7939fd1047dffc5f51a8d4e"
+  },
+  "final_assessment": {
+    "classification": "benign",
+    "risk_score": 2,
+    "mitre_tactics": [],
+    "stage_verdicts": {
+      "malicious_votes": 0,
+      "benign_votes": 1,
+      "total_stages_voted": 1
+    },
+    "secret_risk": {
+      "severity": "none",
+      "total_secrets": 0,
+      "risk_score": 0,
+      "summary": "No hardcoded secrets detected"
+    },
+    "llm_consolidation": {
+      "is_malicious": false,
+      "confidence": "low",
+      "false_positive_likelihood": "low",
+      "reasoning": "Based on the findings, the APK does not contain any malicious activities and the risk score is low. The absence of YARA matches, suspicious classes, and suspicious IPs further supports this conclusion.",
+      "mitre_tactics": [],
+      "recommendation": "Continue monitoring the APK for any potential future changes or anomalies.",
+      "status": "verified"
+    }
+  },
+  "stage_0_preflight": {
+    "ollama_available": true,
+    "circl_available": false,
+    "timestamp": "2026-08-27T16:51:52.174399+00:00"
+  },
+  "stage_0_metadata": {
+    "file_hash_sha256": "348f8b090b51ba27e9042f19730a61c04bb31691d7939fd1047dffc5f51a8d4e",
+    "file_size_bytes": 8397289,
+    "entropy": 7.9817,
+    "entropy_status": "high_entropy_packed",
+    "apk_structure": {
+      "error": "7-Zip not found at 7z"
+    },
+    "zip_tampering": {
+      "tampered": true,
+      "summary": "2 fake-encrypted entries",
+      "manifest_status": "encrypted",
+      "bogus_method_entries": [],
+      "encrypted_flag_entries": [
+        "resources.arsc",
+        "AndroidManifest.xml"
+      ]
+    },
+    "manifest_summary": {
+      "package_name": "com.lqbczc.szubinocgulatizofn",
+      "version_code": "4224",
+      "version_name": "6.2.6P02",
+      "min_sdk": "26",
+      "target_sdk": "28",
+      "permissions": [
+        "android.permission.ACCESS_NETWORK_STATE",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.INTERNET",
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS",
+        "android.permission.REQUEST_INSTALL_PACKAGES",
+        "com.google.android.c2dm.permission.RECEIVE",
+        "android.permission.POST_NOTIFICATIONS",
+        "android.permission.QUERY_ALL_PACKAGES",
+        "android.permission.WAKE_LOCK"
+      ],
+      "dangerous_permissions": [
+        "android.permission.RECEIVE_BOOT_COMPLETED",
+        "android.permission.REQUEST_INSTALL_PACKAGES"
+      ],
+      "activities": [
+        "com.lqbczc.szubinocgulatizofn.IndistinctActivity",
+        "com.lqbczc.szubinocgulatizofn.KenneledActivity"
+      ],
+      "services": [
+        "com.lqbczc.szubinocgulatizofn.ReinoculationsReceiver",
+        "com.lqbczc.szubinocgulatizofn.TailleurService"
+      ],
+      "receivers": [
+        "com.lqbczc.szubinocgulatizofn.ViolinistsReceiver",
+        "com.lqbczc.szubinocgulatizofn.EphramReceiver"
+      ],
+      "providers": [],
+      "exported_activities": [
+        "com.lqbczc.szubinocgulatizofn.IndistinctActivity"
+      ],
+      "exported_services": [
+        "com.lqbczc.szubinocgulatizofn.ReinoculationsReceiver"
+      ],
+      "native_libs": [
+        "lib/armeabi-v7a/libstrangulation.so",
+        "lib/arm64-v8a/libstrangulation.so"
+      ],
+      "certificate_issuer": "<asn1crypto.x509.Name 140557855866960 b'0\\x81\\x941\\x0b0\\t\\x06\\x03U\\x04\\x06\\x13\\x02US1\\x130\\x11\\x06\\x03U\\x04\\x08\\x13\\nCalifornia1\\x160\\x14\\x06\\x03U\\x04\\x07\\x13\\rMountain View1\\x100\\x0e\\x06\\x03U\\x04\\n\\x",
+      "sha256": "348f8b090b51ba27e9042f19730a61c04bb31691d7939fd1047dffc5f51a8d4e"
+    },
+    "extracted_ips": [],
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "low",
+      "reasoning": "The APK metadata alone does not provide sufficient evidence to determine if the APK is malicious. The presence of certain permissions and exported components could be benign or indicative of a legitimate application. The high entropy and ZIP tampering are suspicious, but without further analysis, it's not clear if these are indicators of malicious activity.",
+      "mitre_tactics": [],
+      "recommendation": "Perform a deeper analysis including code analysis and behavior monitoring to determine the nature of the APK.",
+      "status": "verified"
+    },
+    "duration_seconds": 29.416
+  },
+  "stage_1_threat_indicators": {
+    "packer_analysis": {
+      "error": "DIE not found at diec",
+      "detections": []
+    },
+    "yara_matches": [],
+    "dex_statistics": {
+      "classes": 3,
+      "methods": 9,
+      "strings": 16,
+      "multidex": false
+    },
+    "api_risk_map": [],
+    "anti_analysis_indicators": {
+      "emulator_detection": false,
+      "root_detection": true,
+      "debugger_detection": false,
+      "native_obfuscation": true
+    },
+    "risk_score": 2,
+    "extracted_ips": [],
+    "llm_verification": {
+      "is_malicious": false,
+      "confidence": "low",
+      "false_positive_likelihood": "medium",
+      "reasoning": "The APK has no YARA matches, no suspicious APIs, and a low risk score. The presence of anti-analysis indicators is not conclusive evidence of malicious intent without further investigation.",
+      "mitre_tactics": [],
+      "recommendation": "Further investigation is recommended, including dynamic analysis and review of the APK's behavior in a controlled environment.",
+      "status": "verified"
+    },
+    "duration_seconds": 16.085
+  },
+  "stage_2_jadx_analysis": {
+    "decompilation_status": "success",
+    "suspicious_classes": [],
+    "extracted_ips": [],
+    "hardcoded_secrets": [],
+    "secret_risk": {
+      "severity": "none",
+      "total_secrets": 0,
+      "risk_score": 0,
+      "summary": "No hardcoded secrets detected"
+    },
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "unknown",
+      "reasoning": "The findings indicate no suspicious classes or high-severity patterns were detected. This suggests the APK may not be malicious, but further analysis is needed to confirm.",
+      "mitre_tactics": [],
+      "recommendation": "Continue with a more comprehensive analysis, including static and dynamic analysis, to ensure the APK is safe.",
+      "status": "verified"
+    },
+    "duration_seconds": 12.837
+  },
+  "stage_3_dns_enrichment": {
+    "total_unique_ips": 0,
+    "ips_with_circl_records": 0,
+    "responsive_ips": 0,
+    "ip_enrichment": [],
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "low",
+      "reasoning": "No C2 infrastructure was found as there were no IPs found, no suspicious IPs, and no IPs with CIRCL records. The absence of C2 infrastructure does not definitively indicate a malicious APK, but it does suggest a lack of C2 activity.",
+      "mitre_tactics": [],
+      "recommendation": "Further analysis is needed to confirm the absence of C2 infrastructure and to verify the APK's behavior and functionality.",
+      "status": "verified"
+    },
+    "duration_seconds": 17.744
+  },
+  "stage_4_cross_validation": {
+    "total_classes_validated": 0,
+    "confirmed": 0,
+    "discrepancies": 0,
+    "validation_results": [],
+    "llm_verification": {
+      "is_malicious": null,
+      "confidence": "unknown",
+      "false_positive_likelihood": "unknown",
+      "reasoning": "The cross-validation did not validate any classes, confirm any classes in the DEX, or identify discrepancies. This lack of information does not support or refute the malware hypothesis.",
+      "mitre_tactics": [],
+      "recommendation": "Further analysis is needed to determine the nature of the APK.",
+      "status": "verified"
+    },
+    "duration_seconds": 12.141
+  }
+}

@@ -1,0 +1,822 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b.apk",
+  "apk_sha256": "0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b",
+  "so_count": 8,
+  "native_libs": [
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/armeabi-v7a_libCore.so",
+      "sha256": "8754f02bc2f220dfd2e08fe611c34273add8465ac74355c8f2f60586fbb00fee",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "libz.so",
+          "libdl.so",
+          "libc.so",
+          "libm.so",
+          "liblog.so",
+          "libjnigraphics.so",
+          "libstagefright.so",
+          "libutils.so",
+          "libui.so",
+          "libGLESv2.so",
+          "libEGL.so"
+        ]
+      },
+      "jni_methods": [
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeGetTextContent",
+          "addr": "0x12d4cd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeDispatchSelectionChangeEvent",
+          "addr": "0x128305",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_CameraUI_nativeOnCameraError",
+          "addr": "0x127469",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeGetSelectedText",
+          "addr": "0x12b4a9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsPasswordField",
+          "addr": "0x12c6b5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidStageText_handleKeyEvent",
+          "addr": "0x874bdd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREArray_setLength",
+          "addr": "0x868245",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_getAsDouble",
+          "addr": "0x868e7d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_getLineStride32",
+          "addr": "0x8686d9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREArray_setObjectAt",
+          "addr": "0x86818d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREByteArray_acquire",
+          "addr": "0x8689e1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_customHandler_nativeOnKeyCallback",
+          "addr": "0x12ad65",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_getBits",
+          "addr": "0x86858d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_FREObjectFromBoolean",
+          "addr": "0x868f19",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_Entrypoints_EntryStopRuntimeNative",
+          "addr": "0x129015",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidInputConnection_nativeGetTextBeforeCursor",
+          "addr": "0x12db95",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsFullScreenInteractive",
+          "addr": "0x127529",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidActivityWrapper_nativeActivateEvent",
+          "addr": "0x1293cd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidNetworkDetector_callOnNetworkChange",
+          "addr": "0x127601",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_utils_Utils_nativeConnectDebuggerSocket",
+          "addr": "0x1276b5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidLocale_getLocalString",
+          "addr": "0x12f6e9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREArray_getLength",
+          "addr": "0x868285",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidActivityWrapper_nativeOnFocusListener",
+          "addr": "0x128571",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidCamera_nativeOnCanOpenCamera",
+          "addr": "0x1274e1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREByteArray_getLength",
+          "addr": "0x868949",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_flashruntime_air_VideoViewAIR_nativeSetSurfaceSize",
+          "addr": "0x142b01",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidStageText_dispatchFocusIn",
+          "addr": "0x874419",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREContext_registerFunction",
+          "addr": "0x8694e1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRStage3DSurfaceView_nativeSurfaceLost",
+          "addr": "0x127409",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_FREObjectFromDouble",
+          "addr": "0x868f71",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeCutText",
+          "addr": "0x128119",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREContext_getActionScriptData",
+          "addr": "0x8699b5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_isPremultiplied",
+          "addr": "0x868775",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_setProperty",
+          "addr": "0x869155",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativePerformWindowPanning",
+          "addr": "0x12c8cd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidWebView_dispatchFocusOut",
+          "addr": "0x164a15",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidStageText_invokeSoftKeyboard",
+          "addr": "0x874ec1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeSelectAllText",
+          "addr": "0x129985",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidCamera_nativeOnFrameCaptured",
+          "addr": "0x1274a5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_getProperty",
+          "addr": "0x8690b9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidInputConnection_nativeDeleteSurroundingText",
+          "addr": "0x129b65",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidWebView_dispatchLoadError",
+          "addr": "0x164829",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_Entrypoints_applyDownloadedConfig",
+          "addr": "0x128a51",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_getAsString",
+          "addr": "0x868dd1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidInputConnection_nativeSetSelection",
+          "addr": "0x129d4d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_Entrypoints_EntryMainWrapper",
+          "addr": "0x12f039",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_getAsBool",
+          "addr": "0x868e2d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeInsertText",
+          "addr": "0x128c25",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeSetKeyboardVisible",
+          "addr": "0x129f3d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidActivityWrapper_nativeDeactivateEvent",
+          "addr": "0x1291e9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeForceReDraw",
+          "addr": "0x128e35",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_customHandler_callTimeoutFunction",
+          "addr": "0x127619",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_telephony_AndroidPhoneStateListener_nativeOnCallStateChanged",
+          "addr": "0x12a309",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeOnKeyListener",
+          "addr": "0x12a965",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_location_Geolocation_updateGeolocationCache",
+          "addr": "0x1e98e1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeDispatchFullScreenEvent",
+          "addr": "0x127569",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREContext_registerFunctionCount",
+          "addr": "0x8694c5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_getHeight",
+          "addr": "0x8688ad",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_flashruntime_shared_VideoView_nativeSetJavaViewReady",
+          "addr": "0x127399",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeDispatchUserTriggeredSkDeactivateEvent",
+          "addr": "0x12a129",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_release",
+          "addr": "0x868499",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidWebView_dispatchLocationChange",
+          "addr": "0x164bfd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidStageText_dispatchFocusOut",
+          "addr": "0x87460d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeGetTextBoxBounds",
+          "addr": "0x12b191",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_OrientationManager_nativeOrientationChanged",
+          "addr": "0x1295a5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeSurfaceCreated",
+          "addr": "0x1274fd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsMultiLineTextField",
+          "addr": "0x12cd15",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_location_Geolocation_setGeolocationStatus",
+          "addr": "0x1e96b1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_CameraUI_nativeOnCameraResult",
+          "addr": "0x127441",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_getAsInt",
+          "addr": "0x868ed1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRStage3DSurfaceView_nativeSurfaceLayoutChanged",
+          "addr": "0x1273cd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidActivityWrapper_nativeSetVisible",
+          "addr": "0x12ab71",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidInputConnection_nativeGetTextAfterCursor",
+          "addr": "0x12d8f9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidStageText_dispatchChangeEvent",
+          "addr": "0x8749e1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeGetTextContentLength",
+          "addr": "0x12c06d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREByteArray_release",
+          "addr": "0x868afd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidActivityWrapper_nativeSendInvokeEventWithData",
+          "addr": "0x12a4f1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_FREObjectFromClass",
+          "addr": "0x8693c9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_Entrypoints_setMainViewOnCreate",
+          "addr": "0x12e4f9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidWebView_dispatchFocusIn",
+          "addr": "0x164601",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_callMethod",
+          "addr": "0x8691d5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeMoveCursor",
+          "addr": "0x1275cd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeOnSizeChangedListener",
+          "addr": "0x127acd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREByteArray_getBytes",
+          "addr": "0x868bf1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_OrientationManager_nativeOrientationChanging",
+          "addr": "0x12caf5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_invalidateRect",
+          "addr": "0x8682d1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREArray_getObjectAt",
+          "addr": "0x8681dd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidWebView_dispatchLoadComplete",
+          "addr": "0x164de1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRStage3DSurfaceView_nativeSurfaceChanged",
+          "addr": "0x1273e9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREContext_dispatchStatusEventAsync",
+          "addr": "0x869501",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeGetMultitouchMode",
+          "addr": "0x12be59",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidActivityWrapper_nativeLowMemoryEvent",
+          "addr": "0x127901",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_newObject",
+          "addr": "0x8692d9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsTextFieldInSelectionMode",
+          "addr": "0x12d199",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_getWidth",
+          "addr": "0x8683fd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_FREObjectFromInt",
+          "addr": "0x868fc9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_acquire",
+          "addr": "0x86831d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_Entrypoints_EntryDownloadConfigNative",
+          "addr": "0x12e5dd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeOnFormatChangeListener",
+          "addr": "0x127181",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeDeleteTextLine",
+          "addr": "0x1275a1",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRStage3DSurfaceView_nativeSurfaceCreated",
+          "addr": "0x127425",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidInputConnection_nativeGetTextBoxMaxChars",
+          "addr": "0x12bc41",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_CameraUI_nativeOnCameraCancel",
+          "addr": "0x127489",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsTextFieldSelectable",
+          "addr": "0x12cf51",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsTextSelected",
+          "addr": "0x12c285",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidStageText_dispatchCompleteEvent",
+          "addr": "0x8747f9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidMediaManager_useImagePickerData",
+          "addr": "0x86205d",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidCamera_nativeOnShouldCloseCamera",
+          "addr": "0x1274c5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREObject_FREObjectFromString",
+          "addr": "0x869021",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_gestures_AIRGestureListener_nativeOnGestureListener",
+          "addr": "0x127ccd",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AndroidWebView_dispatchLocationChanging",
+          "addr": "0x165005",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeOnDoubleClickListener",
+          "addr": "0x12af71",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREBitmapData_hasAlpha",
+          "addr": "0x868811",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_customHandler_nativeOnTouchCallback",
+          "addr": "0x128751",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_fre_FREContext_setActionScriptData",
+          "addr": "0x8698d9",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeShowOriginalRect",
+          "addr": "0x1297a5",
+          "source": "static_export"
+        },
+        {
+          "name": "Java_com_adobe_air_AIRWindowSurfaceView_nativeIsEditable",
+          "addr": "0x12c49d",
+          "source": "static_export"
+        }
+      ],
+      "registernatives_tables": [],
+      "crypto_hints": [
+        {
+          "kind": "aes_sbox",
+          "section": ".rodata",
+          "offset": "0x254b94",
+          "size": 16
+        },
+        {
+          "kind": "aes_inv_sbox",
+          "section": ".rodata",
+          "offset": "0x18fffc",
+          "size": 16
+        },
+        {
+          "kind": "rc4_sbox_init",
+          "section": ".rodata",
+          "offset": "0x3d964",
+          "size": 32
+        }
+      ],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "branches": 0,
+        "total_insns": 1,
+        "distinct_branch_targets": 0,
+        "hub_max_indegree": 0
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/armeabi-v7a_libsecexe.so",
+      "sha256": "f42aa582b9afda9c30c7027a9268e45fc0c32f39b5a40408505d8068bef3c431",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/armeabi-v7a_libsecmain.so",
+      "sha256": "90cd43b19cb1f98539a3870d6a5f9620b9d984e258d200531c9aa6620624d530",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/armeabi-v7a_libstagefright_froyo.so",
+      "sha256": "edff6b270fee62a9efc89bf4b8bbd5f97c4bc1b1f9a8eff07bf173afd212c5ef",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "libstagefright.so",
+          "libutils.so",
+          "libcutils.so",
+          "libstdc++.so",
+          "libdl.so",
+          "libc.so",
+          "libm.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "branches": 0,
+        "total_insns": 2,
+        "distinct_branch_targets": 0,
+        "hub_max_indegree": 0
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/armeabi-v7a_libstagefright_honeycomb.so",
+      "sha256": "0fbdd42a98ef5251af9cf061c3454d94ac4f9bec0e32499858e1c10c934749a1",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "libstagefright.so",
+          "libutils.so",
+          "libcutils.so",
+          "libgui.so",
+          "libstdc++.so",
+          "libdl.so",
+          "libui.so",
+          "libc.so",
+          "libm.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "branches": 0,
+        "total_insns": 7,
+        "distinct_branch_targets": 0,
+        "hub_max_indegree": 0
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/armeabi-v7a_libysshared.so",
+      "sha256": "b943b7e7631b4ef047f2eeeef6c50ff77dd6756c66f9eb7954a3e846f387b69c",
+      "elf": {
+        "arch": "arm",
+        "bits": 32,
+        "stripped": false,
+        "needed": []
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 1.0,
+        "opaque_predicate_density": 0.054,
+        "branches": 243,
+        "total_insns": 4504,
+        "distinct_branch_targets": 130,
+        "hub_max_indegree": 29
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/assets_libsecexe.x86.so",
+      "sha256": "bf03a8dd319586f8ab2373e753dc79ae9908665d637495571711d3eaf8c82fcd",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    },
+    {
+      "path": "analysis/dissect_m1/0000d3e05cfad4c3/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b/assets_libsecmain.x86.so",
+      "sha256": "eee7d754ac503961f31e8c0628e7a5336a9e49c9d139da2fd910eb9845043303",
+      "elf": {
+        "arch": "i386",
+        "bits": 32,
+        "stripped": true,
+        "needed": [
+          "liblog.so",
+          "libstdc++.so",
+          "libm.so",
+          "libc.so",
+          "libdl.so"
+        ]
+      },
+      "jni_methods": [],
+      "registernatives_tables": [],
+      "crypto_hints": [],
+      "obfuscation": {
+        "flattened_function_fraction": 0.0,
+        "opaque_predicate_density": 0.0,
+        "note": "no .text or too small; Ghidra headless pending for deep CFG"
+      }
+    }
+  ]
+}

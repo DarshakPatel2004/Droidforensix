@@ -1,0 +1,112 @@
+{
+  "apk_sha256": "45fbbbcb40f481ddc098c1a2383d84486fd6ff410db75b2e2637428c532d6177",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/new apk files/GBwhatsapp.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 0.726,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.133221,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 12563902,
+      "total_uncompressed": 94308983,
+      "native_lib_share": 0.1343,
+      "big_asset_count": 59,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.1306,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 133,
+      "total_windows": 842,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/fonts/ComicSans.ttf",
+        "assets/compressed/strings/strings_bn.spk.br",
+        "assets/fonts/Motla_bold(Arabic).ttf",
+        "assets/fonts/Kufi_moderate(Arabic).ttf",
+        "assets/fonts/BacktoBlack.ttf",
+        "assets/compressed/strings/strings_ar.spk.br",
+        "assets/compressed/strings/strings_mr.spk.br",
+        "assets/fonts/Comfortaa.ttf",
+        "assets/fonts/MohanadBold(Arabic).ttf",
+        "assets/fonts/Dubai(Arabic).ttf",
+        "assets/compressed/strings/strings_ru.spk.br",
+        "assets/compressed/strings/strings_ur.spk.br",
+        "assets/fonts/Mohanad(Arabic).ttf",
+        "assets/fonts/Default-Bold.ttf",
+        "assets/fonts/Zaman(Arabic).ttf",
+        "assets/fonts/BebasNeue-Bold.ttf",
+        "assets/fonts/Comfortaa-Bold.ttf",
+        "assets/fonts/SourceSansPro.ttf",
+        "assets/fonts/Roboto-Light.ttf",
+        "assets/fonts/Capture_it.ttf"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "v17846d7a.l17846d7a",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 12563902,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 12
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "open",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/compressed/armeabi-v7a/libs.spk.zst",
+      "size": 8821214
+    },
+    {
+      "path": "assets/compressed/arm64-v8a/libs.spk.zst",
+      "size": 7865575
+    },
+    {
+      "path": "assets/l17846d7a_a64.so",
+      "size": 3301928
+    },
+    {
+      "path": "assets/l17846d7a_a32.so",
+      "size": 2269064
+    },
+    {
+      "path": "assets/l17846d7a_x64.so",
+      "size": 2058168
+    },
+    {
+      "path": "assets/l17846d7a_x86.so",
+      "size": 2009956
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

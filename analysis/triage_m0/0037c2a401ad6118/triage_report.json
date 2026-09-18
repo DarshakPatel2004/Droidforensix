@@ -1,0 +1,71 @@
+{
+  "apk_sha256": "0037c2a401ad6118ab567bf6ff26d0f4c95c98f7be1afb504a0d6f86a13035bd",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/benign_eval/0037C2A401AD6118AB567BF6FF26D0F4C95C98F7BE1AFB504A0D6F86A13035BD.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 2.064,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.814532,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 18935240,
+      "total_uncompressed": 23246781,
+      "native_lib_share": 0.0,
+      "big_asset_count": 15,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 6.8749,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 235,
+      "total_windows": 569,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/Calibri.ttf",
+        "assets/ComicSansMS3.ttf",
+        "assets/MaterialIcons-Regular.ttf",
+        "assets/Roboto-Regular.ttf",
+        "assets/Roboto-Thin.ttf",
+        "assets/arqui.png",
+        "assets/desa.png",
+        "assets/design.graffiti.comicsansms.ttf",
+        "assets/ele.png",
+        "assets/est.png",
+        "assets/fa-brands-400.ttf",
+        "assets/fa-solid-900.ttf",
+        "assets/fontawesome-webfont.ttf",
+        "assets/topopla.png",
+        "assets/ubiplan.png"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "com.google.appinventor.components.runtime.multidex.MultiDexApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 10074908,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "libs_parsed": 0
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "unknown",
+      "hit": false,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [],
+  "allowlist_overrides_applied": []
+}

@@ -1,0 +1,79 @@
+{
+  "apk_sha256": "f5ac462d03c4805d2e10ffcf81d9d9c2fbd87f86da00fd1507cfcbd2e820d1b8",
+  "apk_path": "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/Central bank india/M PARIWAHAN CHALAN (12).apk",
+  "verdict": "indeterminate",
+  "confidence": 0.35,
+  "duration_seconds": 1.979,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.099775,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 1656560,
+      "total_uncompressed": 16603003,
+      "native_lib_share": 0.2692,
+      "big_asset_count": 7,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.9547,
+      "threshold": 7.5,
+      "hit": true,
+      "windows_flagged": 2348,
+      "total_windows": 2348,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/RRleuIQi",
+        "assets/BQvbG",
+        "assets/pzTcctFsPjLO",
+        "assets/dKcSeAyvsM",
+        "assets/cmg5ro16lp7g1fvt/kesaj3fo",
+        "assets/OqhDsaEz",
+        "assets/LnXUOxtJeUuk"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "de.koelle.christian.trickytripper.TrickyTripperApp",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 1656560,
+      "reason": "instruction_scan"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 5,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 2
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "pure_compute",
+      "hit": true,
+      "file_io_symbols": []
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/dKcSeAyvsM",
+      "size": 3388048
+    },
+    {
+      "path": "assets/BQvbG",
+      "size": 2636768
+    },
+    {
+      "path": "assets/LnXUOxtJeUuk",
+      "size": 1569952
+    }
+  ],
+  "allowlist_overrides_applied": []
+}

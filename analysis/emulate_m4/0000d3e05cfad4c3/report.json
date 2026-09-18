@@ -1,0 +1,39 @@
+{
+  "apk_path": "/home/kali/DroidForensix/samples/malware/androzoo/0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b.apk",
+  "apk_sha256": "0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b",
+  "libs_tried": [
+    {
+      "lib": "armeabi-v7a_libCore.so",
+      "entry": "Java_com_adobe_fre_FREArray_getLength",
+      "entry_va": "0x968285",
+      "arch": "arm",
+      "status": "Invalid instruction (UC_ERR_INSN_INVALID)",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi-v7a_libsecexe.so",
+      "error": "no Java_* export found"
+    },
+    {
+      "lib": "armeabi-v7a_libsecmain.so",
+      "error": "no Java_* export found"
+    },
+    {
+      "lib": "armeabi-v7a_libstagefright_froyo.so",
+      "error": "no Java_* export found"
+    },
+    {
+      "lib": "armeabi-v7a_libstagefright_honeycomb.so",
+      "error": "no Java_* export found"
+    },
+    {
+      "lib": "armeabi-v7a_libysshared.so",
+      "error": "no Java_* export found"
+    }
+  ],
+  "recovered": [],
+  "status": [
+    "Invalid instruction (UC_ERR_INSN_INVALID)"
+  ]
+}

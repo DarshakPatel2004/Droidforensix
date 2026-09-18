@@ -1,0 +1,79 @@
+{
+  "apk_sha256": "384f4d1f7841c8c6a4dd789bbb5482169c4ef33f39dba450ca90a3c980aeffb2",
+  "apk_path": "/home/kali/DroidForensix/samples/goodware/engine_apps/org.mozilla.fennec_fdroid_1530320.apk",
+  "verdict": "clean_static",
+  "confidence": 1.0,
+  "duration_seconds": 6.939,
+  "heuristics": {
+    "H1": {
+      "id": "H1",
+      "value": 0.111669,
+      "threshold": 0.05,
+      "hit": false,
+      "dex_bytes": 29574908,
+      "total_uncompressed": 264843732,
+      "native_lib_share": 0.7271,
+      "big_asset_count": 4,
+      "allowlist_overrides_applied": []
+    },
+    "H2": {
+      "id": "H2",
+      "mean": 7.1778,
+      "threshold": 7.5,
+      "hit": false,
+      "windows_flagged": 1024,
+      "total_windows": 1317,
+      "sampled_capped": false,
+      "candidates": [
+        "assets/extensions/webcompat/run.js",
+        "assets/manifest/manifest.json",
+        "assets/omni.ja",
+        "assets/publicsuffixes"
+      ]
+    },
+    "H3": {
+      "id": "H3",
+      "hit": false,
+      "app_class": "org.mozilla.fenix.FenixApplication",
+      "primary_dex": "classes.dex",
+      "dex_bytes": 12870712,
+      "reason": "fallback_string_rule"
+    },
+    "H4": {
+      "id": "H4",
+      "hit": false,
+      "java_exports_min": 0,
+      "stripped": true,
+      "max_text_bytes": 0,
+      "libs_parsed": 15
+    },
+    "H5": {
+      "id": "H5",
+      "matched": []
+    },
+    "H6": {
+      "id": "H6",
+      "profile": "file_io",
+      "hit": false,
+      "file_io_symbols": [
+        "__open_2",
+        "fopen",
+        "mmap",
+        "mmap64",
+        "open",
+        "open64",
+        "openat",
+        "pread",
+        "read",
+        "write"
+      ]
+    }
+  },
+  "payload_candidates": [
+    {
+      "path": "assets/omni.ja",
+      "size": 15642499
+    }
+  ],
+  "allowlist_overrides_applied": []
+}
