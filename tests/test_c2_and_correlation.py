@@ -6,6 +6,7 @@ from analysis.step5_c2_extraction import (
     calculate_c2_confidence,
     is_benign_url,
     is_ad_network,
+    is_analytics_domain,
 )
 from analysis.step6_correlation import build_threat_chains
 from analysis.step7_llm_assessment import fallback_assessment
@@ -417,4 +418,240 @@ def test_build_threat_intel_liveness_enrichment(tmp_path, monkeypatch):
     saved_pub = next(c for c in saved_c2s if c["c2_id"] == "c2_public_ip")
     assert saved_pub["status"] == "active"
     assert saved_pub["live_dns"]["resolves"] is True
+
+
+# ---------------------------------------------------------------------------
+# C2 precision repair tests (analytics decay, branch-2 threshold, behavior groups)
+# ---------------------------------------------------------------------------
+
+def test_analytics_domain_recognized():
+    assert is_analytics_domain("api.mixpanel.com") is True
+    assert is_analytics_domain("mixpanel.com") is True
+    assert is_analytics_domain("app.datadoghq.com") is True
+    assert is_analytics_domain("crashlytics.com") is True
+    assert is_analytics_domain("evil-domain.com") is False
+    assert is_analytics_domain("") is False
+
+
+def test_analytics_domain_c2_hard_capped_below_inclusion_bar():
+    """Analytics endpoints decay hard (min(score-0.3, 0.2)) so they can never
+    clear the C2-inclusion bar (~0.3)."""
+    parsed = parse_url("https://api.mixpanel.com/track")
+    assert parsed is not None
+    confidence = calculate_c2_confidence(parsed, "unknown")
+    assert confidence <= 0.2, f"Expected analytics confidence <= 0.2, got {confidence}"
+
+
+def test_analytics_domain_not_otherwise_filtered():
+    """mixpanel.com is not tier3/benign, so the decay must be what excludes it."""
+    assert is_analytics_domain("api.mixpanel.com") is True
+    from analysis.step5_allowlists import is_tier3
+    assert is_tier3("mixpanel.com") is False
+    assert is_benign_url("https://api.mixpanel.com/track") is False
+
+
+def test_behavior_groups_exfiltration_chain():
+    from analysis.step7_llm_assessment import _match_behavior_groups
+
+    # The user's exfiltration chain: SEND_SMS + READ_CONTACTS + INTERNET
+    full_names = [
+        "android.permission.SEND_SMS",
+        "android.permission.READ_CONTACTS",
+        "android.permission.INTERNET",
+    ]
+    groups = _match_behavior_groups(full_names)
+    group_names = {g["group"] for g in groups}
+    assert "exfiltration" in group_names, f"Expected exfiltration group, got {group_names}"
+    exfil = next(g for g in groups if g["group"] == "exfiltration")
+    # Chain outranks any single permission (sms_fraud is 35, exfiltration >= 25)
+    assert exfil["boost"] >= 25
+
+    # SEND_SMS alone does not form the chain
+    alone = _match_behavior_groups(["android.permission.SEND_SMS"])
+    assert "exfiltration" not in {g["group"] for g in alone}
+
+
+def test_behavior_groups_sms_fraud_chain():
+    from analysis.step7_llm_assessment import _match_behavior_groups
+
+    groups = _match_behavior_groups(
+        ["SEND_SMS", "READ_SMS", "RECEIVE_SMS", "READ_CONTACTS", "INTERNET"]
+    )
+    group_names = {g["group"] for g in groups}
+    assert "sms_fraud" in group_names, f"Expected sms_fraud group, got {group_names}"
+    assert "exfiltration" in group_names, f"Expected exfiltration group, got {group_names}"
+    # A full SMS-fraud chain outranks the exfiltration chain
+    sms = next(g for g in groups if g["group"] == "sms_fraud")
+    exfil = next(g for g in groups if g["group"] == "exfiltration")
+    assert sms["boost"] >= exfil["boost"]
+
+
+def test_calculate_risk_uses_behavior_groups(tmp_path, monkeypatch):
+    """Chained permissions outrank raw per-permission counts in risk scoring."""
+    from backend.core.androguard_analyzer import APKAnalyzer
+
+    analyzer = APKAnalyzer.__new__(APKAnalyzer)
+    analyzer.results = {
+        "permissions": [
+            {"name": "android.permission.SEND_SMS", "high_risk": True},
+            {"name": "android.permission.READ_SMS", "high_risk": True},
+            {"name": "android.permission.RECEIVE_SMS", "high_risk": False},
+            {"name": "android.permission.READ_CONTACTS", "high_risk": True},
+            {"name": "android.permission.INTERNET", "high_risk": False},
+        ],
+        "fcm_components": [],
+        "native_libs": [],
+        "native_strings": [],
+        "jni_methods": [],
+        "obfuscated_classes": [],
+        "bytecode_methods": [],
+        "crypto_usage": [],
+        "suspicious_strings": [],
+        "network_indicators": [],
+        "certificate_info": {},
+        "risk_assessment": {},
+        "error": None,
+    }
+    analyzer.calculate_risk()
+    assessment = analyzer.results["risk_assessment"]
+
+    # sms_fraud (35) + exfiltration (30) scaled into the 0-25 window:
+    # 65 * 0.25 = 16.25 -> 16, plus tiebreak rounding up.
+    group_factors = [f for f in assessment["factors"] if "behavior groups" in f]
+    assert group_factors, f"No behavior-group factor: {assessment['factors']}"
+    assert assessment["score"] >= 16
+    assert assessment["score"] <= 25
+    assert assessment["level"] in ("HIGH", "CRITICAL")
+
+
+def test_calculate_risk_single_high_risk_perm_is_not_critical():
+    """One high-risk permission (older scheme: *2) must not print CRITICAL."""
+    from backend.core.androguard_analyzer import APKAnalyzer
+
+    analyzer = APKAnalyzer.__new__(APKAnalyzer)
+    analyzer.results = {
+        "permissions": [
+            {"name": "android.permission.READ_PHONE_STATE", "high_risk": False},
+            {"name": "android.permission.INTERNET", "high_risk": False},
+        ],
+        "fcm_components": [],
+        "native_libs": [],
+        "native_strings": [],
+        "jni_methods": [],
+        "obfuscated_classes": [],
+        "bytecode_methods": [],
+        "crypto_usage": [],
+        "suspicious_strings": [],
+        "network_indicators": [],
+        "certificate_info": {},
+        "risk_assessment": {},
+        "error": None,
+    }
+    analyzer.calculate_risk()
+    assessment = analyzer.results["risk_assessment"]
+    # phone_identity (15) scaled to ~4; no chains, no tiebreak flood
+    assert assessment["level"] in ("LOW", "MEDIUM", "HIGH")
+    assert assessment["score"] < 15, f"Single phone_identity perm over-scored: {assessment}"
+
+
+def test_extract_c2_excludes_analytics_direct_string():
+    """Direct-string analytics URLs (branch-2) are now dropped below threshold."""
+    payloads_result = {
+        "sample_id": "test_analytics_string",
+        "payloads": [],
+    }
+    strings_result = {
+        "sample_id": "test_analytics_string",
+        "categories": {
+            "string_literals": [
+                {
+                    "value": "https://api.mixpanel.com/track",
+                    "source": "MainActivity.java:10",
+                }
+            ],
+            "byte_arrays": [],
+            "numeric_constants": [],
+            "resource_strings": [],
+            "native_strings": [],
+        },
+    }
+    result = extract_c2_infrastructure(payloads_result, strings_result)
+    assert result["total_c2s"] == 0, f"Analytics URL should be excluded, got {result}"
+
+
+def test_extract_c2_keeps_malicious_direct_string():
+    """The branch-2 threshold must not drop genuine C2 direct strings."""
+    payloads_result = {
+        "sample_id": "test_malicious_string",
+        "payloads": [],
+    }
+    strings_result = {
+        "sample_id": "test_malicious_string",
+        "categories": {
+            "string_literals": [
+                {
+                    "value": "https://evil-c2.malicious-test.com:8443/beacon",
+                    "source": "MainActivity.java:10",
+                }
+            ],
+            "byte_arrays": [],
+            "numeric_constants": [],
+            "resource_strings": [],
+            "native_strings": [],
+        },
+    }
+    result = extract_c2_infrastructure(payloads_result, strings_result)
+    assert result["total_c2s"] == 1, f"Malicious URL should be included, got {result}"
+
+
+def test_reputation_enrichment_offline_by_default(tmp_path):
+    """URLhaus enrichment is a no-op with the default 0-record cap (no network)."""
+    from analysis.step5_c2_extraction import enrich_with_reputation
+
+    record = {
+        "c2_id": "c2_000",
+        "domain": "evil-c2.known-list.com",
+        "confidence": 0.7,
+    }
+    result = enrich_with_reputation([dict(record)], tmp_path)
+    assert result == [record], "Default (cap=0) must not mutate or query"
+
+
+def test_reputation_enrichment_boosts_listed_domain(tmp_path, monkeypatch):
+    """Listed domains get a bounded +0.8 boost, cached, from a monkeypatched cache."""
+    import json as _json
+    import time as _time
+    from analysis import step5_c2_extraction as s5
+
+    cache_dir = tmp_path / "sub"
+    cache = {
+        "evil-c2.known-list.com": {
+            "listed": True,
+            "urls_total": 3,
+            "ts": _time.time(),
+        }
+    }
+    cache_dir.mkdir(parents=True)
+    (cache_dir / "urlhaus_reputation_cache.json").write_text(
+        _json.dumps(cache), encoding="utf-8"
+    )
+    original_cap = s5.C2_REPUTATION_URLHAUS_MAX_RECORDS
+    original_budget = s5.C2_REPUTATION_URLHAUS_BUDGET_SECONDS
+    monkeypatch.setattr(s5, "C2_REPUTATION_URLHAUS_MAX_RECORDS", 10)
+    monkeypatch.setattr(s5, "C2_REPUTATION_URLHAUS_BUDGET_SECONDS", 30.0)
+
+    try:
+        record = {
+            "c2_id": "c2_000",
+            "domain": "evil-c2.known-list.com",
+            "confidence": 0.7,
+        }
+        result = s5.enrich_with_reputation([dict(record)], cache_dir)
+        enriched = result[0]
+        assert enriched["reputation"]["listed"] is True
+        assert enriched["confidence"] == 1.0, f"0.7 + 0.8 should cap at 1.0"
+        assert enriched["reputation_boost"] == "urlhaus_listed"
+    finally:
+        monkeypatch.setattr(s5, "C2_REPUTATION_URLHAUS_MAX_RECORDS", original_cap)
+        monkeypatch.setattr(s5, "C2_REPUTATION_URLHAUS_BUDGET_SECONDS", original_budget)
 

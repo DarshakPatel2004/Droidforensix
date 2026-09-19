@@ -433,12 +433,34 @@ class APKAnalyzer:
         """Calculate risk score based on findings."""
         risk_score = 0
         risk_factors = []
-        
+
+        # Coordinated permission chains outrank raw per-permission counts:
+        # SEND_SMS alone is a weak signal, but SEND_SMS + READ_SMS + RECEIVE_SMS
+        # (sms_fraud) or SEND_SMS + READ_CONTACTS + INTERNET (exfiltration) is a
+        # strong malicious intent. Behavior-group boosts are tuned on a 0-100
+        # scale; this window is 0-25, so scale by one quarter.
+        PERMISSION_GROUP_WINDOW_SCALE = 0.25
+        perm_names = [p['name'] for p in self.results['permissions']]
+        try:
+            from analysis.step7_llm_assessment import _match_behavior_groups
+            behavior_groups = _match_behavior_groups(perm_names)
+        except Exception:
+            behavior_groups = []
+        if behavior_groups:
+            group_risk = round(sum(g['boost'] for g in behavior_groups) * PERMISSION_GROUP_WINDOW_SCALE)
+            risk_score += group_risk
+            risk_factors.append(
+                f"Permission behavior groups: {', '.join(g['group'] for g in behavior_groups)} ({group_risk}/25)"
+            )
+
+        # High-risk permissions kept only as a tiebreak (+0.5 each), not the
+        # primary signal: SEND_SMS/READ_PHONE_STATE are universal in benign
+        # Chinese pay SDKs and over-scored benign apps under the old *2 scheme.
         high_risk_perms = sum(1 for p in self.results['permissions'] if p['high_risk'])
         if high_risk_perms:
-            risk_score += high_risk_perms * 2
+            risk_score += round(high_risk_perms * 0.5)
             risk_factors.append(f"High-risk permissions: {high_risk_perms}")
-        
+
         if self.results['fcm_components']:
             risk_score += 3
             risk_factors.append("FCM C2 capability detected")
@@ -454,6 +476,9 @@ class APKAnalyzer:
         if self.results['jni_methods']:
             risk_score += 2
             risk_factors.append(f"JNI native methods: {len(self.results['jni_methods'])}")
+
+        # Never report above the declared window: CRITICAL is documented as 25.
+        risk_score = min(risk_score, 25)
         
         # Determine risk level
         if risk_score >= 15:
