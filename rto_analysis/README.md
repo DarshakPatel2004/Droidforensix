@@ -105,8 +105,8 @@ tool enumerates every substring candidate, derives `KEY = SHA1(seed)[:16]`,
 prefix. For RTO this nails `seed = "myg0N2"`:
 
 ```
-KEY = SHA1("myg0N2")[:16]  = 6eada2ac127d60e3c17e4940981c5bc6
-IV  = SHA256("myg0N2")[:16] = d0045d33d393892263a7b43ccac6e578
+KEY = SHA1("myg0N2")[:16]   (hex redacted — key recovered; see ARTIFACTS_SENSITIVE.md)
+IV  = SHA256("myg0N2")[:16] (hex redacted)
 ```
 
 Decrypting `assets/myg0N` (7,714,912 B) yields a 10-entry ZIP kit that passes
@@ -156,8 +156,9 @@ failure, `2` = usage error.
 ## 5. Validation
 
 Reference run (`validation_matrix.md`): RTO.apk recovered in 1.3 s — kit,
-keys, Firebase project (`mp2026-1efb5-default-rtdb.firebaseio.com`), API key,
-and stage-3 strings at the 175/5 bar. Six additional packed samples (Ijiami x3,
+keys, Firebase project + API key (IOCs redacted — see
+`docs/cases/pendrive-56-apks/ARTIFACTS_SENSITIVE.md`), and stage-3 strings at
+the 175/5 bar. Six additional packed samples (Ijiami x3,
 Bangcle/SecNeo x2, custom/Java-XOR x1) are all detected correctly and fail with
 the *right* E-code rather than a fabricated payload. The YARA rules produced
 for the family score **0 false positives over 540 files**.

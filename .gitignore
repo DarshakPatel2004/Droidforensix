@@ -205,6 +205,9 @@ evaluation/__pycache__/
 APK/
 PENDRIVE DATA/
 vault/
+
+# Forensic case writeups (kept local-only; deep-links to quarantined vault)
+docs/cases/
 analysis/repaired_flags/
 analysis/recovered/
 analysis/dissect_*/
