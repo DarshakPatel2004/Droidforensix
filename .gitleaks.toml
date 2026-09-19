@@ -1,0 +1,15 @@
+# DroidForensix gitleaks configuration
+#
+# Default rules are kept intact ([extend]); this file only documents
+# intentional, synthetic matches.
+
+title = "DroidForensix gitleaks config"
+
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Synthetic fixture values for the secret scanner's own unit tests (tests/test_hardcoded_secrets.py). Encoded placeholders (xoxb-123..., ghp_aaa..., '-----BEGIN RSA PRIVATE KEY-----') intentionally trip the detection rules being tested."
+paths = [
+  "tests/test_hardcoded_secrets.py",
+]

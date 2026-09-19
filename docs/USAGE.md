@@ -20,7 +20,7 @@ DroidForensix is used at three levels depending on the task:
 External tools are resolved automatically:
 - **JADX** — bundled under `jadx/` (unzip `tools/jadx.zip` if the directory is missing).
 - **apktool / DIE / 7-Zip** — Windows bundles under `tools/`; on Linux, `diec` and `7z` are expected on `PATH` (see `backend/config.py`).
-- **GeoIP** — `data/GeoLite2-City.mmdb` (already in the repo).
+- **GeoIP** — `data/GeoLite2-City.mmdb` (external, not committed — see [SETUP.md](SETUP.md) §2a).
 
 ---
 
