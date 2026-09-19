@@ -246,3 +246,6 @@ _apk2/
 _hole1_smali/
 _hole5/
 
+chat_*.md
+PoC_*.zip
+analysis/recovered/
