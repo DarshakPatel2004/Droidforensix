@@ -11,6 +11,7 @@ import json
 import logging
 import re
 import socket
+import time
 from pathlib import Path
 from typing import Dict, List, Any, Optional
 from urllib.parse import urlparse, parse_qs
@@ -39,6 +40,13 @@ C2_FALLBACK_CONFIDENCE_THRESHOLD = 0.3
 # the pipeline step past its timeout.
 C2_ENRICHMENT_MAX_RECORDS = 30
 C2_ENRICHMENT_BUDGET_SECONDS = 60.0
+
+# Bounds for optional URLhaus reputation enrichment (free API, no key).
+# Reputation only ever raises confidence (high-precision blocklist); default
+# cap is 0 so the pipeline stays offline unless explicitly enabled.
+C2_REPUTATION_URLHAUS_MAX_RECORDS = 0
+C2_REPUTATION_URLHAUS_TIMEOUT = 5.0
+C2_REPUTATION_URLHAUS_BUDGET_SECONDS = 30.0
 
 
 # ---------------------------------------------------------------------------
@@ -655,6 +663,32 @@ AD_NETWORK_DOMAINS = {
     "ow.ly",
 }
 
+# Analytics / crash-reporting / attribution SDK endpoints. Legitimate telemetry
+# infrastructure, never malware C2. Distinct from AD_NETWORK_DOMAINS (monetization)
+# but semantically equivalent for scoring: these must decay C2 confidence, not
+# boost it. Consolidates SDK endpoints seen in benign apps (step14, classify_c2).
+ANALYTICS_DOMAINS = {
+    # Product analytics
+    "mixpanel.com",
+    "segment.com", "segment.io",
+    "amplitude.com", "api.amplitude.com",
+    "datadoghq.com", "datadog.eu",
+    "newrelic.com", "nr-data.net",
+    "umeng.com", "umeng.co",
+    "talkingdata.net", "talkingdata.com",
+    "count.ly", "localytics.com", "leanplum.com",
+    "appsflyer.com", "adjust.com", "kochava.com",  # attribution (see AD_NETWORK too)
+    # Crash reporting
+    "sentry.io", "sentry-cdn.com",
+    "crashlytics.com",
+    "bugsnag.com", "rollbar.com", "hockeyapp.net",
+    # Google Firebase / AppMeasurement
+    "firebaseio.com", "firebaseapp.com", "firebasestorage.googleapis.com",
+    "app-measurement.com", "google-analytics.com", "googletagmanager.com",
+    # Mobile attribution / push telemetry
+    "branch.io", "onesignal.com", "flurry.com",
+}
+
 # Known DTD / XML Schema / namespace URIs that are library/documentation
 # references, never actual network C2 traffic.
 BENIGN_URIS = {
@@ -757,6 +791,25 @@ def is_ad_network(domain: str) -> bool:
     parts = domain_lower.split(".")
     for i in range(len(parts)):
         if ".".join(parts[i:]) in AD_NETWORK_DOMAINS:
+            return True
+    return False
+
+
+def is_analytics_domain(domain: str) -> bool:
+    """Return True if domain belongs to an analytics/crash-reporting SDK.
+
+    Distinct from ad networks: analytics SDK endpoints are legitimate telemetry,
+    not monetization. Both must decay C2 confidence, never boost it.
+    """
+    if not domain:
+        return False
+    domain_lower = domain.lower().lstrip("www.")
+    if domain_lower in ANALYTICS_DOMAINS:
+        return True
+    # Match subdomains (e.g. api.mixpanel.com -> mixpanel.com)
+    parts = domain_lower.split(".")
+    for i in range(len(parts)):
+        if ".".join(parts[i:]) in ANALYTICS_DOMAINS:
             return True
     return False
 
@@ -1068,6 +1121,13 @@ def calculate_c2_confidence(parsed: dict, source_context: str, ip_legitimacy: Op
     if parsed["domain"] and is_ad_network(parsed["domain"]):
         score *= 0.5
 
+    # Analytics/crash-reporting SDK endpoints (Firebase, Crashlytics, AdMob,
+    # Google Analytics, mixpanel, etc.) are legitimate telemetry, never C2.
+    # Decay hard so they never clear the C2-inclusion bar (~0.3): matched domains
+    # land at 0.2, unknown domains stay neutral on their structural score.
+    if parsed["domain"] and is_analytics_domain(parsed["domain"]):
+        score = min(score - 0.3, 0.2)
+
     # Penalize template/format-string URLs (e.g. "https://%s/%s/%s").
     # These contain printf-style placeholders and are not real URLs.
     if parsed["domain"] and "%" in parsed["domain"]:
@@ -1133,6 +1193,96 @@ def enrich_with_circl(c2_records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     for original, circl_data in zip(c2_records, enriched):
         original["circl"] = circl_data.get("circl", {})
 
+    return c2_records
+
+
+def _urlhaus_reputation_hint(domain: str, cache_dir: Path) -> Optional[dict]:
+    """Query URLhaus host reputation (free API, no key). Cached + bounded.
+
+    Returns {'listed': bool, 'urls_total': int} or None when the lookup cannot
+    be performed (offline, network error, rate limit, cache miss on old files).
+    Reputation is a *hint*: it only ever raises confidence, never lowers it, so
+    a stale or missed URLhaus match cannot produce a false C2 positive.
+    """
+    if not domain or C2_REPUTATION_URLHAUS_MAX_RECORDS <= 0:
+        return None
+    cache_path = cache_dir / "urlhaus_reputation_cache.json"
+    cache: Dict[str, dict] = {}
+    if cache_path.exists():
+        try:
+            cache = json.loads(cache_path.read_text(encoding="utf-8"))
+            # Drop cache entries older than 24h so fresh registrations are re-checked.
+            import time as _time
+            now = _time.time()
+            cache = {k: v for k, v in cache.items() if now - v.get("ts", 0) < 86400}
+        except Exception:
+            cache = {}
+
+    key = domain.lower()
+    if key in cache:
+        hit = dict(cache[key])
+        hit.pop("ts", None)
+        return hit
+
+    import urllib.request
+    import urllib.error
+    payload = f"host={key}".encode("utf-8")
+    try:
+        req = urllib.request.Request(
+            "https://urlhaus-api.abuse.ch/v1/host/",
+            data=payload,
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=C2_REPUTATION_URLHAUS_TIMEOUT) as resp:
+            data = json.loads(resp.read().decode("utf-8"))
+    except (urllib.error.URLError, TimeoutError, OSError):
+        return None
+
+    if data.get("query_status") == "no_results":
+        result = {"listed": False, "urls_total": 0}
+    elif data.get("query_status") == "ok":
+        result = {"listed": True, "urls_total": int(data.get("urls_total", 0) or 0)}
+    else:
+        # Rate limited / malformed — do not cache an error verdict
+        return None
+
+    cache[key] = {**result, "ts": time.time()}
+    try:
+        cache_path.parent.mkdir(parents=True, exist_ok=True)
+        cache_path.write_text(json.dumps(cache, indent=2), encoding="utf-8")
+    except Exception:
+        pass
+    return result
+
+
+def enrich_with_reputation(c2_records: List[Dict[str, Any]], work_dir: Path) -> List[Dict[str, Any]]:
+    """Boost confidence for domains listed in URLhaus (known C2 blocks).
+
+    Mirrors enrich_with_circl: bounded, cached, never raises. Only applies to
+    the first C2_REPUTATION_URLHAUS_MAX_RECORDS domain records and only raises
+    confidence (URLhaus is a high-precision blocklist), so false C2 positives
+    cannot be introduced.
+    """
+    if C2_REPUTATION_URLHAUS_MAX_RECORDS <= 0:
+        return c2_records
+    budget_deadline = time.time() + C2_REPUTATION_URLHAUS_BUDGET_SECONDS
+    checked = 0
+    for record in c2_records:
+        domain = record.get("domain")
+        if not domain:
+            continue
+        if checked >= C2_REPUTATION_URLHAUS_MAX_RECORDS:
+            break
+        if time.time() > budget_deadline:
+            break
+        hint = _urlhaus_reputation_hint(domain, work_dir)
+        if not hint:
+            continue
+        checked += 1
+        record["reputation"] = hint
+        if hint.get("listed"):
+            record["confidence"] = min(1.0, (record.get("confidence", 0.0) + 0.8))
+            record["reputation_boost"] = "urlhaus_listed"
     return c2_records
 
 
@@ -1252,6 +1402,8 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     )
 
                 confidence = round(calculate_c2_confidence(parsed, source_location, ip_legitimacy), 4)
+                if confidence <= C2_FALLBACK_CONFIDENCE_THRESHOLD:
+                    continue
                 record = {
                     "c2_id": f"c2_{c2_id:03d}",
                     "payload_id": None,
@@ -1367,6 +1519,9 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
 
     # Optional CIRCL enrichment (pSSL/pDNS) — never fail the pipeline
     c2_records = enrich_with_circl(c2_records)
+
+    # Optional URLhaus reputation boost (known C2 blocks) — offline by default
+    c2_records = enrich_with_reputation(c2_records, work_dir)
 
     result = {
         "sample_id": sample_id,

@@ -144,6 +144,11 @@ PERMISSION_BEHAVIOR_GROUPS = {
         "boost": 20,
         "description": "Device admin abuse (persistence/control)",
     },
+    "exfiltration": {
+        "permissions": {"SEND_SMS", "READ_CONTACTS", "INTERNET"},
+        "boost": 30,
+        "description": "Contact theft + SMS + network = data exfiltration chain",
+    },
 }
 
 # Benign framework / support-library class prefixes. Reflection, crypto, and
