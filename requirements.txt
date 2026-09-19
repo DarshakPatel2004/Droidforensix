@@ -27,6 +27,10 @@ openai
 androguard
 yara-python
 
+# Unpacking: JNI emulation oracle (Uses scripts/emulate.py)
+unicorn
+lief
+
 # Testing
 pytest
 pytest-asyncio
