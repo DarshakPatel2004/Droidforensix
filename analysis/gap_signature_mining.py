@@ -121,6 +121,31 @@ def _extract_c2_domains(strings: List[str]) -> Dict[str, List[str]]:
     return {"domains": sorted(set(domains)), "ad_domains": sorted(set(ad_domains))}
 
 
+def _opcode_trigrams(raw_dex: "DEX") -> set:
+    """Packed opcode trigrams (a<<16 | b<<8 | c) across all method bodies.
+
+    Bytecode structure is family-owned: a framework string like
+    'accessibilitysettingsactivity' is shared by every app that embeds the UI
+    code, but the surrounding instruction pattern is written by the family's
+    loader. A 3-opcode gram is the smallest pattern that stops being
+    boilerplate; the KB miner's precision gate keeps only family-discriminating
+    grams.
+    """
+    trigrams: set = set()
+    for clazz in raw_dex.get_classes():
+        for method in clazz.get_methods():
+            code = method.get_code()
+            if code is None:
+                continue
+            try:
+                ops = [ins.get_op_value() for ins in code.get_bc().get_instructions()]
+            except Exception:
+                continue
+            for i in range(len(ops) - 2):
+                trigrams.add((ops[i] << 16) | (ops[i + 1] << 8) | ops[i + 2])
+    return trigrams
+
+
 def extract_sample_features(apk_path: str) -> Dict[str, Any]:
     """Lean static features from an APK (androguard only)."""
     out: Dict[str, Any] = {
@@ -130,6 +155,7 @@ def extract_sample_features(apk_path: str) -> Dict[str, Any]:
         "native_libs": [],
         "domains": [],
         "ad_domains": [],
+        "opcodes": [],
         "parse_error": "",
     }
     
@@ -155,12 +181,13 @@ def extract_sample_features(apk_path: str) -> Dict[str, Any]:
     except Exception as exc:
         out["parse_error"] = f"apk: {exc}"
     
-    # Parse DEX files from ZIP for class count and strings (more reliable)
+    # Parse DEX files from ZIP for class count, strings, and opcode trigrams
     try:
         with zipfile.ZipFile(apk_path) as zf:
             out["native_libs"] = sorted(
                 n.split("/")[-1] for n in zf.namelist() if n.endswith(".so")
             )
+            all_trigrams: set = set()
             for name in zf.namelist():
                 if not name.endswith(".dex"):
                     continue
@@ -177,8 +204,11 @@ def extract_sample_features(apk_path: str) -> Dict[str, Any]:
                     for s in d.get_strings():
                         if s:
                             out["strings"].append(s)
+                    all_trigrams |= _opcode_trigrams(d)
                 except Exception as exc:
                     out["parse_error"] = f"dex {name}: {exc}"
+            if all_trigrams:
+                out["opcodes"] = sorted(all_trigrams)
     except Exception as exc:
         if not out["parse_error"]:
             out["parse_error"] = f"zip: {exc}"
