@@ -41,6 +41,14 @@ TARGET_COVERAGE_MIN = 0.35
 TARGET_COVERAGE_MIN_OPAQUE = 0.20  # for n>=15 opaque families (Opfake, FakeInstaller) - even more lenient to rescue encrypted payloads
 # Token must appear in <= this fraction of non-family samples.
 CORPUS_FP_MAX = 0.05
+# Decision-level precision: when this token is present, what fraction of the
+# samples it appears in actually belong to the family? Replaces the naive
+# corpus-fp gate, which passed generic framework tokens (context.application-
+# context, wlan0, %02x:) that reach <5% of the corpus only because the corpus
+# is small. A token must resolve to the RIGHT family >= this often, or the
+# matcher will over-fire it on unrelated samples (family audit: 75% of KB
+# misses were generic samples that a toolkit family confidently claimed).
+TOKEN_PRECISION_MIN = 0.90
 # For small families (n < 4) require stricter FP to avoid single-sample luck.
 SMALL_FAMILY_FP_MAX = 0.02
 OPAQUE_FAMILIES = frozenset({"Opfake", "FakeInstaller", "FakeChrome"})
@@ -57,6 +65,41 @@ STOP_TOKENS = frozenset({
     "findviewbyid", "activity", "service", "receiver", "provider",
     "http", "https", "utf-8", "default", "exception", "null", "true", "false",
 })
+
+# Truly uninformative, cross-family tokens that small-coverage mining mistakes
+# for discriminators. Each was confirmed firing on >= 10 wrong-family KB verdicts
+# during the family-accuracy audit (see docs/accuracy-improvement-plan.md):
+#   - Android framework callbacks/subsystems (Context, Wi-Fi, audio focus,
+#     WebView file chooser) present in essentially every Android app
+#   - AXML/View layout attributes (transformPivotX, contentAlignment ...)
+#   - byte-format strings (%02x:) from hex dumps
+#   - old AndroidX lifecycle constants (android.arch.lifecycle.*)
+# An entry ending in ".*" is a prefix match (applies to every sub-token).
+KB_GENERIC_BLOCKLIST = frozenset({
+    "context.applicationcontext",
+    "getapplicationcontext",
+    "transformpivotx",
+    "transformpivoty",
+    "contentalignment",
+    "wlan0",
+    "gethardwareaddress",
+    "%02x:",
+    "onshowfilechooser",
+    "abandonaudiofocus",
+    "add_voicemail",
+    "android.arch.lifecycle.*",
+})
+
+
+def is_generic_token(token: str) -> bool:
+    """True if token is blocked framework noise (exact or prefix match)."""
+    lowered = token.lower()
+    if lowered in KB_GENERIC_BLOCKLIST:
+        return True
+    return any(
+        entry.endswith(".*") and lowered.startswith(entry[:-1])
+        for entry in KB_GENERIC_BLOCKLIST
+    )
 
 
 def load_rows() -> list[dict]:
@@ -79,6 +122,7 @@ def load_cache_features() -> dict[str, dict[str, Any]]:
                 if isinstance(d, str) and len(d) >= 4
             },
             "permissions": {p.split(".")[-1] for p in (entry.get("permissions", []) or [])},
+            "opcodes": {int(o) for o in (entry.get("opcodes", []) or [])},
             "class_count": entry.get("class_count"),
         }
     return features
@@ -97,6 +141,8 @@ def tokenize(strings: list[str]) -> set[str]:
             continue
         lowered = value.lower()
         if lowered in STOP_TOKENS:
+            continue
+        if is_generic_token(lowered):
             continue
         tokens.add(lowered)
     return tokens
@@ -142,7 +188,21 @@ def main() -> None:
         fp = other_hits / max(corpus_size - len(features_for_family), 1)
         if fp > max_fp:
             return None
-        return {"token": token, "coverage": round(coverage, 3), "fp": round(fp, 4)}
+        # Decision-level precision: of all samples that contain this token,
+        # how many are genuinely this family? If a token fires the wrong family
+        # more than (1 - TOKEN_PRECISION_MIN) of the time, it is a collision
+        # source, not a discriminator — reject it even if corpus-fp is tiny.
+        denominator = hits + other_hits
+        if denominator > 0:
+            precision = hits / denominator
+            if precision < TOKEN_PRECISION_MIN:
+                return None
+        return {
+            "token": token,
+            "coverage": round(coverage, 3),
+            "fp": round(fp, 4),
+            "precision": round(hits / denominator, 4) if denominator else 1.0,
+        }
 
     knowledge: dict[str, dict[str, Any]] = {}
     for family, members in sorted(families.items(), key=lambda item: -len(item[1])):
@@ -177,24 +237,38 @@ def main() -> None:
                 perm_tokens.append(found)
         perm_tokens.sort(key=lambda t: (-t["coverage"], t["fp"]))
 
+        # Bytecode anchors: opcode trigrams mined like strings but far more
+        # family-specific. Toolkit loader families share UI strings with every
+        # app that embeds their code, yet their actual instruction patterns are
+        # written by the loader itself — so a shared trigram is a true anchor.
+        # Lower coverage bar (0.30) since trigrams vary across DEX builds.
+        opcode_tokens = []
+        union_opcodes = set().union(*(f["opcodes"] for f in members))
+        for token in union_opcodes:
+            found = prune(members, "opcodes", token, 0.30, fp_limit)
+            if found:
+                opcode_tokens.append(found)
+        opcode_tokens.sort(key=lambda t: (-t["coverage"], t["fp"]))
+
         knowledge[family] = {
             "samples": len(members),
             "strings": string_tokens[:25],
             "domains": domain_tokens[:15],
             "permissions": perm_tokens[:15],
+            "opcodes": opcode_tokens[:25],
         }
 
     OUT_PATH.write_text(json.dumps(knowledge, indent=2), encoding="utf-8")
     with_discriminator = sum(
         1 for fam in knowledge.values()
-        if fam["strings"] or fam["domains"] or fam["permissions"]
+        if fam["strings"] or fam["domains"] or fam["permissions"] or fam["opcodes"]
     )
     print(f"Knowledge base: {len(knowledge)} families, "
           f"{with_discriminator} with >=1 discriminator -> {OUT_PATH}")
     for family, fam in sorted(knowledge.items(), key=lambda item: -item[1]["samples"])[:15]:
         sig = (
             f"{len(fam['strings'])}s/{len(fam['domains'])}d/"
-            f"{len(fam['permissions'])}p"
+            f"{len(fam['permissions'])}p/{len(fam['opcodes'])}o"
         )
         print(f"  {family:<18} n={fam['samples']:>3} discriminators: {sig}")
 

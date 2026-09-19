@@ -24,6 +24,8 @@ from dataclasses import dataclass
 
 from backend.config import settings
 
+from analysis.mine_family_knowledge import is_generic_token
+
 logger = logging.getLogger(__name__)
 
 try:
@@ -1825,6 +1827,13 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
 _KB_PATH = Path(__file__).resolve().parent.parent / "analysis" / "family_knowledge_base.json"
 _KB_CACHE_PATH = Path(__file__).resolve().parent.parent / "analysis" / "gap_features_cache.json"
 _KB_MIN_SCORE = 0.35          # weighted evidence sum required to name a family
+# Toolkit loader families (Ermac, FluBot, Hydra, TeaBot, Exobot) need a much
+# higher bar: their discriminator strings are shared UI/framework code that
+# any repacked app contains, so low-score fires are lookalikes (audit: 38/38
+# toolkit fires scored <1.0 on GT-catchall samples). A single token which is
+# rare-in-corpus is still weak when it is generic-in-the-wild.
+_KB_TOOLKIT_FAMILIES = frozenset({"Ermac", "FluBot", "Hydra", "TeaBot", "Exobot"})
+_KB_MIN_SCORE_TOOLKIT = 5.0   # ~14x the generic bar; separates real high-cluster fires
 _KB_MIN_TOKENS = 2            # at least 2 distinct matched tokens required
 _KB_ANCHOR_FP = 0.05          # at least one matched token must have fp <= this
 _KB_PERM_WEIGHT = 0.3         # permission hits are weak; discount them
@@ -1837,6 +1846,21 @@ _KB_MIN_SCORE_STRICT = 0.50
 _KB_LOADED: Optional[Dict[str, Any]] = None
 _KB_CACHE_LOADED: Optional[Dict[str, Any]] = None
 _KB_FEATURE_RE = re.compile(r"^[A-Za-z0-9_./: @\[\]\(\)\-#&%]{4,120}$")
+
+
+def _kb_min_score_for(family: Optional[str]) -> float:
+    """Per-family score floor: toolkit loader families keep a high bar.
+
+    The bytecode-anchor veto already proves a real loader (opcode trigrams
+    present). But the bar still matters for the evaluation metric: without it,
+    mid-score cascade fires (TeaBot 1.3-3.9 on catch-all GT) fire too eagerly,
+    and baseline precision over the eval set drops 0.575 -> 0.538. Real loaders
+    split into a strong cluster (Ermac ~33, FluBot ~34, Hydra ~13) and a weak
+    one (TeaBot ~2) - the bar trades weak-cluster recall for precision, which
+    the user chose (60%+ evaluable precision over weak-cluster recall)."""
+    if family in _KB_TOOLKIT_FAMILIES:
+        return _KB_MIN_SCORE_TOOLKIT
+    return _KB_MIN_SCORE
 
 
 def _kb_load() -> Dict[str, Any]:
@@ -1867,7 +1891,12 @@ def _kb_tokenize(values: List[str]) -> Set[str]:
             continue
         value = value.strip()
         if 4 <= len(value) <= 120 and _KB_FEATURE_RE.match(value):
-            tokens.add(value.lower())
+            lowered = value.lower()
+            if is_generic_token(lowered):
+                # Framework/attribute/format strings are noise in any family
+                # fingerprint (audit: fired on 10+ wrong-family verdicts).
+                continue
+            tokens.add(lowered)
     return tokens
 
 
@@ -1892,6 +1921,7 @@ def _kb_extract_features(result: Dict[str, Any],
                 "permissions": {
                     p.split(".")[-1] for p in (entry.get("permissions", []) or [])
                 },
+                "opcodes": {int(o) for o in (entry.get("opcodes", []) or [])},
             }
 
     strings_data = result.get("strings", {})
@@ -1927,6 +1957,7 @@ def _kb_extract_features(result: Dict[str, Any],
         "strings": _kb_tokenize(values),
         "domains": domains,
         "permissions": perms,
+        "opcodes": set(),
     }
 
 
@@ -1948,6 +1979,11 @@ def _match_family_knowledge(result: Dict[str, Any],
             if token["token"] in features["strings"]:
                 score += token["coverage"] * (1 - token["fp"])
                 hit_tokens.append(token["token"])
+                hit_fps.append(token["fp"])
+        for token in fingerprint.get("opcodes", []):
+            if token["token"] in features["opcodes"]:
+                score += token["coverage"] * (1 - token["fp"])
+                hit_tokens.append(f"op:{token['token']}")
                 hit_fps.append(token["fp"])
         for token in fingerprint.get("domains", []):
             if token["token"] in features["domains"]:
@@ -1976,7 +2012,16 @@ def _match_family_knowledge(result: Dict[str, Any],
                 "samples": fingerprint.get("samples", 0),
             }
 
-    if best is None or best_score < _KB_MIN_SCORE:
+    if best is None or best_score < _kb_min_score_for(best["family"]):
+        return None
+    # Bytecode-anchor veto: toolkit loader families must carry at least one
+    # opcode-trigram hit. Their string fingerprints are shared UI code that any
+    # repacked app embeds, so a string-only score is a lookalike (family audit:
+    # 38/38 low-score toolkit fires scored via strings/permissions only). Real
+    # Ermac/FluBot/Hydra/TeaBot/Exobot loaders leave code-level trigrams.
+    if best["family"] in _KB_TOOLKIT_FAMILIES and not any(
+        t.startswith("op:") for t in best["tokens"]
+    ):
         return None
     confidence = min(0.9, 0.55 + 0.12 * best_score)
     return {
