@@ -126,6 +126,15 @@ JENV_TABLE = 0x0B100000
 RET_STUB = 0x0C000000
 SHIM_PAGE = 0x0D000000
 
+# JavaVM/JNIInvokeInterface mock (ijiami_oracle.py, merged into Emulator).
+# JavaVM* points to a cell holding the function-table pointer; slots point at
+# a shared ret stub. GetEnv = slot 6 in the 3-reserved Android layout.
+VM_TABLE = SHIM_PAGE + 0x20000
+FUNC_TABLE = VM_TABLE + 0x40
+VM_STUB = VM_TABLE + 0x100
+N_VM_SLOTS = 8
+GETENV_SLOT = 6
+
 SIZES = {
     (UC_ARCH_X86, UC_MODE_64): ("x86_64", 8),
     (UC_ARCH_ARM, UC_MODE_THUMB if False else UC_MODE_ARM): ("arm", 4),
@@ -325,6 +334,221 @@ class Emulator:
         uc.mem_write(FAKE_JENV, struct.pack(fmt, JENV_TABLE))
         self._jni_slots = {SHIM_PAGE + 0x30000 + idx * 16: n
                            for idx, n in enumerate(JNI_TABLE)}
+
+    # ------------------------------------------------------------------
+    # JavaVM mock (JNI_OnLoad path) -- merged from scripts/ijiami_oracle.py
+    # ------------------------------------------------------------------
+    def build_vm_table(self):
+        """Standard JNI: (*vm)->GetEnv == *(*vm + 0x30), so JavaVM* points to
+        a cell holding the function-table pointer; table slots -> shared stub.
+        Returns the JavaVM* handle to pass as JNI_OnLoad's first arg."""
+        uc = self.uc
+        psize = 4 if self.arch_name == "arm" else 8
+        fmt = "<I" if psize == 4 else "<Q"
+        uc.mem_write(VM_TABLE, struct.pack(fmt, FUNC_TABLE))
+        for i in range(N_VM_SLOTS):
+            uc.mem_write(FUNC_TABLE + i * psize, struct.pack(fmt, VM_STUB))
+        uc.mem_write(VM_STUB, self.ret_bytes + bytes(16 - len(self.ret_bytes)))
+        return VM_TABLE
+
+    def vm_hook(self, uc, address, size, ud):
+        """GetEnv(vm, &env, ver) or AttachCurrentThread(vm, &env, args):
+        hand out the fake JNIEnv in arg1 and return JNI_OK; other VM slots no-op."""
+        if address & ~1 != VM_STUB:
+            return
+        get_arg = self._arg_readers()
+        env_ptr = get_arg(1)
+        if env_ptr:
+            try:
+                psize = 4 if self.arch_name == "arm" else 8
+                fmt = "<I" if psize == 4 else "<Q"
+                self.uc.mem_write(env_ptr, struct.pack(fmt, FAKE_JENV))
+            except Exception:
+                pass
+        self._set_ret(0)
+
+    def apply_relative_relocs(self):
+        """emulate.py's apply_relocations() wires only GLOB_DAT/JUMP_SLOT.
+        RELATIVE/ABS64 pointers in .data.rel.ro are needed before any
+        non-trivial lib runs (self-decryptors dispatch through them).
+
+        arm32 uses REL (addend is implicit, stored in the section data itself
+        -- lief reports addend=0; reading rel.addend would clobber every slot
+        with base+0, including .init_array) -> read original file bytes.
+        arm64 uses RELA (explicit addend) -> keep the old path there."""
+        uc, base = self.uc, self.base
+        n = 0
+        arm32 = self.arch_name == "arm"
+        psize = 4 if arm32 else 8
+        fmt = "<I" if arm32 else "<Q"
+        orig = None
+        if arm32:
+            orig = pathlib.Path(self.so_path).read_bytes()
+
+            def v2f(v):
+                for seg in self.binary.segments:
+                    if (seg.type == lief.ELF.Segment.TYPE.LOAD
+                            and seg.virtual_address <= v
+                            < seg.virtual_address + seg.virtual_size):
+                        return seg.file_offset + (v - seg.virtual_address)
+                return None
+        for rel in self.binary.relocations:
+            t = str(rel.type)
+            if "RELATIVE" in t:
+                if arm32:
+                    off = v2f(rel.address)
+                    if off is None or off + 4 > len(orig):
+                        continue
+                    (addend,) = struct.unpack("<I", orig[off:off + 4])
+                else:
+                    addend = rel.addend
+                uc.mem_write(base + rel.address,
+                             struct.pack(fmt, base + addend))
+                n += 1
+            elif "ABS64" in t:
+                sym = rel.symbol
+                if sym and sym.name and not sym.value:
+                    val = SHIM_PAGE + 0x8000 + (hash(sym.name) % 0x400) * 16
+                else:
+                    val = base + ((sym.value if sym else 0) or 0) + rel.addend
+                uc.mem_write(base + rel.address, struct.pack("<Q", val))
+                n += 1
+        return n
+
+    def run_ctors(self, timeout_s=120):
+        """dlopen semantics: DT_INIT, then INIT_ARRAY (self-decryptors live
+        here). Runs before JNI_OnLoad; logs any JNI touchpoints."""
+        uc, base = self.uc, self.base
+        psize = 4 if self.arch_name == "arm" else 8
+        fmt = "<I" if psize == 4 else "<Q"
+        init_va = init_arr_va = init_arr_sz = None
+        for e in self.binary.dynamic_entries:
+            tag = str(e.tag)
+            if tag == "TAG.INIT":
+                init_va = e.value
+            elif tag == "TAG.INIT_ARRAY":
+                init_arr_va = e.value
+            elif tag == "TAG.INIT_ARRAYSZ":
+                init_arr_sz = e.value
+        runs = []
+        if init_va:
+            self.run(base + init_va, timeout_s=timeout_s)
+            runs.append("DT_INIT")
+        if init_arr_va and init_arr_sz:
+            n = init_arr_sz // psize
+            for i in range(n):
+                (fn,) = struct.unpack(fmt, uc.mem_read(base + init_arr_va + i * psize, psize))
+                if fn:
+                    self.run(base + fn, timeout_s=timeout_s)
+            runs.append(f"INIT_ARRAY={n} ctors")
+        return runs
+
+    def capture_register_natives(self):
+        """Record (name, sig, fn_offset) triples the packer binds at runtime."""
+        uc = self.uc
+        orig = self.do_jni
+        psize = 4 if self.arch_name == "arm" else 8
+        fmt = "<I" if psize == 4 else "<Q"
+
+        def patched(name):
+            if name == "RegisterNatives":
+                get_arg = self._arg_readers()
+                methods = get_arg(2)
+                count = get_arg(3)
+                for i in range(min(count, 64)):
+                    try:
+                        raw = bytes(uc.mem_read(methods + i * 3 * psize, 3 * psize))
+                        name_p, sig_p, fn_p = struct.unpack(fmt * 3, raw)
+                        nm = self.cstr(name_p) if name_p else "?"
+                        sg = self.cstr(sig_p) if sig_p else "?"
+                        off = fn_p - self.base if fn_p >= self.base else fn_p
+                        self.jni_log.append(
+                            ("RegisterNatives", nm, sg, "base+%s" % hex(off)))
+                    except Exception as exc:
+                        self.jni_log.append(("RegisterNatives", "unreadable", str(exc)[:40]))
+                        break
+            return orig(name)
+
+        self.do_jni = patched
+
+    def _arg_readers(self):
+        uc = self.uc
+        if self.arch_name == "arm64":
+            read = lambda n: uc.reg_read((UC_ARM64_REG_X0, UC_ARM64_REG_X1,
+                                          UC_ARM64_REG_X2, UC_ARM64_REG_X3)[n])
+            self._set_ret = (lambda v: uc.reg_write(UC_ARM64_REG_X0, v))
+        elif self.arch_name == "arm":
+            read = lambda n: uc.reg_read((UC_ARM_REG_R0, UC_ARM_REG_R1,
+                                          UC_ARM_REG_R2, UC_ARM_REG_R3)[n])
+            self._set_ret = (lambda v: uc.reg_write(UC_ARM_REG_R0, v))
+        else:
+            from unicorn.x86_const import (UC_X86_REG_RDI as A0, UC_X86_REG_RSI as A1,
+                                           UC_X86_REG_RDX as A2, UC_X86_REG_RCX as A3,
+                                           UC_X86_REG_RAX as RET)
+            read = lambda n: uc.reg_read((A0, A1, A2, A3)[n])
+            self._set_ret = (lambda v: uc.reg_write(RET, v))
+        return read
+
+    def run_jni_oneshot(self, sym="JNI_OnLoad", ctor_timeout_s=120,
+                        run_timeout_s=300):
+        """Full JNI_OnLoad boot: relocs -> ctors (self-decrypt) -> JNI_OnLoad
+        with a fake JavaVM. Returns an orchestration report used by the
+        dispatcher and by tests."""
+        self.load_elf()
+        self.map_regions()
+        self.wire_got_shims()
+        self.wire_jni_table()
+        self.wire_svc_hook()
+        self.apply_relative_relocs()
+
+        entry, name = self.find_entry(sym)
+        if name != sym:
+            raise RuntimeError(f"symbol {sym!r} not exported (got {name!r})")
+
+        vm = self.build_vm_table()
+        self.uc.hook_add(UC_HOOK_CODE, self.vm_hook,
+                         begin=VM_STUB & ~1, end=VM_STUB + 16)
+        self.uc.hook_add(UC_HOOK_CODE, self.dispatch_hook)
+        self.capture_register_natives()
+
+        ctors = self.run_ctors(ctor_timeout_s)
+        self.jni_log.clear()
+
+        self.uc.reg_write(UC_ARM64_REG_SP if self.arch_name == "arm64" else
+                          UC_ARM_REG_SP if self.arch_name == "arm" else
+                          UC_X86_REG_RSP,
+                          STACK_ADDR + 1024 * 1024 - 0x200)
+        if self.arch_name == "arm64":
+            self.uc.reg_write(UC_ARM64_REG_X0, vm)
+            self.uc.reg_write(UC_ARM64_REG_X1, 0)
+            self.uc.reg_write(UC_ARM64_REG_LR, RET_STUB)
+            self.uc.reg_write(UC_ARM64_REG_PC, entry)
+        elif self.arch_name == "arm":
+            self.uc.reg_write(UC_ARM_REG_R0, vm)
+            self.uc.reg_write(UC_ARM_REG_R1, 0)
+            self.uc.reg_write(UC_ARM_REG_LR, RET_STUB)
+            self.uc.reg_write(UC_ARM_REG_PC, entry | 1)
+        else:
+            self.uc.mem_write(STACK_ADDR + 1024 * 1024 - 0x210,
+                              struct.pack("<Q", RET_STUB))
+            self.uc.reg_write(UC_X86_REG_RDI, vm)
+            self.uc.reg_write(UC_X86_REG_RSI, 0)
+
+        status = "clean"
+        try:
+            self.uc.emu_start(entry | 1 if self.arch_name == "arm" else entry,
+                              RET_STUB,
+                              timeout=run_timeout_s * 1_000_000,
+                              count=100_000_000)
+        except Exception as exc:
+            status = str(exc)[:80]
+
+        return {"entry": name, "status": status,
+                "ctors": ctors,
+                "jni_calls": len(self.jni_log),
+                "register_natives": [e for e in self.jni_log
+                                     if e[0] == "RegisterNatives"],
+                "fault": getattr(self, "fault_info", None)}
 
     def do_jni(self, name):
         uc = self.uc
@@ -1099,7 +1323,12 @@ class Emulator:
                     return self.base + a, n
         jni = [(n, a) for n, a in candidates if n.startswith("Java_")]
         if not jni:
-            raise RuntimeError("no Java_* export found")
+            # JNI_OnLoad-only packers (Ijiami, Bangcle, ...) never export
+            # Java_*. Prefer JNI_OnLoad as the bootstrap entry.
+            oneshot = [(n, a) for n, a in candidates if n == "JNI_OnLoad"]
+            if oneshot:
+                return self.base + oneshot[0][1], oneshot[0][0]
+            raise RuntimeError("no Java_* export or JNI_OnLoad found")
         if len(jni) == 1:
             return self.base + jni[0][1], jni[0][0]
         # prefer shortest name; ties -> first sorted
@@ -1155,7 +1384,9 @@ class Emulator:
     # -------- post-run artifact recovery --------
 
     def sweep_blobs(self):
-        """Read .data/.bss after run, find base64 blobs that decode to DEX."""
+        """Read .data/.bss after run, find base64 blobs that decode to DEX.
+        Also sweeps bump-heap byte arrays (NewByteArray/SetByteArrayRegion
+        path used by Ijiami-family DEX minting)."""
         results = []
         data_sections = [s for s in self.binary.sections
                          if s.name in (".data", ".bss", ".data.rel.ro")]
@@ -1210,6 +1441,38 @@ class Emulator:
                                     "va": hex(sec.virtual_address + idx),
                                     "size": len(data), "sha256": sha256(data),
                                     "data": data})
+        # bump-heap sweep: byte arrays written via SetByteArrayRegion land in
+        # the tail of HEAP_ADDR..HEAP_ADDR+heap_ptr even though the JNI mock
+        # also mirrors them into self.objects.
+        if self.heap_ptr > 0:
+            region = min(self.heap_ptr, 64 * 1024 * 1024)
+            try:
+                mem = bytes(self.uc.mem_read(HEAP_ADDR, region))
+            except Exception:
+                mem = b""
+            for match in re.finditer(rb"dex\n0\d\d\x00", mem):
+                idx = match.start()
+                fsz_off = idx + 32
+                if fsz_off + 4 > len(mem):
+                    continue
+                fsz = struct.unpack("<I", mem[fsz_off:fsz_off + 4])[0]
+                if 0 < fsz <= len(mem) - idx and fsz > 112:
+                    data = mem[idx:idx + fsz]
+                    results.append({"kind": "heap_dex", "section": "heap",
+                                    "va": hex(HEAP_ADDR + idx),
+                                    "size": len(data), "sha256": sha256(data),
+                                    "data": data})
+            # byte-array mirrors in self.objects (NewByteArray path)
+            for obj, (kind, val) in list(self.objects.items()):
+                if kind == "bytes" and isinstance(val, bytearray) and val:
+                    if val[:4] == b"dex\n" or val[:2] == b"PK":
+                        data = bytes(val)
+                        fsz = struct.unpack("<I", data[32:36])[0] if len(data) >= 36 and data[:4] == b"dex\n" else len(data)
+                        results.append({"kind": "obj_dex" if data[:4] == b"dex\n" else "obj_zip",
+                                        "section": "objects",
+                                        "va": hex(obj),
+                                        "size": len(data), "sha256": sha256(data),
+                                        "data": data})
         return results
 
 
@@ -1253,8 +1516,29 @@ def emulate_apk_lib(apk_path: pathlib.Path, workdir: pathlib.Path,
             emu.wire_jni_table()
             entry, entry_name = emu.find_entry(entry_sym)
         except Exception as exc:
-            report["libs_tried"].append({"lib": lib.name, "error": str(exc)[:100]})
-            continue
+            # JNI_OnLoad-only packer: try the oneshot boot path.
+            try:
+                emu = Emulator(lib)
+                meta = emu.run_jni_oneshot()
+                blobs = emu.sweep_blobs()
+                dexes = [b for b in blobs if b.get("kind") in ("b64_dex", "raw_dex", "heap_dex", "obj_dex")]
+                if dexes:
+                    rec = {"lib": lib.name, "entry": meta.get("entry"),
+                           "arch": emu.arch_name, "status": meta.get("status"),
+                           "jni_calls": meta.get("jni_calls")}
+                    report["libs_tried"].append(rec)
+                    report["status"].append(meta.get("status"))
+                    if best_recovery is None:
+                        best_recovery = (lib, dexes[0])
+                    break
+                report["libs_tried"].append({"lib": lib.name,
+                                             "oneshot": meta.get("status"),
+                                             "blobs": len(blobs)})
+                continue
+            except Exception as exc2:
+                report["libs_tried"].append({"lib": lib.name,
+                                             "error": f"{str(exc)[:60]} / {str(exc2)[:60]}"})
+                continue
         status = emu.run(entry)
         blobs = emu.sweep_blobs()
         entry_rec = {"lib": lib.name, "entry": entry_name,
@@ -1315,13 +1599,31 @@ def main(argv=None):
     if args.so:
         so_path = pathlib.Path(args.so)
         emu = Emulator(so_path)
-        emu.load_elf(); emu.map_regions(); emu.wire_got_shims(); emu.wire_jni_table()
-        entry, name = emu.find_entry(args.sym)
-        status = emu.run(entry)
+        try:
+            emu.load_elf(); emu.map_regions(); emu.wire_got_shims(); emu.wire_jni_table()
+            entry, name = emu.find_entry(args.sym)
+            status = emu.run(entry)
+        except Exception:
+            # JNI_OnLoad path (Ijiami/Bangcle style)
+            meta = emu.run_jni_oneshot()
+            name, status = meta.get("entry"), meta.get("status")
+            blobs = emu.sweep_blobs()
+            print(json.dumps({"so": str(so_path), "entry": name, "status": status,
+                              "oneshot": True,
+                              "registers": meta.get("register_natives"),
+                              "blobs": [{k: v for k, v in b.items() if k != "data"}
+                                        for b in blobs]}, indent=2))
+            for b in blobs:
+                if b.get("data") and b.get("kind") in ("b64_dex", "raw_dex", "heap_dex", "obj_dex"):
+                    p = pathlib.Path(args.workdir) / ("blob_%s.dex" % b["sha256"][:12])
+                    p.parent.mkdir(parents=True, exist_ok=True)
+                    p.write_bytes(b["data"])
+                    print("saved %s" % p)
+            return 0
         blobs = emu.sweep_blobs()
         print(json.dumps({"so": str(so_path), "entry": name, "status": status,
                           "blobs": [{k: v for k, v in b.items() if k != "data"}
-                                     for b in blobs]}, indent=2))
+                                    for b in blobs]}, indent=2))
         for b in blobs:
             if b.get("data"):
                 p = pathlib.Path(args.workdir) / ("blob_%s.dex" % b["sha256"][:12])

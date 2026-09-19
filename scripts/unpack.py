@@ -207,7 +207,32 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
         except Exception:
             continue
     if not export_libs:
+        # JNI_OnLoad-only packers (Ijiami, Bangcle, ...): try the oneshot
+        # boot (ctors + JNI_OnLoad with fake JavaVM) before declaring NOENTRY.
         fam = fam or "Unknown"
+        for lib in ordered:
+            try:
+                emu = emu_mod.Emulator(lib)
+                meta = emu.run_jni_oneshot()
+            except Exception:
+                continue
+            blobs = emu.sweep_blobs()
+            dexes = [b for b in blobs if b.get("kind") in ("b64_dex", "raw_dex", "heap_dex", "obj_dex")]
+            if dexes:
+                out = workdir / (report["sha256"][:16] + "_recovered.dex")
+                out.write_bytes(dexes[0].pop("data"))
+                ok, why = validate_dex(out.read_bytes()), "dex magic"
+                report["oracle"] = {"lib": lib.name, "entry": meta.get("entry"),
+                                    "status": meta.get("status"),
+                                    "ctors": meta.get("ctors"),
+                                    "jni_calls": meta.get("jni_calls"),
+                                    "register_natives": meta.get("register_natives")[:6],
+                                    "fault": meta.get("fault")}
+                report["artifacts"] = [{"file": str(out), "sha256": sha256(out.read_bytes()),
+                                        "validated": bool(ok)}]
+                report["verdict"] = "RECOVERED"
+                report["route_detail"] = "JNI_OnLoad oneshot"
+                return report
         report["ecode"] = "E-NATIVE-NOENTRY"
         report["family"] = fam
         report["next_step"] = ("Implement .init_array/JNI_OnLoad capture "
@@ -321,7 +346,7 @@ def main():
 
     # triage verdict (subprocess: triage.py has side-effect-y imports)
     try:
-        t = subprocess.run(["venv/bin/python", "scripts/triage.py", str(apk)],
+        t = subprocess.run([sys.executable, "scripts/triage.py", str(apk)],
                            capture_output=True, timeout=180, text=True)
         j = re.search(r"\{.*\}", t.stdout, re.S)
         if j:
