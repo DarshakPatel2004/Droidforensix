@@ -25,9 +25,9 @@ verdict     : RECOVERED
 route       : NATIVE  (native libs: 2)
 triage      : packed_custom @ conf 0.85
 artifact    : ...\artifacts\kit.zip          # 7.8 MB decrypted dropper kit, 10 entries
-kdf         : seed=myg0N2 key=6eada2ac127d60e3c17e4940981c5bc6 iv=d0045d33d393892263a7b43ccac6e578
-ioc firebase: mp2026-1efb5-default-rtdb.firebaseio.com
-ioc api_key : AIzaSyAD6KONlZNbRpGvMKgxlpBnLmrdT7gNUic
+kdf         : seed=myg0N2 (key/IV successfully recovered — values redacted in this doc)
+ioc firebase: (Firebase + API-key IOCs extracted — URL redacted; reported to Firebase team 2026-08-29)
+ioc api_key : (API-key value redacted — reported to Firebase team 2026-08-29)
 stage3      : matches=175 mismatches=5 over 180 seeds
 elapsed     : 1.3s
 ```
