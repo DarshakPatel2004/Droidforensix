@@ -211,8 +211,16 @@ analysis/dissect_*/
 analysis/emulate_*/
 analysis/triage_*/
 analysis/unpack_*/
+analysis/validation_matrix/
+analysis/ARTIFACTS.zip
 analysis/ac4/
-rto_analysis/
+
+# rto_analysis: whitelist only the published tool + writeups. Recovered
+# payloads, keys, traces and threat-intel deep dives stay out of git.
+rto_analysis/*
+!rto_analysis/unpacking_tool.py
+!rto_analysis/README.md
+!rto_analysis/validation_matrix.md
 
 # External tool bundles & decompile output (installed/extracted locally, not source)
 android.jar
