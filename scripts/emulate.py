@@ -160,6 +160,91 @@ def pick_arch(so_path: pathlib.Path):
     raise RuntimeError("unsupported arch %s" % name)
 
 
+def is_hardened_vm(binary, sym="JNI_OnLoad", window=0x400, min_density=0.1):
+    """Detect code-protected (bytecode VM) libs without booting the oracle.
+
+    Hardened packers (Ijiami emulator family, Calculator.apk) encrypt the entire
+    code payload: the exported entry (.init_array ctors, JNI_OnLoad) points at
+    ciphertext that fails to decode as native instructions, and ART/class APIs
+    are resolved only via dlsym with XOR-obfuscated names. Bootstrapping such a
+    lib under Unicorn wastes minutes and produces no DEX; the caller should
+    emit E-HARDENED-VM instead.
+
+    Heuristic: disassemble `window` bytes at the symbol's address and measure
+    the fraction of those bytes covered by decodable instructions (sum of
+    insn.size / window). Real code covers >= ~0.9 (fixed-width ARM) or ~1.0
+    (x86); ciphertext covers < 0.05. Threshold 0.1 keeps small real functions
+    (e.g. Calculator's libcalc32 JNI_OnLoad, 0.129) unflagged while catching
+    hard-encrypted entries (0.0-0.03).
+
+    Returns (bool, dict) - (hardened, evidence for the report).
+    """
+    from capstone import (Cs, CS_ARCH_ARM64, CS_ARCH_ARM, CS_ARCH_X86, CS_MODE_THUMB, CS_MODE_64)
+
+    def _all_syms():
+        yield from (binary.exported_functions or [])
+        try:
+            yield from list(binary.dynamic_symbols or [])
+        except TypeError:
+            for _s in binary.dynamic_symbols or []:
+                yield _s
+
+    target = None
+    for _s in _all_syms():
+        if _s.name == sym:
+            target = _s
+            break
+    if target is None:
+        return False, {}
+
+    arch_name = str(binary.header.machine_type).split(".")[-1].upper()
+    if "AARCH64" in arch_name or "ARM64" in arch_name:
+        md = Cs(CS_ARCH_ARM64, 0)
+    elif "ARM" in arch_name:
+        md = Cs(CS_ARCH_ARM, CS_MODE_THUMB)  # Android arm libs are Thumb-2
+        mask = ~1  # Thumb symbol VAs carry bit0; decode from the real halfword
+    elif "X86_64" in arch_name or "AMD64" in arch_name:
+        md = Cs(CS_ARCH_X86, CS_MODE_64)  # 64-bit
+    elif "I386" in arch_name or "80386" in arch_name or "X86" in arch_name:
+        md = Cs(CS_ARCH_X86, 0)  # 32-bit x86
+    else:
+        return False, {}
+
+    # locate the byte span for the symbol via LOAD segments (VA -> file bytes)
+    va = target.address if hasattr(target, "address") else target.value
+    try:
+        va &= mask
+    except NameError:
+        pass
+    blob = None
+    for seg in binary.segments:
+        if "LOAD" not in str(seg.type):
+            continue
+        sva, vsz = seg.virtual_address, seg.virtual_size
+        if sva <= va < sva + vsz:
+            content = bytes(seg.content)
+            off = va - sva
+            if off + window <= len(content):
+                blob = content[off:off + window]
+            break
+    if not blob:
+        return False, {}
+
+    density = _decode_density(md, blob)
+    return density < min_density, {"decode_density": round(density, 3)}
+
+
+def _decode_density(md, blob):
+    """Fraction of `blob` bytes covered by decodable instructions.
+
+    Uses insn.size (byte coverage) rather than instruction count so x86's
+    variable-length code and fixed-width ARM compare on the same scale.
+    """
+    covered = sum(i.size for i in md.disasm(blob, 0x0)
+                  if not (i.mnemonic.startswith("udf") or i.mnemonic == "invalid"))
+    return covered / max(1, len(blob))
+
+
 class Emulator:
     def __init__(self, so_path: pathlib.Path):
         self.so_path = so_path

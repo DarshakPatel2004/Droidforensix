@@ -33,6 +33,7 @@ E_CODES = {
     "E-NATIVE-NOENTRY": "Packer registers JNI at runtime (no Java_* export). Needs .init_array/JNI_OnLoad emulation.",
     "E-NATIVE-NO-RECOVERY": "Oracle ran but produced no self-validating payload; see fault info + key_log.",
     "E-ORACLE-FAULT": "Oracle aborted with an unhandled fault; fault info attached.",
+    "E-HARDENED-VM": "Code-protected (bytecode VM) packer: entries are ciphertext at rest; DEX minting runs inside a custom interpreter. Outside static oracle scope (device hook or ART runtime needed).",
 }
 
 
@@ -117,11 +118,13 @@ def sniff_family(names):
         return "Bangcle/SecNeo"
     if "libjiagu" in joined:
         return "360Jiagu"
-    if "libshell" in joined or "libDexHelper" in joined:
+    if "libshell" in joined or "libExecution" in joined:
+        return "TencentLegu"
+    if "libDexHelper" in joined or "libbaiduprotect" in joined:
         return "SecShell/Baidu"
     if "libtup" in joined or "libexecmain" in joined:
         return "Ijiami(variant)"
-    if "libchaosvmp" in joined or "libddog" in joined or "libtup" in joined:
+    if "libchaosvmp" in joined or "libddog" in joined:
         return "TencentLegu"
     if "libnesec" in joined or "NQShield" in joined:
         return "Wangxin"
@@ -177,6 +180,15 @@ def java_route(apk, zfile, workdir: pathlib.Path, report):
     return report
 
 
+FAM_MARKS = {"Ijiami": ("ijm", "ijiami", "execmain", "libexec"),
+             "Ijiami(variant)": ("ijm", "execmain", "libexec", "tup"),
+             "Bangcle/SecNeo": ("secmain", "secexe", "secpreload", "bangcle"),
+             "360Jiagu": ("jiagu",),
+             "TencentLegu": ("chaosvmp", "ddog", "legu", "tup", "shell"),
+             "SecShell/Baidu": ("DexHelper", "baiduprotect"),
+             "Wangxin": ("nesec", "NQShield")}
+
+
 def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
     import emulate as emu_mod
 
@@ -185,20 +197,23 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
     report["family"] = fam
     libs = emu_mod.extract_so_from_apk(apk, workdir / "libs")
     # Prefer packer libs over benign cover-app libs (family tokens in path)
-    FAM_MARKS = {"Ijiami": ("ijm", "ijiami", "execmain", "libexec"),
-                 "Ijiami(variant)": ("ijm", "execmain", "libexec", "tup"),
-                 "Bangcle/SecNeo": ("secmain", "secexe", "secpreload", "bangcle"),
-                 "360Jiagu": ("jiagu",),
-                 "TencentLegu": ("chaosvmp", "ddog", "legu", "tup", "shell"),
-                 "SecShell/Baidu": ("libshell", "DexHelper"),
-                 "Wangxin": ("nesec", "NQShield")}
     marks = FAM_MARKS.get(fam or "", ())
     packer_libs = [l for l in libs if any(m in str(l) for m in marks)]
     ordered = packer_libs + [l for l in libs if l not in packer_libs] if packer_libs else libs
     export_libs = []
+    hardened = []
     for lib in ordered:
         try:
             e = emu_mod.Emulator(lib)
+            # Code-protected libs decode 0% at the entry -> skip entirely,
+            # their JNI_OnLoad is ciphertext and the 300s oracle would fault.
+            try:
+                hvm, hev = emu_mod.is_hardened_vm(e.binary)
+            except Exception:
+                hvm = False
+            if hvm:
+                hardened.append((lib, hev))
+                continue
             entry, ename = e.find_entry()
             export_libs.append((lib, entry, ename))
         except RuntimeError as ex:
@@ -209,10 +224,23 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
     if not export_libs:
         # JNI_OnLoad-only packers (Ijiami, Bangcle, ...): try the oneshot
         # boot (ctors + JNI_OnLoad with fake JavaVM) before declaring NOENTRY.
+        # Code-protected (VM) libs fail decode at the entry -> E-HARDENED-VM
+        # without burning minutes in the emulator.
         fam = fam or "Unknown"
+        hardened = []
         for lib in ordered:
             try:
                 emu = emu_mod.Emulator(lib)
+            except Exception:
+                continue
+            try:
+                hvm, ev = emu_mod.is_hardened_vm(emu.binary)
+            except Exception:
+                hvm = False
+            if hvm:
+                hardened.append((lib, ev))
+                continue
+            try:
                 meta = emu.run_jni_oneshot()
             except Exception:
                 continue
@@ -233,6 +261,18 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
                 report["verdict"] = "RECOVERED"
                 report["route_detail"] = "JNI_OnLoad oneshot"
                 return report
+        if hardened:
+            report["ecode"] = "E-HARDENED-VM"
+            report["family"] = fam
+            report["hardened_libs"] = [{"lib": str(l), "decode_density": ev.get("decode_density")}
+                                       for l, ev in hardened]
+            report["next_step"] = ("Code-protected (bytecode VM) packer: JNI_OnLoad/"
+                                   "init_array is ciphertext at rest; DEX minting runs "
+                                   "inside a custom interpreter (see "
+                                   "analysis/emulate/calc_ijiami/PHASE1_GATE.md). "
+                                   "Recovery requires VM-level emulation (device hook "
+                                   "or ART runtime) - outside static oracle scope.")
+            return report
         report["ecode"] = "E-NATIVE-NOENTRY"
         report["family"] = fam
         report["next_step"] = ("Implement .init_array/JNI_OnLoad capture "
@@ -243,6 +283,18 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
     lib, entry, ename = export_libs[0]
     if packer_libs and lib not in packer_libs:
         # only benign libs exported; packer libs are RegisterNatives-only
+        if hardened:
+            report["ecode"] = "E-HARDENED-VM"
+            report["family"] = fam
+            report["hardened_libs"] = [{"lib": str(l), "decode_density": ev.get("decode_density")}
+                                       for l, ev in hardened]
+            report["benign_exports"] = [l.name for l, _, _ in export_libs[:4]]
+            report["next_step"] = ("Code-protected (bytecode VM) packer libs "
+                                   f"({[str(l) for l, _ in hardened]}) are ciphertext "
+                                   "at rest; only cover-app libs export. Recovery "
+                                   "requires VM-level emulation (device hook or ART "
+                                   "runtime) - outside static oracle scope.")
+            return report
         report["ecode"] = "E-NATIVE-NOENTRY"
         report["family"] = fam
         report["benign_exports"] = [l.name for l, _, _ in export_libs[:4]]
