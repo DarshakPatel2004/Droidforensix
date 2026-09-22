@@ -2063,14 +2063,35 @@ Analyze ALL evidence holistically before deciding. Look for:
 - DEX packing indicators (high entropy, few strings relative to size)
 
 A CANDIDATES section may list known malware families with their discriminating
-signals (strings, C2 domains, permissions). If it is present, your job is to
-select the BEST-MATCHING family from that list — the evidence above must match
-at least one of the candidate's listed signals, and the winning candidate must
-beat all others. This is a multiple-choice decision, not an open recall task:
-do NOT invent family names that are not in the list.
+signals (strings, C2 domains, permissions). If it is present and NOT empty, your
+job is to select the BEST-MATCHING family from that list — the evidence above
+must match at least one of the candidate's listed signals, and the winning
+candidate must beat all others. This is a multiple-choice decision, not an open
+recall task: do NOT invent family names that are not in the list.
 
-If the sample is benign (no malware behavior), or NO candidate's signals appear
-in the evidence at all, return "unknown" with low confidence. Never force a match.
+If the CANDIDATES section says no candidate family matched, you are in
+open-classification mode: use your knowledge of Android malware families plus
+the observed evidence above (package, permissions, strings, behavior markers).
+In open-classification mode you must make a best-effort call whenever the APK
+shows malicious behavior: "unknown" is reserved for samples with no malicious
+behavior at all. When the behavior clearly indicates a family class but no
+single family is certain, name the best-fitting well-known family at moderate
+confidence (0.35-0.6) instead of abstaining. The output must be one specific
+family name or "unknown" — never a behavior-category phrase. Reference
+profiles (judge them on the package scheme + permission cluster + string
+markers TOGETHER, never on a single generic permission alone):
+- FakeInstaller / FakeInst: fake app installer that downloads or stages APK
+  payloads and steals SMS. Signals: SEND_SMS together with INSTALL_PACKAGES or
+  DELETE_PACKAGES, ".apk" download markers, DownloadApk / sms.xml strings,
+  GCM registration-id usage.
+- Opfake: trojanized repackaged app, typically a tiny DEX with almost no
+  permissions (often SEND_SMS only) and no visible C2 infrastructure.
+- For premium-SMS bots, banking-overlay/dropper kits, and game-wrapped
+  trojans: name the closest specific well-known family that fits the
+  evidence — the value must be a family name, not the behavior class.
+
+If the sample is benign (no malware behavior), return "unknown" with low
+confidence. Never force a match.
 
 Output valid JSON only, no markdown, exactly this schema:
 {"family": "<family name or 'unknown'>", "confidence": 0.0-1.0, "reasoning": "<short>"}
@@ -2082,13 +2103,24 @@ matches candidate's 'mads.php' signal", "string 'kungfu' present in dex")."""
 def _family_context(result: Dict[str, Any], sample_id: Optional[str] = None) -> str:
     metadata = result.get("metadata", {}) or {}
     c2s = result.get("c2_infrastructure", []) or []
-    perms = list(_extract_permissions(result))
+    perms = set(_extract_permissions(result))
     assessment = result.get("llm_assessment", {}) or {}
     obf = result.get("obfuscation_analysis", {}) or {}
     chains_raw = result.get("threat_chains", []) or []
     encodings = result.get("encodings", []) or []
     payloads = result.get("payloads", []) or []
     extraction = result.get("extraction", {}) or {}
+
+    # Permissions may be absent from the pipeline result dict (e.g. samples
+    # whose manifest parsing lived only in the androguard feature cache).
+    # Enrich from the cache so the LLM still sees the permission cluster.
+    if sample_id:
+        cache_entry = _kb_load_cache().get(sample_id.lower())
+        if cache_entry and not cache_entry.get("parse_error"):
+            for p in cache_entry.get("permissions", []) or []:
+                if isinstance(p, str):
+                    perms.add(p.split(".")[-1])
+    perms = sorted(perms)
 
     size_bytes = metadata.get('file_size_bytes', 0)
     try:
@@ -2217,7 +2249,10 @@ def _family_context(result: Dict[str, Any], sample_id: Optional[str] = None) -> 
         if kb_features["strings"]:
             evidence = sorted(kb_features["strings"])[:40]
             lines.append("")
-            lines.append("Observable evidence strings (readable, matched against candidate signals):")
+            lines.append(
+                "Observable evidence strings (from the APK DEX; judge them against "
+                "candidate signals or family profiles):"
+            )
             for token in evidence:
                 lines.append(f"  - {token[:100]}")
 
@@ -2225,11 +2260,20 @@ def _family_context(result: Dict[str, Any], sample_id: Optional[str] = None) -> 
         lines.append(f"CANDIDATES (knowledge-base families with matched signals; top {min(10, len(ranked))}):")
         if not ranked:
             lines.append("  (no candidate family has any matched signal)")
-        for score, family_name, matched in ranked[:10]:
-            lines.append(f"  [{score:.2f}] {family_name}: {', '.join(matched)}")
-        lines.append("")
-        lines.append("Choose the family from this list whose signals appear in the")
-        lines.append("evidence above. Unknown is ONLY correct if no candidate matches.")
+            lines.append("")
+            lines.append(
+                "OPEN CLASSIFICATION: no knowledge-base family matched. Classify from "
+                "the evidence above using your knowledge of Android malware families. "
+                "If the APK shows malicious behavior, make a best-effort family call at "
+                "moderate confidence (0.35-0.6) rather than abstaining; reserve "
+                "'unknown' for samples with no malicious behavior."
+            )
+        else:
+            for score, family_name, matched in ranked[:10]:
+                lines.append(f"  [{score:.2f}] {family_name}: {', '.join(matched)}")
+            lines.append("")
+            lines.append("Choose the family from this list whose signals appear in the")
+            lines.append("evidence above. Unknown is ONLY correct if no candidate matches.")
 
     return "\n".join(lines)
 
