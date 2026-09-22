@@ -1,0 +1,35 @@
+{
+  "apk": "samples\\malware\\androzoo\\0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465.apk",
+  "sha256": "0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465",
+  "verdict": "FAILED",
+  "ecode": "E-HARDENED-VM",
+  "artifacts": [],
+  "stats": {
+    "entries": 97,
+    "so_count": 8,
+    "dex_count": 1
+  },
+  "triage": {
+    "verdict": "packed_known(Ijiami)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "Ijiami",
+  "hardened_libs": [
+    {
+      "lib": "D:\\DroidForensix\\evaluation\\oracle_out\\Ijiami\\libs\\armeabi_libexec.so",
+      "decode_density": 0.045
+    },
+    {
+      "lib": "D:\\DroidForensix\\evaluation\\oracle_out\\Ijiami\\libs\\armeabi_libexecmain.so",
+      "decode_density": 0.037
+    }
+  ],
+  "benign_exports": [
+    "armeabi_libandroidgl20.so",
+    "armeabi_libgdx.so",
+    "armeabi-v7a_libandroidgl20.so",
+    "armeabi-v7a_libgdx.so"
+  ],
+  "next_step": "Code-protected (bytecode VM) packer libs (['D:\\\\DroidForensix\\\\evaluation\\\\oracle_out\\\\Ijiami\\\\libs\\\\armeabi_libexec.so', 'D:\\\\DroidForensix\\\\evaluation\\\\oracle_out\\\\Ijiami\\\\libs\\\\armeabi_libexecmain.so']) are ciphertext at rest; only cover-app libs export. Recovery requires VM-level emulation (device hook or ART runtime) - outside static oracle scope."
+}

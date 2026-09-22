@@ -1,0 +1,116 @@
+{
+  "top_soft": {
+    "SecShell/Baidu": [],
+    "TencentLegu": [
+      {
+        "path": "samples\\goodware\\benign_eval\\003BE119DA29D0752EE117105E9B92A8207E21DA82CEA2E2BD84E30217A8E675.apk",
+        "sha256": "003be119da29d0752ee117105e9b92a8207e21da82cea2e2bd84e30217a8e675",
+        "family": "TencentLegu",
+        "verdict": "SOFT",
+        "libs": [
+          {
+            "name": "libshellx-super.2019.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.996,
+            "file_entropy": 6.439,
+            "size": 239668,
+            "packer": true
+          },
+          {
+            "name": "libijkffmpeg.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.34,
+            "size": 5381488,
+            "packer": false
+          },
+          {
+            "name": "libijkplayer.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.022,
+            "size": 364944,
+            "packer": false
+          },
+          {
+            "name": "libijksdl.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.726,
+            "size": 481352,
+            "packer": false
+          },
+          {
+            "name": "libjniPdfium.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.002,
+            "size": 493432,
+            "packer": false
+          },
+          {
+            "name": "libmodft2.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.528,
+            "size": 554880,
+            "packer": false
+          },
+          {
+            "name": "libmodpdfium.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.676,
+            "size": 5367744,
+            "packer": false
+          },
+          {
+            "name": "libmodpng.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.46,
+            "size": 214840,
+            "packer": false
+          },
+          {
+            "name": "librtmp-jni.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.91,
+            "size": 87824,
+            "packer": false
+          },
+          {
+            "name": "libshell-super.2019.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.744,
+            "size": 260608,
+            "packer": true
+          },
+          {
+            "name": "libshella-4.1.0.23.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 1.931,
+            "size": 408,
+            "packer": true
+          }
+        ]
+      }
+    ],
+    "Ijiami": []
+  }
+}

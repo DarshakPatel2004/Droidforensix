@@ -1,0 +1,3526 @@
+{
+  "families": {
+    "Bangcle/SecNeo": [
+      {
+        "path": "samples\\malware\\androzoo\\0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28.apk",
+        "sha256": "0000237117863e534ceec544bc9460f09b542d48260c2e045174d03e65ad5c28",
+        "family": "Bangcle/SecNeo",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libsecexe.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.006,
+            "file_entropy": 6.419,
+            "size": 102452,
+            "packer": true
+          },
+          {
+            "name": "libsecexe.x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.021,
+            "file_entropy": 7.527,
+            "size": 90712,
+            "packer": true
+          },
+          {
+            "name": "libsecmain.so",
+            "abi": "unknown",
+            "state": "nosym",
+            "file_entropy": 6.948,
+            "size": 184644,
+            "packer": true
+          },
+          {
+            "name": "libsecmain.x86.so",
+            "abi": "unknown",
+            "state": "nosym",
+            "file_entropy": 7.65,
+            "size": 181164,
+            "packer": true
+          },
+          {
+            "name": "libsecpreload.so",
+            "abi": "unknown",
+            "state": "nosym",
+            "file_entropy": 1.949,
+            "size": 37932,
+            "packer": true
+          },
+          {
+            "name": "libsecpreload.x86.so",
+            "abi": "unknown",
+            "state": "nosym",
+            "file_entropy": 2.807,
+            "size": 5056,
+            "packer": true
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3.apk",
+        "sha256": "000091f2fac1083dc578240acf9d24ede3ce7b9f9e517b37f44a2cdae0ff0fb3",
+        "family": "Bangcle/SecNeo",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libsecexe.x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.011,
+            "file_entropy": 7.538,
+            "size": 86616,
+            "packer": true
+          },
+          {
+            "name": "libsecmain.x86.so",
+            "abi": "unknown",
+            "state": "nosym",
+            "file_entropy": 7.59,
+            "size": 131992,
+            "packer": true
+          },
+          {
+            "name": "libsecexe.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.006,
+            "file_entropy": 7.663,
+            "size": 69684,
+            "packer": true
+          },
+          {
+            "name": "libsecmain.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.576,
+            "size": 119088,
+            "packer": true
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b.apk",
+        "sha256": "0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b",
+        "family": "Bangcle/SecNeo",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libsecexe.x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.012,
+            "file_entropy": 7.522,
+            "size": 86616,
+            "packer": true
+          },
+          {
+            "name": "libsecmain.x86.so",
+            "abi": "unknown",
+            "state": "nosym",
+            "file_entropy": 7.583,
+            "size": 131992,
+            "packer": true
+          },
+          {
+            "name": "libCore.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 7.2,
+            "size": 16921448,
+            "packer": false
+          },
+          {
+            "name": "libsecexe.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.199,
+            "file_entropy": 7.649,
+            "size": 69684,
+            "packer": true
+          },
+          {
+            "name": "libsecmain.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.569,
+            "size": 119088,
+            "packer": true
+          },
+          {
+            "name": "libstagefright_froyo.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 5.433,
+            "size": 7384,
+            "packer": false
+          },
+          {
+            "name": "libstagefright_honeycomb.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 5.563,
+            "size": 10608,
+            "packer": false
+          },
+          {
+            "name": "libysshared.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.569,
+            "size": 843731,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\modern_eval\\fca210ed8b28a9544d0db5a8387fe75c26091003041220a9d28cb445e8169aad.apk",
+        "sha256": "fca210ed8b28a9544d0db5a8387fe75c26091003041220a9d28cb445e8169aad",
+        "family": "Bangcle/SecNeo",
+        "verdict": "NONE",
+        "libs": [
+          {
+            "name": "libSecShell-64.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libSecShell-pro-2022.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libSecShell.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libSecShell-armv7.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libSecShell-x86.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "apk.bangbang-v1.pro.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          }
+        ]
+      }
+    ],
+    "360Jiagu": [
+      {
+        "path": "samples\\malware\\androzoo\\0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c.apk",
+        "sha256": "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.901,
+            "size": 498720,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.999,
+            "file_entropy": 7.928,
+            "size": 466432,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.758,
+            "file_entropy": 6.548,
+            "size": 149052,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\00006453637aaa1deb7938bff60fe146927ae1611e8fb0c1741f7c75cca1dc53.apk",
+        "sha256": "00006453637aaa1deb7938bff60fe146927ae1611e8fb0c1741f7c75cca1dc53",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.934,
+            "size": 487792,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.958,
+            "size": 486908,
+            "packer": true
+          },
+          {
+            "name": "libCore.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 6.872,
+            "size": 18608396,
+            "packer": false
+          },
+          {
+            "name": "libc++_shared.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.55,
+            "size": 636520,
+            "packer": false
+          },
+          {
+            "name": "libysshared.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.806,
+            "size": 275688,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3.apk",
+        "sha256": "00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.909,
+            "size": 461676,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.45,
+            "size": 87476,
+            "packer": false
+          },
+          {
+            "name": "libX86Bridge.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.612,
+            "size": 5116,
+            "packer": false
+          },
+          {
+            "name": "libblur.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.351,
+            "size": 13460,
+            "packer": false
+          },
+          {
+            "name": "libijkffmpeg.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.105,
+            "size": 2218160,
+            "packer": false
+          },
+          {
+            "name": "libijkplayer.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.637,
+            "file_entropy": 6.772,
+            "size": 240212,
+            "packer": false
+          },
+          {
+            "name": "libijksdl.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 6.873,
+            "size": 214528,
+            "packer": false
+          },
+          {
+            "name": "libpl_droidsonroids_gif.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.296,
+            "size": 50720,
+            "packer": false
+          },
+          {
+            "name": "libqingk-jni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.636,
+            "size": 17596,
+            "packer": false
+          },
+          {
+            "name": "libvinit.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.031,
+            "file_entropy": 6.224,
+            "size": 70876,
+            "packer": false
+          },
+          {
+            "name": "libweibosdkcore.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.078,
+            "size": 25848,
+            "packer": false
+          },
+          {
+            "name": "libcocklogic-1.1.3.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.446,
+            "size": 25816,
+            "packer": false
+          },
+          {
+            "name": "libtnet-3.1.7.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.383,
+            "file_entropy": 6.909,
+            "size": 303456,
+            "packer": false
+          },
+          {
+            "name": "libarm.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\00009c58545b6b6fa22f5c2be900abb1b4029acf7ac57196d97fd1c0298886e2.apk",
+        "sha256": "00009c58545b6b6fa22f5c2be900abb1b4029acf7ac57196d97fd1c0298886e2",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.909,
+            "size": 464412,
+            "packer": true
+          },
+          {
+            "name": "libMD5CheckPrinterA300.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.226,
+            "size": 13452,
+            "packer": false
+          },
+          {
+            "name": "libX86Bridge.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.612,
+            "size": 5116,
+            "packer": false
+          },
+          {
+            "name": "libcocklogic-1.1.3.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.446,
+            "size": 25816,
+            "packer": false
+          },
+          {
+            "name": "libgdinamapv4sdk752.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.978,
+            "size": 717912,
+            "packer": false
+          },
+          {
+            "name": "libgdinamapv4sdk752ex.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.671,
+            "size": 140552,
+            "packer": false
+          },
+          {
+            "name": "libjcore126.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.614,
+            "size": 13724,
+            "packer": false
+          },
+          {
+            "name": "liblept.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.203,
+            "file_entropy": 6.968,
+            "size": 998580,
+            "packer": false
+          },
+          {
+            "name": "libmsc.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.027,
+            "file_entropy": 7.06,
+            "size": 1142352,
+            "packer": false
+          },
+          {
+            "name": "libsophix.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.841,
+            "size": 272716,
+            "packer": false
+          },
+          {
+            "name": "libsqlcipher.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.092,
+            "file_entropy": 6.654,
+            "size": 1369284,
+            "packer": false
+          },
+          {
+            "name": "libtbt.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.242,
+            "size": 840436,
+            "packer": false
+          },
+          {
+            "name": "libtbt3631.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.246,
+            "size": 897884,
+            "packer": false
+          },
+          {
+            "name": "libtess.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.017,
+            "size": 1989188,
+            "packer": false
+          },
+          {
+            "name": "libtnet-3.1.11.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.383,
+            "file_entropy": 6.946,
+            "size": 299360,
+            "packer": false
+          },
+          {
+            "name": "libucrop.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.974,
+            "size": 554500,
+            "packer": false
+          },
+          {
+            "name": "libwtbt144.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.328,
+            "file_entropy": 7.07,
+            "size": 313528,
+            "packer": false
+          },
+          {
+            "name": "libwtbt145.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.074,
+            "size": 600656,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541.apk",
+        "sha256": "0000a6d452d58424a8b7613f175af5937f590033616b808bf8c0445695f82541",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.778,
+            "size": 632476,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.055,
+            "file_entropy": 7.926,
+            "size": 502948,
+            "packer": true
+          },
+          {
+            "name": "libcocos2dcpp.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 6.376,
+            "size": 8500376,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_000109a075dc3afa88c45523a3edf2039177386c58a48936feafee9716f7bcbb.apk",
+        "sha256": "000109a075dc3afa88c45523a3edf2039177386c58a48936feafee9716f7bcbb",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.778,
+            "size": 632476,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.055,
+            "file_entropy": 7.926,
+            "size": 502948,
+            "packer": true
+          },
+          {
+            "name": "libZBarDecoder.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.051,
+            "file_entropy": 6.848,
+            "size": 99652,
+            "packer": false
+          },
+          {
+            "name": "libcocklogic-1.1.3.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.447,
+            "size": 25816,
+            "packer": false
+          },
+          {
+            "name": "libiconv.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.396,
+            "size": 890100,
+            "packer": false
+          },
+          {
+            "name": "libimagepipeline.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.542,
+            "size": 308908,
+            "packer": false
+          },
+          {
+            "name": "libmsc.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.027,
+            "file_entropy": 7.06,
+            "size": 1142352,
+            "packer": false
+          },
+          {
+            "name": "libtnet-3.1.14.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.026,
+            "size": 266536,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_00016fa3b94e1b117851eac18d639873b892ab833d027a41243baee04aa49309.apk",
+        "sha256": "00016fa3b94e1b117851eac18d639873b892ab833d027a41243baee04aa49309",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.935,
+            "size": 503708,
+            "packer": true
+          },
+          {
+            "name": "libNewlens.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.669,
+            "size": 153256,
+            "packer": false
+          },
+          {
+            "name": "libRSSupport.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.891,
+            "size": 919408,
+            "packer": false
+          },
+          {
+            "name": "libX86Bridge.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.612,
+            "size": 5116,
+            "packer": false
+          },
+          {
+            "name": "libdict-parser.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.688,
+            "size": 572320,
+            "packer": false
+          },
+          {
+            "name": "libjcore126.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.605,
+            "size": 13728,
+            "packer": false
+          },
+          {
+            "name": "libksyplayer.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.928,
+            "size": 4797268,
+            "packer": false
+          },
+          {
+            "name": "librsjni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.289,
+            "file_entropy": 6.387,
+            "size": 51704,
+            "packer": false
+          },
+          {
+            "name": "libucrop.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 7.065,
+            "size": 525836,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_00018b522a51d6573a615153e7bfb33ac961bf5ef604ac7edb04072ce238b9af.apk",
+        "sha256": "00018b522a51d6573a615153e7bfb33ac961bf5ef604ac7edb04072ce238b9af",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.809,
+            "size": 644180,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.95,
+            "size": 604400,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.163,
+            "file_entropy": 7.955,
+            "size": 533328,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.956,
+            "size": 492144,
+            "packer": true
+          },
+          {
+            "name": "libjcore113.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.875,
+            "size": 129040,
+            "packer": false
+          },
+          {
+            "name": "libsqlc-native-driver.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.467,
+            "size": 893208,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_0001c305576625cdd1af37295d45f1ff9fa8defd0c0e67b2516f0feb438c5a6a.apk",
+        "sha256": "0001c305576625cdd1af37295d45f1ff9fa8defd0c0e67b2516f0feb438c5a6a",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.865,
+            "size": 328392,
+            "packer": true
+          },
+          {
+            "name": "libIxsdkDiff.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.774,
+            "size": 73936,
+            "packer": false
+          },
+          {
+            "name": "libbspatch.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.573,
+            "size": 57520,
+            "packer": false
+          },
+          {
+            "name": "libcocos2dlua.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.223,
+            "file_entropy": 7.036,
+            "size": 7943660,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_0001ef3dc57c9905fe7ead593f2c3c092aae46fa924116eaa704be896106371d.apk",
+        "sha256": "0001ef3dc57c9905fe7ead593f2c3c092aae46fa924116eaa704be896106371d",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.81,
+            "size": 631340,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.931,
+            "size": 596496,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.163,
+            "file_entropy": 7.956,
+            "size": 521488,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.958,
+            "size": 486908,
+            "packer": true
+          },
+          {
+            "name": "libjpush220.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.044,
+            "size": 501928,
+            "packer": false
+          },
+          {
+            "name": "liblocSDK6a.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.959,
+            "size": 51304,
+            "packer": false
+          },
+          {
+            "name": "libobserver.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.06,
+            "size": 13440,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_00022d057443ac60334e3dd676f30a3b4c2837de54c09a4cb85a28d950c4e2a9.apk",
+        "sha256": "00022d057443ac60334e3dd676f30a3b4c2837de54c09a4cb85a28d950c4e2a9",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.935,
+            "size": 493836,
+            "packer": true
+          },
+          {
+            "name": "libX86Bridge.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.612,
+            "size": 5116,
+            "packer": false
+          },
+          {
+            "name": "libglide-webp.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.578,
+            "size": 227092,
+            "packer": false
+          },
+          {
+            "name": "libjcore126.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.605,
+            "size": 13728,
+            "packer": false
+          },
+          {
+            "name": "libpl_droidsonroids_gif.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.458,
+            "size": 38372,
+            "packer": false
+          },
+          {
+            "name": "libwebp_evme.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 7.048,
+            "size": 83196,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_000234b3b17aa773825c5cc4512702add18509bdebb039f36aa6f5d0ee7a78b6.apk",
+        "sha256": "000234b3b17aa773825c5cc4512702add18509bdebb039f36aa6f5d0ee7a78b6",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.774,
+            "size": 584364,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.928,
+            "size": 404648,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.163,
+            "file_entropy": 7.902,
+            "size": 357280,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.999,
+            "file_entropy": 7.919,
+            "size": 371984,
+            "packer": true
+          },
+          {
+            "name": "libdes.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 4.722,
+            "size": 9640,
+            "packer": false
+          },
+          {
+            "name": "libgetuiext2.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.017,
+            "size": 55152,
+            "packer": false
+          },
+          {
+            "name": "libizhcLkeeloq.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.348,
+            "size": 9576,
+            "packer": false
+          },
+          {
+            "name": "libizhcprotocol.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.607,
+            "size": 9576,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\modern_eval\\0a02bda89021ac18c0c57979ea3c9d82c1054b5c9b375975401e3e21a2f4905a.apk",
+        "sha256": "0a02bda89021ac18c0c57979ea3c9d82c1054b5c9b375975401e3e21a2f4905a",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.817,
+            "size": 853740,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.67,
+            "size": 1172880,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.631,
+            "size": 909832,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.599,
+            "size": 811364,
+            "packer": true
+          },
+          {
+            "name": "libBeacon.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.662,
+            "size": 147872,
+            "packer": false
+          },
+          {
+            "name": "libIjkffmpeg_haima.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.397,
+            "size": 1901432,
+            "packer": false
+          },
+          {
+            "name": "libIjkplayer_haima.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.015,
+            "size": 446880,
+            "packer": false
+          },
+          {
+            "name": "libIjksdl_haima.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.691,
+            "size": 460648,
+            "packer": false
+          },
+          {
+            "name": "libKwAppGuardSDK.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.435,
+            "size": 2430448,
+            "packer": false
+          },
+          {
+            "name": "libalicomphonenumberauthsdk_core.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.985,
+            "size": 5824,
+            "packer": false
+          },
+          {
+            "name": "libbaiduprotect_sec_jni_v3_lite_face.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.754,
+            "size": 88080,
+            "packer": false
+          },
+          {
+            "name": "libbctun2socks.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.351,
+            "size": 155688,
+            "packer": false
+          },
+          {
+            "name": "libbd_facecollect_unifylicense.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.325,
+            "size": 432456,
+            "packer": false
+          },
+          {
+            "name": "libbdface_sdk.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.475,
+            "size": 4199536,
+            "packer": false
+          },
+          {
+            "name": "libcipherdb.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.465,
+            "size": 3542840,
+            "packer": false
+          },
+          {
+            "name": "libconscrypt_jni.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.298,
+            "size": 2128224,
+            "packer": false
+          },
+          {
+            "name": "libcrashsdk.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.271,
+            "size": 647928,
+            "packer": false
+          },
+          {
+            "name": "libdfenvcheck209.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.295,
+            "size": 1173912,
+            "packer": false
+          },
+          {
+            "name": "libemulator_check.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.01,
+            "size": 10192,
+            "packer": false
+          },
+          {
+            "name": "libgojni.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.355,
+            "size": 22563304,
+            "packer": false
+          },
+          {
+            "name": "libhaima_rtc_so.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.522,
+            "size": 8236296,
+            "packer": false
+          },
+          {
+            "name": "libhyphenate.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.462,
+            "size": 8407720,
+            "packer": false
+          },
+          {
+            "name": "libliantian.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.045,
+            "size": 84312,
+            "packer": false
+          },
+          {
+            "name": "libliantiansec.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.817,
+            "size": 680256,
+            "packer": false
+          },
+          {
+            "name": "libmmkv.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.269,
+            "size": 587984,
+            "packer": false
+          },
+          {
+            "name": "libmobilesecurity.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.768,
+            "size": 1761128,
+            "packer": false
+          },
+          {
+            "name": "libntr.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.311,
+            "size": 694184,
+            "packer": false
+          },
+          {
+            "name": "libpdnsd.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.787,
+            "size": 169832,
+            "packer": false
+          },
+          {
+            "name": "libpl_droidsonroids_gif.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.724,
+            "size": 42984,
+            "packer": false
+          },
+          {
+            "name": "libpns-2.13.5-LogOnlineStandardCuumRelease_alijtca_plus.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.669,
+            "size": 447608,
+            "packer": false
+          },
+          {
+            "name": "libproperty_get.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.375,
+            "size": 5984,
+            "packer": false
+          },
+          {
+            "name": "libproxychains4.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.072,
+            "size": 42576,
+            "packer": false
+          },
+          {
+            "name": "libqiyuhigh_available_android.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.156,
+            "size": 1608072,
+            "packer": false
+          },
+          {
+            "name": "libqiyune_audio.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.46,
+            "size": 1620960,
+            "packer": false
+          },
+          {
+            "name": "libqiyutraceroute.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.501,
+            "size": 101248,
+            "packer": false
+          },
+          {
+            "name": "libredsocks.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.191,
+            "size": 150096,
+            "packer": false
+          },
+          {
+            "name": "libsecurity_android.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.35,
+            "size": 2172744,
+            "packer": false
+          },
+          {
+            "name": "libsmsdk.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.929,
+            "size": 845000,
+            "packer": false
+          },
+          {
+            "name": "libsslocal.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.405,
+            "size": 4618728,
+            "packer": false
+          },
+          {
+            "name": "libssr-local.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.578,
+            "size": 297464,
+            "packer": false
+          },
+          {
+            "name": "libsystem.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 4.093,
+            "size": 14096,
+            "packer": false
+          },
+          {
+            "name": "libtoolChecker.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.829,
+            "size": 5512,
+            "packer": false
+          },
+          {
+            "name": "libttEncrypt.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.447,
+            "size": 10296,
+            "packer": false
+          },
+          {
+            "name": "libtun2socks.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.759,
+            "size": 109344,
+            "packer": false
+          },
+          {
+            "name": "libumeng-spy.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.663,
+            "size": 543336,
+            "packer": false
+          },
+          {
+            "name": "libvegamearm64-v8a.so",
+            "abi": "arm64",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libwxfast.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.784,
+            "size": 303984,
+            "packer": false
+          },
+          {
+            "name": "libxps.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.729,
+            "size": 1689024,
+            "packer": false
+          },
+          {
+            "name": "libvegamearmeabi-v7a.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\modern_eval\\1e7276097313eb4ede32eba76886e42696ecd2de41a1a7aeac5536ce717319c0.apk",
+        "sha256": "1e7276097313eb4ede32eba76886e42696ecd2de41a1a7aeac5536ce717319c0",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.761,
+            "size": 866168,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.651,
+            "size": 1170832,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.866,
+            "size": 856296,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.862,
+            "size": 762904,
+            "packer": true
+          },
+          {
+            "name": "libBeacon.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.662,
+            "size": 147872,
+            "packer": false
+          },
+          {
+            "name": "libIjkffmpeg_haima.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.397,
+            "size": 1901432,
+            "packer": false
+          },
+          {
+            "name": "libIjkplayer_haima.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.015,
+            "size": 446880,
+            "packer": false
+          },
+          {
+            "name": "libIjksdl_haima.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.691,
+            "size": 460648,
+            "packer": false
+          },
+          {
+            "name": "libKwAppGuardSDK.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.435,
+            "size": 2430448,
+            "packer": false
+          },
+          {
+            "name": "libalicomphonenumberauthsdk_core.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.985,
+            "size": 5824,
+            "packer": false
+          },
+          {
+            "name": "libbaiduprotect_sec_jni_v3_lite_face.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.754,
+            "size": 88080,
+            "packer": false
+          },
+          {
+            "name": "libbctun2socks.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.351,
+            "size": 155688,
+            "packer": false
+          },
+          {
+            "name": "libbd_facecollect_unifylicense.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.325,
+            "size": 432456,
+            "packer": false
+          },
+          {
+            "name": "libbdface_sdk.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.475,
+            "size": 4199536,
+            "packer": false
+          },
+          {
+            "name": "libcipherdb.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.465,
+            "size": 3542840,
+            "packer": false
+          },
+          {
+            "name": "libconscrypt_jni.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.298,
+            "size": 2128224,
+            "packer": false
+          },
+          {
+            "name": "libcrashsdk.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.271,
+            "size": 647928,
+            "packer": false
+          },
+          {
+            "name": "libdfenvcheck209.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.295,
+            "size": 1173912,
+            "packer": false
+          },
+          {
+            "name": "libemulator_check.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.01,
+            "size": 10192,
+            "packer": false
+          },
+          {
+            "name": "libgojni.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.355,
+            "size": 22563304,
+            "packer": false
+          },
+          {
+            "name": "libhaima_rtc_so.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.522,
+            "size": 8236296,
+            "packer": false
+          },
+          {
+            "name": "libhyphenate.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.462,
+            "size": 8407720,
+            "packer": false
+          },
+          {
+            "name": "libliantian.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.045,
+            "size": 84312,
+            "packer": false
+          },
+          {
+            "name": "libliantiansec.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.817,
+            "size": 680256,
+            "packer": false
+          },
+          {
+            "name": "libmmkv.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.269,
+            "size": 587984,
+            "packer": false
+          },
+          {
+            "name": "libmobilesecurity.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.768,
+            "size": 1761128,
+            "packer": false
+          },
+          {
+            "name": "libntr.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.311,
+            "size": 694184,
+            "packer": false
+          },
+          {
+            "name": "libpdnsd.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.787,
+            "size": 169832,
+            "packer": false
+          },
+          {
+            "name": "libpl_droidsonroids_gif.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.724,
+            "size": 42984,
+            "packer": false
+          },
+          {
+            "name": "libpns-2.13.5-LogOnlineStandardCuumRelease_alijtca_plus.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.669,
+            "size": 447608,
+            "packer": false
+          },
+          {
+            "name": "libproperty_get.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.375,
+            "size": 5984,
+            "packer": false
+          },
+          {
+            "name": "libproxychains4.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.072,
+            "size": 42576,
+            "packer": false
+          },
+          {
+            "name": "libqiyuhigh_available_android.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.156,
+            "size": 1608072,
+            "packer": false
+          },
+          {
+            "name": "libqiyune_audio.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.46,
+            "size": 1620960,
+            "packer": false
+          },
+          {
+            "name": "libqiyutraceroute.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.501,
+            "size": 101248,
+            "packer": false
+          },
+          {
+            "name": "libredsocks.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.191,
+            "size": 150096,
+            "packer": false
+          },
+          {
+            "name": "libsecurity_android.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.35,
+            "size": 2172744,
+            "packer": false
+          },
+          {
+            "name": "libsmsdk.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.929,
+            "size": 845000,
+            "packer": false
+          },
+          {
+            "name": "libsslocal.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.405,
+            "size": 4618728,
+            "packer": false
+          },
+          {
+            "name": "libssr-local.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.578,
+            "size": 297464,
+            "packer": false
+          },
+          {
+            "name": "libsystem.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 4.093,
+            "size": 14096,
+            "packer": false
+          },
+          {
+            "name": "libtoolChecker.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.829,
+            "size": 5512,
+            "packer": false
+          },
+          {
+            "name": "libttEncrypt.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.447,
+            "size": 10296,
+            "packer": false
+          },
+          {
+            "name": "libtun2socks.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.759,
+            "size": 109344,
+            "packer": false
+          },
+          {
+            "name": "libumeng-spy.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.663,
+            "size": 543336,
+            "packer": false
+          },
+          {
+            "name": "libvegamearm64-v8a.so",
+            "abi": "arm64",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libwxfast.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.784,
+            "size": 303984,
+            "packer": false
+          },
+          {
+            "name": "libxps.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.729,
+            "size": 1689024,
+            "packer": false
+          },
+          {
+            "name": "libvegamearmeabi-v7a.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_000109a075dc3afa88c45523a3edf2039177386c58a48936feafee9716f7bcbb.apk",
+        "sha256": "000109a075dc3afa88c45523a3edf2039177386c58a48936feafee9716f7bcbb",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.778,
+            "size": 632476,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.055,
+            "file_entropy": 7.926,
+            "size": 502948,
+            "packer": true
+          },
+          {
+            "name": "libZBarDecoder.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.051,
+            "file_entropy": 6.848,
+            "size": 99652,
+            "packer": false
+          },
+          {
+            "name": "libcocklogic-1.1.3.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.447,
+            "size": 25816,
+            "packer": false
+          },
+          {
+            "name": "libiconv.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.396,
+            "size": 890100,
+            "packer": false
+          },
+          {
+            "name": "libimagepipeline.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.542,
+            "size": 308908,
+            "packer": false
+          },
+          {
+            "name": "libmsc.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.027,
+            "file_entropy": 7.06,
+            "size": 1142352,
+            "packer": false
+          },
+          {
+            "name": "libtnet-3.1.14.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.026,
+            "size": 266536,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_00016fa3b94e1b117851eac18d639873b892ab833d027a41243baee04aa49309.apk",
+        "sha256": "00016fa3b94e1b117851eac18d639873b892ab833d027a41243baee04aa49309",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.935,
+            "size": 503708,
+            "packer": true
+          },
+          {
+            "name": "libNewlens.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.669,
+            "size": 153256,
+            "packer": false
+          },
+          {
+            "name": "libRSSupport.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.891,
+            "size": 919408,
+            "packer": false
+          },
+          {
+            "name": "libX86Bridge.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.612,
+            "size": 5116,
+            "packer": false
+          },
+          {
+            "name": "libdict-parser.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.688,
+            "size": 572320,
+            "packer": false
+          },
+          {
+            "name": "libjcore126.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.605,
+            "size": 13728,
+            "packer": false
+          },
+          {
+            "name": "libksyplayer.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.928,
+            "size": 4797268,
+            "packer": false
+          },
+          {
+            "name": "librsjni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.289,
+            "file_entropy": 6.387,
+            "size": 51704,
+            "packer": false
+          },
+          {
+            "name": "libucrop.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 7.065,
+            "size": 525836,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_00018b522a51d6573a615153e7bfb33ac961bf5ef604ac7edb04072ce238b9af.apk",
+        "sha256": "00018b522a51d6573a615153e7bfb33ac961bf5ef604ac7edb04072ce238b9af",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.809,
+            "size": 644180,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.95,
+            "size": 604400,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.163,
+            "file_entropy": 7.955,
+            "size": 533328,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.956,
+            "size": 492144,
+            "packer": true
+          },
+          {
+            "name": "libjcore113.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.875,
+            "size": 129040,
+            "packer": false
+          },
+          {
+            "name": "libsqlc-native-driver.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.467,
+            "size": 893208,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_0001c305576625cdd1af37295d45f1ff9fa8defd0c0e67b2516f0feb438c5a6a.apk",
+        "sha256": "0001c305576625cdd1af37295d45f1ff9fa8defd0c0e67b2516f0feb438c5a6a",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.865,
+            "size": 328392,
+            "packer": true
+          },
+          {
+            "name": "libIxsdkDiff.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.774,
+            "size": 73936,
+            "packer": false
+          },
+          {
+            "name": "libbspatch.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.573,
+            "size": 57520,
+            "packer": false
+          },
+          {
+            "name": "libcocos2dlua.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.223,
+            "file_entropy": 7.036,
+            "size": 7943660,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_0001ef3dc57c9905fe7ead593f2c3c092aae46fa924116eaa704be896106371d.apk",
+        "sha256": "0001ef3dc57c9905fe7ead593f2c3c092aae46fa924116eaa704be896106371d",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.81,
+            "size": 631340,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.931,
+            "size": 596496,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.163,
+            "file_entropy": 7.956,
+            "size": 521488,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.995,
+            "file_entropy": 7.958,
+            "size": 486908,
+            "packer": true
+          },
+          {
+            "name": "libjpush220.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.044,
+            "size": 501928,
+            "packer": false
+          },
+          {
+            "name": "liblocSDK6a.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.959,
+            "size": 51304,
+            "packer": false
+          },
+          {
+            "name": "libobserver.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.06,
+            "size": 13440,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_00022d057443ac60334e3dd676f30a3b4c2837de54c09a4cb85a28d950c4e2a9.apk",
+        "sha256": "00022d057443ac60334e3dd676f30a3b4c2837de54c09a4cb85a28d950c4e2a9",
+        "family": "360Jiagu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.935,
+            "size": 493836,
+            "packer": true
+          },
+          {
+            "name": "libX86Bridge.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 2.612,
+            "size": 5116,
+            "packer": false
+          },
+          {
+            "name": "libglide-webp.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.578,
+            "size": 227092,
+            "packer": false
+          },
+          {
+            "name": "libjcore126.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.605,
+            "size": 13728,
+            "packer": false
+          },
+          {
+            "name": "libpl_droidsonroids_gif.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.458,
+            "size": 38372,
+            "packer": false
+          },
+          {
+            "name": "libwebp_evme.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 7.048,
+            "size": 83196,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_000234b3b17aa773825c5cc4512702add18509bdebb039f36aa6f5d0ee7a78b6.apk",
+        "sha256": "000234b3b17aa773825c5cc4512702add18509bdebb039f36aa6f5d0ee7a78b6",
+        "family": "360Jiagu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libjiagu.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.002,
+            "file_entropy": 7.774,
+            "size": 584364,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_a64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.928,
+            "size": 404648,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x64.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.163,
+            "file_entropy": 7.902,
+            "size": 357280,
+            "packer": true
+          },
+          {
+            "name": "libjiagu_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.999,
+            "file_entropy": 7.919,
+            "size": 371984,
+            "packer": true
+          },
+          {
+            "name": "libdes.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 4.722,
+            "size": 9640,
+            "packer": false
+          },
+          {
+            "name": "libgetuiext2.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.017,
+            "size": 55152,
+            "packer": false
+          },
+          {
+            "name": "libizhcLkeeloq.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.348,
+            "size": 9576,
+            "packer": false
+          },
+          {
+            "name": "libizhcprotocol.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.607,
+            "size": 9576,
+            "packer": false
+          }
+        ]
+      }
+    ],
+    "TencentLegu": [
+      {
+        "path": "samples\\malware\\androzoo\\00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5.apk",
+        "sha256": "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
+        "family": "TencentLegu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libbmob.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.062,
+            "size": 14064,
+            "packer": false
+          },
+          {
+            "name": "libbmobwpay.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.699,
+            "size": 91728,
+            "packer": false
+          },
+          {
+            "name": "libjpush217.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.044,
+            "size": 501928,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.10.6.0.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.2,
+            "size": 136588,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.10.6.0.so",
+            "abi": "x86",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.048,
+            "file_entropy": 7.37,
+            "size": 123316,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "x86_64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.671,
+            "size": 129408,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+        "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+        "family": "TencentLegu",
+        "verdict": "SOFT",
+        "libs": [
+          {
+            "name": "libjcore113.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.281,
+            "file_entropy": 6.512,
+            "size": 83552,
+            "packer": false
+          },
+          {
+            "name": "libsgmain.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libsgsecuritybody.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libface-jni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.974,
+            "size": 33980,
+            "packer": false
+          },
+          {
+            "name": "libfacesdk.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.996,
+            "size": 2558824,
+            "packer": false
+          },
+          {
+            "name": "libsec.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.946,
+            "size": 30564,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 6.778,
+            "size": 128384,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.996,
+            "file_entropy": 6.155,
+            "size": 214412,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.558,
+            "size": 95660,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\androzoo\\unknown_0001d0eb4ca90a969e66626a1649d28342301244e46782fa8123e29c80acb569.apk",
+        "sha256": "0001d0eb4ca90a969e66626a1649d28342301244e46782fa8123e29c80acb569",
+        "family": "TencentLegu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.586,
+            "file_entropy": 6.606,
+            "size": 153160,
+            "packer": false
+          },
+          {
+            "name": "libRSSupport.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.067,
+            "size": 1013364,
+            "packer": false
+          },
+          {
+            "name": "libavcodec.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.684,
+            "size": 12158436,
+            "packer": false
+          },
+          {
+            "name": "libavfilter.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.076,
+            "size": 1988132,
+            "packer": false
+          },
+          {
+            "name": "libavformat.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.26,
+            "size": 2076308,
+            "packer": false
+          },
+          {
+            "name": "libavutil.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.282,
+            "size": 439836,
+            "packer": false
+          },
+          {
+            "name": "libcolorutils.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.994,
+            "size": 382692,
+            "packer": false
+          },
+          {
+            "name": "libcvimageutils.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.976,
+            "size": 370404,
+            "packer": false
+          },
+          {
+            "name": "libgifimage.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.728,
+            "size": 91956,
+            "packer": false
+          },
+          {
+            "name": "libijkffmpeg.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.994,
+            "size": 4403972,
+            "packer": false
+          },
+          {
+            "name": "libijkplayer.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.258,
+            "file_entropy": 6.773,
+            "size": 260968,
+            "packer": false
+          },
+          {
+            "name": "libijksdl.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.881,
+            "size": 218832,
+            "packer": false
+          },
+          {
+            "name": "libimagepipeline.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.048,
+            "size": 251552,
+            "packer": false
+          },
+          {
+            "name": "libnative-filters.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.154,
+            "size": 17860,
+            "packer": false
+          },
+          {
+            "name": "libnative-lib.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.353,
+            "size": 13744,
+            "packer": false
+          },
+          {
+            "name": "libne_audio.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 7.141,
+            "size": 753028,
+            "packer": false
+          },
+          {
+            "name": "libopencv_java3.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.283,
+            "size": 9067204,
+            "packer": false
+          },
+          {
+            "name": "librsjni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.531,
+            "size": 59904,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.9.1.2.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.281,
+            "file_entropy": 7.1,
+            "size": 103134,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.9.1.2.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.006,
+            "file_entropy": 7.307,
+            "size": 115920,
+            "packer": true
+          },
+          {
+            "name": "libswresample.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.18,
+            "size": 91600,
+            "packer": false
+          },
+          {
+            "name": "libswscale.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.436,
+            "size": 411088,
+            "packer": false
+          },
+          {
+            "name": "libtencentloc.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.887,
+            "file_entropy": 5.797,
+            "size": 28084,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+        "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+        "family": "TencentLegu",
+        "verdict": "SOFT",
+        "libs": [
+          {
+            "name": "libjcore113.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.281,
+            "file_entropy": 6.512,
+            "size": 83552,
+            "packer": false
+          },
+          {
+            "name": "libsgmain.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libsgsecuritybody.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libface-jni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.974,
+            "size": 33980,
+            "packer": false
+          },
+          {
+            "name": "libfacesdk.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.996,
+            "size": 2558824,
+            "packer": false
+          },
+          {
+            "name": "libsec.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.946,
+            "size": 30564,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 6.778,
+            "size": 128384,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.996,
+            "file_entropy": 6.155,
+            "size": 214412,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.558,
+            "size": 95660,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_0001d0eb4ca90a969e66626a1649d28342301244e46782fa8123e29c80acb569.apk",
+        "sha256": "0001d0eb4ca90a969e66626a1649d28342301244e46782fa8123e29c80acb569",
+        "family": "TencentLegu",
+        "verdict": "MIXED",
+        "libs": [
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.586,
+            "file_entropy": 6.606,
+            "size": 153160,
+            "packer": false
+          },
+          {
+            "name": "libRSSupport.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 7.067,
+            "size": 1013364,
+            "packer": false
+          },
+          {
+            "name": "libavcodec.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.684,
+            "size": 12158436,
+            "packer": false
+          },
+          {
+            "name": "libavfilter.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.076,
+            "size": 1988132,
+            "packer": false
+          },
+          {
+            "name": "libavformat.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.26,
+            "size": 2076308,
+            "packer": false
+          },
+          {
+            "name": "libavutil.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.282,
+            "size": 439836,
+            "packer": false
+          },
+          {
+            "name": "libcolorutils.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.994,
+            "size": 382692,
+            "packer": false
+          },
+          {
+            "name": "libcvimageutils.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.976,
+            "size": 370404,
+            "packer": false
+          },
+          {
+            "name": "libgifimage.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.728,
+            "size": 91956,
+            "packer": false
+          },
+          {
+            "name": "libijkffmpeg.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.994,
+            "size": 4403972,
+            "packer": false
+          },
+          {
+            "name": "libijkplayer.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.258,
+            "file_entropy": 6.773,
+            "size": 260968,
+            "packer": false
+          },
+          {
+            "name": "libijksdl.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.881,
+            "size": 218832,
+            "packer": false
+          },
+          {
+            "name": "libimagepipeline.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.048,
+            "size": 251552,
+            "packer": false
+          },
+          {
+            "name": "libnative-filters.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.154,
+            "size": 17860,
+            "packer": false
+          },
+          {
+            "name": "libnative-lib.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.353,
+            "size": 13744,
+            "packer": false
+          },
+          {
+            "name": "libne_audio.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 7.141,
+            "size": 753028,
+            "packer": false
+          },
+          {
+            "name": "libopencv_java3.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.283,
+            "size": 9067204,
+            "packer": false
+          },
+          {
+            "name": "librsjni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.531,
+            "size": 59904,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.9.1.2.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.281,
+            "file_entropy": 7.1,
+            "size": 103134,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.9.1.2.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.006,
+            "file_entropy": 7.307,
+            "size": 115920,
+            "packer": true
+          },
+          {
+            "name": "libswresample.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.18,
+            "size": 91600,
+            "packer": false
+          },
+          {
+            "name": "libswscale.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.436,
+            "size": 411088,
+            "packer": false
+          },
+          {
+            "name": "libtencentloc.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.887,
+            "file_entropy": 5.797,
+            "size": 28084,
+            "packer": false
+          }
+        ]
+      }
+    ],
+    "Ijiami": [
+      {
+        "path": "samples\\malware\\androzoo\\0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465.apk",
+        "sha256": "0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465",
+        "family": "Ijiami",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libexec.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.045,
+            "file_entropy": 7.21,
+            "size": 259192,
+            "packer": true
+          },
+          {
+            "name": "libexecmain.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.037,
+            "file_entropy": 5.011,
+            "size": 10228,
+            "packer": true
+          },
+          {
+            "name": "libandroidgl20.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.556,
+            "size": 61381,
+            "packer": false
+          },
+          {
+            "name": "libgdx.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.167,
+            "size": 378156,
+            "packer": false
+          }
+        ]
+      }
+    ],
+    "SecShell/Baidu": [
+      {
+        "path": "samples\\malware\\androzoo\\unknown_0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03.apk",
+        "sha256": "0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03",
+        "family": "SecShell/Baidu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libgpuimage-library.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 4.806,
+            "size": 3136,
+            "packer": false
+          },
+          {
+            "name": "libbaiduprotect.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.047,
+            "file_entropy": 6.883,
+            "size": 374236,
+            "packer": true
+          },
+          {
+            "name": "libbaiduprotect_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.067,
+            "file_entropy": 6.145,
+            "size": 546248,
+            "packer": true
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03.apk",
+        "sha256": "0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03",
+        "family": "SecShell/Baidu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libgpuimage-library.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 4.806,
+            "size": 3136,
+            "packer": false
+          },
+          {
+            "name": "libbaiduprotect.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.047,
+            "file_entropy": 6.883,
+            "size": 374236,
+            "packer": true
+          },
+          {
+            "name": "libbaiduprotect_x86.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.067,
+            "file_entropy": 6.145,
+            "size": 546248,
+            "packer": true
+          }
+        ]
+      }
+    ]
+  },
+  "total": 44
+}

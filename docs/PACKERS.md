@@ -98,6 +98,44 @@ the payload DEX is outside the static native oracle; classified `E-JAVA-LAYER-HA
 
 ---
 
+## Corpus scan & tier-2 roster outcomes (SOP A3 / B5 — 22-Sep-2026)
+
+Static scan (`scripts/find_soft_packers.py`; outputs `evaluation/soft_packers_found*.json`):
+
+| Corpus | APKs scanned | Family-classified | Verdicts |
+|--------|--------------|-------------------|----------|
+| malware | 647 | 33 (+11 scan errors, identities not persisted by scanner) | HARD 16, MIXED 14, SOFT 2, NONE 1 |
+| goodware | 115 | 3 | SOFT 1, HARD 2 |
+| legitimate | 100 | 0 | — |
+
+Malware by family: 360Jiagu 21 (H11/M10), TencentLegu 5 (S2/M3), Bangcle 4
+(H2/M1/N1), SecShell/Baidu 2 (H2), Ijiami 1 (H1). Unique SOFT = 2 (TencentLegu:
+one malware + one packed benign app; `samples/malware/unknown_0001257e…` is a
+duplicate copy of the androzoo sample).
+
+Tier-2 oracle roster (`evaluation/oracle_out/summary.json`): 7 unique samples,
+**0 RECOVERED — every run a typed E-code**:
+
+| Scan verdict | Family | Outcome | Time |
+|---|---|---|---|
+| SOFT | TencentLegu (malware) | E-NATIVE-NO-RECOVERY | 2.7 s |
+| SOFT | TencentLegu (goodware control) | E-NATIVE-NO-RECOVERY | 4.0 s |
+| HARD | 360Jiagu | E-HARDENED-VM | 2.2 s |
+| HARD | Ijiami | E-HARDENED-VM | 2.1 s |
+| MIXED | 360Jiagu | E-HARDENED-VM | 1.8 s |
+| MIXED | Bangcle/SecNeo | E-NATIVE-NO-RECOVERY | 2.6 s |
+| MIXED | TencentLegu | E-NATIVE-NO-RECOVERY | 302.9 s |
+
+Notes: the hardened gate short-circuits HARD/MIXED-hardened samples in ~2 s
+(no emulator minutes burned). The SOFT Legu samples carry `libshella-2.10.7.1`
+whose JNI_OnLoad clean-exits (Java-layer handoff above), but the
+`E-JAVA-LAYER-HANDOFF` heuristic keys on the newer `TxAppEntry` stub and did
+not match this shell — they land `E-NATIVE-NO-RECOVERY` (candidate dispatcher
+refinement, not yet implemented). Roster ran 8 times / 7 unique (duplicate
+corpus copy + within-batch dedupe miss in the throwaway runner script).
+
+---
+
 ## Adding a new packer (no code change)
 
 1. Append to `data/packer_markers.json` → `brands`:

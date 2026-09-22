@@ -1,0 +1,26 @@
+{
+  "apk": "samples\\malware\\androzoo\\00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5.apk",
+  "sha256": "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
+  "verdict": "FAILED",
+  "ecode": "E-NATIVE-NO-RECOVERY",
+  "artifacts": [],
+  "stats": {
+    "entries": 520,
+    "so_count": 33,
+    "dex_count": 3
+  },
+  "triage": {
+    "verdict": "packed_known(TencentLegu)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "TencentLegu",
+  "oracle": {
+    "lib": "arm64-v8a_libshella-2.10.6.0.so",
+    "entry": "JNI_OnLoad",
+    "status": "clean",
+    "jni_calls": 0,
+    "fault": null
+  },
+  "key_log": []
+}

@@ -1,0 +1,43 @@
+{
+  "apk": "samples\\malware\\androzoo\\0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b.apk",
+  "sha256": "0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b",
+  "verdict": "FAILED",
+  "ecode": "E-NATIVE-NO-RECOVERY",
+  "artifacts": [],
+  "stats": {
+    "entries": 198,
+    "so_count": 8,
+    "dex_count": 1
+  },
+  "triage": {
+    "verdict": "packed_known(Bangcle/SecNeo)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "Bangcle/SecNeo",
+  "oracle": {
+    "lib": "armeabi-v7a_libsecexe.so",
+    "entry": "JNI_OnLoad",
+    "status": "Invalid instruction (UC_ERR_INSN_INVALID)",
+    "jni_calls": 0,
+    "fault": {
+      "pc": "0x1072a4",
+      "status": "Invalid instruction (UC_ERR_INSN_INVALID)",
+      "last_pcs": [
+        "0x1071f0",
+        "0x1071f2",
+        "0x1071f4",
+        "0x1071f6",
+        "0x1071f8",
+        "0x1071fa",
+        "0x1071fc",
+        "0x10729c",
+        "0x10729e",
+        "0x1072a0",
+        "0x1072a2",
+        "0x1072a4"
+      ]
+    }
+  },
+  "key_log": []
+}

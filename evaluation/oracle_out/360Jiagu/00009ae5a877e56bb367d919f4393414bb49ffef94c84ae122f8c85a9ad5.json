@@ -1,0 +1,39 @@
+{
+  "apk": "samples\\malware\\androzoo\\00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3.apk",
+  "sha256": "00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3",
+  "verdict": "FAILED",
+  "ecode": "E-HARDENED-VM",
+  "artifacts": [],
+  "stats": {
+    "entries": 1416,
+    "so_count": 22,
+    "dex_count": 1
+  },
+  "triage": {
+    "verdict": "packed_known(360Jiagu)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "360Jiagu",
+  "hardened_libs": [
+    {
+      "lib": "D:\\DroidForensix\\evaluation\\oracle_out\\360Jiagu\\libs\\unknown_libjiagu.so",
+      "decode_density": 0.002
+    },
+    {
+      "lib": "D:\\DroidForensix\\evaluation\\oracle_out\\360Jiagu\\libs\\armeabi-v7a_libvinit.so",
+      "decode_density": 0.031
+    },
+    {
+      "lib": "D:\\DroidForensix\\evaluation\\oracle_out\\360Jiagu\\libs\\armeabi_libvinit.so",
+      "decode_density": 0.002
+    }
+  ],
+  "benign_exports": [
+    "armeabi-v7a_libBugly.so",
+    "armeabi-v7a_libblur.so",
+    "armeabi-v7a_libijkplayer.so",
+    "armeabi-v7a_libijksdl.so"
+  ],
+  "next_step": "Code-protected (bytecode VM) packer libs (['D:\\\\DroidForensix\\\\evaluation\\\\oracle_out\\\\360Jiagu\\\\libs\\\\unknown_libjiagu.so', 'D:\\\\DroidForensix\\\\evaluation\\\\oracle_out\\\\360Jiagu\\\\libs\\\\armeabi-v7a_libvinit.so', 'D:\\\\DroidForensix\\\\evaluation\\\\oracle_out\\\\360Jiagu\\\\libs\\\\armeabi_libvinit.so']) are ciphertext at rest; only cover-app libs export. Recovery requires VM-level emulation (device hook or ART runtime) - outside static oracle scope."
+}

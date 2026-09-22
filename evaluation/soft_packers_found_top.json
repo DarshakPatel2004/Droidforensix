@@ -1,0 +1,190 @@
+{
+  "top_soft": {
+    "Bangcle/SecNeo": [],
+    "360Jiagu": [],
+    "TencentLegu": [
+      {
+        "path": "samples\\malware\\androzoo\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+        "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+        "family": "TencentLegu",
+        "verdict": "SOFT",
+        "libs": [
+          {
+            "name": "libjcore113.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.281,
+            "file_entropy": 6.512,
+            "size": 83552,
+            "packer": false
+          },
+          {
+            "name": "libsgmain.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libsgsecuritybody.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libface-jni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.974,
+            "size": 33980,
+            "packer": false
+          },
+          {
+            "name": "libfacesdk.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.996,
+            "size": 2558824,
+            "packer": false
+          },
+          {
+            "name": "libsec.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.946,
+            "size": 30564,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 6.778,
+            "size": 128384,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.996,
+            "file_entropy": 6.155,
+            "size": 214412,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.558,
+            "size": 95660,
+            "packer": false
+          }
+        ]
+      },
+      {
+        "path": "samples\\malware\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+        "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+        "family": "TencentLegu",
+        "verdict": "SOFT",
+        "libs": [
+          {
+            "name": "libjcore113.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.281,
+            "file_entropy": 6.512,
+            "size": 83552,
+            "packer": false
+          },
+          {
+            "name": "libsgmain.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libsgsecuritybody.so",
+            "abi": "arm32",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libface-jni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.974,
+            "size": 33980,
+            "packer": false
+          },
+          {
+            "name": "libfacesdk.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.996,
+            "size": 2558824,
+            "packer": false
+          },
+          {
+            "name": "libsec.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 5.946,
+            "size": 30564,
+            "packer": false
+          },
+          {
+            "name": "libshella-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.998,
+            "file_entropy": 6.778,
+            "size": 128384,
+            "packer": true
+          },
+          {
+            "name": "libshellx-2.10.7.1.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.996,
+            "file_entropy": 6.155,
+            "size": 214412,
+            "packer": true
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.558,
+            "size": 95660,
+            "packer": false
+          }
+        ]
+      }
+    ],
+    "Ijiami": [],
+    "SecShell/Baidu": []
+  }
+}

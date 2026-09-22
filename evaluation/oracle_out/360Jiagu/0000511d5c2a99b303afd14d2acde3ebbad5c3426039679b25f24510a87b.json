@@ -1,0 +1,28 @@
+{
+  "apk": "samples\\malware\\androzoo\\0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c.apk",
+  "sha256": "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+  "verdict": "FAILED",
+  "ecode": "E-HARDENED-VM",
+  "artifacts": [],
+  "stats": {
+    "entries": 479,
+    "so_count": 3,
+    "dex_count": 1
+  },
+  "triage": {
+    "verdict": "packed_known(360Jiagu)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "360Jiagu",
+  "hardened_libs": [
+    {
+      "lib": "D:\\DroidForensix\\evaluation\\oracle_out\\360Jiagu\\libs\\unknown_libjiagu.so",
+      "decode_density": 0.002
+    }
+  ],
+  "benign_exports": [
+    "armeabi_libBugly.so"
+  ],
+  "next_step": "Code-protected (bytecode VM) packer libs (['D:\\\\DroidForensix\\\\evaluation\\\\oracle_out\\\\360Jiagu\\\\libs\\\\unknown_libjiagu.so']) are ciphertext at rest; only cover-app libs export. Recovery requires VM-level emulation (device hook or ART runtime) - outside static oracle scope."
+}
