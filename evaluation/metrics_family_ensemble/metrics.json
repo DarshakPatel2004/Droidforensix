@@ -1,0 +1,558 @@
+{
+  "evaluated": 192,
+  "baseline_accuracy": 0.6042,
+  "fusion_ranking_accuracy": 0.6823,
+  "families_without_static_profile": [
+    "Airpush",
+    "Andr/NGate-G",
+    "Andr/Xgen2-AYJ",
+    "Android/Packed",
+    "BeatBanker",
+    "BoithirtyeightBanker_dropper",
+    "CraxsRAT",
+    "FakeApp",
+    "FakeBankApp",
+    "FakeStoreOps",
+    "FraudDropper",
+    "FrontierSmartRAT_dropper",
+    "Hqwar",
+    "Mirax",
+    "Nisev",
+    "SMSStealer",
+    "Spitmo",
+    "SpyNote_like",
+    "TelegramBanker",
+    "TrojanWhatsAppMod",
+    "UKP",
+    "Wooboo",
+    "Xgen2-AYJ",
+    "benign"
+  ],
+  "sweep": {
+    "0.55": {
+      "accuracy": 0.2188,
+      "correct": 42,
+      "abstained_to_unknown": 148,
+      "answered": 44,
+      "precision_among_answered": 0.9545
+    },
+    "0.6": {
+      "accuracy": 0.1875,
+      "correct": 36,
+      "abstained_to_unknown": 156,
+      "answered": 36,
+      "precision_among_answered": 1.0
+    },
+    "0.65": {
+      "accuracy": 0.1302,
+      "correct": 25,
+      "abstained_to_unknown": 167,
+      "answered": 25,
+      "precision_among_answered": 1.0
+    },
+    "0.7": {
+      "accuracy": 0.0833,
+      "correct": 16,
+      "abstained_to_unknown": 176,
+      "answered": 16,
+      "precision_among_answered": 1.0
+    },
+    "0.75": {
+      "accuracy": 0.0521,
+      "correct": 10,
+      "abstained_to_unknown": 182,
+      "answered": 10,
+      "precision_among_answered": 1.0
+    },
+    "0.8": {
+      "accuracy": 0.0156,
+      "correct": 3,
+      "abstained_to_unknown": 189,
+      "answered": 3,
+      "precision_among_answered": 1.0
+    },
+    "0.85": {
+      "accuracy": 0.0052,
+      "correct": 1,
+      "abstained_to_unknown": 191,
+      "answered": 1,
+      "precision_among_answered": 1.0
+    }
+  },
+  "per_source": [
+    {
+      "source": "AndroZoo",
+      "total": 10,
+      "base_correct": 8,
+      "fused_correct": 8,
+      "baseline_accuracy": 0.8,
+      "fused_accuracy": 0.8
+    },
+    {
+      "source": "abusech",
+      "total": 24,
+      "base_correct": 7,
+      "fused_correct": 5,
+      "baseline_accuracy": 0.2917,
+      "fused_accuracy": 0.2083
+    },
+    {
+      "source": "androzoo_drebin",
+      "total": 130,
+      "base_correct": 88,
+      "fused_correct": 112,
+      "baseline_accuracy": 0.6769,
+      "fused_accuracy": 0.8615
+    },
+    {
+      "source": "modern_eval",
+      "total": 28,
+      "base_correct": 13,
+      "fused_correct": 6,
+      "baseline_accuracy": 0.4643,
+      "fused_accuracy": 0.2143
+    }
+  ],
+  "per_family": [
+    {
+      "family": "Adrd",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Adsms",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Airpush",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Andr/Banker-HDY",
+      "total": 3,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Andr/NGate-G",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Andr/Xgen2-AYJ",
+      "total": 2,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Android/Packed",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "AppRisk",
+      "total": 2,
+      "base_correct": 2,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 0.5
+    },
+    {
+      "family": "BankBot",
+      "total": 5,
+      "base_correct": 0,
+      "fused_correct": 2,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.4
+    },
+    {
+      "family": "BaseBridge",
+      "total": 10,
+      "base_correct": 10,
+      "fused_correct": 10,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "BeatBanker",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Bian",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Boogr",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 0,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Dougalek",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Dowgin",
+      "total": 2,
+      "base_correct": 2,
+      "fused_correct": 2,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "DroidDream",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "DroidKungFu",
+      "total": 7,
+      "base_correct": 7,
+      "fused_correct": 7,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "FaceNiff",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 1,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "FakeApp",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "FakeDoc",
+      "total": 2,
+      "base_correct": 2,
+      "fused_correct": 2,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "FakeInst",
+      "total": 23,
+      "base_correct": 7,
+      "fused_correct": 21,
+      "baseline_accuracy": 0.3043,
+      "fused_accuracy": 0.913
+    },
+    {
+      "family": "FakeInstaller",
+      "total": 9,
+      "base_correct": 8,
+      "fused_correct": 9,
+      "baseline_accuracy": 0.8889,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "FakeRun",
+      "total": 2,
+      "base_correct": 0,
+      "fused_correct": 2,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "FakeTimer",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "FantasyHub",
+      "total": 2,
+      "base_correct": 2,
+      "fused_correct": 2,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "GhostBat",
+      "total": 4,
+      "base_correct": 2,
+      "fused_correct": 2,
+      "baseline_accuracy": 0.5,
+      "fused_accuracy": 0.5
+    },
+    {
+      "family": "GinMaster",
+      "total": 14,
+      "base_correct": 13,
+      "fused_correct": 12,
+      "baseline_accuracy": 0.9286,
+      "fused_accuracy": 0.8571
+    },
+    {
+      "family": "Hamob",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 1,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "HyPay",
+      "total": 2,
+      "base_correct": 2,
+      "fused_correct": 2,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Iconosys",
+      "total": 3,
+      "base_correct": 3,
+      "fused_correct": 3,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Imlog",
+      "total": 4,
+      "base_correct": 4,
+      "fused_correct": 4,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Jiagu",
+      "total": 3,
+      "base_correct": 3,
+      "fused_correct": 3,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Kmin",
+      "total": 4,
+      "base_correct": 4,
+      "fused_correct": 4,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "KungFu",
+      "total": 7,
+      "base_correct": 6,
+      "fused_correct": 4,
+      "baseline_accuracy": 0.8571,
+      "fused_accuracy": 0.5714
+    },
+    {
+      "family": "Lemon",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "MobileTx",
+      "total": 3,
+      "base_correct": 3,
+      "fused_correct": 3,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "NGate",
+      "total": 4,
+      "base_correct": 3,
+      "fused_correct": 2,
+      "baseline_accuracy": 0.75,
+      "fused_accuracy": 0.5
+    },
+    {
+      "family": "Nandrobox",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "NickiSpy",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Nisev",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Opfake",
+      "total": 14,
+      "base_correct": 2,
+      "fused_correct": 9,
+      "baseline_accuracy": 0.1429,
+      "fused_accuracy": 0.6429
+    },
+    {
+      "family": "Plankton",
+      "total": 10,
+      "base_correct": 10,
+      "fused_correct": 10,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "SendPay",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "SmForw",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 1,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "SmsSend",
+      "total": 7,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Spitmo",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "SpyHasb",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "SpyMax",
+      "total": 6,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "SpyNote",
+      "total": 9,
+      "base_correct": 8,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.8889,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Stiniter",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "Typstu",
+      "total": 1,
+      "base_correct": 1,
+      "fused_correct": 1,
+      "baseline_accuracy": 1.0,
+      "fused_accuracy": 1.0
+    },
+    {
+      "family": "UKP",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Wooboo",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Xgen2-AYJ",
+      "total": 2,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    },
+    {
+      "family": "Zsone",
+      "total": 1,
+      "base_correct": 0,
+      "fused_correct": 0,
+      "baseline_accuracy": 0.0,
+      "fused_accuracy": 0.0
+    }
+  ]
+}

@@ -1,0 +1,88 @@
+Family,GT Count,Correct,Accuracy,Source(s),Confidence,Catch-all
+AndroidOS,39,0,0.0,AndroZoo;abusech;androzoo_drebin;modern_eval,high:37; medium:2,True
+FakeInst,23,7,0.3043,AndroZoo;androzoo_drebin,high:23,False
+unknown,23,11,0.4783,abusech;modern_eval,medium:21; low:2,True
+GenericKD,19,0,0.0,abusech,high:19,True
+Agent,14,0,0.0,AndroZoo;abusech,high:13; medium:1,True
+GinMaster,14,13,0.9286,AndroZoo;androzoo_drebin,high:14,False
+Opfake,14,2,0.1429,androzoo_drebin,high:14,False
+Banker,13,0,0.0,abusech,high:13,True
+BaseBridge,10,10,1.0,androzoo_drebin,high:10,False
+Plankton,10,10,1.0,androzoo_drebin,high:10,False
+FakeInstaller,9,8,0.8889,androzoo_drebin,high:9,False
+Gen,9,0,0.0,abusech;androzoo_drebin,high:9,True
+SpyNote,9,8,0.8889,abusech;modern_eval,high:2; medium:7,False
+Adware,8,0,0.0,AndroZoo;androzoo_drebin,high:8,True
+DroidKungFu,7,7,1.0,androzoo_drebin,high:7,False
+KungFu,7,6,0.8571,androzoo_drebin,high:7,False
+SmsSend,7,0,0.0,modern_eval,high:7,False
+SpyMax,7,0,0.0,abusech,high:6; low:1,False
+FantasyHub,6,6,1.0,modern_eval,medium:6,False
+BankBot,5,0,0.0,abusech,high:4; medium:1,False
+GhostBat,4,2,0.5,modern_eval,medium:4,False
+Imlog,4,4,1.0,androzoo_drebin,high:4,False
+Kmin,4,4,1.0,androzoo_drebin,high:4,False
+NGate,4,3,0.75,abusech,high:4,False
+Andr/Banker-HDY,3,0,0.0,abusech,high:3,False
+Backdoor,3,0,0.0,androzoo_drebin,high:3,True
+Iconosys,3,3,1.0,androzoo_drebin,high:3,False
+Jiagu,3,3,1.0,AndroZoo,high:1; medium:2,False
+MobileTx,3,3,1.0,androzoo_drebin,high:3,False
+Andr/Xgen2-AYJ,2,0,0.0,modern_eval,high:2,False
+AppRisk,2,2,1.0,AndroZoo;abusech,medium:2,False
+Dowgin,2,2,1.0,AndroZoo,high:2,False
+Dropper,2,0,0.0,abusech,high:2,True
+FakeDoc,2,2,1.0,androzoo_drebin,high:2,False
+FakeRun,2,0,0.0,androzoo_drebin,high:2,False
+HyPay,2,2,1.0,modern_eval,high:2,False
+Secapk,2,2,1.0,AndroZoo,high:2,True
+Xgen2-AYJ,2,0,0.0,modern_eval,high:1; medium:1,False
+a,2,0,0.0,androzoo_drebin,high:2,True
+33107585,1,0,0.0,abusech,high:1,True
+40094400,1,0,0.0,abusech,high:1,True
+A,1,0,0.0,androzoo_drebin,high:1,True
+AdLibrary,1,0,0.0,abusech,medium:1,True
+Adrd,1,1,1.0,androzoo_drebin,high:1,False
+Adsms,1,1,1.0,androzoo_drebin,high:1,False
+Airpush,1,0,0.0,androzoo_drebin,high:1,False
+Andr/NGate-G,1,1,1.0,abusech,high:1,False
+Android/Agent,1,0,0.0,abusech,high:1,True
+Android/Packed,1,0,0.0,AndroZoo,high:1,False
+BeatBanker,1,0,0.0,abusech,medium:1,False
+Bian,1,0,0.0,abusech,high:1,False
+Boogr,1,1,1.0,abusech,high:1,False
+Cnzz,1,0,0.0,AndroZoo,high:1,True
+CraxsRAT,1,0,0.0,modern_eval,medium:1,False
+Detected,1,0,0.0,AndroZoo,low:1,True
+Dougalek,1,1,1.0,androzoo_drebin,high:1,False
+DroidDream,1,0,0.0,androzoo_drebin,high:1,False
+Evo-gen [Trj],1,0,0.0,abusech,high:1,True
+Exploit,1,0,0.0,androzoo_drebin,high:1,True
+FaceNiff,1,0,0.0,androzoo_drebin,high:1,False
+FakeApp,1,0,0.0,androzoo_drebin,high:1,False
+FakeTimer,1,1,1.0,androzoo_drebin,high:1,False
+Geinimi,1,0,0.0,androzoo_drebin,high:1,False
+General,1,0,0.0,abusech,medium:1,True
+Hacktool,1,0,0.0,androzoo_drebin,high:1,True
+Hamob,1,0,0.0,androzoo_drebin,high:1,False
+Hqwar,1,0,0.0,abusech,high:1,False
+Lemon,1,1,1.0,androzoo_drebin,high:1,False
+Mirax,1,0,0.0,modern_eval,medium:1,False
+Nandrobox,1,1,1.0,androzoo_drebin,high:1,False
+NickiSpy,1,1,1.0,androzoo_drebin,high:1,False
+Nisev,1,0,0.0,androzoo_drebin,high:1,False
+SMSreg,1,1,1.0,modern_eval,high:1,True
+SendPay,1,1,1.0,androzoo_drebin,high:1,False
+SmForw,1,0,0.0,androzoo_drebin,high:1,False
+Spitmo,1,0,0.0,androzoo_drebin,high:1,False
+SpyHasb,1,1,1.0,androzoo_drebin,high:1,False
+Stiniter,1,1,1.0,androzoo_drebin,high:1,False
+Trojan ( 0001140e1 ),1,0,0.0,AndroZoo,medium:1,True
+Trojan ( 005cbb901 ),1,0,0.0,abusech,high:1,True
+Trojan ( 005cf1d81 ),1,0,0.0,abusech,high:1,True
+Trojan-Banker,1,0,0.0,abusech,high:1,True
+Trojan-Dropper,1,0,0.0,abusech,high:1,True
+Typstu,1,1,1.0,androzoo_drebin,high:1,False
+UKP,1,0,0.0,modern_eval,high:1,False
+Wooboo,1,0,0.0,androzoo_drebin,high:1,False
+Zsone,1,0,0.0,androzoo_drebin,high:1,False
