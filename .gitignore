@@ -202,6 +202,8 @@ evaluation/__pycache__/
 # Binaries & evidence bundles (never in git; GitHub blocks >100MB)
 *.apk
 *.xapk
+*.so
+*.dex
 APK/
 PENDRIVE DATA/
 vault/
