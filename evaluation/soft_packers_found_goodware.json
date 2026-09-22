@@ -1,0 +1,330 @@
+{
+  "families": {
+    "SecShell/Baidu": [
+      {
+        "path": "samples\\goodware\\benign_eval\\00150A71A5CF8FA9EF04A997BCFEB0F5BEDAA1D473CA53367DE8B03F21093C62.apk",
+        "sha256": "00150a71a5cf8fa9ef04a997bcfeb0f5bedaa1d473ca53367de8b03f21093c62",
+        "family": "SecShell/Baidu",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libjniPdfium.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.621,
+            "size": 499072,
+            "packer": false
+          },
+          {
+            "name": "libmodft2.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 4.939,
+            "size": 560480,
+            "packer": false
+          },
+          {
+            "name": "libmodpdfium.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 4.948,
+            "size": 5369168,
+            "packer": false
+          },
+          {
+            "name": "libmodpng.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 4.748,
+            "size": 220496,
+            "packer": false
+          },
+          {
+            "name": "libsqlcipher.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.004,
+            "file_entropy": 4.745,
+            "size": 3648880,
+            "packer": false
+          },
+          {
+            "name": "libdexjni.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.01,
+            "file_entropy": 5.697,
+            "size": 457213,
+            "packer": false
+          },
+          {
+            "name": "libDexHelper-x86.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.006,
+            "file_entropy": 4.403,
+            "size": 1395125,
+            "packer": true
+          },
+          {
+            "name": "libDexHelper.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.029,
+            "file_entropy": 6.341,
+            "size": 698741,
+            "packer": true
+          }
+        ]
+      }
+    ],
+    "TencentLegu": [
+      {
+        "path": "samples\\goodware\\benign_eval\\003BE119DA29D0752EE117105E9B92A8207E21DA82CEA2E2BD84E30217A8E675.apk",
+        "sha256": "003be119da29d0752ee117105e9b92a8207e21da82cea2e2bd84e30217a8e675",
+        "family": "TencentLegu",
+        "verdict": "SOFT",
+        "libs": [
+          {
+            "name": "libshellx-super.2019.so",
+            "abi": "unknown",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 0.996,
+            "file_entropy": 6.439,
+            "size": 239668,
+            "packer": true
+          },
+          {
+            "name": "libijkffmpeg.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.34,
+            "size": 5381488,
+            "packer": false
+          },
+          {
+            "name": "libijkplayer.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.022,
+            "size": 364944,
+            "packer": false
+          },
+          {
+            "name": "libijksdl.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.726,
+            "size": 481352,
+            "packer": false
+          },
+          {
+            "name": "libjniPdfium.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.002,
+            "size": 493432,
+            "packer": false
+          },
+          {
+            "name": "libmodft2.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.528,
+            "size": 554880,
+            "packer": false
+          },
+          {
+            "name": "libmodpdfium.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.676,
+            "size": 5367744,
+            "packer": false
+          },
+          {
+            "name": "libmodpng.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.46,
+            "size": 214840,
+            "packer": false
+          },
+          {
+            "name": "librtmp-jni.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.91,
+            "size": 87824,
+            "packer": false
+          },
+          {
+            "name": "libshell-super.2019.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.744,
+            "size": 260608,
+            "packer": true
+          },
+          {
+            "name": "libshella-4.1.0.23.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 1.931,
+            "size": 408,
+            "packer": true
+          }
+        ]
+      }
+    ],
+    "Ijiami": [
+      {
+        "path": "samples\\goodware\\benign_eval\\004C60912858BAC78EB37860F6CA88D2A60919F22EFA5CC81BF7019ECB80DF02.apk",
+        "sha256": "004c60912858bac78eb37860f6ca88d2a60919f22efa5cc81bf7019ecb80df02",
+        "family": "Ijiami",
+        "verdict": "HARD",
+        "libs": [
+          {
+            "name": "libp.so",
+            "abi": "unknown",
+            "state": "error",
+            "error": "'NoneType' object has no attribute 'exported_functions'",
+            "packer": false
+          },
+          {
+            "name": "libBugly.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.198,
+            "size": 190656,
+            "packer": false
+          },
+          {
+            "name": "libcardioDecider.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 3.877,
+            "size": 9904,
+            "packer": false
+          },
+          {
+            "name": "libcardioRecognizer.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 7.046,
+            "size": 1284840,
+            "packer": false
+          },
+          {
+            "name": "libcardioRecognizer_tegra2.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.626,
+            "size": 864360,
+            "packer": false
+          },
+          {
+            "name": "libjcore126.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 3.909,
+            "size": 5808,
+            "packer": false
+          },
+          {
+            "name": "libne_audio.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 6.576,
+            "size": 1273784,
+            "packer": false
+          },
+          {
+            "name": "libopencv_core.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.551,
+            "size": 3073088,
+            "packer": false
+          },
+          {
+            "name": "libopencv_imgproc.so",
+            "abi": "arm64",
+            "state": "nosym",
+            "file_entropy": 6.647,
+            "size": 2402408,
+            "packer": false
+          },
+          {
+            "name": "libsqlcipher.so",
+            "abi": "arm64",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": 1.0,
+            "file_entropy": 6.364,
+            "size": 3108896,
+            "packer": false
+          },
+          {
+            "name": "liblbs.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": false,
+            "decode_density": NaN,
+            "file_entropy": 5.998,
+            "size": 15456,
+            "packer": false
+          },
+          {
+            "name": "libexecmain.so",
+            "abi": "arm32",
+            "state": "nosym",
+            "file_entropy": 6.352,
+            "size": 86476,
+            "packer": true
+          },
+          {
+            "name": "libexec.so",
+            "abi": "arm32",
+            "state": "calc",
+            "hardened": true,
+            "decode_density": 0.047,
+            "file_entropy": 7.634,
+            "size": 458060,
+            "packer": true
+          }
+        ]
+      }
+    ]
+  },
+  "total": 3
+}

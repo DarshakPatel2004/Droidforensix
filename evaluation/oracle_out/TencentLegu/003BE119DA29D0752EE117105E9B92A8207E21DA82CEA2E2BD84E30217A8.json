@@ -1,0 +1,26 @@
+{
+  "apk": "samples\\goodware\\benign_eval\\003BE119DA29D0752EE117105E9B92A8207E21DA82CEA2E2BD84E30217A8E675.apk",
+  "sha256": "003be119da29d0752ee117105e9b92a8207e21da82cea2e2bd84e30217a8e675",
+  "verdict": "FAILED",
+  "ecode": "E-NATIVE-NO-RECOVERY",
+  "artifacts": [],
+  "stats": {
+    "entries": 1925,
+    "so_count": 31,
+    "dex_count": 2
+  },
+  "triage": {
+    "verdict": "packed_known(TencentLegu)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "TencentLegu",
+  "oracle": {
+    "lib": "arm64-v8a_libshell-super.2019.so",
+    "entry": "JNI_OnLoad",
+    "status": "clean",
+    "jni_calls": 1,
+    "fault": null
+  },
+  "key_log": []
+}

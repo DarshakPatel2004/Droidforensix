@@ -1,0 +1,100 @@
+{
+  "results": [
+    {
+      "path": "samples\\malware\\androzoo\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+      "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+      "family": "TencentLegu",
+      "scan_verdict": "SOFT",
+      "verdict": "FAILED",
+      "ecode": "E-NATIVE-NO-RECOVERY",
+      "route": "NATIVE",
+      "family_route": "TencentLegu",
+      "rc": 0,
+      "secs": 2.7
+    },
+    {
+      "path": "samples\\malware\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+      "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+      "family": "TencentLegu",
+      "scan_verdict": "SOFT",
+      "verdict": "FAILED",
+      "ecode": "E-NATIVE-NO-RECOVERY",
+      "route": "NATIVE",
+      "family_route": "TencentLegu",
+      "rc": 0,
+      "secs": 2.4
+    },
+    {
+      "path": "samples\\goodware\\benign_eval\\003BE119DA29D0752EE117105E9B92A8207E21DA82CEA2E2BD84E30217A8E675.apk",
+      "sha256": "003be119da29d0752ee117105e9b92a8207e21da82cea2e2bd84e30217a8e675",
+      "family": "TencentLegu",
+      "scan_verdict": "SOFT",
+      "verdict": "FAILED",
+      "ecode": "E-NATIVE-NO-RECOVERY",
+      "route": "NATIVE",
+      "family_route": "TencentLegu",
+      "rc": 0,
+      "secs": 4.0
+    },
+    {
+      "path": "samples\\malware\\androzoo\\00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3.apk",
+      "sha256": "00009ae5a877e56bb367d919f4393414bb49ffef94c84ae122f8c85a9ad522c3",
+      "family": "360Jiagu",
+      "scan_verdict": "HARD",
+      "verdict": "FAILED",
+      "ecode": "E-HARDENED-VM",
+      "route": "NATIVE",
+      "family_route": "360Jiagu",
+      "rc": 0,
+      "secs": 2.2
+    },
+    {
+      "path": "samples\\malware\\androzoo\\0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465.apk",
+      "sha256": "0000a053de676b4d381cc35632d0e5ab67c098bd2c8fb55571750c07f888c465",
+      "family": "Ijiami",
+      "scan_verdict": "HARD",
+      "verdict": "FAILED",
+      "ecode": "E-HARDENED-VM",
+      "route": "NATIVE",
+      "family_route": "Ijiami",
+      "rc": 0,
+      "secs": 2.1
+    },
+    {
+      "path": "samples\\malware\\androzoo\\0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c.apk",
+      "sha256": "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+      "family": "360Jiagu",
+      "scan_verdict": "MIXED",
+      "verdict": "FAILED",
+      "ecode": "E-HARDENED-VM",
+      "route": "NATIVE",
+      "family_route": "360Jiagu",
+      "rc": 0,
+      "secs": 1.8
+    },
+    {
+      "path": "samples\\malware\\androzoo\\0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b.apk",
+      "sha256": "0000d3e05cfad4c3f301f8b47986354aaca80ac236c5934ec287d91e3efc037b",
+      "family": "Bangcle/SecNeo",
+      "scan_verdict": "MIXED",
+      "verdict": "FAILED",
+      "ecode": "E-NATIVE-NO-RECOVERY",
+      "route": "NATIVE",
+      "family_route": "Bangcle/SecNeo",
+      "rc": 0,
+      "secs": 2.6
+    },
+    {
+      "path": "samples\\malware\\androzoo\\00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5.apk",
+      "sha256": "00005b6b8fdd182a2f7ff41fe9738cdde5d39af500d60df38ae618bd76082cb5",
+      "family": "TencentLegu",
+      "scan_verdict": "MIXED",
+      "verdict": "FAILED",
+      "ecode": "E-NATIVE-NO-RECOVERY",
+      "route": "NATIVE",
+      "family_route": "TencentLegu",
+      "rc": 0,
+      "secs": 302.9
+    }
+  ]
+}
