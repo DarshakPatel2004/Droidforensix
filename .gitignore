@@ -249,3 +249,6 @@ _hole5/
 chat_*.md
 PoC_*.zip
 analysis/recovered/
+
+# Pending sign-off review packets (user reviews here before any apply)
+/singoff/
