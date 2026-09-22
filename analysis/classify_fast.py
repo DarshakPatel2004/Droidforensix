@@ -9,7 +9,11 @@ from pathlib import Path
 
 MODEL_PATH = Path(__file__).resolve().parent.parent / "evaluation" / "classifier_data" / "malben_rf.pkl"
 
-FEATURES = ['file_size_kb','total_strings','num_encodings','num_payloads','num_c2','num_c2_real','num_c2_fb_ip','num_chains','num_secrets','secret_risk_score','num_permissions','num_dangerous_perms','target_sdk','min_sdk','apktool_success','native_libs_found','decompiled_classes','crypter_stub','master_key_verdict_recovered','master_key_e_coded']
+# 15-feature deployment set: official 20 minus the S2 drops (num_c2,
+# num_c2_real, num_c2_fb_ip, num_chains, num_encodings, num_payloads - counts
+# anti-correlated / double-counting, see evaluation/results_summary.txt §3)
+# plus c2_alignment (max family C2-pool alignment, scripts/build_c2_alignment_column.py).
+FEATURES = ['file_size_kb','total_strings','num_secrets','secret_risk_score','num_permissions','num_dangerous_perms','target_sdk','min_sdk','apktool_success','native_libs_found','decompiled_classes','crypter_stub','master_key_verdict_recovered','master_key_e_coded','c2_alignment']
 
 DANGEROUS_PERMS = {
     'android.permission.SEND_SMS','android.permission.RECEIVE_SMS','android.permission.READ_SMS',
@@ -31,6 +35,17 @@ def _load_model():
         with open(MODEL_PATH, 'rb') as f:
             _model = pickle.load(f)
     return _model
+
+_scorer = None
+
+def _load_scorer():
+    # Lazy import: family_confidence_scorer pulls backend.family_id at init;
+    # keep module import of classify_fast cycle-free (mirrors _load_model).
+    global _scorer
+    if _scorer is None:
+        from analysis.family_confidence_scorer import FamilyConfidenceScorer
+        _scorer = FamilyConfidenceScorer()
+    return _scorer
 
 
 def extract_feature_vector(result: dict) -> list:
@@ -64,6 +79,18 @@ def extract_feature_vector(result: dict) -> list:
         'master_key_verdict_recovered': 1 if (result.get('master_key') or {}).get('verdict') == 'RECOVERED' else 0,
         'master_key_e_coded': 1 if (result.get('master_key') or {}).get('is_e_coded') else 0,
     }
+    # c2_alignment: same definition as scripts/build_c2_alignment_column.py
+    # (max of FamilyConfidenceScorer._c2_alignment over all family pools) so
+    # training and inference share one computation. No extracted domains ->
+    # 0.0 = no observed C2-alignment evidence, matching the column semantics.
+    from analysis.family_confidence_scorer import SampleSignals
+    sample = SampleSignals.from_pipeline_result(result)
+    scorer = _load_scorer()
+    feats['c2_alignment'] = (
+        max((scorer._c2_alignment(sample, p) for p in scorer._profiles.values()),
+            default=0.0)
+        if sample.domains else 0.0
+    )
     return [float(feats[f]) for f in FEATURES]
 
 
