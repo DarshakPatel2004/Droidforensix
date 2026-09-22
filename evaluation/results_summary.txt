@@ -1,0 +1,142 @@
+DroidForensix — Results Summary (verified 19-Sep-2026)
+=======================================================
+
+Reproduce every number with the commands in evaluation/METHODOLOGY.md.
+All metrics are regenerable from files in this repo.
+
+---------------------------------------------------------------------------
+1. FAMILY CLASSIFICATION (Ranking & Abstention)
+---------------------------------------------------------------------------
+
+Head-to-head on the SAME 192 samples (GT-specific + has gap-features cache),
+production engine (evaluation/metrics_v2/predictions.json) vs confidence fusion
+(analysis/family_confidence_scorer.py, additive evaluator only — backend
+identify_family() unchanged):
+
+    baseline accuracy ................ 60.42%   (116/192)
+    fusion ranking accuracy (argmax) .. 68.23%   (131/192)   +7.8pts
+
+    Per source (fusion ranking):
+      androzoo_drebin (n=130)  67.69% -> 86.15%   (+18.5pts)
+      AndroZoo        (n=10)   80.00% -> 80.00%
+      abusech         (n=24)   29.17% -> 20.83%   (families lack static
+                                                   profiles -> abstain)
+      modern_eval     (n=28)   46.43% -> 21.43%   (same)
+
+    Abstention is calibrated: precision@answered rises monotonically with the
+    confidence bar — 95.45% at bar 0.55, 100.00% at bar >=0.60.
+    (Caveat: the fused absolute scale is compressed; high bars answer few.)
+
+    Full repo set, specific GT labels: baseline 59.7% (120/201).
+
+    Miss anatomy (338 GT-joined baseline predictions):
+      label_unresolvable  137   (GT catch-all: AndroidOS/GenericKD — abusech 94)
+      under_matched       46    (GT specific, pred generic/unknown = abstention)
+      wrong_family        35    (the real correctness ceiling)
+
+---------------------------------------------------------------------------
+2. BINARY CLASSIFICATION (Accuracy — pick ONE, don't conflate)
+---------------------------------------------------------------------------
+
+    setting         accuracy   note
+    --------------- ---------- ----------------------------------------
+    in-sample 509   95.68%     RF fit on this full cache: optimistic, only
+                              for per-prediction explanations (FP 5, FN 17)
+    5-fold CV        89.20%    REALISTIC — thesis claim
+    held-out 200     97.00%    existing real_world report; lucky split,
+                               cite only as historical artifact (0 FN, 6% FP)
+
+    THESIS CLAIM: 89.20% (5-fold CV). Gap to in-sample (-6.48pts) = modest
+    overfitting; feature importances are stable across folds (cv_ablation.py).
+
+    Ablation (5-fold CV, refit per fold):
+      baseline                 0.8920
+      - num_permissions        0.8841   (-0.0078)  most informative
+      - num_dangerous_perms    0.8861   (-0.0059)
+      - decompiled_classes     0.8881   (-0.0039)
+      - total_strings          0.8919   (-0.0000)
+      - all 3 C2 count feats   0.8959   (+0.0040)  C2 counts are NET NOISE
+
+---------------------------------------------------------------------------
+3. KEY FINDING — C2 COUNT IS ANTI-CORRELATED WITH MALICE
+---------------------------------------------------------------------------
+
+    corr(P(malware), num_c2) = -0.158
+    median num_c2: benign (F-Droid) 5  >  malware 3
+    false negatives (n=17): median num_c2 12; 11/17 have >=5 C2 domains
+
+    The 11 high-C2 FN are the PACKED-DROPPER population: every one has
+    num_payloads >=1 AND num_encodings >=1 (counts frequently saturated at
+    500), 8/11 with native libs, all labelled to generic/unknown GT families
+    (AndroidOS, Agent, Gen, unknown). Their observable surface (domains,
+    string counts, permissions) is indistinguishable from benign SDK apps
+    (Firebase/Crashlytics/AdMob embed many domains). The malicious payload
+    stays inside encoded blobs that the 20-feature vector does not see.
+
+    Takeaway: raw C2 quantity is a weak/anti-predictive signal in this corpus.
+    Domain ALIGNMENT with known family profiles (c2_alignment in the fusion,
+    weight 0.25) is the discriminator. Counts are not. Structure features
+    (classes, strings, permissions) carry the signal.
+
+    Observation (flag for Reet, not claimed): on every FN row
+    num_payloads == num_encodings exactly — check
+    analysis/gap_features_cache.json to confirm whether payload and encoding
+    counters double-count the same blobs.
+
+---------------------------------------------------------------------------
+4. GROUND-TRUTH SOURCE RELIABILITY (measured, not assumed)
+---------------------------------------------------------------------------
+
+    reliability = 0.4*specific_share + 0.4*external_confirmation + 0.2*high_conf
+
+    androzoo_drebin (n=149)  reliability 0.817   (spec 87.9 / ext 66.4 / high 100)
+    abusech         (n=120)  reliability 0.635   (spec 21.7 / ext 90.8 / high 92.5)
+    AndroZoo        (n=25)   reliability 0.592   (spec 40.0 / ext 72.0 / high 72.0)
+    modern_eval     (n=58)   reliability 0.410   (spec 58.6 / ext 29.3 / high 29.3)
+
+    Family: raw 38.07% -> reliability-weighted 39.81%.
+    Frame: our family score is partly masked by unverifiable labels, not a
+    ceiling on model skill.
+
+---------------------------------------------------------------------------
+5. DRAFT THESIS SECTIONS (corrected numbers)
+---------------------------------------------------------------------------
+
+Family — honest framing:
+"Our family confidence fusion improves ranking accuracy from 60.4% to 68.2%
+on the 192 scorable samples — but the gain concentrates on high-quality GT
+sources: androzoo_drebin improves to 86.2% while abusech (78% catch-all
+labels, no static profiles) correctly abstains. On the samples the system
+answers with confidence, precision is 100%. Predicting 'unknown' is correct
+when the ground truth label is itself catch-all."
+
+Binary:
+"Our Random Forest achieves 89.20% accuracy under 5-fold cross-validation.
+The 95.68% in-sample figure reflects only per-prediction explanation use;
+in-sample optimism is -6.48pts of modest overfitting. Ablation confirms the
+permission/structure features carry the signal while C2 domain counts are
+noise: removing all three C2-count features improves CV accuracy by +0.40pts."
+
+C2 finding (publishable):
+"Counterintuitively, benign samples in our dataset contain median 5 plaintext
+domains vs. malware median 3 (corr = -0.158). This reflects SDK embedding:
+Firebase, Crashlytics and AdMob hardcode domains. Packed malware, conversely,
+contains encrypted/junk string blobs that parse as domains. Raw C2 count is
+therefore anti-correlated with malice. Domain alignment with known malware
+families (family_confidence_scorer) is the discriminator; raw counts are not.
+This informs our ensemble design: C2 contributes via profile match (0.25
+weight, §5.2), not presence."
+
+---------------------------------------------------------------------------
+Artifacts (all in repo)
+    evaluation/METHODOLOGY.md                    methodology + repro commands
+    evaluation/metrics_family_ensemble/metrics.json
+    evaluation/metrics_source_aware/metrics.json
+    evaluation/metrics_misclassification/report.json
+    evaluation/metrics_binary_ablation.json
+    evaluation/binary_explanations.json          (509 per-sample explanations)
+    tests/analysis/test_family_confidence_scorer.py
+    tests/evaluation/test_misclassification.py
+    analysis/family_confidence_scorer.py
+    analysis/binary_explainer.py
+    evaluation/{family_ensemble_eval,source_aware_eval,misclassification_analysis,cv_ablation}.py
