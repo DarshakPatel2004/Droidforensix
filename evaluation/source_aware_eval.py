@@ -214,7 +214,7 @@ def main() -> None:
             ),
             "reliability_weighted_in_sample_accuracy": bin_weighted,
             "deployment_grade": "held-out 200 (real_world_accuracy_report.json): 0.970 "
-            "overall, 0 FN, 6% FP; 5-fold CV (seed 0): 0.892",
+            "overall, 0 FN, 6% FP; 5-fold CV (seed 0): 0.906",
         },
     }
     (args.output_dir / "metrics.json").write_text(json.dumps(metrics, indent=2), encoding="utf-8")
@@ -241,7 +241,7 @@ def main() -> None:
         f"Raw binary accuracy (in-sample 509 cache)   : {float(metrics['binary']['in_sample_raw_accuracy']):.4f}"
     )
     print(f"Reliability-weighted (in-sample)            : {bin_weighted:.4f}")
-    print(f"Deployment-grade: held-out 0.970 / CV 0.892  " f"(real_world_accuracy_report.json)")
+    print(f"Deployment-grade: held-out 0.970 / CV 0.906  " f"(real_world_accuracy_report.json)")
     print(f"Outputs written to: {args.output_dir}")
 
 
