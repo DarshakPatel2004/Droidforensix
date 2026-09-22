@@ -59,8 +59,42 @@ Or a **typed E-code**:
 | `E-JAVA-RUNTIME-DELIVERY` | Java-only injected trojan; payload fetched at runtime | IOC extraction instead of static recovery |
 | `E-JAVA-NO-IOC` | Java-only sample, no loader/IOC patterns | Manual review |
 | `E-NATIVE-NOENTRY` | Packer registers JNI at runtime, no `Java_*` export | `.init_array`/`JNI_OnLoad` emulation (`scripts/emulate.py`) |
+| `E-HARDENED-VM` | Code-protected (bytecode VM): entries are ciphertext at rest | VM-level emulation / device hook (outside static oracle scope) |
 | `E-NATIVE-NO-RECOVERY` | Oracle ran but produced no self-validating payload | Inspect `fault info` + `key_log` |
 | `E-ORACLE-FAULT` | Oracle aborted with unhandled fault | Fault info attached; adjust emulation env |
+| `E-JAVA-LAYER-HANDOFF` | Soft (statically decodable) shell runs clean but payload DEX is delivered via ART/Java (`dexElements`/`DexClassLoader`), not minted in native memory | Out of scope for the static native oracle; inspect stub-DEX `Application` (`TxAppEntry` → `MultiDex` wrapper) |
+
+---
+
+## Tencent Legu soft-shell boundary (recovery evidence)
+
+Background: `libshell-*` JNI_OnLoad **is not** the DEX delivery path. Emulator
+trace: `libshell-super.2019.so`/`libshella-*.so` make only `FindClass('')` calls
+(zeroed names — anti-emulation probe, init bails early) and exit clean. The real
+handoff runs in **Java**: stub `classes.dex` contains `com/tencent/StubShell/TxAppEntry`
+(an `Application`) that drives a multi-dex wrapper (`Ldalvik/system/DexFile`,
+`dalvik.system.BaseDexClassLoader`, `dexElementsField`, `MultiDexForMemoryDex`)
+against the encrypted payload blob. This is a Java→Java flow inside ART, so the
+static native oracle never sees the DEX.
+
+Blob layout for `assets/0OO00l111l1l` (6.6 MB, 2 DEX regions — matches `u32 count=2`):
+
+```
+[9-byte sentinel] "dex\n\xff035\x00"   (identical at both region heads, offset 35 and 2361509)
+[payload]         high-entropy (H≈7.96), not deflate, not repeating-XOR, not AES(ECB/CBC/CFB) with the
+                  shipped o0oooOO0ooOo.dat keys
+```
+
+Exhausted static attacks (all negative): 256-byte substitution/permutation table
+(rodata/data/text of `libshell-super.2019.so` and `assets/libshellx-super.2019.so`),
+repeating-key XOR (autocorrelation falls to noise), raw/zlib inflate scan, AES with
+the six 16-byte keys in `o0oooOO0ooOo.dat`. `libshell` exports only `JNI_OnLoad` and
+imports `open`/`fread`/`inflate`/`dlopen`/`fopen` — the decrypt is a runtime native
+function reached via "open secure data file" (log string adjacent to the blob name in
+rodata), i.e. invoked from the Java `Application.attach` path, not JNI_OnLoad.
+
+Conclusion: the table/key is **runtime-derived** (not in static data). Recovery of
+the payload DEX is outside the static native oracle; classified `E-JAVA-LAYER-HANDOFF`.
 
 ---
 

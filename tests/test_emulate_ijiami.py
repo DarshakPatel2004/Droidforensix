@@ -94,3 +94,61 @@ def test_explicit_sym_request_wins(emulate):
     )
     entry, name = em.find_entry("JNI_OnLoad")
     assert (name, entry) == ("JNI_OnLoad", em.base + 0x100)
+
+
+# ---------------------------------------------------------------------------
+# hardened-VM pre-check
+# ---------------------------------------------------------------------------
+# Build a fake lief binary shape: header.machine_type + segments[].content
+import struct as _struct
+
+_RET_ARM64 = _struct.pack("<I", 0xD65F03C0)  # ret
+
+
+def _fake_binary(machine, sym_va, entry_bytes, fsize=0x1000):
+    from types import SimpleNamespace as NS
+    blob = bytearray(fsize)
+    blob[sym_va:sym_va + len(entry_bytes)] = entry_bytes
+    seg = NS(virtual_address=0, virtual_size=fsize, type="TYPE.LOAD",
+             content=bytes(blob))
+    return NS(
+        header=NS(machine_type=machine),
+        exported_functions=[NS(name="JNI_OnLoad", address=sym_va)],
+        dynamic_symbols=[],
+        segments=[seg],
+    )
+
+
+def test_hardened_vm_detects_ciphertext_entry(emulate):
+    """Random high-entropy bytes at JNI_OnLoad -> hardened (like Calculator's
+    libijm-emulator.so, decode density 0.0-0.03)."""
+    rand = bytes(range(256)) * 8
+    b = _fake_binary("ARCH.AARCH64", 0x100, rand)
+    hardened, ev = emulate.is_hardened_vm(b, window=0x200)
+    assert hardened is True
+    assert ev["decode_density"] < 0.3
+
+
+def test_hardened_vm_accepts_real_code(emulate):
+    """A stream of `ret` decodes at density 1 -> not hardened."""
+    code = _RET_ARM64 * 64
+    b = _fake_binary("ARCH.AARCH64", 0x100, code)
+    hardened, ev = emulate.is_hardened_vm(b, window=0x100)
+    assert hardened is False
+    assert ev["decode_density"] == 1.0
+
+
+def test_hardened_vm_x86_64_entry(emulate):
+    """x86_64 ret (c3) also passes."""
+    code = b"\xc3" * 64  # ret
+    b = _fake_binary("ARCH.X86_64", 0x100, code)
+    hardened, ev = emulate.is_hardened_vm(b, window=0x100)
+    assert hardened is False
+
+
+def test_hardened_vm_missing_symbol_not_hardened(emulate):
+    b = _fake_binary("ARCH.AARCH64", 0x100, b"\x00" * 64)
+    b.exported_functions = []
+    hardened, ev = emulate.is_hardened_vm(b, sym="JNI_OnLoad")
+    assert hardened is False
+    assert ev == {}
