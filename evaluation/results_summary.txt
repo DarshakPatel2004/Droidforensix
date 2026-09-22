@@ -40,22 +40,30 @@ identify_family() unchanged):
 
     setting         accuracy   note
     --------------- ---------- ----------------------------------------
-    in-sample 509   95.68%     RF fit on this full cache: optimistic, only
-                              for per-prediction explanations (FP 5, FN 17)
-    5-fold CV        89.20%    REALISTIC — thesis claim
+    in-sample 509   98.04%     RF fit on this full cache: optimistic, only
+                              for per-prediction explanations (FP 0, FN 10)
+    5-fold CV        90.57%    REALISTIC — thesis claim (seeds 0-4:
+                              90.56-92.93, mean 91.55; 5/5 seeds >= 0.90)
     held-out 200     97.00%    existing real_world report; lucky split,
-                               cite only as historical artifact (0 FN, 6% FP)
+                               cite only as historical artifact,
+                               pre-c2_alignment bundle (0 FN, 6% FP)
 
-    THESIS CLAIM: 89.20% (5-fold CV). Gap to in-sample (-6.48pts) = modest
-    overfitting; feature importances are stable across folds (cv_ablation.py).
+    THESIS CLAIM: 90.6% (5-fold CV, seed 0; robust 5/5 seeds). Gap to
+    in-sample (-7.47pts) = modest overfitting; feature importances are stable
+    across folds (cv_ablation.py).
 
-    Ablation (5-fold CV, refit per fold):
-      baseline                 0.8920
-      - num_permissions        0.8841   (-0.0078)  most informative
-      - num_dangerous_perms    0.8861   (-0.0059)
-      - decompiled_classes     0.8881   (-0.0039)
-      - total_strings          0.8919   (-0.0000)
-      - all 3 C2 count feats   0.8959   (+0.0040)  C2 counts are NET NOISE
+    Ablation (5-fold CV, refit per fold; baseline = 15-feature
+    c2_alignment bundle):
+      baseline                 0.9057
+      - num_permissions        0.8939   (-0.0118)  most informative
+      - num_dangerous_perms    0.8998   (-0.0060)
+      - decompiled_classes     0.8998   (-0.0059)
+      - file_size_kb           0.8998   (-0.0059)
+      - c2_alignment           0.8979   (-0.0079)  the one C2-derived input
+      - native_libs_found      0.9077   (+0.0019)
+      - total_strings          0.9057   (-0.0000)
+      - raw C2 count feats     n/a      S2 drop — not in model; c2_alignment
+                                        is the only C2-derived input
 
 ---------------------------------------------------------------------------
 3. KEY FINDING — C2 COUNT IS ANTI-CORRELATED WITH MALICE
@@ -76,7 +84,9 @@ identify_family() unchanged):
     Takeaway: raw C2 quantity is a weak/anti-predictive signal in this corpus.
     Domain ALIGNMENT with known family profiles (c2_alignment in the fusion,
     weight 0.25) is the discriminator. Counts are not. Structure features
-    (classes, strings, permissions) carry the signal.
+    (classes, strings, permissions) carry the signal. Empirical confirmation:
+    removing c2_alignment from the binary bundle costs -0.79pts CV
+    (0.9057 -> 0.8979) — alignment is load-bearing where counts are noise.
 
     Observation (flag for Reet, not claimed): on every FN row
     num_payloads == num_encodings exactly — check
@@ -111,11 +121,18 @@ answers with confidence, precision is 100%. Predicting 'unknown' is correct
 when the ground truth label is itself catch-all."
 
 Binary:
-"Our Random Forest achieves 89.20% accuracy under 5-fold cross-validation.
-The 95.68% in-sample figure reflects only per-prediction explanation use;
-in-sample optimism is -6.48pts of modest overfitting. Ablation confirms the
-permission/structure features carry the signal while C2 domain counts are
-noise: removing all three C2-count features improves CV accuracy by +0.40pts."
+"Our Random Forest achieves 90.6% accuracy under 5-fold cross-validation
+(seed 0; robust across 5/5 seeds, 90.56-92.93). The 98.04% in-sample figure
+reflects only per-prediction explanation use; in-sample optimism is -7.47pts
+of modest overfitting. The deployed feature set is 15 features: six raw C2
+count/chain features are dropped, and c2_alignment — a domain-match score
+against known-family profiles — is the only C2-derived input. Ablation
+confirms the permission/structure features carry the signal: removing
+c2_alignment costs 0.79pts, while the raw C2 counts are not in the model at
+all. Coverage caveat: c2_alignment is observed for 199/509 cache rows (all
+malware; no-cache and empty-domain rows score 0.0), benign values are
+structurally 0.0 by assumption, and deployment recomputes the value fresh
+from every APK."
 
 C2 finding (publishable):
 "Counterintuitively, benign samples in our dataset contain median 5 plaintext

@@ -129,15 +129,18 @@ Deployment model: `evaluation/classifier_data/malben_rf.pkl` (RandomForest,
 **Two different accuracy numbers must never be conflated:**
 
 1. In-sample diagnostics on `features.csv` (509 rows = the training cache):
-   **0.9568** (487/509, FP 5, FN 17). This is an *explainability* set; the RF was
-   fitted on this population, so the number is not a generalization claim.
-   `binary_explainer.py` and `source_aware_eval.py` print it as "in-sample".
-2. Deployment-grade (from `evaluation/real_world_accuracy_report.json`):
-   **200 held-out: 97.0% overall, 0 FN, 6% FP; 5-fold CV ~90.8%**. Independent
-   5-fold CV re-run on the 509 cache (seed 0): **0.8920**.
+   **0.9804** (499/509, FP 0, FN 10) on the c2_alignment bundle. This is an
+   *explainability* set; the RF was fitted on this population, so the number is
+   not a generalization claim. `binary_explainer.py` and `source_aware_eval.py`
+   print it as "in-sample".
+2. Deployment-grade (from `evaluation/real_world_accuracy_report.json` —
+   historical, pre-c2_alignment bundle): **200 held-out: 97.0% overall,
+   0 FN, 6% FP; 5-fold CV ~90.8%**. Independent 5-fold CV re-run on the 509
+   cache with the c2_alignment bundle (seed 0): **0.9057** (seeds 0-4:
+   0.9056-0.9293, mean 0.9155; 5/5 >= 0.90).
 
-Thesis section must cite (2) as accuracy and (1) only for per-prediction
-explanations / FN-FP anatomy.
+Thesis section must cite (2)'s c2_alignment CV (0.9057) as accuracy and (1)
+only for per-prediction explanations / FN-FP anatomy.
 
 ### Ablation (5-fold StratifiedCV, refit per fold, seed 0)
 
@@ -145,24 +148,32 @@ explanations / FN-FP anatomy.
 python evaluation/cv_ablation.py
 ```
 
-Results (verified 19-Sep-2026):
+Results (verified 22-Sep-2026, c2_alignment bundle; artifact:
+`evaluation/metrics_binary_ablation.json`):
 | removed feature       | CV acc | Δ vs baseline |
 |-----------------------|:------:|:-------------:|
-| none (baseline)       | 0.8920 | —             |
-| num_permissions       | 0.8841 | -0.0078       |
-| num_dangerous_perms   | 0.8861 | -0.0059       |
-| decompiled_classes    | 0.8881 | -0.0039       |
-| native_libs_found     | 0.8880 | -0.0040       |
-| file_size_kb          | 0.8880 | -0.0040       |
-| total_strings         | 0.8919 | -0.0000       |
-| num_c2                | 0.8939 | +0.0020       |
-| num_c2_fb_ip          | 0.8939 | +0.0020       |
-| **all 3 C2 features** | 0.8959 | **+0.0040**   |
+| none (baseline)       | 0.9057 | —             |
+| num_permissions       | 0.8939 | -0.0118       |
+| num_dangerous_perms   | 0.8998 | -0.0060       |
+| decompiled_classes    | 0.8998 | -0.0059       |
+| file_size_kb          | 0.8998 | -0.0059       |
+| c2_alignment          | 0.8979 | **-0.0079**   |
+| native_libs_found     | 0.9077 | +0.0019       |
+| total_strings         | 0.9057 | -0.0000       |
+| num_c2, num_c2_real, num_c2_fb_ip, num_chains, num_encodings, num_payloads (S2 drop) | n/a | not in model |
 
-Reading: permission/structural features carry the signal; **dropping all C2
-counts improves CV** — raw C2 count is noise/harmful here. Do NOT publish the
-sketched "−3.54 / −1.79 / −0.82 / −0.17" table from earlier notes; it is an
+Reading: permission/structural features carry the signal. The six raw C2
+count/chain features are S2-excluded from the deployed bundle — the earlier
+20-feature ablation showed dropping all C2 counts *improved* CV (+0.0040):
+raw C2 *quantity* is noise (see the C2 finding below). The one C2-derived
+feature that remains, **c2_alignment, is load-bearing: removing it costs
+-0.79 pts** (0.9057 → 0.8979). Do NOT publish the sketched
+"−3.54 / −1.79 / −0.82 / −0.17" table from earlier notes; it is an
 in-sample artifact, not this ablation.
+
+Note: analyses computed on the pre-c2_alignment bundle (the confidence
+thresholds below, the FN anatomy under "The C2 finding", §4 miss anatomy,
+and `real_world_accuracy_report.json`) are historical; frame them as such.
 
 ### The C2 finding (locked, reproducible)
 
