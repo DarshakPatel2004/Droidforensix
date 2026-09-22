@@ -1,0 +1,98 @@
+{
+  "generated_at": "2026-09-19T04:26:10.850811+00:00",
+  "family": {
+    "by_source": [
+      {
+        "source": "androzoo_drebin",
+        "total": 149,
+        "family_accuracy": 0.5906,
+        "specific_share": 0.8791946308724832,
+        "external_confirmation": 0.6644295302013423,
+        "high_confidence_share": 1.0,
+        "label_reliability": 0.8174
+      },
+      {
+        "source": "abusech",
+        "total": 120,
+        "family_accuracy": 0.0583,
+        "specific_share": 0.21666666666666667,
+        "external_confirmation": 0.9083333333333333,
+        "high_confidence_share": 0.925,
+        "label_reliability": 0.635
+      },
+      {
+        "source": "modern_eval",
+        "total": 58,
+        "family_accuracy": 0.5,
+        "specific_share": 0.5862068965517241,
+        "external_confirmation": 0.29310344827586204,
+        "high_confidence_share": 0.29310344827586204,
+        "label_reliability": 0.4103
+      },
+      {
+        "source": "AndroZoo",
+        "total": 25,
+        "family_accuracy": 0.4,
+        "specific_share": 0.4,
+        "external_confirmation": 0.72,
+        "high_confidence_share": 0.72,
+        "label_reliability": 0.592
+      }
+    ],
+    "raw_accuracy": 0.3807,
+    "reliability_weighted_accuracy": 0.3981,
+    "frame": "weighted accuracy = shares of labels externally confirmed; it measures GT label quality, not a model accuracy ceiling."
+  },
+  "binary": {
+    "by_source": [
+      {
+        "source": "androzoo_drebin",
+        "total": 149,
+        "in_sample_accuracy": 0.9933,
+        "specific_share": 0.7986577181208053,
+        "external_confirmation": 0.0,
+        "high_confidence_share": 0.0,
+        "label_reliability": 0.3195
+      },
+      {
+        "source": "abusech",
+        "total": 121,
+        "in_sample_accuracy": 0.9174,
+        "specific_share": 0.17355371900826447,
+        "external_confirmation": 0.0,
+        "high_confidence_share": 0.0,
+        "label_reliability": 0.0694
+      },
+      {
+        "source": "F-Droid",
+        "total": 100,
+        "in_sample_accuracy": 0.95,
+        "specific_share": 1.0,
+        "external_confirmation": 0.0,
+        "high_confidence_share": 0.0,
+        "label_reliability": 0.4
+      },
+      {
+        "source": "AndroZoo",
+        "total": 76,
+        "in_sample_accuracy": 0.9342,
+        "specific_share": 0.13157894736842105,
+        "external_confirmation": 0.0,
+        "high_confidence_share": 0.0,
+        "label_reliability": 0.0526
+      },
+      {
+        "source": "modern_eval",
+        "total": 63,
+        "in_sample_accuracy": 0.9841,
+        "specific_share": 0.4126984126984127,
+        "external_confirmation": 0.0,
+        "high_confidence_share": 0.0,
+        "label_reliability": 0.1651
+      }
+    ],
+    "in_sample_raw_accuracy": 0.9568,
+    "reliability_weighted_in_sample_accuracy": 0.9688,
+    "deployment_grade": "held-out 200 (real_world_accuracy_report.json): 0.970 overall, 0 FN, 6% FP; 5-fold CV (seed 0): 0.892"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "baseline": 0.9057,
+  "remove_one": {
+    "decompiled_classes": {
+      "cv_accuracy": 0.8998,
+      "delta": -0.0059
+    },
+    "total_strings": {
+      "cv_accuracy": 0.9057,
+      "delta": -0.0
+    },
+    "num_dangerous_perms": {
+      "cv_accuracy": 0.8998,
+      "delta": -0.006
+    },
+    "file_size_kb": {
+      "cv_accuracy": 0.8998,
+      "delta": -0.0059
+    },
+    "num_permissions": {
+      "cv_accuracy": 0.8939,
+      "delta": -0.0118
+    },
+    "native_libs_found": {
+      "cv_accuracy": 0.9077,
+      "delta": 0.0019
+    },
+    "c2_alignment": {
+      "cv_accuracy": 0.8979,
+      "delta": -0.0079
+    }
+  },
+  "not_in_model": [
+    "num_c2",
+    "num_c2_real",
+    "num_c2_fb_ip",
+    "num_encodings",
+    "num_payloads",
+    "num_chains"
+  ],
+  "remove_all_c2": {
+    "note": "C2 count features not in model (S2 drop)"
+  },
+  "protocol": "StratifiedKFold(5, shuffle, seed 0), refit clone per fold, in-sample accuracy deliberately excluded (see METHODOLOGY.md \u00a73)"
+}

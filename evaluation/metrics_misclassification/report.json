@@ -1,0 +1,848 @@
+{
+  "family_misses": {
+    "label_unresolvable": {
+      "count": 137,
+      "by_source": {
+        "abusech": 94,
+        "androzoo_drebin": 18,
+        "AndroZoo": 13,
+        "modern_eval": 12
+      },
+      "examples": [
+        {
+          "sha256": "00000a7eacfd7e392ea3aaee14bec0224e62bf72823a8101f6717d704dce3a79",
+          "source": "AndroZoo",
+          "ground_truth": "Detected",
+          "prediction": "NGate"
+        },
+        {
+          "sha256": "000026e846ffcf60e2a9e135251b4f411300e903dce95d47989b24158e93bb3d",
+          "source": "AndroZoo",
+          "ground_truth": "Agent",
+          "prediction": "unknown"
+        },
+        {
+          "sha256": "000027d1da96332efcb54af76906a7298121ebcccdab3d7dce999f8043e74ee7",
+          "source": "AndroZoo",
+          "ground_truth": "AndroidOS",
+          "prediction": "unknown"
+        }
+      ]
+    },
+    "under_matched": {
+      "count": 46,
+      "by_source": {
+        "androzoo_drebin": 34,
+        "abusech": 8,
+        "modern_eval": 3,
+        "AndroZoo": 1
+      },
+      "examples": [
+        {
+          "sha256": "0000764713b286cfe7e8e76c7038c92312977712d9c5a86d504be54f3c1d025a",
+          "source": "AndroZoo",
+          "ground_truth": "FakeInst",
+          "prediction": "unknown"
+        },
+        {
+          "sha256": "018f8548c055a31d98201874ebf21591e6d85cb9eee66e8c35716a9289d01f48",
+          "source": "abusech",
+          "ground_truth": "BankBot",
+          "prediction": "unknown"
+        },
+        {
+          "sha256": "269a98c5a2e16675eacd3490f382ac08d894737e629b92c1a69070cc471eed36",
+          "source": "abusech",
+          "ground_truth": "NGate",
+          "prediction": "unknown"
+        }
+      ]
+    },
+    "wrong_family": {
+      "count": 35,
+      "by_source": {
+        "modern_eval": 14,
+        "abusech": 11,
+        "androzoo_drebin": 9,
+        "AndroZoo": 1
+      },
+      "examples": [
+        {
+          "sha256": "0000511d5c2a99b303afd14d2acde3ebbad5c3426039679b25f24510a87b381c",
+          "source": "AndroZoo",
+          "ground_truth": "Android/Packed",
+          "prediction": "Jiagu"
+        },
+        {
+          "sha256": "050d91cde706f7c981f90878dbd50d92038caeedd38852a10e018e57f188e79b",
+          "source": "abusech",
+          "ground_truth": "Hqwar",
+          "prediction": "Ermac"
+        },
+        {
+          "sha256": "33d2ea973f861bb7c46397c4e0f9aedc37ef10fb8ab2f4090f35a335d86ef0b2",
+          "source": "abusech",
+          "ground_truth": "SpyMax",
+          "prediction": "SpyNote"
+        }
+      ]
+    }
+  },
+  "binary_misses": {
+    "false_negative": {
+      "count": 17,
+      "by_source": {
+        "abusech": 10,
+        "AndroZoo": 5,
+        "androzoo_drebin": 1,
+        "modern_eval": 1
+      },
+      "dominating_top_signals": [
+        {
+          "signal": "decompiled_classes->malware-like",
+          "count": 16
+        },
+        {
+          "signal": "total_strings->malware-like",
+          "count": 16
+        },
+        {
+          "signal": "num_dangerous_perms->benign-like",
+          "count": 15
+        },
+        {
+          "signal": "num_dangerous_perms->malware-like",
+          "count": 2
+        },
+        {
+          "signal": "decompiled_classes->benign-like",
+          "count": 1
+        }
+      ],
+      "examples": [
+        {
+          "classification": "benign",
+          "confidence": 0.4853,
+          "feature_values": {
+            "file_size_kb": 16656.2,
+            "total_strings": 11894.0,
+            "num_encodings": 17.0,
+            "num_payloads": 17.0,
+            "num_c2": 12.0,
+            "num_c2_real": 10.0,
+            "num_c2_fb_ip": 0.0,
+            "num_chains": 17.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 9.0,
+            "num_dangerous_perms": 1.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 0.0,
+            "decompiled_classes": 12534.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 12534.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "malware-like",
+              "interpretation": "decompiled_classes=12534 vs malware-median 363 / benign-median 4455 -> malware-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 11894.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "malware-like",
+              "interpretation": "total_strings=11894 vs malware-median 1173 / benign-median 14881 -> malware-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 1.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "benign-like",
+              "interpretation": "num_dangerous_perms=1 vs malware-median 4 / benign-median 1 -> benign-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 16656.2,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "malware-like",
+              "interpretation": "file_size_kb=16656.2 vs malware-median 2902.8 / benign-median 6979.1 -> malware-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 9.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "benign-like",
+              "interpretation": "num_permissions=9 vs malware-median 10 / benign-median 6 -> benign-like"
+            }
+          ],
+          "false_positive_risk": "low",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": []
+          },
+          "sha256": "0000fefa0d476ade01d3a98eac23dc1ec1a621bc437b46aeab7c65df23d0a12b",
+          "source": "AndroZoo",
+          "gt_family": "unknown",
+          "gt_malware": true,
+          "correct": false
+        },
+        {
+          "classification": "benign",
+          "confidence": 0.4831,
+          "feature_values": {
+            "file_size_kb": 938.6,
+            "total_strings": 159.0,
+            "num_encodings": 0.0,
+            "num_payloads": 0.0,
+            "num_c2": 0.0,
+            "num_c2_real": 0.0,
+            "num_c2_fb_ip": 0.0,
+            "num_chains": 0.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 4.0,
+            "num_dangerous_perms": 1.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 0.0,
+            "decompiled_classes": 21.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 21.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "benign-like",
+              "interpretation": "decompiled_classes=21 vs malware-median 363 / benign-median 4455 -> benign-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 159.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "benign-like",
+              "interpretation": "total_strings=159 vs malware-median 1173 / benign-median 14881 -> benign-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 1.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "benign-like",
+              "interpretation": "num_dangerous_perms=1 vs malware-median 4 / benign-median 1 -> benign-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 938.6,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "benign-like",
+              "interpretation": "file_size_kb=938.6 vs malware-median 2902.8 / benign-median 6979.1 -> benign-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 4.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "benign-like",
+              "interpretation": "num_permissions=4 vs malware-median 10 / benign-median 6 -> benign-like"
+            }
+          ],
+          "false_positive_risk": "low",
+          "false_negative_risk": "high",
+          "risk_flags": {
+            "fn": [
+              {
+                "rule": "zero_c2",
+                "reason": "no plaintext C2 extracted - packed/encrypted droppers are statically silent"
+              }
+            ],
+            "fp": []
+          },
+          "sha256": "6d8f8367ea6b2360cde4a53a450216adec54228d63840bf5471a746697399699",
+          "source": "androzoo_drebin",
+          "gt_family": "Exploit",
+          "gt_malware": true,
+          "correct": false
+        },
+        {
+          "classification": "benign",
+          "confidence": 0.474,
+          "feature_values": {
+            "file_size_kb": 5103.8,
+            "total_strings": 5618.0,
+            "num_encodings": 10.0,
+            "num_payloads": 10.0,
+            "num_c2": 3.0,
+            "num_c2_real": 3.0,
+            "num_c2_fb_ip": 0.0,
+            "num_chains": 10.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 0.0,
+            "num_dangerous_perms": 0.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 0.0,
+            "decompiled_classes": 3874.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 3874.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "malware-like",
+              "interpretation": "decompiled_classes=3874 vs malware-median 363 / benign-median 4455 -> malware-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 5618.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "malware-like",
+              "interpretation": "total_strings=5618 vs malware-median 1173 / benign-median 14881 -> malware-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 0.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "benign-like",
+              "interpretation": "num_dangerous_perms=0 vs malware-median 4 / benign-median 1 -> benign-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 5103.8,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "malware-like",
+              "interpretation": "file_size_kb=5103.8 vs malware-median 2902.8 / benign-median 6979.1 -> malware-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 0.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "benign-like",
+              "interpretation": "num_permissions=0 vs malware-median 10 / benign-median 6 -> benign-like"
+            }
+          ],
+          "false_positive_risk": "low",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": []
+          },
+          "sha256": "dceebf2ce1186b22f60b7ee064670db88347761767ea8610a35e50e568b348b3",
+          "source": "modern_eval",
+          "gt_family": "unknown",
+          "gt_malware": true,
+          "correct": false
+        },
+        {
+          "classification": "benign",
+          "confidence": 0.467,
+          "feature_values": {
+            "file_size_kb": 39734.2,
+            "total_strings": 262822.0,
+            "num_encodings": 194.0,
+            "num_payloads": 194.0,
+            "num_c2": 67.0,
+            "num_c2_real": 29.0,
+            "num_c2_fb_ip": 9.0,
+            "num_chains": 194.0,
+            "num_secrets": 4.0,
+            "secret_risk_score": 19.0,
+            "num_permissions": 22.0,
+            "num_dangerous_perms": 4.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 55.0,
+            "decompiled_classes": 21334.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 21334.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "malware-like",
+              "interpretation": "decompiled_classes=21334 vs malware-median 363 / benign-median 4455 -> malware-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 262822.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "malware-like",
+              "interpretation": "total_strings=262822 vs malware-median 1173 / benign-median 14881 -> malware-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 4.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "malware-like",
+              "interpretation": "num_dangerous_perms=4 vs malware-median 4 / benign-median 1 -> malware-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 39734.2,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "malware-like",
+              "interpretation": "file_size_kb=39734.2 vs malware-median 2902.8 / benign-median 6979.1 -> malware-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 22.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "malware-like",
+              "interpretation": "num_permissions=22 vs malware-median 10 / benign-median 6 -> malware-like"
+            }
+          ],
+          "false_positive_risk": "low",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": [
+              {
+                "rule": "perm_heavy",
+                "reason": "high dangerous-permission count overlaps malware profiles"
+              }
+            ]
+          },
+          "sha256": "00012e8f2e49e601edc786cabab52fa844d50add7d3d09efd7f8b23e6ba42efb",
+          "source": "AndroZoo",
+          "gt_family": "unknown",
+          "gt_malware": true,
+          "correct": false
+        }
+      ]
+    },
+    "false_positive": {
+      "count": 5,
+      "by_source": {
+        "F-Droid": 5
+      },
+      "dominating_top_signals": [
+        {
+          "signal": "decompiled_classes->malware-like",
+          "count": 3
+        },
+        {
+          "signal": "total_strings->malware-like",
+          "count": 3
+        },
+        {
+          "signal": "num_dangerous_perms->malware-like",
+          "count": 3
+        },
+        {
+          "signal": "decompiled_classes->benign-like",
+          "count": 2
+        },
+        {
+          "signal": "total_strings->benign-like",
+          "count": 2
+        }
+      ],
+      "examples": [
+        {
+          "classification": "malicious",
+          "confidence": 0.5202,
+          "feature_values": {
+            "file_size_kb": 12947.0,
+            "total_strings": 44401.0,
+            "num_encodings": 61.0,
+            "num_payloads": 61.0,
+            "num_c2": 33.0,
+            "num_c2_real": 27.0,
+            "num_c2_fb_ip": 3.0,
+            "num_chains": 61.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 31.0,
+            "num_dangerous_perms": 6.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 4.0,
+            "decompiled_classes": 24347.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 24347.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "malware-like",
+              "interpretation": "decompiled_classes=24347 vs malware-median 363 / benign-median 4455 -> malware-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 44401.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "malware-like",
+              "interpretation": "total_strings=44401 vs malware-median 1173 / benign-median 14881 -> malware-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 6.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "malware-like",
+              "interpretation": "num_dangerous_perms=6 vs malware-median 4 / benign-median 1 -> malware-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 12947.0,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "malware-like",
+              "interpretation": "file_size_kb=12947 vs malware-median 2902.8 / benign-median 6979.1 -> malware-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 31.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "malware-like",
+              "interpretation": "num_permissions=31 vs malware-median 10 / benign-median 6 -> malware-like"
+            }
+          ],
+          "false_positive_risk": "high",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": [
+              {
+                "rule": "perm_heavy",
+                "reason": "high dangerous-permission count overlaps malware profiles"
+              }
+            ]
+          },
+          "sha256": "36b343514ea2cdd353b7554c14b3da3f4309653b67be5ceb2e912b25597e3d85",
+          "source": "F-Droid",
+          "gt_family": "benign",
+          "gt_malware": false,
+          "correct": false
+        },
+        {
+          "classification": "malicious",
+          "confidence": 0.6635,
+          "feature_values": {
+            "file_size_kb": 529.5,
+            "total_strings": 90.0,
+            "num_encodings": 1.0,
+            "num_payloads": 1.0,
+            "num_c2": 1.0,
+            "num_c2_real": 1.0,
+            "num_c2_fb_ip": 0.0,
+            "num_chains": 1.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 1.0,
+            "num_dangerous_perms": 1.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 0.0,
+            "decompiled_classes": 98.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 98.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "benign-like",
+              "interpretation": "decompiled_classes=98 vs malware-median 363 / benign-median 4455 -> benign-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 90.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "benign-like",
+              "interpretation": "total_strings=90 vs malware-median 1173 / benign-median 14881 -> benign-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 1.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "benign-like",
+              "interpretation": "num_dangerous_perms=1 vs malware-median 4 / benign-median 1 -> benign-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 529.5,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "benign-like",
+              "interpretation": "file_size_kb=529.5 vs malware-median 2902.8 / benign-median 6979.1 -> benign-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 1.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "benign-like",
+              "interpretation": "num_permissions=1 vs malware-median 10 / benign-median 6 -> benign-like"
+            }
+          ],
+          "false_positive_risk": "high",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": []
+          },
+          "sha256": "df01309e3641fac77cd9bd356558e122e31f1317f988dfb4144ebad949e0ac84",
+          "source": "F-Droid",
+          "gt_family": "benign",
+          "gt_malware": false,
+          "correct": false
+        },
+        {
+          "classification": "malicious",
+          "confidence": 0.6702,
+          "feature_values": {
+            "file_size_kb": 2349.5,
+            "total_strings": 58.0,
+            "num_encodings": 0.0,
+            "num_payloads": 0.0,
+            "num_c2": 2.0,
+            "num_c2_real": 1.0,
+            "num_c2_fb_ip": 0.0,
+            "num_chains": 0.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 3.0,
+            "num_dangerous_perms": 0.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 0.0,
+            "decompiled_classes": 18.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 18.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "benign-like",
+              "interpretation": "decompiled_classes=18 vs malware-median 363 / benign-median 4455 -> benign-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 58.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "benign-like",
+              "interpretation": "total_strings=58 vs malware-median 1173 / benign-median 14881 -> benign-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 0.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "benign-like",
+              "interpretation": "num_dangerous_perms=0 vs malware-median 4 / benign-median 1 -> benign-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 2349.5,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "benign-like",
+              "interpretation": "file_size_kb=2349.5 vs malware-median 2902.8 / benign-median 6979.1 -> benign-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 3.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "benign-like",
+              "interpretation": "num_permissions=3 vs malware-median 10 / benign-median 6 -> benign-like"
+            }
+          ],
+          "false_positive_risk": "high",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": []
+          },
+          "sha256": "aa0ca052e9e48ad7945f9aa535f5fd691018a5356a8ff95b0e5bf94662a54a10",
+          "source": "F-Droid",
+          "gt_family": "benign",
+          "gt_malware": false,
+          "correct": false
+        },
+        {
+          "classification": "malicious",
+          "confidence": 0.7476,
+          "feature_values": {
+            "file_size_kb": 3969.9,
+            "total_strings": 13790.0,
+            "num_encodings": 103.0,
+            "num_payloads": 103.0,
+            "num_c2": 31.0,
+            "num_c2_real": 24.0,
+            "num_c2_fb_ip": 0.0,
+            "num_chains": 103.0,
+            "num_secrets": 0.0,
+            "secret_risk_score": 0.0,
+            "num_permissions": 14.0,
+            "num_dangerous_perms": 5.0,
+            "target_sdk": 0.0,
+            "min_sdk": 0.0,
+            "apktool_success": 1.0,
+            "native_libs_found": 0.0,
+            "decompiled_classes": 6293.0,
+            "crypter_stub": 0.0,
+            "master_key_verdict_recovered": 0.0,
+            "master_key_e_coded": 0.0
+          },
+          "top_signals": [
+            {
+              "feature": "decompiled_classes",
+              "value": 6293.0,
+              "importance": 0.2057,
+              "malware_median": 363.0,
+              "benign_median": 4455.0,
+              "lean": "malware-like",
+              "interpretation": "decompiled_classes=6293 vs malware-median 363 / benign-median 4455 -> malware-like"
+            },
+            {
+              "feature": "total_strings",
+              "value": 13790.0,
+              "importance": 0.1411,
+              "malware_median": 1173.0,
+              "benign_median": 14881.0,
+              "lean": "malware-like",
+              "interpretation": "total_strings=13790 vs malware-median 1173 / benign-median 14881 -> malware-like"
+            },
+            {
+              "feature": "num_dangerous_perms",
+              "value": 5.0,
+              "importance": 0.1319,
+              "malware_median": 4.0,
+              "benign_median": 1.0,
+              "lean": "malware-like",
+              "interpretation": "num_dangerous_perms=5 vs malware-median 4 / benign-median 1 -> malware-like"
+            },
+            {
+              "feature": "file_size_kb",
+              "value": 3969.9,
+              "importance": 0.1022,
+              "malware_median": 2902.8,
+              "benign_median": 6979.1,
+              "lean": "malware-like",
+              "interpretation": "file_size_kb=3969.9 vs malware-median 2902.8 / benign-median 6979.1 -> malware-like"
+            },
+            {
+              "feature": "num_permissions",
+              "value": 14.0,
+              "importance": 0.0816,
+              "malware_median": 10.0,
+              "benign_median": 6.0,
+              "lean": "malware-like",
+              "interpretation": "num_permissions=14 vs malware-median 10 / benign-median 6 -> malware-like"
+            }
+          ],
+          "false_positive_risk": "high",
+          "false_negative_risk": "low",
+          "risk_flags": {
+            "fn": [],
+            "fp": [
+              {
+                "rule": "perm_heavy",
+                "reason": "high dangerous-permission count overlaps malware profiles"
+              }
+            ]
+          },
+          "sha256": "f10bae02e75b884c6e92e165e41c9cc92bff51d85c25aa01feddf68471080491",
+          "source": "F-Droid",
+          "gt_family": "benign",
+          "gt_malware": false,
+          "correct": false
+        }
+      ]
+    }
+  }
+}
