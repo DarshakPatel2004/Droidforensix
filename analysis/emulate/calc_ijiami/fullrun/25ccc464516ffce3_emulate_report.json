@@ -1,0 +1,193 @@
+{
+  "apk_path": "PENDRIVE DATA\\PENDRIVE DATA\\apk fraud\\21\\Calculator.apk",
+  "apk_sha256": "25ccc464516ffce3a31fb89e38d99aacfcdb7e9853ede8bb538ff8452bf04869",
+  "libs_tried": [
+    {
+      "lib": "arm64-v8a_libandroidx.graphics.path.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x1016c8",
+      "arch": "arm64",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "arm64-v8a_libcalc.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x11a4a0",
+      "arch": "arm64",
+      "status": "Unhandled CPU exception (UC_ERR_EXCEPTION)",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "arm64-v8a_libdatastore_shared_counter.so",
+      "entry": "Java_androidx_datastore_core_NativeSharedCounter_nativeTruncateFile",
+      "entry_va": "0x100ddc",
+      "arch": "arm64",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "arm64-v8a_libnrb.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x11667c",
+      "arch": "arm64",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "arm64-v8a_libexecmain.so",
+      "error": "no Java_* export or JNI_OnLoad found / no Java_* export or JNI_OnLoad found"
+    },
+    {
+      "lib": "arm64-v8a_libexec.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x164e6c",
+      "arch": "arm64",
+      "status": "Unhandled CPU exception (UC_ERR_EXCEPTION)",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "arm64-v8a_libijm-emulator.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x10c5c0",
+      "arch": "arm64",
+      "status": "Unhandled CPU exception (UC_ERR_EXCEPTION)",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi-v7a_libandroidx.graphics.path.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x1010a5",
+      "arch": "arm",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "armeabi-v7a_libcalc32.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x10bb35",
+      "arch": "arm",
+      "status": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "armeabi-v7a_libdatastore_shared_counter.so",
+      "entry": "Java_androidx_datastore_core_NativeSharedCounter_nativeTruncateFile",
+      "entry_va": "0x100871",
+      "arch": "arm",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi-v7a_libnrb.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x10ef8d",
+      "arch": "arm",
+      "status": "__stack_chk_fail",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "x86_libandroidx.graphics.path.so",
+      "error": "unsupported arch I386 / unsupported arch I386"
+    },
+    {
+      "lib": "x86_libcalc32.so",
+      "error": "unsupported arch I386 / unsupported arch I386"
+    },
+    {
+      "lib": "x86_libdatastore_shared_counter.so",
+      "error": "unsupported arch I386 / unsupported arch I386"
+    },
+    {
+      "lib": "x86_libnrb.so",
+      "error": "unsupported arch I386 / unsupported arch I386"
+    },
+    {
+      "lib": "x86_64_libandroidx.graphics.path.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x401990",
+      "arch": "x86_64",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "x86_64_libcalc.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x419990",
+      "arch": "x86_64",
+      "status": "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "x86_64_libdatastore_shared_counter.so",
+      "entry": "Java_androidx_datastore_core_NativeSharedCounter_nativeTruncateFile",
+      "entry_va": "0x400cb0",
+      "arch": "x86_64",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "x86_64_libnrb.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x4171d0",
+      "arch": "x86_64",
+      "status": "clean",
+      "heap_used": 0,
+      "jni_calls": 1
+    },
+    {
+      "lib": "armeabi_libexecmain.so",
+      "error": "no Java_* export or JNI_OnLoad found / no Java_* export or JNI_OnLoad found"
+    },
+    {
+      "lib": "armeabi_libexec.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x13e9d1",
+      "arch": "arm",
+      "status": "Invalid instruction (UC_ERR_INSN_INVALID)",
+      "heap_used": 0,
+      "jni_calls": 0
+    },
+    {
+      "lib": "armeabi-v7a_libijm-emulator.so",
+      "entry": "JNI_OnLoad",
+      "entry_va": "0x10633d",
+      "arch": "arm",
+      "status": "Invalid memory write (UC_ERR_WRITE_UNMAPPED)",
+      "heap_used": 0,
+      "jni_calls": 0
+    }
+  ],
+  "recovered": [],
+  "status": [
+    "clean",
+    "Unhandled CPU exception (UC_ERR_EXCEPTION)",
+    "clean",
+    "clean",
+    "Unhandled CPU exception (UC_ERR_EXCEPTION)",
+    "Unhandled CPU exception (UC_ERR_EXCEPTION)",
+    "clean",
+    "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+    "clean",
+    "__stack_chk_fail",
+    "clean",
+    "Invalid memory fetch (UC_ERR_FETCH_UNMAPPED)",
+    "clean",
+    "clean",
+    "Invalid instruction (UC_ERR_INSN_INVALID)",
+    "Invalid memory write (UC_ERR_WRITE_UNMAPPED)"
+  ]
+}
