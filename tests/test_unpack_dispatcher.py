@@ -52,3 +52,29 @@ def test_fam_marks_covers_new_families():
         assert unpack.FAM_MARKS.get(family), f"missing FAM_MARKS for {family}"
     # baiduprotect moved out of SecShell/Baidu with the family split
     assert "baiduprotect" not in unpack.FAM_MARKS["SecShell/Baidu"]
+
+
+def test_java_layer_handoff_signature():
+    """Keyed on verified stub evidence; conservative fallback otherwise."""
+    import io
+    import zipfile
+
+    def zipped(dex_bytes=None):
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as zf:
+            if dex_bytes is not None:
+                zf.writestr("classes.dex", dex_bytes)
+            zf.writestr("lib/arm64-v8a/libdummy.so", b"\x7fELF")
+        buf.seek(0)
+        return zipfile.ZipFile(buf)
+
+    # both corpus-verified shapes: TxAppEntry stub (2.10.7.1 / 4.1.0.23) and
+    # the wrapper-refs variant for shells without TxAppEntry
+    assert unpack.java_layer_handoff(
+        zipped(b"dex\n035\x00" + b"pad" * 50 + b"TxAppEntry")) is True
+    assert unpack.java_layer_handoff(
+        zipped(b"pool DexFile and dexElements wrapper")) is True
+    # conservative: plain app dex and missing stub both fall back to the
+    # previous E-NATIVE-NO-RECOVERY behavior
+    assert unpack.java_layer_handoff(zipped(b"ordinary app classes")) is False
+    assert unpack.java_layer_handoff(zipped()) is False

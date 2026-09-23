@@ -30,6 +30,7 @@ from Crypto.Cipher import AES  # noqa: E402
 E_CODES = {
     "E-JAVA-RUNTIME-DELIVERY": "Java-only injected trojan; payload fetched at runtime (no embedded kit). IOCs extracted instead.",
     "E-JAVA-NO-IOC": "Java-only sample, no loader/IOC patterns found in decompiled classes.",
+    "E-JAVA-LAYER-HANDOFF": "Soft shell runs clean but payload DEX is delivered via ART/Java (dexElements/DexClassLoader), not minted in native memory; inspect stub-DEX Application (TxAppEntry -> MultiDex wrapper).",
     "E-NATIVE-NOENTRY": "Packer registers JNI at runtime (no Java_* export). Needs .init_array/JNI_OnLoad emulation.",
     "E-NATIVE-NO-RECOVERY": "Oracle ran but produced no self-validating payload; see fault info + key_log.",
     "E-ORACLE-FAULT": "Oracle aborted with an unhandled fault; fault info attached.",
@@ -138,6 +139,28 @@ def sniff_family(names):
     if "licel" in joined or "dexprotector" in joined:
         return "DexProtector"
     return None
+
+
+def java_layer_handoff(zfile) -> bool:
+    """True when the Legu stub DEX drives payload delivery from Java.
+
+    The native oracle runs clean but can never mint this payload DEX: the
+    stub Application (TxAppEntry -> multi-dex wrapper) delivers it inside
+    ART (dexElements/DexClassLoader) - see docs/PACKERS.md "Tencent Legu
+    soft-shell boundary". Signature verified 23-Sep-2026 against both SOFT
+    corpus samples (libshella-2.10.7.1 and 4.1.0.23 both carry TxAppEntry
+    within the first 2 MB of classes.dex). Family gating happens at the
+    call site so non-Legu failures keep E-NATIVE-NO-RECOVERY; a missing or
+    unreadable stub falls back to False (old behavior, still typed).
+    """
+    try:
+        head = zfile.read("classes.dex")[:2_000_000]
+    except Exception:
+        return False
+    if b"TxAppEntry" in head:
+        return True
+    return b"DexFile" in head and (
+        b"DexClassLoader" in head or b"dexElements" in head)
 
 
 def java_route(apk, zfile, workdir: pathlib.Path, report):
@@ -378,7 +401,16 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
                 except Exception:
                     pass
                 return report
-    report["ecode"] = "E-NATIVE-NO-RECOVERY"
+    if fam == "TencentLegu" and java_layer_handoff(zfile):
+        # Native ran clean and the stub carries the Java-delivery signature:
+        # report the typed handoff instead of a generic oracle failure.
+        report["ecode"] = "E-JAVA-LAYER-HANDOFF"
+        report["next_step"] = ("Payload delivered inside ART by the stub "
+                               "Application (TxAppEntry -> multi-dex wrapper); "
+                               "inspect classes.dex - outside the static "
+                               "native oracle (docs/PACKERS.md).")
+    else:
+        report["ecode"] = "E-NATIVE-NO-RECOVERY"
     report["key_log"] = [k for k in emu.key_log if k[0] in ("getBytes", "digest")][:12]
     return report
 

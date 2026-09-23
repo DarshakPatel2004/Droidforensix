@@ -135,11 +135,15 @@ Tier-2 oracle roster (`evaluation/oracle_out/summary.json`): 7 unique samples,
 
 Notes: the hardened gate short-circuits HARD/MIXED-hardened samples in ~2 s
 (no emulator minutes burned). The SOFT Legu samples carry `libshella-2.10.7.1`
-whose JNI_OnLoad clean-exits (Java-layer handoff above), but the
-`E-JAVA-LAYER-HANDOFF` heuristic keys on the newer `TxAppEntry` stub and did
-not match this shell — they land `E-NATIVE-NO-RECOVERY` (candidate dispatcher
-refinement, not yet implemented). Roster ran 8 times / 7 unique (duplicate
-corpus copy + within-batch dedupe miss in the throwaway runner script).
+whose JNI_OnLoad clean-exits (Java-layer handoff above). On 22-Sep no handoff
+detection existed in code, so they landed `E-NATIVE-NO-RECOVERY`; the
+refinement **implemented 23-Sep-2026** now emits `E-JAVA-LAYER-HANDOFF` when
+the Legu stub `classes.dex` carries the delivery signature (`TxAppEntry`, or
+`DexFile` + `DexClassLoader`/`dexElements`) — verified present in both SOFT
+corpus samples (`libshella-2.10.7.1` and `4.1.0.23`). The roster rows above
+remain the historical 22-Sep outcomes. Roster ran 8 times / 7 unique
+(duplicate corpus copy + within-batch dedupe miss in the throwaway runner
+script).
 
 ---
 
