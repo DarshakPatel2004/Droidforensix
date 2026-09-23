@@ -41,6 +41,22 @@ def load_ground_truth() -> list[dict[str, str]]:
         return list(csv.DictReader(handle))
 
 
+def filter_by_split(rows: list[dict[str, str]], split_name: str) -> list[dict[str, str]]:
+    """Restrict rows to one side of evaluation/holdout_split_v1.csv.
+
+    Fails loudly if the split file is missing — a silent pass-through would
+    quietly turn a holdout run into a full-corpus run.
+    """
+    split_file = PROJECT_ROOT / "evaluation" / "holdout_split_v1.csv"
+    with split_file.open(newline="", encoding="utf-8") as handle:
+        membership = {
+            item["sha256"].lower(): item["split"] for item in csv.DictReader(handle)
+        }
+    return [
+        row for row in rows if membership.get(row["sha256"].lower()) == split_name
+    ]
+
+
 def disable_ground_truth_lookup() -> None:
     """Prevent exact-label leakage while leaving production code unchanged."""
     family_id.GROUND_TRUTH_FILES = []
@@ -118,10 +134,11 @@ def _init_worker():
         def dissect(self): return {}
     pipeline_module.APKDissector = NoOpDissector
 
+    # Same validation-only timeout headroom as in main() (large APKs).
     pipeline_module.STEP_TIMEOUTS[5] = 300
     pipeline_module.STEP_TIMEOUTS[6] = 180
-    pipeline_module.STEP_TIMEOUTS[7] = 180
-    pipeline_module.STEP_TIMEOUTS[8] = 300
+    pipeline_module.STEP_TIMEOUTS[7] = 600
+    pipeline_module.STEP_TIMEOUTS[8] = 900
     pipeline_module.STEP_TIMEOUTS[9] = 180
 
 
@@ -171,8 +188,11 @@ def resolve_apk_path(row: dict[str, str]) -> str:
 def run_one(row: dict[str, str], output_dir: Path) -> dict:
     sha256 = row["sha256"].lower()
     try:
+        # 1200s: a 71MB pendrive APK legitimately needed >600s; validation-
+        # scoped (production default 600 stays unchanged in analysis/pipeline.py).
         result = pipeline_module.run_pipeline(
-            resolve_apk_path(row), work_dir=str(output_dir), event_emitter=None
+            resolve_apk_path(row), work_dir=str(output_dir), event_emitter=None,
+            pipeline_timeout=1200,
         )
         family = result.get("family_identification") or {}
         assessment = result.get("llm_assessment") or {}
@@ -362,19 +382,27 @@ def main() -> None:
     parser.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT)
     parser.add_argument("--parallel", "-p", type=int, default=0,
                         help="Number of parallel workers (0 = sequential, 1+ = parallel)")
+    parser.add_argument("--split", choices=("all", "dev", "holdout"), default="all",
+                        help="Restrict to dev/holdout rows from evaluation/holdout_split_v1.csv")
     args = parser.parse_args()
 
     rows = load_ground_truth()
+    if args.split != "all":
+        rows = filter_by_split(rows, args.split)
+        print(f"Split filter '{args.split}': {len(rows)} rows", flush=True)
     if args.max_samples:
         rows = rows[: args.max_samples]
     args.output_dir.mkdir(parents=True, exist_ok=True)
     settings.WORK_DIR = args.output_dir
     disable_ground_truth_lookup()
     install_accuracy_mode()
+    # Validation-only headroom: the corpus contains 70-90MB APKs; step 7 at
+    # 180s killed two of them (2 consecutive strikes each). Production
+    # defaults in analysis/pipeline.py stay untouched.
     pipeline_module.STEP_TIMEOUTS[5] = 300
     pipeline_module.STEP_TIMEOUTS[6] = 180
-    pipeline_module.STEP_TIMEOUTS[7] = 180
-    pipeline_module.STEP_TIMEOUTS[8] = 300
+    pipeline_module.STEP_TIMEOUTS[7] = 600
+    pipeline_module.STEP_TIMEOUTS[8] = 900
     pipeline_module.STEP_TIMEOUTS[9] = 180
     logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 
