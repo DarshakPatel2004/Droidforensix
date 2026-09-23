@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-09-19T04:26:10.850811+00:00",
+  "generated_at": "2026-09-23T10:58:54.500586+00:00",
   "family": {
     "by_source": [
       {
@@ -48,7 +48,7 @@
       {
         "source": "androzoo_drebin",
         "total": 149,
-        "in_sample_accuracy": 0.9933,
+        "in_sample_accuracy": 1.0,
         "specific_share": 0.7986577181208053,
         "external_confirmation": 0.0,
         "high_confidence_share": 0.0,
@@ -57,7 +57,7 @@
       {
         "source": "abusech",
         "total": 121,
-        "in_sample_accuracy": 0.9174,
+        "in_sample_accuracy": 0.9752,
         "specific_share": 0.17355371900826447,
         "external_confirmation": 0.0,
         "high_confidence_share": 0.0,
@@ -66,7 +66,7 @@
       {
         "source": "F-Droid",
         "total": 100,
-        "in_sample_accuracy": 0.95,
+        "in_sample_accuracy": 1.0,
         "specific_share": 1.0,
         "external_confirmation": 0.0,
         "high_confidence_share": 0.0,
@@ -75,7 +75,7 @@
       {
         "source": "AndroZoo",
         "total": 76,
-        "in_sample_accuracy": 0.9342,
+        "in_sample_accuracy": 0.9079,
         "specific_share": 0.13157894736842105,
         "external_confirmation": 0.0,
         "high_confidence_share": 0.0,
@@ -84,15 +84,15 @@
       {
         "source": "modern_eval",
         "total": 63,
-        "in_sample_accuracy": 0.9841,
+        "in_sample_accuracy": 1.0,
         "specific_share": 0.4126984126984127,
         "external_confirmation": 0.0,
         "high_confidence_share": 0.0,
         "label_reliability": 0.1651
       }
     ],
-    "in_sample_raw_accuracy": 0.9568,
-    "reliability_weighted_in_sample_accuracy": 0.9688,
-    "deployment_grade": "held-out 200 (real_world_accuracy_report.json): 0.970 overall, 0 FN, 6% FP; 5-fold CV (seed 0): 0.892"
+    "in_sample_raw_accuracy": 0.9804,
+    "reliability_weighted_in_sample_accuracy": 0.9948,
+    "deployment_grade": "held-out 200 (real_world_accuracy_report.json): 0.970 overall, 0 FN, 6% FP; 5-fold CV (seed 0): 0.906"
   }
 }
