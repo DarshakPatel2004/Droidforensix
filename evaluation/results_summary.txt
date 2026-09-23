@@ -1,4 +1,4 @@
-DroidForensix — Results Summary (verified 19-Sep-2026)
+DroidForensix — Results Summary (verified 19–22 Sep 2026)
 =======================================================
 
 Reproduce every number with the commands in evaluation/METHODOLOGY.md.
@@ -72,6 +72,8 @@ identify_family() unchanged):
     corr(P(malware), num_c2) = -0.158
     median num_c2: benign (F-Droid) 5  >  malware 3
     false negatives (n=17): median num_c2 12; 11/17 have >=5 C2 domains
+    (ANATOMY NOTE: computed on the pre-c2_alignment bundle — current
+     bundle: FP 0, FN 10, 15 features; see §2.)
 
     The 11 high-C2 FN are the PACKED-DROPPER population: every one has
     num_payloads >=1 AND num_encodings >=1 (counts frequently saturated at
@@ -109,7 +111,31 @@ identify_family() unchanged):
     ceiling on model skill.
 
 ---------------------------------------------------------------------------
-5. DRAFT THESIS SECTIONS (corrected numbers)
+5. LEAKAGE-FREE FAMILY VALIDATION (run 359 — no GT at inference)
+---------------------------------------------------------------------------
+
+    Protocol: pipeline steps 1-9, GT lookup disabled, isolated Ollama,
+    scorable cut per analysis/labels.py::is_catch_all. Separate protocol
+    from §1 — whole ground_truth_all.csv (377 rows), no gap-feature join.
+
+    raw (errors as wrong, alias-aware) .... 35.54%  (134/377)
+    SCORABLE GT headline (n=194) .......... 62.37%  alias-aware
+                                         55.67%  strict exact
+    catch-all GT (n=183) ................. 7.10%   (13/183; unresolvable
+                              by design — depresses the raw figure)
+    per source: androzoo_drebin 66.4% (149) | modern_eval 42.9% (63) |
+      AndroZoo 26.9% (26) | abusech 0.8% (121) | pendrive 0.0% (18;
+      profile-coverage gap 0/17 — leakage warning in VALIDATION_359.md)
+    miss anatomy: 62 under_matched vs 179 wrong_family (241 wrongs;
+      2 systematic errors of 377)
+
+    Full protocol, error SHAs, reproduce command:
+    evaluation/VALIDATION_359.md. WARNING: do not tune engine profiles
+    against this GT without a dev/holdout split — it would void the
+    leakage-free claim.
+
+---------------------------------------------------------------------------
+6. DRAFT THESIS SECTIONS (corrected numbers)
 ---------------------------------------------------------------------------
 
 Family — honest framing:
@@ -157,3 +183,4 @@ Artifacts (all in repo)
     analysis/family_confidence_scorer.py
     analysis/binary_explainer.py
     evaluation/{family_ensemble_eval,source_aware_eval,misclassification_analysis,cv_ablation}.py
+    evaluation/VALIDATION_359.md                   leakage-free validation results + protocol
