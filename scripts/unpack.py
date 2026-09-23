@@ -120,7 +120,10 @@ def sniff_family(names):
         return "360Jiagu"
     if "libshell" in joined or "libExecution" in joined:
         return "TencentLegu"
-    if "libDexHelper" in joined or "libbaiduprotect" in joined:
+    if "libbaiduprotect" in joined or "com.baidu.protect" in joined:
+        # label aligned with data/packer_markers.json brand (was lumped into SecShell/Baidu)
+        return "BaiduEnhancer"
+    if "libDexHelper" in joined:
         return "SecShell/Baidu"
     if "libtup" in joined or "libexecmain" in joined:
         return "Ijiami(variant)"
@@ -128,6 +131,12 @@ def sniff_family(names):
         return "TencentLegu"
     if "libnesec" in joined or "NQShield" in joined:
         return "Wangxin"
+    if "libkwsgmain" in joined or "libkdp" in joined:
+        return "Wangsu"
+    if "libmobisec" in joined:
+        return "Ali"
+    if "licel" in joined or "dexprotector" in joined:
+        return "DexProtector"
     return None
 
 
@@ -185,8 +194,12 @@ FAM_MARKS = {"Ijiami": ("ijm", "ijiami", "execmain", "libexec"),
              "Bangcle/SecNeo": ("secmain", "secexe", "secpreload", "bangcle"),
              "360Jiagu": ("jiagu",),
              "TencentLegu": ("chaosvmp", "ddog", "legu", "tup", "shell"),
-             "SecShell/Baidu": ("DexHelper", "baiduprotect"),
-             "Wangxin": ("nesec", "NQShield")}
+             "SecShell/Baidu": ("DexHelper",),
+             "Wangxin": ("nesec", "NQShield"),
+             "Wangsu": ("kwsgmain", "kdp"),
+             "Ali": ("mobisec",),
+             "BaiduEnhancer": ("baiduprotect",),
+             "DexProtector": ("licel", "dexprotector")}
 
 
 def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
