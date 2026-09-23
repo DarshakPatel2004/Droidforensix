@@ -26,7 +26,8 @@ import emulate
 from unpack import sniff_family, FAM_MARKS  # noqa: E402
 
 FAMILIES = ("Ijiami", "TencentLegu", "Bangcle/SecNeo", "360Jiagu",
-            "SecShell/Baidu", "Wangxin", "Ijiami(variant)")
+            "SecShell/Baidu", "Wangxin", "Ijiami(variant)",
+            "Wangsu", "Ali", "BaiduEnhancer", "DexProtector")
 
 
 def sha256_bytes(data: bytes) -> str:
@@ -135,7 +136,11 @@ def find_soft_packers(corpus_path: pathlib.Path, families=FAMILIES) -> dict:
         for f in families:
             if s.get("family") == f:
                 grouped.setdefault(f, []).append(s)
-    return {"families": grouped, "total": len(samples)}
+    # Error entries were dropped from the output before 23-Sep-2026 (only
+    # derivable as total - classified); persist identities so scan failures
+    # are attributable to specific APKs.
+    return {"families": grouped, "total": len(samples),
+            "errors": [s for s in samples if "error" in s]}
 
 
 def top_soft(results: dict, n=5) -> dict:
@@ -213,7 +218,8 @@ def main():
             print("   ", pathlib.Path(s["path"]).name, "->", libs)
     with open(args.out, "w") as f:
         json.dump(results, f, indent=2)
-    print(f"\nwrote {args.out} ({results['total']} APKs)")
+    print(f"\nwrote {args.out} ({results['total']} APKs, "
+          f"{len(results['errors'])} errors)")
 
     top = top_soft(results)
     json.dump({"top_soft": top}, open(

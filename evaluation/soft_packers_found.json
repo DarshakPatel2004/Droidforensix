@@ -3443,11 +3443,11 @@
         ]
       }
     ],
-    "SecShell/Baidu": [
+    "BaiduEnhancer": [
       {
         "path": "samples\\malware\\androzoo\\unknown_0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03.apk",
         "sha256": "0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03",
-        "family": "SecShell/Baidu",
+        "family": "BaiduEnhancer",
         "verdict": "HARD",
         "libs": [
           {
@@ -3485,7 +3485,7 @@
       {
         "path": "samples\\malware\\unknown_0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03.apk",
         "sha256": "0000716bf3c42807f4f7d11f983cbd0ad3a7bb60c60fceec2141c2df7ecdac03",
-        "family": "SecShell/Baidu",
+        "family": "BaiduEnhancer",
         "verdict": "HARD",
         "libs": [
           {
@@ -3522,5 +3522,73 @@
       }
     ]
   },
-  "total": 44
+  "total": 44,
+  "errors": [
+    {
+      "path": "samples\\malware\\abusech\\208e85cc66f2ee482dce1c6ee5f1ea45592e9fc9980c1b04b5157975d127dcf1.apk",
+      "sha256": "208e85cc66f2ee482dce1c6ee5f1ea45592e9fc9980c1b04b5157975d127dcf1",
+      "family": null,
+      "error": "File is not a zip file"
+    },
+    {
+      "path": "samples\\malware\\abusech\\669b75fd2620fa990bb982c07f5233f5b3e98aff65d9d8ffb9683aaae6cb98c1.apk",
+      "sha256": "669b75fd2620fa990bb982c07f5233f5b3e98aff65d9d8ffb9683aaae6cb98c1",
+      "family": null,
+      "error": "File is not a zip file"
+    },
+    {
+      "path": "samples\\malware\\abusech\\unknown_050d91cde706f7c981f90878dbd50d92038caeedd38852a10e018e57f188e79b.apk",
+      "sha256": "050d91cde706f7c981f90878dbd50d92038caeedd38852a10e018e57f188e79b",
+      "family": null,
+      "error": "Corrupt extra field 5866 (size=11822)"
+    },
+    {
+      "path": "samples\\malware\\abusech\\unknown_4eb2ac595b1a17ddde607d55dc41d93896eeca3a01cd440b8953159bca3a418d.apk",
+      "sha256": "4eb2ac595b1a17ddde607d55dc41d93896eeca3a01cd440b8953159bca3a418d",
+      "family": null,
+      "error": "Corrupt extra field 572e (size=11822)"
+    },
+    {
+      "path": "samples\\malware\\abusech\\unknown_f73771a1b9887ebe85ce70b6dc459e0ce05ff6f71ba5833b5385a9e0a81af3df.apk",
+      "sha256": "f73771a1b9887ebe85ce70b6dc459e0ce05ff6f71ba5833b5385a9e0a81af3df",
+      "family": null,
+      "error": "Corrupt extra field 4336 (size=25206)"
+    },
+    {
+      "path": "samples\\malware\\modern_eval\\03818f12d9e7676c30efceb7b4815106406a4dc7507bb3e12c05a37f7879e183.apk",
+      "sha256": "4dfc06d393f3ec3d9ca91dd9c27a4e5dc1093b6bc2cf06ad1bd9bff7ba4c6063",
+      "family": null,
+      "error": "File is not a zip file"
+    },
+    {
+      "path": "samples\\malware\\modern_eval\\126012e515b74d7ceb3f21535a4bac4730fc990b1ab87ab22355809da0f5eb70.apk",
+      "sha256": "aa12733db9b5b2110c799efd2b40840ee56d5764c70552c3f23d9e6d419cc9da",
+      "family": null,
+      "error": "File is not a zip file"
+    },
+    {
+      "path": "samples\\malware\\modern_eval\\3a6d53616484183e4c582b82ac147f05a0d08e86836be59bad03470d9605eded.apk",
+      "sha256": "b16abfbd6af6d60469f0a4a36bcfd98053a23a583605cd81cc12979d0d576bad",
+      "family": null,
+      "error": "File is not a zip file"
+    },
+    {
+      "path": "samples\\malware\\modern_eval\\4dfc06d393f3ec3d9ca91dd9c27a4e5dc1093b6bc2cf06ad1bd9bff7ba4c6063.apk",
+      "sha256": "4dfc06d393f3ec3d9ca91dd9c27a4e5dc1093b6bc2cf06ad1bd9bff7ba4c6063",
+      "family": null,
+      "error": "File is not a zip file"
+    },
+    {
+      "path": "samples\\malware\\modern_eval\\a3ade4b9e03e459a5955d68c52f8dbf893ce0c2bfb56c1c8b7415ecfb7ec9246.apk",
+      "sha256": "a3ade4b9e03e459a5955d68c52f8dbf893ce0c2bfb56c1c8b7415ecfb7ec9246",
+      "family": null,
+      "error": "Corrupt extra field 6245 (size=18025)"
+    },
+    {
+      "path": "samples\\malware\\modern_eval\\aa12733db9b5b2110c799efd2b40840ee56d5764c70552c3f23d9e6d419cc9da.apk",
+      "sha256": "aa12733db9b5b2110c799efd2b40840ee56d5764c70552c3f23d9e6d419cc9da",
+      "family": null,
+      "error": "File is not a zip file"
+    }
+  ]
 }

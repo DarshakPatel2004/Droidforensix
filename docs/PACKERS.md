@@ -98,18 +98,25 @@ the payload DEX is outside the static native oracle; classified `E-JAVA-LAYER-HA
 
 ---
 
-## Corpus scan & tier-2 roster outcomes (SOP A3 / B5 — 22-Sep-2026)
+## Corpus scan & tier-2 roster outcomes (SOP A3 / B5 — 22–23-Sep-2026)
 
-Static scan (`scripts/find_soft_packers.py`; outputs `evaluation/soft_packers_found*.json`):
+Static scan (`scripts/find_soft_packers.py`; outputs `evaluation/soft_packers_found*.json`).
+Rescanned 23-Sep-2026 after the dispatcher gap-closers: `sniff_family` now
+routes **Wangsu / Ali / BaiduEnhancer / DexProtector** (aligned with
+`data/packer_markers.json`); the 2 former `SecShell/Baidu` samples are
+libbaiduprotect-based and relabel **BaiduEnhancer** (still H2); no Wangsu/Ali/
+DexProtector APKs exist in this corpus; the 11 scan-error identities are now
+persisted in the output's `errors[]` (7 "not a zip file", 4 "corrupt extra
+field"; previously dropped, only derivable as total minus classified).
 
 | Corpus | APKs scanned | Family-classified | Verdicts |
 |--------|--------------|-------------------|----------|
-| malware | 647 | 33 (+11 scan errors, identities not persisted by scanner) | HARD 16, MIXED 14, SOFT 2, NONE 1 |
+| malware | 647 | 33 (+11 scan errors, identities in `errors[]`) | HARD 16, MIXED 14, SOFT 2, NONE 1 |
 | goodware | 115 | 3 | SOFT 1, HARD 2 |
 | legitimate | 100 | 0 | — |
 
 Malware by family: 360Jiagu 21 (H11/M10), TencentLegu 5 (S2/M3), Bangcle 4
-(H2/M1/N1), SecShell/Baidu 2 (H2), Ijiami 1 (H1). Unique SOFT = 2 (TencentLegu:
+(H2/M1/N1), BaiduEnhancer 2 (H2), Ijiami 1 (H1). Unique SOFT = 2 (TencentLegu:
 one malware + one packed benign app; `samples/malware/unknown_0001257e…` is a
 duplicate copy of the androzoo sample).
 
