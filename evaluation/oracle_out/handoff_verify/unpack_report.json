@@ -1,0 +1,27 @@
+{
+  "apk": "D:\\DroidForensix\\samples\\malware\\unknown_0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812.apk",
+  "sha256": "0001257e84278079030243774c6dba6540f2047c876c2981fa2673ff9ce1a812",
+  "verdict": "FAILED",
+  "ecode": "E-JAVA-LAYER-HANDOFF",
+  "artifacts": [],
+  "stats": {
+    "entries": 945,
+    "so_count": 9,
+    "dex_count": 3
+  },
+  "triage": {
+    "verdict": "packed_known(TencentLegu)",
+    "confidence": 0.95
+  },
+  "route": "NATIVE",
+  "family": "TencentLegu",
+  "oracle": {
+    "lib": "armeabi_libshella-2.10.7.1.so",
+    "entry": "JNI_OnLoad",
+    "status": "clean",
+    "jni_calls": 4,
+    "fault": null
+  },
+  "next_step": "Payload delivered inside ART by the stub Application (TxAppEntry -> multi-dex wrapper); inspect classes.dex - outside the static native oracle (docs/PACKERS.md).",
+  "key_log": []
+}
