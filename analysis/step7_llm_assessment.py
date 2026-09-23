@@ -831,6 +831,9 @@ def _ollama_available(host: str, timeout: float = 2.0) -> bool:
         return False
 
 
+_OLLAMA_SEED = 42  # pinned sampling seed: identical prompt -> identical verdict (rerun stability)
+
+
 class OllamaClient:
     """Reusable Ollama client with connection pooling and exponential backoff."""
 
@@ -862,7 +865,7 @@ class OllamaClient:
                     json={
                         "model": self.model, "prompt": prompt,
                         "stream": False, "format": "json",
-                        "options": {"num_ctx": 4096, "temperature": 0.1},
+                        "options": {"num_ctx": 4096, "temperature": 0.1, "seed": _OLLAMA_SEED},
                     },
                     timeout=self.timeout,
                 )
@@ -1177,7 +1180,7 @@ def explain_threat_chain(chain: dict) -> dict:
                 model=ollama_model,
                 prompt=combined,
                 format="json",
-                options={"num_ctx": 4096, "temperature": 0.1},
+                options={"num_ctx": 4096, "temperature": 0.1, "seed": _OLLAMA_SEED},
             )
             raw_output = resp.get("response", "")
 
@@ -1252,7 +1255,7 @@ def explain_method(
                 model=ollama_model,
                 prompt=combined,
                 format="json",
-                options={"num_ctx": 4096, "temperature": 0.1},
+                options={"num_ctx": 4096, "temperature": 0.1, "seed": _OLLAMA_SEED},
             )
             raw_output = resp.get("response", "")
 
@@ -1467,7 +1470,7 @@ def summarize_dissection(dissection: dict, class_objects: list | None = None) ->
                 model=ollama_model,
                 prompt=combined,
                 format="json",
-                options={"num_ctx": 4096, "temperature": 0.1},
+                options={"num_ctx": 4096, "temperature": 0.1, "seed": _OLLAMA_SEED},
             )
             raw_output = resp.get("response", "")
 
