@@ -174,6 +174,8 @@ def run_matrix(args):
                     report["heuristics"]["H2"].get("encrypted_skipped", 0),
                 "dex_encrypted":
                     report["heuristics"]["H3"].get("reason") == "dex_encrypted",
+                "h_hits": [hid for hid, res in report["heuristics"].items()
+                           if res.get("hit")],
                 "duration_seconds": report["duration_seconds"],
             })
             print("[%d/%d] %-34s conf=%.2f %5.1fs  %s" % (
