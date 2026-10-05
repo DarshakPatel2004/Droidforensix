@@ -21,6 +21,7 @@ import re
 import sys
 import time
 import zipfile
+import zlib
 
 from elftools.elf.elffile import ELFFile
 
@@ -140,6 +141,27 @@ def _entropy_windows(fh, size):
     return entropies
 
 
+# zipfile/zlib failures meaning "member genuinely unreadable" (real
+# crypto or corrupt data) - callers record these and continue.
+ZIP_UNREADABLE_ERRORS = (RuntimeError, zipfile.BadZipFile, zlib.error,
+                         EOFError)
+
+
+def _open_member(zf, name):
+    """Open a zip member for reading, defusing the ZipCrypto flag-lie.
+
+    Droppers set encryption bit 0x1 on plaintext, CRC-valid entries
+    (2026-08-29 case finding: the pendrive "ZipCrypto trio" was never
+    encrypted); zipfile refuses those outright. Clear the bit - zlib/CRC
+    still verify content, so genuinely encrypted members fail at read
+    time and the caller records them via ZIP_UNREADABLE_ERRORS.
+    """
+    info = zf.getinfo(name) if isinstance(name, str) else name
+    if info.flag_bits & 0x1:
+        info.flag_bits &= ~0x1
+    return zf.open(info)
+
+
 def h2_asset_entropy(zf):
     candidates = [
         i for i in zf.infolist()
@@ -150,16 +172,16 @@ def h2_asset_entropy(zf):
     sampled = False
     encrypted_skipped = 0
     for info in candidates[:20]:
-        if info.flag_bits & 0x1:
-            # zip-encrypted member: unreadable without the password.
-            # Skip and record it instead of crashing the whole triage
-            # (3 pendrive samples had encrypted assets/ members).
-            encrypted_skipped += 1
-            continue
         if info.file_size > ENTROPY_SAMPLE_CAP:
             sampled = True
-        with zf.open(info) as fh:
-            entropies.extend(_entropy_windows(fh, info.file_size))
+        try:
+            with _open_member(zf, info) as fh:
+                entropies.extend(_entropy_windows(fh, info.file_size))
+        except ZIP_UNREADABLE_ERRORS:
+            # genuinely encrypted/corrupt member: record it instead of
+            # crashing the whole triage
+            encrypted_skipped += 1
+            continue
     flagged = sum(1 for e in entropies if e > 7.5)
     mean = round(sum(entropies) / len(entropies), 4) if entropies else 0.0
     return {
@@ -220,13 +242,14 @@ def h3_native_app_class(zf, apk_path):
         return {"id": "H3", "hit": False, "app_class": app_class,
                 "reason": "no_dex"}
     primary = dex_names[0]
-    if zf.getinfo(primary).flag_bits & 0x1:
-        # zip-encrypted dex (dropper/protector trick): bytes are
-        # unreadable without the password - record why the scan stopped.
+    try:
+        with _open_member(zf, primary) as fh:
+            dex_bytes = fh.read()
+    except ZIP_UNREADABLE_ERRORS:
+        # genuinely encrypted/corrupt dex: record why the scan stopped
         return {"id": "H3", "hit": False, "app_class": app_class,
                 "primary_dex": primary, "dex_bytes": 0,
                 "reason": "dex_encrypted"}
-    dex_bytes = zf.read(primary)
     loads_native = _app_class_loads_native(dex_bytes, app_class)
     if loads_native is None:
         loads_native = len(dex_bytes) <= STUB_DEX_MAX and b"loadLibrary" in dex_bytes
@@ -239,7 +262,7 @@ def h3_native_app_class(zf, apk_path):
 
 def _elf_facts(zf, name):
     try:
-        with zf.open(name) as fh:
+        with _open_member(zf, name) as fh:
             elf = ELFFile(io.BytesIO(fh.read()))
             exports = 0
             und_symbols = set()
@@ -297,10 +320,15 @@ def h5_packer_markers(zf, markers):
     lowered_names = [n.lower() for n in zf.namelist()]
     dex_blob = b""
     for name in zf.namelist():
-        # encrypted dex entries contribute no marker bytes (skip, not
-        # crash - the filename-based matching below still runs)
-        if DEX_RE.search(name) and not zf.getinfo(name).flag_bits & 0x1:
-            dex_blob += zf.read(name)[: STUB_DEX_MAX * 4]
+        if not DEX_RE.search(name):
+            continue
+        try:
+            with _open_member(zf, name) as fh:
+                dex_blob += fh.read(STUB_DEX_MAX * 4)
+        except ZIP_UNREADABLE_ERRORS:
+            # genuinely unreadable dex: no marker bytes (filename-based
+            # matching below still runs)
+            continue
     lowered_dex = dex_blob.lower()
     matched = []
     for brand in markers["brands"]:
