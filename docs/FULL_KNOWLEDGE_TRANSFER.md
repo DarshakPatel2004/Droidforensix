@@ -189,14 +189,55 @@ See `MASTER_KEY_STRATEGY.md` table — each row is a real incident with symptom�
   outputs, autonomous myg0N KDF brute).
 - Miner split follow-up (payload's `miner.apk` is 0 B placeholder, fetched live)
 
-## 15. Mission-critical triage matrix (2026-08-28)
+## 15. Mission-critical triage matrix (2026-08-28; reproduced 2026-10-04)
 
-`scripts/triage_matrix.py` → `analysis/ac4/triage_matrix.json`:
+Original claim (2026-08-28 run; run artifacts were lost at the publish commit
+`be31a2d` "sensitive artifacts excluded"):
 
 | ground truth | clean | packed-detected | suspect | FP / FN |
 |---|---|---|---|---|
 | goodware (100) | 95 | 3 brand-matched + 2 sha256-allowlisted | 0 | **0 FP** |
 | malware (32) | 13 unpacked (semantics OK) | 19 flagged (all packed kits detected) | 4 dropper-shape suspects | **0 FN** |
+
+**Reproduction (2026-10-04):** `python scripts/triage_matrix.py` →
+`analysis/ac4/triage_matrix.json` (gitignored; regenerate any time). Sample set:
+`samples/goodware/benign_eval` (100) + locklist buckets `gt_packed_suspect` /
+`gt_malware_unpacked` / `reserve_realworld` (14) + pendrive rows from
+`ground_truth_all.csv` (18) = 32 malware; `RTO.apk` excluded (AC1 calibration
+positive). 132/132 triaged, 0 missing, 0 errors.
+
+| ground truth | clean | packed-detected | suspect | FP / FN |
+|---|---|---|---|---|
+| goodware (100) | 95 | 3 brand-matched + 2 sha256-allowlisted | 0 | **0 FP** |
+| malware (32) | 22 non-flagged (semantics OK) | 7 flagged | 3 dropper-shape suspects (PNB One, PNB ONE ACTIVATION, Repair service) | **0 FN** |
+
+Reproduced exactly: every goodware cell (95 / 5 / 0 FP), the malware total (32)
+and both headline claims (**0 FP**, **0 FN**). Not reproduced: malware internals
+(clean +9, flagged −12, suspect −1) — the JSON records
+`doc_claim_reproduced: NO` with the full delta. Findings behind the delta:
+
+1. **Allowlist reconstruction.** `sha256_allowlist` was excluded at publish and
+   was restored 2026-10-04: the claim's arithmetic (95 clean + 3 brand + 2
+   remaining of 100) uniquely identifies `000160700ddab…` and `0021399f0bd9…`;
+   both are ground-truthed `confirmed_external` benign with 0 VT detections
+   (`ground_truth_check_all.csv`). Reconstruction provenance is recorded in
+   `data/engine_allowlist.json`.
+2. **Encrypted zip members.** Three pendrive droppers (Tubi-inin, Google Video,
+   MediaPlayer2) contain password-protected members incl. an encrypted
+   `classes.dex`; the published code crashed on them (29 triaged + 3 errors).
+   Triage now skips unreadable members and records the fact
+   (`encrypted_assets_skipped`, `H3 reason: dex_encrypted`) instead of failing,
+   restoring 32/32 triaged.
+3. **flagged −12 / suspect −1 not reproducible from this repo.** H1–H6 are
+   unchanged across all available git history, and the A/B of the
+   dropper-signal fixes shows **0 verdict differences** (`analysis/ac4/
+   ab_fcm_fix.json`: fcm same=79 / new-only=53 / old-only=0, parse-guard
+   diffs=1, verdict diffs=0; regenerate with `python scripts/ab_fcm_fix.py`)
+   — so neither history drift nor the 2026-10-04 fixes explain the gap.
+   Most likely the original 32-sample
+   composition or the pendrive packing rules differed on the Kali machine
+   (unpublished). The 4th suspect could not be identified: no remaining sample
+   both lacks a launcher and carries FCM under the documented rule.
 
 Semantics: triage detects **packing**; malice adjudication is `forensic_pipeline.py`
 (AC4 layer). `indeterminate` is never benign — dropper-shaped manifests escalate to
