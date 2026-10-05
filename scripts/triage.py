@@ -148,7 +148,14 @@ def h2_asset_entropy(zf):
     entropies = []
     flagged = 0
     sampled = False
+    encrypted_skipped = 0
     for info in candidates[:20]:
+        if info.flag_bits & 0x1:
+            # zip-encrypted member: unreadable without the password.
+            # Skip and record it instead of crashing the whole triage
+            # (3 pendrive samples had encrypted assets/ members).
+            encrypted_skipped += 1
+            continue
         if info.file_size > ENTROPY_SAMPLE_CAP:
             sampled = True
         with zf.open(info) as fh:
@@ -163,6 +170,7 @@ def h2_asset_entropy(zf):
         "windows_flagged": flagged,
         "total_windows": len(entropies),
         "sampled_capped": sampled,
+        "encrypted_skipped": encrypted_skipped,
         "candidates": [i.filename for i in candidates[:20]],
     }
 
@@ -212,6 +220,12 @@ def h3_native_app_class(zf, apk_path):
         return {"id": "H3", "hit": False, "app_class": app_class,
                 "reason": "no_dex"}
     primary = dex_names[0]
+    if zf.getinfo(primary).flag_bits & 0x1:
+        # zip-encrypted dex (dropper/protector trick): bytes are
+        # unreadable without the password - record why the scan stopped.
+        return {"id": "H3", "hit": False, "app_class": app_class,
+                "primary_dex": primary, "dex_bytes": 0,
+                "reason": "dex_encrypted"}
     dex_bytes = zf.read(primary)
     loads_native = _app_class_loads_native(dex_bytes, app_class)
     if loads_native is None:
@@ -283,7 +297,9 @@ def h5_packer_markers(zf, markers):
     lowered_names = [n.lower() for n in zf.namelist()]
     dex_blob = b""
     for name in zf.namelist():
-        if DEX_RE.search(name):
+        # encrypted dex entries contribute no marker bytes (skip, not
+        # crash - the filename-based matching below still runs)
+        if DEX_RE.search(name) and not zf.getinfo(name).flag_bits & 0x1:
             dex_blob += zf.read(name)[: STUB_DEX_MAX * 4]
     lowered_dex = dex_blob.lower()
     matched = []
@@ -314,6 +330,29 @@ def h6_import_profile(facts, has_payload):
             "file_io_symbols": file_io}
 
 
+PUSH_ACTION_MARKERS = ("MESSAGING_EVENT", "c2dm.intent.RECEIVE")
+ANDROID_NAME_ATTR = "{http://schemas.android.com/apk/res/android}name"
+
+
+def _has_push_messaging(a):
+    """True when any intent-filter <action> declares FCM/C2DM push.
+
+    Scans <action> values in the parsed manifest, NOT component names:
+    get_receivers()/get_services() return android:name only, so the
+    pre-fix check ("MESSAGING_EVENT" in component names) could never
+    fire on real FCM apps (verified on corpus samples - Firebase
+    services are named ...FirebaseMessagingService). lxml pass,
+    ~0.01s per APK."""
+    doc = a.get_android_manifest_xml()
+    if doc is None:
+        return False
+    for el in doc.iter("action"):
+        value = el.get(ANDROID_NAME_ATTR, "")
+        if any(marker in value for marker in PUSH_ACTION_MARKERS):
+            return True
+    return False
+
+
 def dropper_shape_signals(apk_path):
     """Manifest-level dropper indicators (PNB One lesson: indeterminate
     bucket carried fully-malicious no-launcher FCM droppers)."""
@@ -323,10 +362,16 @@ def dropper_shape_signals(apk_path):
         logging.getLogger("androguard").setLevel(logging.ERROR)
         from androguard.core.apk import APK
         a = APK(str(apk_path))
+        # androguard 4.x does NOT raise on corrupt/encrypted manifests -
+        # it logs and returns empty attributes (11/57 pendrive samples
+        # parse-fail this way). Empty package is the parse-failure tell;
+        # without this guard a broken manifest masquerades as
+        # no_launcher_activity with zero permissions/services.
+        if not a.get_package():
+            return ["manifest_parse_error:manifest_unparsed"]
         if not a.get_main_activity():
             signals.append("no_launcher_activity")
-        filt = " ".join(a.get_receivers()) + " " + " ".join(a.get_services())
-        if "MESSAGING_EVENT" in filt or "c2dm.intent.RECEIVE" in filt:
+        if _has_push_messaging(a):
             signals.append("fcm_receiver")
         perms = " ".join(a.get_permissions())
         if "REQUEST_INSTALL_PACKAGES" in perms:
@@ -336,6 +381,21 @@ def dropper_shape_signals(apk_path):
     except Exception as e:
         return ["manifest_parse_error:" + str(e)[:60]]
     return signals
+
+
+def escalate_indeterminate(verdict, confidence, signals):
+    """KT section 15: indeterminate is NEVER benign. Escalate to suspect
+    when the manifest is dropper-shaped (no launcher + >=2 hard signals).
+
+    Verdict CHANGE is gated to the indeterminate bucket only - packed and
+    clean verdicts carry signals as evidence, never as an escalation
+    trigger (preserves the 0FP/0FN matrix semantics). Pure function so
+    the rule is unit-testable without androguard."""
+    hard = [s for s in signals if not s.startswith("manifest_parse_error")]
+    if verdict == "indeterminate" and "no_launcher_activity" in hard \
+            and len(hard) >= 2:
+        return "indeterminate(suspect:dropper-shape)", max(confidence, 0.7)
+    return verdict, confidence
 
 
 def build_verdict(heuristics):
@@ -377,15 +437,11 @@ def triage_apk(apk_path, markers, allowlist):
     heuristics = {"H1": h1, "H2": h2, "H3": h3,
                   "H4": h4, "H5": h5, "H6": h6}
     verdict, confidence = build_verdict(heuristics)
-    suspect_reasons = []
-    if verdict == "indeterminate":
-        # Mission-critical policy: indeterminate is NEVER benign. Escalate on
-        # dropper-shaped manifests (no launcher + FCM/self-install combos).
-        suspect_reasons = dropper_shape_signals(apk_path)
-        hard = [s for s in suspect_reasons if not s.startswith("manifest_parse_error")]
-        if "no_launcher_activity" in hard and len(hard) >= 2:
-            verdict = "indeterminate(suspect:dropper-shape)"
-            confidence = max(confidence, 0.7)
+    # Signals are computed for EVERY verdict (evidence in reports);
+    # verdict escalation remains gated to indeterminate (KT section 15).
+    suspect_reasons = dropper_shape_signals(apk_path)
+    verdict, confidence = escalate_indeterminate(verdict, confidence,
+                                                 suspect_reasons)
     allowlisted = sha256_file(apk_path) in allowlist.get("sha256_allowlist", {})
     if allowlisted:
         # known-benign custom-packed app: packing statement stays, FP risk gone
@@ -395,7 +451,7 @@ def triage_apk(apk_path, markers, allowlist):
         "apk_path": str(apk_path),
         "verdict": verdict,
         "confidence": confidence,
-        "suspect_reasons": suspect_reasons if verdict.startswith("indeterminate") else [],
+        "suspect_reasons": suspect_reasons,
         "duration_seconds": round(time.monotonic() - started, 3),
         "heuristics": {
             hid: {k: (sorted(v) if isinstance(v, set) else v)

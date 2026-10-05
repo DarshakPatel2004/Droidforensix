@@ -7,5 +7,10 @@
     "libflutter.so",
     "libapp.so"
   ],
-  "native_share_exempt": 0.25
+  "native_share_exempt": 0.25,
+  "sha256_allowlist_note": "sha256_allowlist was excluded from the publish commit (be31a2d 'sensitive artifacts excluded') and reconstructed 2026-10-04: FULL_KT section 15 requires exactly 2 sha256-allowlisted goodware among benign_eval's 100; arithmetic over the reproduced matrix (95 clean + 3 brand-matched + 2 remaining) uniquely identifies these 2 samples, both ground-truthed benign with 0 VT detections (ground_truth_check_all.csv, evaluation/gt_recheck_cache.json).",
+  "sha256_allowlist": {
+    "000160700ddab3914c4a8a8f025a80aa8bee168e4784e980f0ce63396ee981d8": "benign_eval, VT 0, GT confirmed_external benign",
+    "0021399f0bd9c43af4171f4239229d170b455054c2500fbbff8c0558b60f3287": "benign_eval, VT 0, GT confirmed_external benign"
+  }
 }
