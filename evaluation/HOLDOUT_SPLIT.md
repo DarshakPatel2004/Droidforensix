@@ -24,6 +24,15 @@ contamination. This split freezes a holdout **before** the accuracy push.
    overfitting, not knowledge of corpus-level difficulty. A fresh external
    holdout remains the gold standard for any final thesis claim.
 
+## Contaminated legacy artifact
+
+`evaluation/clean_family_train.csv` and `evaluation/family_classifier_clean.pkl`
+were generated before the split and are not dev-only: an aggregate membership
+check finds 58 of the clean-training rows in the sealed holdout (138 in dev).
+Do not use either artifact for split-safe tuning or report it as a clean
+holdout result. Regenerate the training set and model from dev rows only before
+any declared tuning milestone.
+
 ## Mechanics
 
 - Regenerate (deterministic — seed 42, sorted shuffles, stratified by
@@ -37,8 +46,10 @@ contamination. This split freezes a holdout **before** the accuracy push.
 - Run a side:
 
   ```
-  python evaluation/run_validation_359.py --split dev -p 4
-  python evaluation/run_validation_359.py --split holdout -p 4
+  python evaluation/run_validation_359.py --split dev -p 4 \
+    --output-dir evaluation/validation_359_dev/
+  python evaluation/run_validation_359.py --split holdout -p 4 \
+    --output-dir evaluation/validation_359_holdout/
   ```
 
   Default `--split all` = historical full-corpus behavior. A missing split
