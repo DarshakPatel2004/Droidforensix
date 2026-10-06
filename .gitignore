@@ -187,6 +187,9 @@ analysis/work_mining_smoke/
 evaluation/validation_359_fixed/
 evaluation/validation_359_fixed2/
 evaluation/validation_359_fixed3/
+evaluation/validation_359_v1/
+evaluation/validation_359_dev/
+evaluation/validation_359_holdout/
 
 # opencode: regenerable extraction cache + scratch outputs
 analysis/gap_features_cache.json
@@ -254,3 +257,4 @@ analysis/recovered/
 
 # Pending sign-off review packets (user reviews here before any apply)
 /singoff/
+_offload/

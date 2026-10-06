@@ -3,7 +3,7 @@
 **Project:** DroidForensix  
 **Date:** 2026-08-29 (wired 2026-08-30 with Master Key + KT)  
 **Scope:** `is_malicious` (malicious vs benign) and `family` identification  
-**Dataset:** 459 APKs (359 malware + 100 benign) — `ground_truth_all_corrected.csv:1`  
+**Dataset:** 405 APKs (305 malware + 100 benign) — `ground_truth_all_corrected_100legit.csv:1`  
 **Pipeline:** 18 steps `analysis/pipeline.py:59` + `backend/family_id.py:1` + **Phase 0 Master Key** `analysis/step0_master_key.py:1` (wires `docs/MASTER_KEY_STRATEGY.md` + `docs/FULL_KNOWLEDGE_TRANSFER.md`)
 
 ---
@@ -182,7 +182,7 @@ Already defined at `step7_llm_assessment.py:498` `PERMISSION_BEHAVIOR_GROUPS`. I
 
 **File:** `analysis/step7_llm_assessment.py:317` `should_skip_llm` `high_conf_threshold=0.6` and `step7_llm_assessment.py:365` `_cap_risk_on_junk_c2` `0.85`
 
-**Action:** Run sweep on 459 GT `is_malware`:
+**Action:** Run sweep on 405 GT `is_malware`:
 ```bash
 python evaluation/sweep_threshold.py --gt ground_truth_all_corrected.csv --metric f1
 ```
@@ -229,7 +229,7 @@ python analysis/mine_family_knowledge.py  # regenerate family_knowledge_base.jso
 | `is_self_signed`, `cert_age_days` | `analysis/step16_certificate_analysis.py` | numeric |
 | `class_count` | `family_id.py` extraction | numeric |
 
-**Model:** XGBoost or RandomForest (imbalanced 359/100 → `scale_pos_weight=3.6` or SMOTE). Train on 459 `ground_truth_all_corrected.csv:is_malware`, stratified 5-fold CV. Calibrate `predict_proba` via Platt.
+**Model:** XGBoost or RandomForest (imbalanced 305/100 → `scale_pos_weight=3.05` or SMOTE). Train on 405 `ground_truth_all_corrected_100legit.csv:is_malware`, stratified 5-fold CV. Calibrate `predict_proba` via Platt.
 
 **Integration:** `analysis/pipeline.py:538` `severity_score = base_score*4` → replace with `ml_classifier.predict_proba(features)`. Keep `heuristic_fallback` as fallback if model file missing. Add `analysis/ml_classifier.pkl` to repo via `dvc` or `git-lfs`.
 
@@ -333,7 +333,7 @@ Add hierarchical DBSCAN on MinHash Jaccard (`analysis/step17_family_clustering.p
 
 ## 7. Data Strategy
 
-**Current:** `ground_truth_all_corrected.csv` 459 rows: `is_malware yes 359 / no 100`, per `scripts/build_ground_truth.py:633`. Sources: `AndroZoo-Drebin 149`, `MalwareBazaar 97`, `modern_eval 63`, `AndroZoo 26`, `abusech 24`, `benign_eval 100` `README.md:260`. All `confirmed_external` via VT 291 + MB 168 `README.md:288`. 48.5% old GT were catch-alls `AndroidOS/GenericKD` inflated naive scoring `README.md:288`.
+**Current:** `ground_truth_all_corrected_100legit.csv` 405 rows: `is_malware yes 305 / no 100`, per `scripts/build_ground_truth.py:633`. Sources: `AndroZoo-Drebin 149`, `MalwareBazaar 97`, `modern_eval 9`, `AndroZoo 26`, `abusech 24`, `F-Droid 100` `README.md:260`. All `confirmed_external` via VT 291 + MB 168 `README.md:288`. 48.5% old GT were catch-alls `AndroidOS/GenericKD` inflated naive scoring `README.md:288`.
 
 **Gaps:**
 - Benign 100 only F-Droid/benign_eval; no Play Store top categories (banking, social, game) → pay SDK FP.
@@ -371,7 +371,7 @@ python evaluation/metrics_recompute.py \
 python scripts/validate_fp.py --auto
 python scripts/check_legitimacy.py  # domain 285 check
 
-# 5. Full 459 run (requires APKs)
+# 5. Full 405 run (requires APKs)
 python evaluation/run_validation_359.py --gt ground_truth_all_corrected.csv
 ```
 
