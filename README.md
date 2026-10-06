@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
 [![Tests](https://github.com/DarshakPatel2004/project-zero/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/project-zero/actions/workflows/test.yml)
 
-> **63x speedup** over manual analysis (277-sample article run). **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers. Dataset since grown to 459 APKs.
+> **63x speedup** over manual analysis (277-sample article run). **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers. Dataset since grown to 405 APKs.
 >
 > **Read this before citing headline numbers:** validation shows exact-match family identification at **64.2%** (68.6% on specific families) and only **2.4% of raw extracted indicators confirmed as genuine C2** — see [Evaluation & Validation](#evaluation). Raw counts above reflect extraction coverage, not verified accuracy.
 
@@ -70,7 +70,7 @@ Output: structured JSON + PDF with per-phase timing.
 
 ## Key Results
 
-> This table documents the published 277-sample run (see [Publication](#publication)). The dataset has since grown to **459 APKs** (359 malware + 100 benign).
+> This table documents the published 277-sample run (see [Publication](#publication)). The dataset has since grown to **405 APKs** (305 malware + 100 benign).
 
 | Metric | Value |
 |--------|-------|
@@ -257,8 +257,8 @@ graph TD
 
 ## Evaluation
 
-- **459 Android APKs** across 6 sources: AndroZoo-Drebin (149), MalwareBazaar (97), modern_eval (63), AndroZoo (26), abusech (24), benign_eval (100 benign)
-- **Top malware families (corrected GT):** FakeInstaller (25), Opfake (21), Plankton (17), DroidKungFu (16), GinMaster (15), NGate (15), SpyNote (14), TeaBot (13), Ermac (12), Hydra (11), FakeTikTok (11), BaseBridge (10)
+- **405 Android APKs** across 6 sources: AndroZoo-Drebin (149), MalwareBazaar (97), modern_eval (9), AndroZoo (26), abusech (24), F-Droid (100 benign)
+- **Top malware families (corrected GT):** FakeInstaller (25), Opfake (21), Plankton (17), DroidKungFu (16), GinMaster (15), NGate (15), TeaBot (13), Ermac (12), Hydra (11), FakeTikTok (11), BaseBridge (10), FluBot (8)
 - Full metadata in `sample_metadata.csv`
 
 ### Indicator False-Positive Validation (Aug 2026)
