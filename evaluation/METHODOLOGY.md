@@ -15,7 +15,7 @@ in chat logs were in-sample and are explicitly marked as such here).
 
 ## 1. Ground Truth Sources & Measured Reliability
 
-`ground_truth_all_corrected.csv` (459 rows). Sources: `AndroZoo`, `abusech`
+`ground_truth_all_corrected.csv` (473 rows). Sources: `AndroZoo`, `abusech`
 (MalwareBazaar), `androzoo_drebin` (DREBIN), `F-Droid` (benign), `modern_eval`,
 `pendrive`.
 
@@ -124,7 +124,7 @@ GT-joined rows are mutually consistent (338-218=120).
 ## 3. Binary Classification Protocol
 
 Deployment model: `evaluation/classifier_data/malben_rf.pkl` (RandomForest,
-20 features; features listed by `python analysis/binary_explainer.py --all`).
+15 features; features listed by `python analysis/binary_explainer.py --all`).
 
 **Two different accuracy numbers must never be conflated:**
 

@@ -1,57 +1,81 @@
-# DroidForensix Thesis — Final Summary (2026-09-12)
+# DroidForensix Thesis — Final Summary (2026-09-24)
 
-> Three claims, each with evidence. No overclaiming.
-
----
-
-## Claim 1: Binary Malware Detection — 97% Real-World Accuracy
-
-**Report:** `evaluation/real_world_accuracy_report.json`  
-**Test:** 100 fresh MalwareBazaar malware + 100 F-Droid benign (completely unseen)
-
-| Metric | Value |
-|--------|-------|
-| Overall accuracy | 97.0% (194/200) |
-| False negative rate | **0.0%** (0/100 malware) |
-| False positive rate | 6.0% (6/100 benign) |
-| Precision (malware) | 94.3% |
-| Recall (malware) | 100% |
-| F1 score | 0.971 |
-
-**FP details:** 6 high-permission/network apps (F-Droid client, password generator, XMPP client, WiFi setup, acrylic paint app, AAT app) — all legit. Tier 3 allowlist reduced FP from 11.8% (lab) to 6.0%.
-
-**Pipeline:** `analysis/classify_fast.py` → `malben_rf.pkl` (20 features, RandomForest)
+> Four claims, each with evidence. No overclaiming.
 
 ---
 
-## Claim 2: Family Identification — 72% on Specific-Labeled Samples
+## Claim 1: Binary Malware Detection — 90.6% Five-Fold CV
 
-**Report:** `thesis/07_families.md` + `evaluation/metrics_v14/metrics.json`
+**Canonical evidence:** `evaluation/results_summary.txt` §2 and
+`evaluation/METHODOLOGY.md` §3.
 
-| Metric | Value |
-|--------|-------|
-| Overall (409 samples) | 44.7% |
-| **Specific families only (201 samples)** | **72.1%** |
-| High-confidence specific (174) | 73.6% |
-| Unknown refusal correctness (74) | 46.0% |
+**Protocol:** 5-fold stratified CV on the 509-row cached feature set; seed 0
+for the headline, followed by the pre-declared seeds 0–4 robustness check.
 
-**The catch-all problem:** 51% of samples carry vendor-generic labels (`AndroidOS`, `GenericKD`, `Agent`, `Banker`). Abuse.ch is 78.5% catch-all.
+| Metric | Value | Interpretation |
+|--------|-------|----------------|
+| **Headline CV accuracy** | **90.57%** | Primary current result; seed 0 |
+| Seed robustness | 90.56–92.93% | Mean 91.55%; 5/5 seeds at or above 90% |
+| In-sample diagnostics | 98.04% (499/509) | FP 0, FN 10; explanation-only, not a generalization claim |
+| Historical held-out | 97.0% (194/200) | Pre-`c2_alignment` bundle; lucky split, not the current headline |
 
-**Audit/rework:**
-- `scripts/audit_abusech_labels.py` — VT second opinion + campaign clustering
-- `reports/abusech_relabel_patch.csv` — 5 relabels applied (BankBot x2, Hqwar, SpyMax, BeatBanker); 2 campaign-vs-VT conflicts resolved via VT second opinion (SpyMax→BankBot, Mirax→Hqwar)
-- `evaluation/metrics_v14/metrics.json` — recompute on the corrected GT with the canonical committed predictions (`evaluation/metrics_v4/predictions.json`)
-- Clean-label retrain: **62.2% CV** (vs 47.2% with all labels) — +15pp
+**Current model:** `analysis/classify_fast.py` → `malben_rf.pkl` (15 features,
+RandomForest). Six raw C2 count/chain features are excluded;
+`c2_alignment` is the only C2-derived input. Removing it reduces CV to 89.79%
+(-0.79 points).
 
-> Note on the 78.1%→72.1% delta vs metrics_v13: v13's predictions
-> (`predictions_v12.json`) lived in an ephemeral temp dir and is no longer
-> recoverable; v14 recomputes from the only surviving full-run predictions file
-> (v4) and the current GT. The drop combines that baseline swap with 5
-> abuse.ch catch-alls now relabeled to specific families (196→201).
+**Coverage caveat:** persisted domain data exist for 199/509 cache rows, all
+malware. No-cache and empty-domain rows score 0.0, and 210/409 malware samples
+also score 0.0, so zero does not imply benign. Benign 0.0 is a structural
+assumption because the C2 pools are malware-only. Deployment recomputes the
+value for every APK, so there is no train/deploy availability gap.
 
-**Ceiling:** FakeInst/Opfake cluster statically indistinguishable (0 unique discriminators). Hard wall for signature-based methods.
+---
 
-**Honest claim:** *"72% of malware that carries a family identity is correctly identified; 78.5% of abuse.ch labels carry no family identity at all."*
+## Claim 2: Family Identification — 68.2% Fusion; 62.4% Leakage-Free Scorable
+
+**Canonical evidence:** `evaluation/results_summary.txt` §§1 and 5,
+`evaluation/metrics_family_ensemble/metrics.json`, and
+`evaluation/VALIDATION_359.md`.
+
+**Same-sample head-to-head (192 scorable rows):**
+
+| Metric | Value | Interpretation |
+|--------|-------|----------------|
+| Production baseline | 60.42% (116/192) | Canonical comparison baseline |
+| **Confidence-fusion ranking** | **68.23% (131/192)** | +7.8 points on the identical subset |
+| Precision among answered | 95.45% at bar 0.55; 100% at bar ≥0.60 | Higher bars answer fewer samples |
+
+The gain is concentrated in AndroZoo Drebin (67.69% → 86.15%). It falls on
+abuse.ch and modern_eval where static family profiles are missing, so this is
+evidence for profile-backed fusion, not universal superiority.
+
+**Leakage-free run 359 (no ground truth consulted during inference):**
+
+| Cut | Rows | Alias-aware accuracy | Interpretation |
+|-----|-----:|---------------------:|----------------|
+| All rows | 377 | 35.54% (134/377) | Includes catch-all labels and 2 errors |
+| **Scorable GT** | **194** | **62.37%** | Primary family-validation headline |
+| Catch-all GT | 183 | 7.10% (13/183) | Labels such as AndroidOS/Agent carry no family identity |
+
+Strict exact-match accuracy on the scorable cut is 55.67%. The earlier 72.1%
+result on 201 specific-label rows remains reproducible in
+`evaluation/metrics_v14/metrics.json`, but it belongs to an older protocol and
+is not the current headline. The 409-row audit found that 78.5% of abuse.ch
+labels were catch-all, explaining much of the raw/full-set gap.
+
+**Coverage ceiling:** FakeInst/Opfake samples remain statically
+indistinguishable in the audited feature set. The confidence fusion should be
+read as a profile-coverage system, not a universal family oracle.
+
+**Leakage control:** `evaluation/HOLDOUT_SPLIT.md` freezes a 264/113 dev/holdout
+split. Use `--split dev` for tuning and inspect the holdout only at declared
+milestones; do not tune against the already observed run-359 rows.
+
+**Honest claim:** *"On the same 192 scorable samples, confidence fusion raises
+ranking accuracy from 60.4% to 68.2%. An independent leakage-free run scores
+62.4% on 194 scorable-ground-truth rows; raw all-row accuracy is 35.5% because
+183 of 377 labels are catch-all categories."*
 
 ---
 
@@ -98,7 +122,11 @@
 
 **Retiering impact:** 5 samples drop 1 bulletproof-hosted IP each (negligible on `kept_c2`).
 
-**Honest magnitude:** C2 importance = 0.041. Tier 2 cleans IP-direct C2 slice but no headline accuracy jump. Documented as evidence of bounded value.
+**Historical magnitude:** the original 20-feature model assigned 0.041 importance
+to C2, and Tier 2 retiering produced no headline accuracy jump. In the current
+15-feature binary model, raw C2 counts are excluded; `c2_alignment` is the only
+C2-derived input and removing it costs 0.79 CV points. Tier 2 remains bounded
+enrichment rather than the primary detector.
 
 ---
 
@@ -106,9 +134,9 @@
 
 | Chapter | Topic | Status | Key Evidence |
 |---------|-------|--------|--------------|
-| 5 | Binary Malware Detection | ✅ Done | 97% real-world, 0% FN |
+| 5 | Binary Malware Detection | ✅ Done | 90.6% five-fold CV; 5/5 seeds ≥90% |
 | 6 | Custom Packer Unpacking | ✅ Done | RTO.apk: 7.8KB inline, 177 strings, 8 YARA |
-| 7 | Family Identification | ✅ Done | 72% specific, abuse.ch audit, ceiling |
+| 7 | Family Identification | ✅ Done | 68.2% fusion ranking; 62.4% leakage-free scorable |
 | 8 | C2 Tier 2 Reputation | ✅ Done | 4 BP IPs, 9 Telegram, bounded |
 
 ---
@@ -122,11 +150,23 @@ thesis/
   08_c2_tier2.md                   # Chapter 8 (from docs/c2_tier2_censys.md)
 
 evaluation/
-  real_world_accuracy_report.json  # 97% binary detector
-  metrics_v14/metrics.json         # Family metrics (authoritative)
-  metrics_v4/predictions.json      # Canonical per-sample predictions (v14 baseline)
-  clean_family_train.csv           # Clean-label retrain data
-  family_classifier_clean.pkl      # Clean-label model (62.2% CV)
+  results_summary.txt              # Canonical aggregate results
+  METHODOLOGY.md                   # Protocols and reproduction commands
+  metrics_binary_ablation.json     # 15-feature CV + ablation artifact
+  binary_explanations.json         # 509 in-sample explanation rows
+  metrics_family_ensemble/metrics.json  # 192-row fusion comparison
+  VALIDATION_359.md                # Leakage-free family validation
+  DEV_BASELINE.md                  # Dev-only production-path baseline
+  DEV_TUNING_H1.md                 # Predeclared scorer calibration + result
+  HOLDOUT_SPLIT.md                 # Frozen 264/113 tuning discipline
+  FRESH_CORPUS_PROTOCOL.md         # Fresh-corpus inclusion/exclusion gate
+  FRESH_CORPUS_MANIFEST.csv        # Frozen 16-row pilot manifest
+  FRESH_CORPUS_RESULT.md           # Pilot static evaluation and limitations
+  real_world_accuracy_report.json  # Historical 97% pre-c2_alignment report
+  metrics_v14/metrics.json         # Earlier 72.1% specific-label protocol
+  metrics_v4/predictions.json      # Canonical predictions for the v14 audit
+  clean_family_train.csv           # Legacy full-corpus artifact; 58 holdout overlaps
+  family_classifier_clean.pkl      # Legacy model; not split-safe until regenerated from dev
 
 scripts/
   audit_abusech_labels.py          # Abuse.ch VT audit + patch
@@ -155,11 +195,12 @@ tests/test_stage3_replay.py        # Replay acceptance test
 
 | Question | Answer |
 |----------|--------|
-| "Why 44% family?" | 51% catch-all labels. On specific-labeled: **72%**. |
-| "Why not 97% family?" | Different task. Binary = malware vs benign. Family = which clan. |
-| "Does unpacking generalize?" | No — RTO-specific. Hybrid blueprint is the contribution, not universal unpacker. |
-| "Does C2 help accuracy?" | C2 importance 0.041. Tier 2 cleans slice but no headline jump. Documented honestly. |
-| "What's the production artifact?" | Binary detector (97%, 0% FN) + YARA rules from unpacking. |
+| "What is the current binary result?" | **90.6% five-fold CV** (seed 0), robust across 5/5 seeds; 97% is a historical pre-feature-change holdout. |
+| "Why is raw family validation 35.5%?" | 183/377 labels are catch-all. The scorable-ground-truth headline is **62.4%** on 194 rows. |
+| "Why is family accuracy lower than binary?" | Different task: family identification depends on specific labels and profile coverage, not only malware-vs-benign signals. |
+| "Does unpacking generalize?" | No — RTO-specific. The hybrid blueprint is the contribution, not a universal unpacker claim. |
+| "Does C2 help accuracy?" | Domain alignment helps; raw C2 quantity is weak. Tier 2 reputation has bounded, non-headline impact. |
+| "What's the production artifact?" | 15-feature binary detector (**90.6% CV**) + 8 validated YARA rules from the unpacking case study. |
 
 ---
 
@@ -167,5 +208,8 @@ tests/test_stage3_replay.py        # Replay acceptance test
 
 1. ✅ **Adjudicated** the 2 conflicts in `abusech_relabel_patch.csv` (VT second opinion: SpyMax→BankBot, Mirax→Hqwar) → `metrics_v14` computed (2026-09-18)
 2. ✅ **Stage-3 bytecode replay** reproduced from committed artifacts — `stage3_replay.py` 175/5 + pytest acceptance (`tests/test_stage3_replay.py`)
-3. **Frida fallback** for runtime string extraction
-4. **Expand benign corpus** to 200 Play Store apps (reduce FP further)
+3. ✅ **H1 evaluator-only calibration** completed on the complete dev split; production integration remains unapproved
+4. **Investigate dev-only profile/signature coverage** on the frozen split; the H2 unknown-fallback integration was rejected (0 new answers)
+5. **Build the predeclared 200-row fresh holdout** (100 benign + 100 malware), excluding the scored 20-row pilot; reconcile the model runtime before one-shot scoring
+6. **Frida fallback** for runtime string extraction
+7. **Expand the benign corpus** with an independent, source-documented sample to test false-positive generalization

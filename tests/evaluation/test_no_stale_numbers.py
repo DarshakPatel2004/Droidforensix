@@ -1,8 +1,10 @@
 """Guard against retired thesis numbers reappearing in project docs.
 
 The c2_alignment sign-off (4217835, 80f9e5a) retired a set of stale
-numbers; manual greps caught them three times across sessions. This test
-makes that check automatic for tracked docs (evaluation/, docs/ — py/md/txt).
+numbers; manual greps caught them three times across sessions. The
+2026-09-24 summary reconciliation retired the old 97%/72% thesis headlines.
+This test makes both checks automatic for tracked evaluation/docs files and
+the root THESIS_SUMMARY.md.
 
 If a banned pattern legitimately returns (e.g. a future metric coincides
 with an old one), update BANNED deliberately in the same commit that
@@ -14,6 +16,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 SCAN_DIRS = ("evaluation", "docs")
+SCAN_FILES = (ROOT / "THESIS_SUMMARY.md",)
 SUFFIXES = (".py", ".md", ".txt")
 
 BANNED = [
@@ -26,10 +29,23 @@ BANNED = [
     r"\+0\.40\s*pts",      # retired gain claim (scoped to "pts" so the live
                            # signature-scoring constant +0.40 in
                            # docs/codebase-reference.md doesn't false-match)
+    # Retired THESIS_SUMMARY headlines (2026-09-24).
+    r"Claim 1: Binary Malware Detection\s+[—-]\s+97% Real-World Accuracy",
+    r"Claim 2: Family Identification\s+[—-]\s+72% on Specific-Labeled Samples",
+    r"\|\s*5\s*\|\s*Binary Malware Detection\s*\|\s*✅ Done\s*\|\s*97% real-world",
+    r"real_world_accuracy_report\.json\s+# 97% binary detector",
+    r"Binary detector \(97%, 0% FN\)",
+    r'"Why 44% family\?"',
+    r'"Why not 97% family\?"',
+    # Retired current-model count; historical 20-feature analyses stay allowed.
+    r"malben_rf\.pkl`? \(20 features",
+    r"RandomForest,\s*\n20 features",
+    r"cached 20-feature rows",
 ]
 
 
 def _iter_doc_files():
+    yield from SCAN_FILES
     for dirname in SCAN_DIRS:
         base = ROOT / dirname
         if not base.exists():

@@ -124,7 +124,7 @@ def weighted_accuracy(per_source: list[dict], accuracy_key: str) -> float:
 
 
 def binary_predictions(features_df: list[dict]) -> list[dict]:
-    """Run the deployment RandomForest over the cached 20-feature rows."""
+    """Run the deployment RandomForest over the cached 15-feature rows."""
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
         bundle = _load_bundle()
