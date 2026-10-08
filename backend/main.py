@@ -1471,6 +1471,31 @@ def _check_disk_space(min_bytes: int) -> None:
 _sha256_to_upload: Dict[str, str] = {}  # sha256 → upload_id
 
 
+def _resolve_upload_path(filename: Optional[str]) -> Path:
+    """Map a client-supplied multipart filename to a path inside UPLOADS_DIR.
+
+    The multipart filename is attacker-controlled: Starlette passes it through
+    verbatim, and python-multipart strips only a leading drive/UNC prefix, so a
+    `..`-relative name survives. Joining it unchecked lets an upload truncate or
+    create a file anywhere the service account can write - including backend/*.py,
+    which uvicorn --reload would then import. So resolve, then verify containment
+    against the resolved root (a string prefix check alone is defeated by a
+    sibling directory such as `uploads_evil`).
+    """
+    if not filename or not filename.strip():
+        raise HTTPException(status_code=400, detail="Invalid filename: filename is empty")
+
+    uploads_root = Path(settings.UPLOADS_DIR).resolve()
+    candidate = (uploads_root / filename).resolve()
+
+    if candidate != uploads_root and uploads_root not in candidate.parents:
+        raise HTTPException(status_code=400, detail="Invalid filename: path traversal rejected")
+
+    # Containment is proven, so the original name is safe to keep - callers that
+    # report it back still see what the client sent.
+    return uploads_root / filename
+
+
 @app.post("/api/upload")
 async def api_upload_file(file: UploadFile = File(...)) -> dict:
     """Upload an APK file and return an upload ID for analysis."""
@@ -1709,7 +1734,7 @@ async def api_get_sample_status(sample_id: str) -> dict:
 @app.post("/api/analysis/full")
 async def api_full_analysis(file: UploadFile = File(...)):
     """Execute full 7-step pipeline using APKProcessor."""
-    apk_path = settings.UPLOADS_DIR / file.filename
+    apk_path = _resolve_upload_path(file.filename)
     try:
         with open(apk_path, "wb") as f:
             f.write(await file.read())
@@ -1740,7 +1765,7 @@ async def api_full_analysis(file: UploadFile = File(...)):
 @app.post("/api/analysis/androguard-only")
 async def api_androguard_analysis(file: UploadFile = File(...)):
     """Run just the Androguard static analysis."""
-    apk_path = settings.UPLOADS_DIR / file.filename
+    apk_path = _resolve_upload_path(file.filename)
     try:
         with open(apk_path, "wb") as f:
             f.write(await file.read())
