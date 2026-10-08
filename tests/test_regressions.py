@@ -383,3 +383,34 @@ class TestFamilyCacheSelfHeal:
         plain = {"family": "KungFu", "confidence": base,
                  "method": "signature_v3", "reasoning": "c2:x; perms(2.0)"}
         assert _cached_confidence_lacks_boost(plain) is False
+
+
+# ---------------------------------------------------------------------------
+# I-14b: identify_family must honour use_cache on WRITE, not just on read
+# ---------------------------------------------------------------------------
+class TestFamilyCacheWriteFlag:
+    def test_use_cache_false_does_not_persist(self, tmp_path, monkeypatch):
+        from backend import family_id
+        from backend.family_id import identify_family
+
+        monkeypatch.setattr(family_id.settings, "WORK_DIR", tmp_path)
+        probe = "ff" * 32
+        res = {
+            "metadata": {"sha256": probe},
+            "certificate_analysis": {},
+            "strings": {"string_literals": []},
+            "c2_infrastructure": [],
+        }
+
+        identify_family(probe, res, use_llm=False, use_cache=False)
+        assert not (tmp_path / probe / "family.json").exists(), (
+            "use_cache=False must not persist a verdict over the cache")
+
+        identify_family(probe, res, use_llm=False, use_cache=True)
+        assert (tmp_path / probe / "family.json").exists()
+
+    def test_ground_truth_files_survive_the_cert_tests(self):
+        """test_family_id_cert.py must not disable the override suite-wide."""
+        from backend import family_id
+
+        assert family_id.GROUND_TRUTH_FILES, "GROUND_TRUTH_FILES was left empty"

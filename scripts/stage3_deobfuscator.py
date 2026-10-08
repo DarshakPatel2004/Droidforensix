@@ -139,7 +139,13 @@ if __name__ == "__main__":
         try:
             raw = Path("cjk_pool_raw.bin").read_bytes()
             txt = raw.decode('utf-8', errors='ignore')
-        except: pass
+        except (OSError, UnicodeDecodeError) as exc:
+            # Previously a bare except, which also swallowed Ctrl-C. A missing or
+            # unreadable raw pool is a real, actionable problem: continuing leaves
+            # a truncated pool and every decode_string below returns garbage.
+            print(f"[error] cjk_pool_raw.bin unreadable ({exc}); "
+                  f"replay results will be unreliable", file=sys.stderr)
+            raise
     pool = [txt]
     print(f"Loaded pool len {len(txt)}", flush=True)
     data = json.loads(Path(JSON_PATH).read_text(encoding='utf-8'))
