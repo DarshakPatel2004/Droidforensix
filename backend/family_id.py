@@ -2589,14 +2589,18 @@ def identify_family(sample_id: str, result: Dict[str, Any],
             "deterministic": False,
         }
 
-    try:
-        cache_path.parent.mkdir(parents=True, exist_ok=True)
-        # Record whether certificate analysis was available for this computation,
-        # so a later call that does have it can supersede this cached verdict.
-        outcome["saw_certificate_analysis"] = bool(cert_analysis_now)
-        with open(cache_path, "w", encoding="utf-8") as f:
-            json.dump(outcome, f, indent=2)
-    except Exception:
-        logger.warning("Failed to write family cache for %s", sample_id)
+    # Honour use_cache on write as well as read: a caller that asks for a fresh
+    # computation (e.g. evaluation/reeval_families.py re-scoring families) must not
+    # have its result silently persisted over the production verdict.
+    if use_cache:
+        try:
+            cache_path.parent.mkdir(parents=True, exist_ok=True)
+            # Record whether certificate analysis was available for this computation,
+            # so a later call that does have it can supersede this cached verdict.
+            outcome["saw_certificate_analysis"] = bool(cert_analysis_now)
+            with open(cache_path, "w", encoding="utf-8") as f:
+                json.dump(outcome, f, indent=2)
+        except Exception:
+            logger.warning("Failed to write family cache for %s", sample_id)
 
     return outcome

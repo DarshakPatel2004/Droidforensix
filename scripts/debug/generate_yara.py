@@ -31,7 +31,11 @@ for d in os.listdir(WORK_DIR):
     try:
         with open(jpath, "r", encoding="utf-8") as f:
             data = json.load(f)
-    except:
+    except Exception as exc:
+        # Surface the skip: silently dropping a sample makes the generated rules
+        # under-cover the corpus while the counts still look normal.
+        print("[warn] skipping %s (unreadable JSON: %s: %s)"
+              % (jpath.name, type(exc).__name__, exc), file=sys.stderr)
         continue
     sample_count += 1
     sha = data.get("sample_id", d)
@@ -220,7 +224,7 @@ for magic, entries in payload_magic_patterns.items():
             mb = int(magic, 16)
             h = format(mb, 'x')
             rule_lines.append('        $magic = { %s }' % ' '.join(h[j:j+2] for j in range(0, len(h), 2)))
-        except:
+        except Exception:
             rule_lines.append('        $magic = "%s"' % magic)
     else:
         rule_lines.append('        $magic = "%s"' % magic)

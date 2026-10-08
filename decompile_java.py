@@ -19,6 +19,9 @@ for cls_name in ['LCZRR4ZREoGNpLeGZze;', 'LFtpOxqekIibXASlT37;', 'LVjAcb76OojLig
                     # ms is MethodAnalysis
                     # try to get decompiled
                     pass
-                except: pass
+                except Exception:
+                    # Narrowed from a bare except: this must not swallow
+                    # KeyboardInterrupt and stop the operator cancelling.
+                    pass
             # Use dx's get_method?
             break

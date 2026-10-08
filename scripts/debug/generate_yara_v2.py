@@ -1,10 +1,21 @@
-import json, os, re, collections, base64
+import json, os, re, sys, collections, base64
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 WORK_DIR = str(BASE_DIR / "analysis" / "work")
 OUTPUT = str(BASE_DIR / "analysis" / "yara_rules.yar")
 META = str(BASE_DIR / "sample_metadata.csv")
+
+# Samples whose step output could not be read. Tracked so the run can report
+# coverage loss instead of quietly generating rules from partial data.
+unreadable = collections.Counter()
+
+
+def _warn_unreadable(name, sha, exc):
+    unreadable[name] += 1
+    print("[warn] %s unreadable for %s (%s: %s)" % (name, sha[:12],
+                                                    type(exc).__name__, exc),
+          file=sys.stderr)
 
 families = {}
 with open(META, "r", encoding="utf-8") as f:
@@ -41,8 +52,8 @@ for d in os.listdir(WORK_DIR):
                 e["_sample_id"] = sha
                 e["_family"] = family
                 all_encodings.append(e)
-        except:
-            pass
+        except Exception as exc:
+            _warn_unreadable("step3_encodings.json", sha, exc)
 
     # Read step4 payloads
     ppath = os.path.join(dpath, "step4_payloads.json")
@@ -54,8 +65,8 @@ for d in os.listdir(WORK_DIR):
                 p["_sample_id"] = sha
                 p["_family"] = family
                 all_payloads.append(p)
-        except:
-            pass
+        except Exception as exc:
+            _warn_unreadable("step4_payloads.json", sha, exc)
 
     # Read step5 c2s
     cpath = os.path.join(dpath, "step5_c2s.json")
@@ -67,8 +78,8 @@ for d in os.listdir(WORK_DIR):
                 c["_sample_id"] = sha
                 c["_family"] = family
                 all_c2.append(c)
-        except:
-            pass
+        except Exception as exc:
+            _warn_unreadable("step5_c2s.json", sha, exc)
 
     sample_count += 1
 
@@ -76,6 +87,10 @@ print(f"Samples: {sample_count}")
 print(f"Encodings: {len(all_encodings)}")
 print(f"Payloads: {len(all_payloads)}")
 print(f"C2 entries: {len(all_c2)}")
+if unreadable:
+    # These indicators are absent from the generated rules entirely.
+    print("[warn] incomplete coverage - unreadable step output: %s"
+          % dict(unreadable), file=sys.stderr)
 
 # Collect patterns
 xor_patterns = collections.defaultdict(list)
@@ -220,7 +235,7 @@ for magic, entries in sorted(payload_magic_patterns.items()):
             h = "0" + h
         fmt = " ".join(h[j:j+2] for j in range(0, len(h), 2))
         r.append(f'        $magic = {{ {fmt} }}')
-    except:
+    except Exception:
         r.append(f'        $magic = "{{ {magic} }}"')
 
     r.append("")
