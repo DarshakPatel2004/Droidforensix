@@ -62,7 +62,7 @@ def test_is_myg0n_kit_gates_on_installer_dex(tool, tmp_path):
 
 def test_collect_outputs_copies_artifacts_and_keys(tool, tmp_path):
     src_dir = tmp_path / "work"
-    src_dir.mkdir()
+    src_dir.mkdir(exist_ok=True)   # conftest's isolation fixture already created it
     kit = src_dir / "kit.zip"
     kit.write_bytes(b"PK\x03\x04")
     report = {
