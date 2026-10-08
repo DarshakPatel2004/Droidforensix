@@ -49,6 +49,9 @@ def test_api_samples(client):
         assert "risk_score" in data["samples"][0]
 
 
+# Reads previously-analysed samples from the real WORK_DIR, so the
+# conftest isolation fixture must not redirect it.
+@pytest.mark.use_real_work_dir
 def test_api_sample_detail(client):
     samples = client.get("/api/samples").json()["samples"]
     if not samples:
@@ -62,6 +65,9 @@ def test_api_sample_detail(client):
     assert "threat_chains" in data
 
 
+# Reads previously-analysed samples from the real WORK_DIR, so the
+# conftest isolation fixture must not redirect it.
+@pytest.mark.use_real_work_dir
 def test_api_graph(client):
     samples = client.get("/api/samples").json()["samples"]
     if not samples:
@@ -75,6 +81,9 @@ def test_api_graph(client):
     assert data["total_nodes"] >= 1
 
 
+# Reads previously-analysed samples from the real WORK_DIR, so the
+# conftest isolation fixture must not redirect it.
+@pytest.mark.use_real_work_dir
 def test_api_clusters(client):
     response = client.get("/api/clusters")
     assert response.status_code == 200
@@ -88,6 +97,9 @@ def test_api_clusters(client):
         assert "z" in sample
 
 
+# Reads previously-analysed samples from the real WORK_DIR, so the
+# conftest isolation fixture must not redirect it.
+@pytest.mark.use_real_work_dir
 def test_api_timeline(client):
     samples = client.get("/api/samples").json()["samples"]
     if not samples:
@@ -117,6 +129,7 @@ def test_websocket_connection(client):
 
 
 @pytest.mark.skip(reason="Full pipeline test: requires real APK + tools, runs >60s")
+@pytest.mark.use_real_work_dir
 def test_full_pipeline_writes_to_work_dir(client, test_apk_path):
     """End-to-end: run the full pipeline on an APK and verify outputs in WORK_DIR."""
     result = run_pipeline(str(test_apk_path))
@@ -147,6 +160,9 @@ def test_api_upload_and_status(client, test_apk_path):
     assert response.status_code == 404  # not analyzed yet
 
 
+# Reads previously-analysed samples from the real WORK_DIR, so the
+# conftest isolation fixture must not redirect it.
+@pytest.mark.use_real_work_dir
 def test_api_graph_node_ids_are_deterministic(client):
     """Graph endpoint should return stable node IDs across calls."""
     samples = client.get("/api/samples").json()["samples"]
@@ -159,6 +175,9 @@ def test_api_graph_node_ids_are_deterministic(client):
     assert [n["id"] for n in resp1["nodes"]] == [n["id"] for n in resp2["nodes"]]
 
 
+# Reads previously-analysed samples from the real WORK_DIR, so the
+# conftest isolation fixture must not redirect it.
+@pytest.mark.use_real_work_dir
 def test_api_dissection_caches_on_demand(client):
     """Dissection endpoint should generate and cache dissection.json if missing."""
     samples = client.get("/api/samples").json()["samples"]
@@ -172,3 +191,5 @@ def test_api_dissection_caches_on_demand(client):
     response = client.get(f"/api/sample/{sample_id}/dissection")
     assert response.status_code == 200
     assert dissection_path.exists(), "dissection.json should be cached after on-demand generation"
+
+

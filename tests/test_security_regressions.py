@@ -44,7 +44,7 @@ def client():
 def uploads_dir(tmp_path, monkeypatch):
     """Point UPLOADS_DIR at a temp dir and stub the heavy analysis calls."""
     target = tmp_path / "uploads"
-    target.mkdir()
+    target.mkdir(exist_ok=True)   # conftest's isolation fixture already created it
     monkeypatch.setattr(settings, "UPLOADS_DIR", target)
 
     # The security property is the write, not the analysis; stub the analysis so

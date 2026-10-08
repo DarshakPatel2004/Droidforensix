@@ -118,6 +118,7 @@ class TestAPKDissector:
         assert load_dissection(str(settings.WORK_DIR), "nonexistent_sample_id") is None
 
 
+@pytest.mark.use_real_work_dir
 class TestDissectionEndpoints:
     def test_dissection_full(self, client, existing_sample_id):
         response = client.get(f"/api/sample/{existing_sample_id}/dissection")
@@ -299,6 +300,7 @@ class TestAtomicClassCache:
         assert loaded[0]["name"] == "com.test.OK"
 
 
+@pytest.mark.use_real_work_dir
 class TestAndroguardDissection:
     def test_list_decompiled_classes_returns_empty_for_bogus_path(self):
         """APKDissector with a non-existent APK should return no classes."""
@@ -325,6 +327,7 @@ class TestAndroguardDissection:
         assert isinstance(data["classes"], list)
 
 
+@pytest.mark.use_real_work_dir
 class TestPagination:
     def test_pagination_defaults(self, client, existing_sample_id):
         response = client.get(f"/api/sample/{existing_sample_id}/dissection/classes")
