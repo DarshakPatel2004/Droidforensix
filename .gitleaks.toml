@@ -1,7 +1,12 @@
 # DroidForensix gitleaks configuration
 #
 # Default rules are kept intact ([extend]); this file only documents
-# intentional, synthetic matches.
+# intentional, synthetic matches, and generated/mined data files whose bulk
+# hex content matches the generic key heuristics.
+#
+# NOTE: allowlisting a path silences it entirely. Every entry below is
+# verified to contain no real credential - do not add a path here without
+# checking it for live secrets first.
 
 title = "DroidForensix gitleaks config"
 
@@ -9,7 +14,48 @@ title = "DroidForensix gitleaks config"
 useDefault = true
 
 [allowlist]
-description = "Synthetic fixture values for the secret scanner's own unit tests (tests/test_hardcoded_secrets.py). Encoded placeholders (xoxb-123..., ghp_aaa..., '-----BEGIN RSA PRIVATE KEY-----') intentionally trip the detection rules being tested."
+description = "Synthetic fixtures and generated/mined data that match the generic key heuristics by coincidence. Verified to contain no live credentials."
 paths = [
+  # Synthetic fixture values for the secret scanner's own unit tests.
+  # Encoded placeholders (xoxb-123..., ghp_aaa..., '-----BEGIN RSA PRIVATE
+  # KEY-----') intentionally trip the detection rules being tested.
   "tests/test_hardcoded_secrets.py",
+
+  # Mined corpora: tens of thousands of short C2/host/token strings mined from
+  # malware samples. Random hex in these matches generic-api-key / private-key.
+  "analysis/family_knowledge_base.json",
+  "analysis/discriminators_36.json",
+
+  # Cached AndroidManifest class/method names harvested from sample APKs
+  # (e.g. Alipay SDK identifiers); matches generic key heuristics.
+  "analysis/manifest_cache.json",
+
+  # The secret detector itself: its ruleset enumerates key patterns as string
+  # literals, which is exactly what the scanner looks for.
+  "analysis/hardcoded_secrets.py",
+
+  # Local-only working artifacts. Not tracked by git; listed so a --no-git
+  # scan of the working tree stays actionable.
+  "analysis/gap_features_cache.json",
+  "evaluation_results/campaign_purity_new.json",
+  "evaluation_results/campaign_purity_final.json",
+
+  # Third-party virtualenv: upstream library self-tests enumerate real key
+  # material (pycryptodome PublicKey vectors). Never tracked.
+  '(^|/)\.venv/',
+
+  # Kali tool output and harvested-evidence snapshots. Not tracked; these are
+  # analysis artifacts whose bulk hex matches the generic key heuristics.
+  # NOTE: vault/*.md documentation files stay scanned (tracked, no findings).
+  '(^|/)kali result/',
+  'vault/[^/]*_evidence/',
+  'analysis/triage_.*/',
+  'analysis/recovered/',
+
+  # Compiled bytecode of the allowlisted test fixture.
+  '__pycache__/',
 ]
+
+# Deliberately NOT allowlisted: .env - it is the one place where live
+# credentials legitimately belong, so it must always be scanned. It is
+# gitignored, so those findings cannot reach the repository.
