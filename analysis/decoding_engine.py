@@ -711,6 +711,11 @@ def multi_layer_decode(encoded_string: str, max_depth: int = 3,
         "chain_path": [],
         "heuristic_scores": [],
         "total_confidence": 0.0,
+        # Populated on the normal path below; pre-initialised so the short-input
+        # early return yields the same shape as a full decode.
+        "c2_indicators": {"urls": [], "ips": [], "ip_verdicts": [], "domains": [],
+                          "packages": [], "commands": [], "protocol_markers": []},
+        "c2_confidence_boost": 0.0,
     }
 
     # Skip if too short (min 8 bytes after stripping and deducing)
@@ -922,11 +927,16 @@ if __name__ == "__main__":
     ]
     for s in test_strings:
         result = run_decoding_engine([{"value": s, "entropy": shannon_entropy(s.encode("utf-8"))}])
+        if not result:
+            # Inputs shorter than the engine's 8-byte minimum are skipped.
+            print(f"\n=== {s[:40]} ===")
+            print("  Skipped: input too short (minimum 8 characters)")
+            continue
         r = result[0]["decoding"]
         print(f"\n=== {s[:40]} ===")
         print(f"  Entropy: {r['original_entropy']} ({r['original_entropy_classification']})")
         print(f"  Chain: {' -> '.join(r['chain_path']) or 'none'}")
-        print(f"  Final: {r['final_output'][:80]}")
+        print(f"  Final: {(r['final_output'] or 'none')[:80]}")
         print(f"  Heuristic: {r['heuristic_score']}/100")
         print(f"  Confidence: {r['total_confidence']}")
         if r['c2_indicators']['urls'] or r['c2_indicators']['ips']:

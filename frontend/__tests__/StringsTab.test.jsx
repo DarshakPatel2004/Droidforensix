@@ -59,8 +59,19 @@ describe('StringsTab', () => {
     })
   })
 
-  test('shows empty state when no data', async () => {
-    global.fetch = vi.fn().mockResolvedValue({ ok: false })
+  test('shows an error state when the request fails', async () => {
+    // A failed fetch must NOT be reported as "no strings data" - that reads as a
+    // finding about the sample when it is really a transport/backend error.
+    global.fetch = vi.fn().mockResolvedValue({ ok: false, status: 500 })
+    render(<StringsTab sampleId="test-001" apiUrl="http://localhost:8000" />)
+    await waitFor(() => expect(screen.getByText('Failed to load strings data')).toBeTruthy())
+    expect(screen.queryByText('No strings data available')).toBeNull()
+  })
+
+  test('shows empty state when the endpoint returns no payload', async () => {
+    // A successful response carrying no data is a genuinely empty sample, which
+    // is distinct from the error state above.
+    global.fetch = vi.fn().mockResolvedValue({ ok: true, json: () => Promise.resolve(null) })
     render(<StringsTab sampleId="test-001" apiUrl="http://localhost:8000" />)
     await waitFor(() => expect(screen.getByText('No strings data available')).toBeTruthy())
   })

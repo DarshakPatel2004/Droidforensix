@@ -24,7 +24,8 @@ import tempfile
 import zipfile
 
 import lief
-from capstone import Cs, CS_ARCH_ARM, CS_ARCH_ARM64, CS_MODE_ARM, CS_MODE_THUMB, CS_MODE_LITTLE_ENDIAN
+from capstone import (Cs, CS_ARCH_ARM, CS_ARCH_ARM64, CS_ARCH_X86, CS_MODE_ARM,
+                      CS_MODE_32, CS_MODE_64, CS_MODE_THUMB, CS_MODE_LITTLE_ENDIAN)
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
 
@@ -42,6 +43,21 @@ CRYPTO_PATTERNS = {
 
 # Allowlist: skip tiny sections
 MIN_SECTION_FOR_SCAN = 64
+
+# Capstone arch/mode per LIEF machine_type (LIEF 1.0 reports e.g. "ARCH.AARCH64").
+# x86 is listed because the corpus contains armeabi/x86 and x86_64 libraries.
+_DISASM_BY_ARCH = {
+    "AARCH64": (CS_ARCH_ARM64, CS_MODE_LITTLE_ENDIAN),
+    "ARM": (CS_ARCH_ARM, CS_MODE_ARM + CS_MODE_LITTLE_ENDIAN),
+    "X86_64": (CS_ARCH_X86, CS_MODE_64),
+    "I386": (CS_ARCH_X86, CS_MODE_32),
+}
+
+# Mnemonics that end a basic block, per arch family (used by _obfuscation_metrics).
+_ARM_BRANCH_PREFIXES = ("b",)
+_ARM_BRANCH_EXACT = ("cbz", "cbnz", "tbz", "tbnz", "bl", "blx", "bx")
+_X86_BRANCH_PREFIXES = ("j", "loop")
+_X86_BRANCH_EXACT = ("call", "ret", "retn", "iret")
 
 
 def sha256_file(path: pathlib.Path) -> str:
@@ -160,8 +176,10 @@ def _hunt_registernatives(binary) -> list:
     """Scan .data.rel.ro / .data for {name,sig,fnPtr} triples (plan C3.2)."""
     found = []
     try:
-        ptr_size = 8 if binary.header.identity_class.name == "CLASS.ELF64" else 4
-        fmt = "<Q" if ptr_size == 8 else "<I"
+        # LIEF 1.0: identity_class.name is "ELF64"/"ELF32", not "CLASS.ELF64"
+        cls_name = getattr(binary.header.identity_class, "name", "")
+        ptr_size = 8 if "64" in cls_name else 4
+        triple_fmt = "<QQQ" if ptr_size == 8 else "<III"
         cstrings = _collect_cstrings(binary)
         exec_ranges = _executable_ranges(binary)
         candidates = [s for s in binary.sections if s.name in (".data.rel.ro", ".data", ".rodata")]
@@ -171,7 +189,7 @@ def _hunt_registernatives(binary) -> list:
                 continue
             for off in range(0, len(content) - ptr_size * 3 + 1, ptr_size):
                 try:
-                    a, b, c = struct.unpack_from(fmt * 3, content, off)
+                    a, b, c = struct.unpack_from(triple_fmt, content, off)
                 except struct.error:
                     continue
                 name = cstrings.get(a)
@@ -228,12 +246,14 @@ def _obfuscation_metrics(binary) -> dict:
             return {"flattened_function_fraction": 0.0, "opaque_predicate_density": 0.0,
                     "note": "no .text or too small; Ghidra headless pending for deep CFG"}
         content = bytes(text_sec.content)
-        is_64 = binary.header.identity_class.name == "CLASS.ELF64"
-        # ARM64: fixed 4-byte insns; ARM32: try ARM mode (Thumb handled by Ghidra later)
-        if is_64:
-            md = Cs(CS_ARCH_ARM64, CS_MODE_LITTLE_ENDIAN)
-        else:
-            md = Cs(CS_ARCH_ARM, CS_MODE_ARM + CS_MODE_LITTLE_ENDIAN)
+        arch_name = str(binary.header.machine_type).split(".")[-1]
+        disasm = _DISASM_BY_ARCH.get(arch_name)
+        if disasm is None:
+            return {"flattened_function_fraction": 0.0, "opaque_predicate_density": 0.0,
+                    "note": "unsupported arch %s; Ghidra headless pending for deep CFG" % arch_name}
+        arch_const, mode_const = disasm
+        is_x86 = arch_const == CS_ARCH_X86
+        md = Cs(arch_const, mode_const)
         md.detail = False
         targets = {}
         total = 0
@@ -241,7 +261,12 @@ def _obfuscation_metrics(binary) -> dict:
         for insn in md.disasm(content, text_sec.virtual_address):
             total += 1
             mnem = insn.mnemonic
-            if mnem.startswith("b") or mnem in ("cbz", "cbnz", "tbz", "tbnz"):
+            if is_x86:
+                is_branch = mnem.startswith(_X86_BRANCH_PREFIXES) or mnem in _X86_BRANCH_EXACT
+            else:
+                is_branch = (mnem.startswith(_ARM_BRANCH_PREFIXES)
+                             or mnem in _ARM_BRANCH_EXACT)
+            if is_branch:
                 branches += 1
                 # branch target is last operand if immediate
                 if insn.op_str:

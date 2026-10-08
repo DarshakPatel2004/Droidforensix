@@ -113,6 +113,9 @@ class ELFBreaker:
         self.elffile = None
         self._parsed = False
         self._parse_error = None
+        # Collects non-fatal parse problems so callers can tell a partial
+        # result apart from a genuinely empty one (see _extract_sections).
+        self._warnings: List[str] = []
 
     def analyze(self) -> Dict[str, Any]:
         """Full analysis entry point. Returns structured dict."""
@@ -151,6 +154,12 @@ class ELFBreaker:
         result['import_summary'] = self._summarize_imports()
         result['risk_score'] = self._compute_risk(result)
 
+        # A partially parsed binary must not look like a clean one: an empty
+        # "sections" list otherwise reads as "structurally empty library".
+        if self._warnings:
+            result['parse_warnings'] = self._warnings
+            result['partial'] = True
+
         return result
 
     def _parse(self) -> bool:
@@ -186,32 +195,38 @@ class ELFBreaker:
 
     def _extract_sections(self) -> List[Dict[str, Any]]:
         sections = []
-        try:
-            for sec in self.elffile.iter_sections():
+        for sec in self.elffile.iter_sections():
+            try:
+                # pyelftools 0.33 removed attribute access for section fields
+                # (sec.sh_flags); the mapping form (sec['sh_flags']) is required.
                 sec_name = sec.name
-                sec_size = sec.data_size
-                sec_raw = sec.data()
-                entropy = self._compute_entropy(sec_raw) if sec_raw else 0.0
+                sec_data = sec.data()
+                entropy = self._compute_entropy(sec_data) if sec_data else 0.0
 
+                sec_flags = sec['sh_flags']
                 flags = []
-                if sec.sh_flags & SH_FLAGS.SHF_WRITE:
+                if sec_flags & SH_FLAGS.SHF_WRITE:
                     flags.append('W')
-                if sec.sh_flags & SH_FLAGS.SHF_ALLOC:
+                if sec_flags & SH_FLAGS.SHF_ALLOC:
                     flags.append('A')
-                if sec.sh_flags & SH_FLAGS.SHF_EXECINSTR:
+                if sec_flags & SH_FLAGS.SHF_EXECINSTR:
                     flags.append('X')
 
                 sections.append({
                     'name': sec_name,
                     'type': sec['sh_type'],
-                    'size': sec_size,
+                    'size': sec['sh_size'],
                     'entropy': round(entropy, 4),
                     'flags': ''.join(flags),
                     'addr': hex(sec['sh_addr']) if sec['sh_addr'] else None,
                     'offset': hex(sec['sh_offset']),
                 })
-        except Exception:
-            pass
+            except Exception as e:
+                # Skip the offending section, but record why: an unreadable
+                # section must not silently shrink the section list.
+                self._warnings.append(
+                    "section %r skipped: %s: %s" % (getattr(sec, 'name', '?'),
+                                                     type(e).__name__, e))
         return sections
 
     def _extract_segments(self) -> List[Dict[str, Any]]:
@@ -234,8 +249,8 @@ class ELFBreaker:
                     'memsz': seg['p_memsz'],
                     'offset': hex(seg['p_offset']),
                 })
-        except Exception:
-            pass
+        except Exception as e:
+            self._warnings.append("segments incomplete: %s: %s" % (type(e).__name__, e))
         return segments
 
     def _extract_symbols(self) -> Dict[str, List[str]]:
@@ -250,14 +265,17 @@ class ELFBreaker:
                             continue
                         st_type = sym['st_info']['type']
                         st_bind = sym['st_info']['bind']
-                        if st_bind in ('STB_GLOBAL', 'STB_WEAK') and st_type == 'STT_FUNC':
+                        # SHN_UNDEF must be checked first: an undefined global
+                        # function is an import (strcpy, dlerror, ...), not an
+                        # export of this library.
+                        if sym['st_shndx'] == 'SHN_UNDEF':
+                            imports.append(name)
+                        elif st_bind in ('STB_GLOBAL', 'STB_WEAK') and st_type == 'STT_FUNC':
                             exports.append(name)
                         elif st_bind == 'STB_LOCAL' and name.startswith('$'):
                             continue
-                        elif sym['st_shndx'] == 'SHN_UNDEF':
-                            imports.append(name)
-        except Exception:
-            pass
+        except Exception as e:
+            self._warnings.append("symbols incomplete: %s: %s" % (type(e).__name__, e))
         return {
             'imports': sorted(set(imports)),
             'exports': sorted(set(exports)),
@@ -277,8 +295,8 @@ class ELFBreaker:
                                 'class': '_'.join(parts[1:-1]) if len(parts) > 2 else '',
                                 'method': parts[-1] if parts else '',
                             })
-        except Exception:
-            pass
+        except Exception as e:
+            self._warnings.append("jni exports incomplete: %s: %s" % (type(e).__name__, e))
         return jnis
 
     def _extract_init_array(self) -> Optional[List[str]]:

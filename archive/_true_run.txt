@@ -1,2 +1,0 @@
-﻿Matches 174 Mism 6 Crash 0
-maxI=4093 maxCharIdx=4093 anyOverPool=false anyOverArr=false poolLen=4320

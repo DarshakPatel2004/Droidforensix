@@ -76,6 +76,8 @@ def _enrich_isp(ip: str) -> Dict[str, str]:
         time.sleep(1.4 - elapsed)
     _LAST_ISP_QUERY = time.time()
 
+    failed = False
+    error_reason = ''
     try:
         req = Request(f'http://ip-api.com/json/{ip}?fields=status,isp,org,as,country,regionName,city',
                       headers={'User-Agent': 'DroidForensix/1.0'})
@@ -88,9 +90,21 @@ def _enrich_isp(ip: str) -> Dict[str, str]:
                 'as': data.get('as', ''),
             }
         else:
+            # status != 'success' is usually a rate-limit or bad request
+            failed = True
+            error_reason = str(data.get('message') or data.get('status') or 'lookup failed')
             result = {'isp': '', 'org': '', 'as': ''}
-    except Exception:
+    except Exception as exc:
+        failed = True
+        error_reason = '%s: %s' % (type(exc).__name__, exc)
         result = {'isp': '', 'org': '', 'as': ''}
+
+    if failed:
+        # Do NOT persist a transient failure. Caching this would make the IP
+        # permanently report "no ISP data" in every future report, which reads as
+        # a finding rather than a failed lookup.
+        logger.debug("ISP lookup failed for %s (%s); not caching", ip, error_reason)
+        return {'isp': '', 'org': '', 'as': '', 'lookup_error': error_reason}
 
     cache[ip] = result
     _save_isp_cache(cache)
@@ -597,7 +611,9 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
             has_changes = False
             for fut in futures:
                 try:
-                    c, update = fut.result()
+                    # Bounded: an unresolvable/blackholed domain must not pin this
+                    # thread indefinitely. resolve_dns already caps at 2s per host.
+                    c, update = fut.result(timeout=10.0)
                     if update:
                         c.update(update)
                         has_changes = True
@@ -704,6 +720,11 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
                 base['censys_dns_names'] = censys.get('dns_names', [])
                 base['censys_certs'] = censys.get('certs', [])
                 base['censys_enriched_at'] = censys.get('_enriched_at', '')
+
+            # Surface a failed ISP lookup so an empty isp/org/as is not mistaken
+            # for "this network has no owner".
+            if isp_data.get('lookup_error'):
+                base['isp_lookup_error'] = isp_data['lookup_error']
 
             ips_geolocated.append(base)
 

@@ -460,15 +460,16 @@ def _quick_family_check(chains_result: dict, c2_result: dict, obfuscation_result
     from backend.family_id import FAMILY_SIGNATURES
     c2_infra = (c2_result or {}).get("c2_infrastructure", [])
     for entry in c2_infra:
-        domain = entry.get("value", "")
+        # Real c2_infrastructure records carry "domain" (plus raw_url/protocol);
+        # "value" belongs to the raw indicator format, not these records.
+        domain = entry.get("domain") or ""
+        if not domain:
+            continue
         for sig in FAMILY_SIGNATURES:
-            for pat in sig.c2_patterns:
-                if pat.mode == "EXACT" and domain == pat.pattern:
-                    return sig.family_name
-                elif pat.mode == "SUFFIX" and domain.endswith(pat.pattern):
-                    return sig.family_name
-                elif pat.mode == "SUBSTRING" and pat.pattern in domain:
-                    return sig.family_name
+            # C2Pattern.matches handles the C2MatchMode enum comparison. Comparing
+            # pat.mode to a bare string is always False and silently disables this.
+            if any(pat.matches(domain) for pat in sig.c2_patterns):
+                return sig.family_name
     indicators = (obfuscation_result or {}).get("indicators", {})
     susp_apis = " ".join(indicators.get("suspicious_apis", [])).lower()
     for sig in FAMILY_SIGNATURES:

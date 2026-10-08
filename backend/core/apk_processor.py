@@ -590,37 +590,59 @@ class APKProcessor:
         self.results['steps']['string_extraction'] = step2['data']
         strings_data = step2['data']
         
+        # Steps 3-7 are soft-fail by design: a partial result is still useful.
+        # But their failures must be recorded, not dropped - previously they were
+        # silently discarded and the caller reported a clean success while the
+        # C2 / threat-chain sections were simply absent.
+        failed_steps: List[str] = []
+
         # Step 3
         step3 = self.step_3_entropy_analysis(androguard_data)
         if step3['success']:
             self.results['steps']['entropy_analysis'] = step3['data']
-        
+        else:
+            failed_steps.append('entropy_analysis')
+
         # Step 4
         step4 = self.step_4_encoding_detection(strings_data)
         if step4['success']:
             self.results['steps']['encoding_detection'] = step4['data']
+        else:
+            failed_steps.append('encoding_detection')
         encoding_data = step4['data'] if step4['success'] else {}
-        
+
         # Step 5
         step5 = self.step_5_payload_decoding(encoding_data)
         if step5['success']:
             self.results['steps']['payload_decoding'] = step5['data']
-        
+        else:
+            failed_steps.append('payload_decoding')
+
         # Step 6
         step6 = self.step_6_c2_extraction(androguard_data, strings_data)
         if step6['success']:
             self.results['steps']['c2_extraction'] = step6['data']
+        else:
+            failed_steps.append('c2_extraction')
         c2_data = step6['data'] if step6['success'] else {}
-        
+
         # Step 7
         step7 = self.step_7_threat_chain(androguard_data, c2_data)
         if step7['success']:
             self.results['steps']['threat_chain'] = step7['data']
-        
+        else:
+            failed_steps.append('threat_chain')
+
+        if failed_steps:
+            logger.warning("APK analysis completed with failed steps: %s", failed_steps)
+            self.results['failed_steps'] = failed_steps
+
         logger.info("Pipeline execution complete")
-        
+
         return {
             'success': True,
+            'partial': bool(failed_steps),
+            'failed_steps': failed_steps,
             'data': self.results
         }
     

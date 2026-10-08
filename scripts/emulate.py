@@ -40,7 +40,8 @@ from unicorn import (Uc, UC_ARCH_X86, UC_ARCH_ARM, UC_ARCH_ARM64,
                      UC_MODE_32, UC_MODE_64, UC_MODE_ARM, UC_MODE_THUMB,
                      UC_MODE_LITTLE_ENDIAN, UC_HOOK_CODE)
 from unicorn.x86_const import (UC_X86_REG_RSP, UC_X86_REG_RAX, UC_X86_REG_RDI,
-                               UC_X86_REG_RSI, UC_X86_REG_RDX, UC_X86_REG_RIP)
+                               UC_X86_REG_RSI, UC_X86_REG_RDX, UC_X86_REG_RIP,
+                               UC_X86_REG_RCX)
 from unicorn.arm_const import (UC_ARM_REG_SP, UC_ARM_REG_R0, UC_ARM_REG_R1,
                                UC_ARM_REG_R2, UC_ARM_REG_R3, UC_ARM_REG_PC,
                                UC_ARM_REG_LR)
@@ -1302,7 +1303,7 @@ class Emulator:
                 f = getattr(self, "_fake_files", {}).get(a4)
                 if f:
                     off = (a5 << 12) & len(f["data"])
-                    uc.mem_write(addr, f["data"][off:off + size])
+                    uc_.mem_write(addr, f["data"][off:off + size])
             uc_.reg_write(UC_ARM_REG_R0, addr)
         elif nr == 322 or nr == 5:  # openat / open
             path = self.cstr(a1 if nr == 322 else a0)
@@ -1311,7 +1312,7 @@ class Emulator:
             f = getattr(self, "_fake_files", {}).get(a0)
             if f and a1:
                 chunk = f["data"][f["off"]:f["off"] + a2]
-                uc.mem_write(a1, chunk)
+                uc_.mem_write(a1, chunk)
                 f["off"] += len(chunk)
                 uc_.reg_write(UC_ARM_REG_R0, len(chunk))
             else:

@@ -8,16 +8,19 @@ export default function ComponentsTab({ sampleId, apiUrl }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeType, setActiveType] = useState('activities')
+  const [fetchError, setFetchError] = useState(null)
 
   useEffect(() => {
     if (!sampleId) return
+    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection/components`)
-      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
       .then(d => { setData(d.components); setLoading(false) })
-      .catch(() => setLoading(false))
+      .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 
   if (loading) return <div className="empty-state">Loading components...</div>
+  if (fetchError) return <div className="empty-state">Failed to load component data</div>
   if (!data) return <div className="empty-state">No component data available</div>
 
   const items = data[activeType] || []
