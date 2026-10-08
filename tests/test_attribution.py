@@ -8,7 +8,10 @@ from backend.transformers import load_result
 from tests.test_code_analysis import SIMPLE_CLASS_SOURCE
 
 
-# Sample result used for mocking load_result
+# Sample result used for mocking load_result.
+# Keys mirror a real pipeline_result.json: permissions live under
+# manifest.uses_permissions, and there is no top-level "heuristic" or
+# family_identification "matched_*" (the pipeline never writes those).
 SAMPLE_RESULT = {
     "sample_id": "test_sample_001",
     "metadata": {
@@ -16,7 +19,11 @@ SAMPLE_RESULT = {
         "package_name": "com.evil.malware",
         "version_name": "1.0",
         "sha256": "abcdef1234567890",
-        "permissions": [
+        "apk_path": "/samples/MalwareSample.apk",
+        "file_size_bytes": 123456,
+    },
+    "manifest": {
+        "uses_permissions": [
             "android.permission.SEND_SMS",
             "android.permission.RECEIVE_SMS",
             "android.permission.READ_SMS",
@@ -25,13 +32,13 @@ SAMPLE_RESULT = {
             "android.permission.ACCESS_FINE_LOCATION",
             "android.permission.CAMERA",
         ],
-        "file_size_bytes": 123456,
     },
     "llm_assessment": {
         "severity": "critical",
         "risk_score": 85,
         "primary_threat": "sms_trojan",
         "confidence": 0.92,
+        "method": "llm",
     },
     "obfuscation_analysis": {
         "obfuscation_score": 72,
@@ -47,30 +54,19 @@ SAMPLE_RESULT = {
     },
     "c2_infrastructure": [
         {"domain": "evil-c2.com", "ip": "203.0.113.5", "protocol": "https",
-         "port": 443, "status": "active", "path": "/c2", "confidence": 0.95},
+         "port": 443, "path": "/c2", "confidence": 0.95},
         {"domain": "backup-c2.net", "ip": "198.51.100.10", "protocol": "http",
-         "port": 8080, "status": "unknown", "path": "/gate", "confidence": 0.8},
+         "port": 8080, "path": "/gate", "confidence": 0.8},
     ],
     "encodings": [],
     "payloads": [],
     "threat_chains": [],
-    "heuristic": {
-        "score": 82,
-        "method": "ensemble",
-        "reasoning": "Multiple strong signals detected",
-    },
     "family_identification": {
-        "family": "XHelper",
+        "family": "FluBot",
         "confidence": 0.95,
         "method": "ensemble",
-        "reasoning": "Permission and C2 overlap with XHelper baseline",
-        "candidates": [{"family": "XHelper", "score": 0.95}],
-        "matched_permissions": [
-            "android.permission.SEND_SMS",
-            "android.permission.RECEIVE_SMS",
-            "android.permission.READ_SMS",
-        ],
-        "matched_c2": ["evil-c2.com"],
+        "reasoning": "Permission and C2 overlap with FluBot baseline",
+        "candidates": [{"family": "FluBot", "score": 0.95}],
     },
     "strings": {
         "string_literals": [
@@ -86,26 +82,27 @@ SAMPLE_RESULT = {
 }
 
 # Second sample sharing the same family + permissions, used to verify
-# related-sample matching.
+# related-sample matching. Mirrors the production shape (see SAMPLE_RESULT).
 OTHER_SAMPLE = {
     "sample_id": "test_sample_002",
     "metadata": {
         "sample_name": "SiblingMalware.apk",
         "package_name": "com.evil.sibling",
         "sha256": "fedcba9876543210",
-        "permissions": [
+        "file_size_bytes": 100000,
+    },
+    "manifest": {
+        "uses_permissions": [
             "android.permission.SEND_SMS",
             "android.permission.RECEIVE_SMS",
             "android.permission.READ_SMS",
             "android.permission.CALL_PHONE",
         ],
-        "file_size_bytes": 100000,
     },
     "obfuscation_analysis": {"obfuscation_score": 10, "obfuscation_level": "low", "indicators": {}},
     "c2_infrastructure": [],
-    "heuristic": {"score": 10, "method": "heuristic"},
     "family_identification": {
-        "family": "XHelper",
+        "family": "FluBot",
         "confidence": 0.9,
         "method": "signature_v3",
         "reasoning": "matching signature",
@@ -129,7 +126,7 @@ def client():
 
 
 @pytest.fixture(autouse=True)
-def mock_deps(monkeypatch):
+def mock_deps(monkeypatch, tmp_path):
     """Mock load_result to return SAMPLE_RESULT for our test sample."""
     def _mock_load(sample_id):
         if sample_id == "test_sample_001":
@@ -137,6 +134,12 @@ def mock_deps(monkeypatch):
         return None
     monkeypatch.setattr("backend.main.load_result", _mock_load)
     monkeypatch.setattr("backend.transformers.load_result", _mock_load)
+
+    # The attribution endpoint persists its payload to WORK_DIR/<id>/attribution_cache.json
+    # and returns the cached copy on later calls. Point WORK_DIR at a per-test tmp dir,
+    # otherwise an earlier test (or a previous run) writes the cache and every later
+    # call asserts against stale data instead of the current code.
+    monkeypatch.setattr("backend.config.settings.WORK_DIR", tmp_path)
 
     def _mock_identify(sample_id, result):
         return SAMPLE_RESULT["family_identification"]
@@ -168,7 +171,7 @@ def mock_deps(monkeypatch):
                 },
                 {
                     "source": "Hacker News",
-                    "title": "XHelper trojan analysis",
+                    "title": "FluBot trojan analysis",
                     "url": "https://news.ycombinator.com/item?id=1",
                     "snippet": "C2 analysis",
                     "author": "researcher",
@@ -271,7 +274,7 @@ class TestThreatSummary:
     def test_threat_summary_values(self, client):
         response = client.get("/api/sample/test_sample_001/threat-summary")
         data = response.json()
-        assert data["family"] == "XHelper"
+        assert data["family"] == "FluBot"
         assert data["confidence"] == 0.95
         assert data["c2_count"] == 2
 
@@ -286,7 +289,7 @@ class TestAttribution:
         response = client.get("/api/sample/test_sample_001/attribution")
         assert response.status_code == 200
         data = response.json()
-        assert data["family"] == "XHelper"
+        assert data["family"] == "FluBot"
         assert data["confidence"] == 0.95
         assert "confidence_breakdown" in data
         assert "supporting_signals" in data
@@ -351,7 +354,7 @@ class TestCommunityIntel:
         assert response.status_code == 200
         data = response.json()
         assert data["package_name"] == "com.evil.malware"
-        assert data["family"] == "XHelper"
+        assert data["family"] == "FluBot"
         assert data["total_posts"] == 2
         assert len(data["posts"]) == 2
         sources = {p["source"] for p in data["posts"]}

@@ -11,16 +11,19 @@ export default function PermissionsTab({ sampleId, apiUrl }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
   const [filter, setFilter] = useState('all')
+  const [fetchError, setFetchError] = useState(null)
 
   useEffect(() => {
     if (!sampleId) return
+    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection/permissions`)
-      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
       .then(d => { setData(d.permissions); setLoading(false) })
-      .catch(() => setLoading(false))
+      .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 
   if (loading) return <div className="empty-state">Loading permissions...</div>
+  if (fetchError) return <div className="empty-state">Failed to load permissions</div>
   if (!data?.length) return <div className="empty-state">No permissions declared</div>
 
   const groups = { dangerous: [], signature: [], normal: [], other: [] }

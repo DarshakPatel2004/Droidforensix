@@ -403,11 +403,14 @@ def prompt_classification():
 def interactive_classify(
     all_indicators, existing_map, results,
     auto_enabled=False, batch_mode=False, by_band=False,
+    resume=True,
 ):
     to_classify = []
     for ctx in all_indicators:
         key = (ctx["indicator"], ctx["sample_id"])
-        if key not in existing_map:
+        # Resume skips indicators already present in the results file; without
+        # --resume every indicator is re-classified (fresh pass).
+        if not resume or key not in existing_map:
             to_classify.append(ctx)
 
     print(
@@ -847,6 +850,7 @@ def main():
         results, auto_count, benign_matches = interactive_classify(
             all_indicators, existing_map, results,
             auto_enabled=True, batch_mode=True, by_band=args.by_band,
+            resume=args.resume,
         )
         auto_stats = {"count": auto_count, "matches": benign_matches}
         print(
@@ -862,6 +866,7 @@ def main():
         all_indicators, existing_map, results,
         auto_enabled=args.auto_classify, batch_mode=False,
         by_band=args.by_band,
+        resume=args.resume,
     )
     auto_stats = {"count": auto_count, "matches": benign_matches}
     generate_report(results, prev_fp_rate=prev_fp_rate, auto_stats=auto_stats)

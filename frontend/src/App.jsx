@@ -338,8 +338,13 @@ function AppInner() {
     let ws
     let reconnectTimer
     let pingTimer
+    // Set on unmount. close() is asynchronous, so ws.onclose still fires after
+    // this effect's cleanup; without this guard it would arm a fresh reconnect
+    // timer that nothing can ever clear, leaking one live socket per navigation.
+    let disposed = false
 
     const connect = () => {
+      if (disposed) return
       try {
         console.log('[WS] Connecting to', WS_URL)
         ws = new WebSocket(WS_URL)
@@ -368,6 +373,7 @@ function AppInner() {
         }
 
         ws.onclose = () => {
+          if (disposed) return
           console.log('[WS] Disconnected, reconnecting in 3s...')
           clearInterval(pingTimer)
           setWsState('reconnecting')
@@ -375,10 +381,12 @@ function AppInner() {
         }
 
         ws.onerror = (err) => {
+          if (disposed) return
           console.error('[WS] Error:', err)
           setWsState('failed')
         }
       } catch (err) {
+        if (disposed) return
         console.error('[WS] Failed to create WebSocket:', err)
         setWsState('failed')
         reconnectTimer = setTimeout(connect, 5000)
@@ -388,9 +396,17 @@ function AppInner() {
     connect()
 
     return () => {
+      disposed = true
       clearTimeout(reconnectTimer)
       clearInterval(pingTimer)
-      if (ws) ws.close()
+      if (ws) {
+        // Detach before closing so the late onclose cannot re-arm a reconnect.
+        ws.onclose = null
+        ws.onerror = null
+        ws.onmessage = null
+        ws.onopen = null
+        ws.close()
+      }
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 

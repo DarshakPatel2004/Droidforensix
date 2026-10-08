@@ -115,16 +115,19 @@ function LibDetailCard({ lib }) {
 export default function NativeLibsTab({ sampleId, apiUrl }) {
   const [data, setData] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState(null)
 
   useEffect(() => {
     if (!sampleId) return
+    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection`)
-      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
       .then(d => { setData(d); setLoading(false) })
-      .catch(() => setLoading(false))
+      .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 
   if (loading) return <div className="empty-state">Loading native libraries...</div>
+  if (fetchError) return <div className="empty-state">Failed to load native library data</div>
 
   const nativeLibs = data?.native_libs || []
   if (nativeLibs.length === 0) return <div className="empty-state">No native libraries found</div>

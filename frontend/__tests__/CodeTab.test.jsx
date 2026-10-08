@@ -175,7 +175,7 @@ describe('CodeTab', () => {
     fireEvent.click(screen.getByText(/MainActivity/))
 
     await waitFor(() => {
-      expect(screen.getByText('copy analysis')).toBeTruthy()
+      expect(screen.getByText('Copy')).toBeTruthy()
       expect(screen.getByText('copy all')).toBeTruthy()
     })
 
@@ -194,13 +194,13 @@ describe('CodeTab', () => {
     fireEvent.click(screen.getByText(/MainActivity/))
 
     await waitFor(() => {
-      expect(screen.getByText('copy analysis')).toBeTruthy()
+      expect(screen.getByText('Copy')).toBeTruthy()
     })
 
     fireEvent.click(screen.getByText('Raw Source'))
 
     await waitFor(() => {
-      expect(screen.getByText('copy source')).toBeTruthy()
+      expect(screen.getByText('Copy Source')).toBeTruthy()
     })
   })
 
@@ -253,7 +253,7 @@ describe('CodeTab', () => {
     fireEvent.click(screen.getByText(/MainActivity/))
 
     await waitFor(() => {
-      const copyAnalysis = screen.getByText('copy analysis')
+      const copyAnalysis = screen.getByText('Copy')
       expect(copyAnalysis).toBeTruthy()
       fireEvent.click(copyAnalysis)
       expect(writeText).toHaveBeenCalled()
@@ -328,9 +328,9 @@ describe('CodeTab', () => {
     fireEvent.click(screen.getByText(/MainActivity/))
 
     await waitFor(() => {
-      expect(screen.getByText('share')).toBeTruthy()
-      expect(screen.getByText('export')).toBeTruthy()
-      expect(screen.getByText('copy analysis')).toBeTruthy()
+      expect(screen.getByText('Share')).toBeTruthy()
+      expect(screen.getByText('Export')).toBeTruthy()
+      expect(screen.getByText('Copy')).toBeTruthy()
     })
   })
 

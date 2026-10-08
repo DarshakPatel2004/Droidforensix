@@ -159,8 +159,12 @@ def stage_0_preflight_and_metadata(apk_path: str, work_dir: str, llm: LLMVerifie
             f"Dangerous: {len(manifest.get('dangerous_permissions', []))}")
 
     # 0.4 — IP Extraction from Manifest Strings
-    manifest_ips = _extract_ips_from_manifest(apk_path)
-    _log(0, f"IPs from manifest/strings: {len(manifest_ips)}")
+    manifest_ips_result = _extract_ips_from_manifest(apk_path)
+    manifest_ips = manifest_ips_result["ips"]
+    if manifest_ips_result["error"]:
+        _log(0, f"IP extraction from manifest failed: {manifest_ips_result['error']}")
+    else:
+        _log(0, f"IPs from manifest/strings: {len(manifest_ips)}")
 
     # 0.5 — LLM Cross-Verification
     llm_result = llm.verify_threat(
@@ -192,6 +196,7 @@ def stage_0_preflight_and_metadata(apk_path: str, work_dir: str, llm: LLMVerifie
             "apk_structure": seven_zip,
             "manifest_summary": manifest,
             "extracted_ips": manifest_ips,
+            "ip_extraction_error": manifest_ips_result["error"],
             "llm_verification": llm_result,
             "duration_seconds": duration,
         },
@@ -320,25 +325,31 @@ def _is_exported(component_name: str, apk) -> bool:
         return False
 
 
-def _extract_ips_from_manifest(apk_path: str) -> List[Dict]:
-    """Extract IPs from APK string resources."""
-    ips = []
+def _extract_ips_from_manifest(apk_path: str) -> Dict[str, Any]:
+    """Extract IPs from APK manifest/XML resources.
+
+    Returns {"ips": [...], "error": str|None}. An explicit error distinguishes
+    "no IPs in the manifest" from "manifest could not be read" - callers record
+    the latter rather than treating it as a clean result.
+    """
+    ips: List[Dict] = []
     try:
         from androguard.core.apk import APK
         apk = APK(apk_path)
-        for s in apk.get_files():
-            pass  # Just checking it loads
-        # Extract from all resources and manifest strings
-        try:
-            manifest_xml = apk.get_android_manifest_axml().get_xml()
-            if isinstance(manifest_xml, bytes):
-                manifest_xml = manifest_xml.decode("utf-8", errors="ignore")
-            ips.extend(_extract_ips_from_text(manifest_xml, "manifest/xml", "AndroidManifest.xml"))
-        except Exception:
-            pass
-    except Exception:
-        pass
-    return ips
+    except ImportError:
+        return {"ips": [], "error": "androguard not installed"}
+    except Exception as exc:
+        return {"ips": [], "error": "APK load failed: %s: %s" % (type(exc).__name__, exc)}
+
+    try:
+        manifest_xml = apk.get_android_manifest_axml().get_xml()
+        if isinstance(manifest_xml, bytes):
+            manifest_xml = manifest_xml.decode("utf-8", errors="ignore")
+        ips.extend(_extract_ips_from_text(manifest_xml, "manifest/xml", "AndroidManifest.xml"))
+    except Exception as exc:
+        return {"ips": ips, "error": "manifest decode failed: %s: %s" % (type(exc).__name__, exc)}
+
+    return {"ips": ips, "error": None}
 
 
 # ===================================================================
@@ -607,26 +618,38 @@ def stage_2_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> Dict[
     # 2.4 — Hardcoded Secrets Detection from DEX Strings
     hardcoded_secrets = []
     secret_risk = {"severity": "none", "total_secrets": 0, "risk_score": 0}
-    try:
-        dex_strings = _collect_dex_strings(apk_path)
-        strings_result = {
-            "sample_id": "",
-            "categories": {
-                "string_literals": [{
-                    "category": "string_literal",
-                    "value": s,
-                    "entropy": 0.0,
-                    "source": "dex_strings",
-                } for s in dex_strings]
-            },
-            "string_literals": dex_strings,
-        }
-        secrets_result = analyze_hardcoded_secrets(strings_result)
-        hardcoded_secrets = secrets_result["hardcoded_secrets"]
-        secret_risk = secrets_result["secret_risk"]
-        _log(2, f"Hardcoded secrets: {secret_risk['total_secrets']} ({secret_risk['severity']})")
-    except Exception as e:
-        _log(2, f"[WARN] Secrets scan failed: {e}")
+    secrets_scan_error = None
+    dex_strings_result = _collect_dex_strings(apk_path)
+    dex_strings = dex_strings_result["strings"]
+    if dex_strings_result["error"]:
+        # Do not report a clean "0 secrets" for a scan that did not run.
+        secrets_scan_error = dex_strings_result["error"]
+        secret_risk = {"severity": "unknown", "total_secrets": None, "risk_score": 0,
+                       "error": secrets_scan_error}
+        _log(2, f"[WARN] Secrets scan incomplete: {secrets_scan_error}")
+    else:
+        try:
+            strings_result = {
+                "sample_id": "",
+                "categories": {
+                    "string_literals": [{
+                        "category": "string_literal",
+                        "value": s,
+                        "entropy": 0.0,
+                        "source": "dex_strings",
+                    } for s in dex_strings]
+                },
+                "string_literals": dex_strings,
+            }
+            secrets_result = analyze_hardcoded_secrets(strings_result)
+            hardcoded_secrets = secrets_result["hardcoded_secrets"]
+            secret_risk = secrets_result["secret_risk"]
+            _log(2, f"Hardcoded secrets: {secret_risk['total_secrets']} ({secret_risk['severity']})")
+        except Exception as e:
+            secrets_scan_error = "%s: %s" % (type(e).__name__, e)
+            secret_risk = {"severity": "unknown", "total_secrets": None, "risk_score": 0,
+                           "error": secrets_scan_error}
+            _log(2, f"[WARN] Secrets scan failed: {e}")
 
     # 2.5 — LLM Cross-Verification
     high_severity = [c for c in suspicious_classes if c.get("severity") == "high"]
@@ -667,29 +690,54 @@ def stage_2_code_review(apk_path: str, work_dir: str, llm: LLMVerifier) -> Dict[
             "extracted_ips": dex_ips,
             "hardcoded_secrets": hardcoded_secrets,
             "secret_risk": secret_risk,
+            "secrets_scan_error": secrets_scan_error,
             "llm_verification": llm_result,
             "duration_seconds": duration,
         }
     }
 
 
-def _collect_dex_strings(apk_path: str) -> List[str]:
-    """Collect all DEX string literals via Androguard."""
+def _collect_dex_strings(apk_path: str) -> Dict[str, Any]:
+    """Collect all DEX string literals via Androguard.
+
+    Returns {"strings": [...], "error": str|None}. Returning a bare list made a
+    failed scan indistinguishable from a sample with no strings, so the caller
+    reported "0 hardcoded secrets" for APKs it never actually scanned.
+    """
     try:
         from androguard.core.apk import APK
         from androguard.core.dex import DEX
+    except ImportError as exc:
+        return {"strings": [], "error": "androguard not installed: %s" % exc}
 
+    try:
         apk = APK(apk_path)
-        strings = []
+    except Exception as exc:
+        return {"strings": [], "error": "APK open failed: %s: %s" % (type(exc).__name__, exc)}
+
+    strings: List[str] = []
+    failed_dexes = 0
+    total_dexes = 0
+    try:
         for dex_data in apk.get_all_dex():
+            total_dexes += 1
             try:
                 dex = DEX(dex_data)
                 strings.extend([str(s) for s in dex.get_strings()])
             except Exception:
-                continue
-        return strings
-    except Exception:
-        return []
+                failed_dexes += 1
+    except Exception as exc:
+        return {"strings": strings,
+                "error": "DEX enumeration failed: %s: %s" % (type(exc).__name__, exc)}
+
+    if total_dexes and failed_dexes == total_dexes:
+        return {"strings": strings,
+                "error": "all %d DEX file(s) failed to parse" % total_dexes}
+    if failed_dexes:
+        return {"strings": strings,
+                "error": "%d of %d DEX file(s) failed to parse" % (failed_dexes, total_dexes)}
+
+    return {"strings": strings, "error": None}
 
 
 def _identify_suspicious_classes_from_dex(apk_path: str) -> List[Dict]:

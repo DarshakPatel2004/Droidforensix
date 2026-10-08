@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useCallback } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef } from 'react'
 
 function classifyFormat(s) {
   if (!s || s.length === 0) return 'empty'
@@ -64,13 +64,18 @@ export default function StringsTab({ sampleId, apiUrl }) {
   const [search, setSearch] = useState('')
   const [riskFilter, setRiskFilter] = useState('all')
   const [expanded, setExpanded] = useState(null)
+  const [fetchError, setFetchError] = useState(null)
+  // Monotonic token so only the most recent expand request may set state;
+  // reference lookups are slow and variable, so responses can arrive out of order.
+  const refRequestId = useRef(0)
 
   useEffect(() => {
     if (!sampleId) return
+    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection/strings`)
-      .then(r => r.ok ? r.json() : Promise.reject())
+      .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
       .then(d => { setData(d); setLoading(false) })
-      .catch(() => setLoading(false))
+      .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 
   const allStrings = useMemo(() => {
@@ -104,21 +109,27 @@ export default function StringsTab({ sampleId, apiUrl }) {
   }, [filtered])
 
   const loadRefs = useCallback(async (str) => {
-    if (expanded === str) { setExpanded(null); return }
+    // expanded holds an object {str, usages}, so a bare === against str is
+    // never true; compare the .str field so re-clicking a row collapses it.
+    if (expanded?.str === str) { setExpanded(null); return }
+    const requestId = ++refRequestId.current
     try {
       const res = await fetch(`${apiUrl}/api/sample/${sampleId}/string-references/${encodeURIComponent(str)}`)
+      if (requestId !== refRequestId.current) return  // a later click won
       if (res.ok) {
         const refs = await res.json()
+        if (requestId !== refRequestId.current) return
         setExpanded({ str, usages: refs.usages || [] })
       } else {
         setExpanded({ str, usages: [] })
       }
     } catch {
-      setExpanded({ str, usages: [] })
+      if (requestId === refRequestId.current) setExpanded({ str, usages: [] })
     }
   }, [sampleId, apiUrl, expanded])
 
   if (loading) return <div className="empty-state">Loading strings...</div>
+  if (fetchError) return <div className="empty-state">Failed to load strings data</div>
   if (!data) return <div className="empty-state">No strings data available</div>
 
   const riskGroups = [

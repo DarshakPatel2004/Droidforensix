@@ -46,6 +46,7 @@ from backend.transformers import (
 from backend.dissection import APKDissector, SampleAPKCache, load_dissection
 from backend import threat_intel as ti
 from backend.family_id import identify_family
+from backend import family_id as family_id_module
 from backend.obfuscation_view import build_obfuscation_view, deobfuscate_text
 from backend.code_analysis import CodeAnalyzer
 from backend.community_intel import get_cached_community_intel
@@ -114,7 +115,9 @@ class ConnectionManager:
             return
         text = json.dumps(message, default=str)
         disconnected = set()
-        for connection in self.active_connections:
+        # Iterate a snapshot: send_text can suspend, letting another task add or
+        # discard connections and raise "Set changed size during iteration".
+        for connection in list(self.active_connections):
             try:
                 await connection.send_text(text)
             except Exception as e:
@@ -132,6 +135,16 @@ _dissection_cache = SampleAPKCache()
 # In-memory store for upload -> sample mapping and analysis status
 upload_registry: Dict[str, dict] = {}
 sample_status: Dict[str, dict] = {}
+
+# How long an HTTP request waits on a queued analysis before returning. This is a
+# client-facing bound only: the pipeline's own limit (run_pipeline's
+# pipeline_timeout, default 600s) is authoritative and the worker thread keeps
+# running after this expires, so exceeding it is not a failure.
+ANALYSIS_AWAIT_TIMEOUT_S = 300
+
+# Strong references to fire-and-forget analysis tasks, so they are not
+# garbage-collected mid-flight and their exceptions stay retrievable.
+_background_tasks: set = set()
 
 
 # ---------------------------------------------------------------------------
@@ -318,8 +331,12 @@ def _get_sample_apk_path(sample_id: str) -> Optional[Path]:
     return None
 
 
-def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> dict:
-    """Return cached dissection.json or generate and cache it."""
+async def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> dict:
+    """Return cached dissection.json or generate and cache it.
+
+    Async because generating a dissection re-parses the APK with Androguard
+    (seconds), which must not run on the event loop.
+    """
     if refresh:
         from backend.dissection import _DISSECTION_CACHE
         _dissection_cache.invalidate(sample_id)
@@ -339,7 +356,7 @@ def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> dict:
     if apk_path is None:
         raise HTTPException(status_code=404, detail="APK file not found for sample")
 
-    try:
+    def _build() -> dict:
         dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
         data = dissector.dissect()
         # Cache for future requests
@@ -350,6 +367,10 @@ def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> dict:
         except Exception as ex:
             logger.debug("Failed to cache dissection to disk: %s", ex)
         return data
+
+    try:
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(None, _build)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Dissection failed: {e}")
 
@@ -361,7 +382,7 @@ async def api_get_dissection(sample_id: str, refresh: bool = Query(False)) -> di
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
 
-    return _get_or_create_dissection(sample_id, refresh=refresh)
+    return await _get_or_create_dissection(sample_id, refresh=refresh)
 
 
 @app.get("/api/sample/{sample_id}/dissection/manifest")
@@ -371,7 +392,7 @@ async def api_get_dissection_manifest(sample_id: str, refresh: bool = Query(Fals
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
 
-    data = _get_or_create_dissection(sample_id, refresh=refresh)
+    data = await _get_or_create_dissection(sample_id, refresh=refresh)
     manifest = data.get("manifest", {})
     if isinstance(manifest.get("raw_manifest"), str) and len(manifest["raw_manifest"]) > 5000:
         manifest = {**manifest, "raw_manifest": manifest["raw_manifest"][:5000]}
@@ -385,7 +406,7 @@ async def api_get_dissection_permissions(sample_id: str, refresh: bool = Query(F
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
 
-    data = _get_or_create_dissection(sample_id, refresh=refresh)
+    data = await _get_or_create_dissection(sample_id, refresh=refresh)
     return {"permissions": data.get("permissions", [])}
 
 
@@ -396,7 +417,7 @@ async def api_get_dissection_components(sample_id: str, refresh: bool = Query(Fa
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
 
-    data = _get_or_create_dissection(sample_id, refresh=refresh)
+    data = await _get_or_create_dissection(sample_id, refresh=refresh)
     return {"components": data.get("components", {})}
 
 
@@ -407,7 +428,7 @@ async def api_get_dissection_dex(sample_id: str, refresh: bool = Query(False)) -
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
 
-    data = _get_or_create_dissection(sample_id, refresh=refresh)
+    data = await _get_or_create_dissection(sample_id, refresh=refresh)
     return {"dex_stats": data.get("dex_stats", {})}
 
 
@@ -516,7 +537,10 @@ async def api_get_class_code(sample_id: str, class_name: str, refresh: bool = Qu
 
     try:
         dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
-        code = dissector.read_class_source(class_name)
+        # read_class_source re-parses DEX via Androguard (seconds per class on a
+        # multi-dex APK) and must not run on the event loop.
+        loop = asyncio.get_event_loop()
+        code = await loop.run_in_executor(None, dissector.read_class_source, class_name)
         if code is None:
             raise HTTPException(status_code=404, detail="Class source not found")
         return {"class_name": class_name, "code": code}
@@ -568,13 +592,19 @@ async def api_get_threat_intel(sample_id: str) -> dict:
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
 
-    data = ti.build_threat_intel(result, sample_id)
-    try:
-        data["family"] = identify_family(sample_id, result)
-    except Exception as e:  # family ID must never break the dashboard
-        data["family"] = {"family": "unknown", "confidence": 0.0,
-                          "method": "error", "reasoning": str(e), "candidates": []}
-    return data
+    # build_threat_intel performs blocking DNS/HTTP lookups (rate-limited), so it
+    # must not run on the event loop. identify_family is also CPU-heavy.
+    def _build():
+        data = ti.build_threat_intel(result, sample_id)
+        try:
+            data["family"] = identify_family(sample_id, result)
+        except Exception as e:  # family ID must never break the dashboard
+            data["family"] = {"family": "unknown", "confidence": 0.0,
+                              "method": "error", "reasoning": str(e), "candidates": []}
+        return data
+
+    loop = asyncio.get_event_loop()
+    return await loop.run_in_executor(None, _build)
 
 
 @app.get("/api/sample/{sample_id}/family")
@@ -716,35 +746,50 @@ async def api_get_attribution(sample_id: str) -> dict:
 
 def _compute_confidence_breakdown(result: dict, family: str) -> dict:
     """Compute per-dimension confidence scores."""
-    # Permissions match score
-    metadata = result.get("metadata", {})
-    declared_perms = set(metadata.get("permissions", []))
-    family_id_result = result.get("family_identification", {})
-    family_perms = set(family_id_result.get("matched_permissions", []))
-    if family_perms:
+    # Permissions match: compare the sample's declared permissions against the
+    # signature of the family it was attributed to. Production pipeline results
+    # store permissions under manifest.uses_permissions (and as a flat
+    # result["permissions"] in the cache format) - not under metadata.
+    declared_perms = family_id_module._extract_permissions(result)
+    family_perms = _family_permission_baseline(family)
+    if family_perms and declared_perms:
         overlap = len(declared_perms & family_perms)
-        permissions_match = round(overlap / len(family_perms), 2) if family_perms else 0.0
+        permissions_match = round(overlap / len(family_perms), 2)
     else:
-        permissions_match = 0.5
+        # No baseline for this family (or no declared permissions): the axis is
+        # unknown, so report 0.0 rather than a fabricated mid-point.
+        permissions_match = 0.0
 
     # C2 overlap score
     c2_list = result.get("c2_infrastructure", [])
     c2_domains = {c.get("domain", "") for c in c2_list if c.get("domain")}
-    c2_overlap = 0.5
-    if c2_domains and family_id_result:
-        family_c2s = set(family_id_result.get("matched_c2", []))
-        if family_c2s:
-            overlap = len(c2_domains & family_c2s)
-            c2_overlap = round(overlap / len(c2_domains), 2) if c2_domains else 0.5
+    family_c2s = _family_c2_baseline(family)
+    if family_c2s and c2_domains:
+        overlap = len(c2_domains & family_c2s)
+        c2_overlap = round(overlap / len(c2_domains), 2)
+    else:
+        c2_overlap = 0.0
 
     # Obfuscation pattern score
     obfuscation = result.get("obfuscation_analysis", {})
     obf_score = obfuscation.get("obfuscation_score", 0)
     obf_pattern = round(min(obf_score / 100, 1.0), 2)
 
-    # Code similarity (simplified: use overall heuristic score)
-    heuristic = result.get("heuristic", {})
-    heuristic_score = heuristic.get("score", 0) if isinstance(heuristic, dict) else 0
+    # Code similarity: derived from the LLM/heuristic risk score that the
+    # pipeline actually writes. Production results have no top-level
+    # "heuristic"; llm_assessment is the authoritative scored verdict.
+    heuristic_score = 0
+    llm = result.get("llm_assessment", {})
+    if isinstance(llm, dict):
+        heuristic_score = llm.get("risk_score", 0) or 0
+    if not heuristic_score:
+        assessment = result.get("assessment", {})
+        if isinstance(assessment, dict):
+            heuristic_score = assessment.get("risk_score", 0) or 0
+    try:
+        heuristic_score = float(heuristic_score)
+    except (TypeError, ValueError):
+        heuristic_score = 0.0
     code_similarity = round(min(heuristic_score / 100, 1.0), 2)
 
     return {
@@ -755,11 +800,29 @@ def _compute_confidence_breakdown(result: dict, family: str) -> dict:
     }
 
 
+def _family_permission_baseline(family: str) -> Set[str]:
+    """Permissions declared by a family's signature, or empty if unknown."""
+    if not family or family == "unknown":
+        return set()
+    for sig in family_id_module.FAMILY_SIGNATURES:
+        if sig.family_name.lower() == family.lower():
+            return {p.short_name() for p in sig.permission_sigs}
+    return set()
+
+
+def _family_c2_baseline(family: str) -> Set[str]:
+    """C2 patterns declared by a family's signature, or empty if unknown."""
+    if not family or family == "unknown":
+        return set()
+    for sig in family_id_module.FAMILY_SIGNATURES:
+        if sig.family_name.lower() == family.lower():
+            return {p.pattern.lower() for p in sig.c2_patterns}
+    return set()
+
+
 def _build_supporting_signals(result: dict, family_data: dict, breakdown: dict) -> List[str]:
     """Generate human-readable supporting signals from the data."""
     signals = []
-    metadata = result.get("metadata", {})
-    permissions = metadata.get("permissions", [])
     c2_list = result.get("c2_infrastructure", [])
     obfuscation = result.get("obfuscation_analysis", {})
 
@@ -779,9 +842,10 @@ def _build_supporting_signals(result: dict, family_data: dict, breakdown: dict) 
     if family != "unknown":
         signals.append(f"Code structure consistent with {family}")
 
-    heuristic = result.get("heuristic", {})
-    if isinstance(heuristic, dict) and heuristic.get("method"):
-        signals.append(f"Detection method: {heuristic['method']}")
+    llm = result.get("llm_assessment", {})
+    method = llm.get("method") if isinstance(llm, dict) else None
+    if method:
+        signals.append(f"Detection method: {method}")
 
     return signals
 
@@ -849,8 +913,8 @@ def _compute_similarity(a: dict, b: dict) -> float:
         union = x | y
         return len(x & y) / len(union) if union else 0.0
 
-    a_perms = set((a.get("metadata", {}) or {}).get("permissions", []))
-    b_perms = set((b.get("metadata", {}) or {}).get("permissions", []))
+    a_perms = family_id_module._extract_permissions(a)
+    b_perms = family_id_module._extract_permissions(b)
     score += jaccard(a_perms, b_perms) * 0.40
     weight_total += 0.40
 
@@ -935,18 +999,21 @@ async def api_get_threat_summary(sample_id: str) -> dict:
         risk_score = heuristic.get("score", 0)
     severity = assessment.get("severity", "low")
 
-    permissions = metadata.get("permissions", [])
+    permissions = sorted(family_id_module._extract_permissions(result))
     dangerous_count = sum(
         1 for p in permissions
-        if p.startswith("android.permission.")
-        and p.split(".")[-1] in {
+        if p.split(".")[-1] in {
             "SEND_SMS", "RECEIVE_SMS", "READ_SMS", "CALL_PHONE",
             "READ_CONTACTS", "ACCESS_FINE_LOCATION", "CAMERA",
             "RECORD_AUDIO", "READ_PHONE_STATE", "WRITE_EXTERNAL_STORAGE",
         }
     )
 
-    c2_active = sum(1 for c in c2_list if c.get("status") == "active")
+    # c2[].status is written only after live-DNS enrichment has run for this
+    # sample. Before that the key is absent across the whole c2 list, which is
+    # "not yet classified", not "zero active endpoints".
+    status_known = any("status" in c for c in c2_list)
+    c2_active = sum(1 for c in c2_list if c.get("status") == "active") if status_known else None
     obf_level = obfuscation.get("obfuscation_level", "low")
 
     techniques = obfuscation.get("indicators", {}) or {}
@@ -968,7 +1035,9 @@ async def api_get_threat_summary(sample_id: str) -> dict:
         "severity": severity,
         "red_flags": [
             {"type": "dangerous_permissions", "count": dangerous_count},
-            {"type": "active_c2_endpoints", "count": c2_active},
+            *([{"type": "active_c2_endpoints", "count": c2_active}]
+              if c2_active is not None else
+              [{"type": "active_c2_endpoints", "status": "not_enriched"}]),
             {"type": "obfuscation", "level": obf_level.upper()},
             {"type": "evasion_techniques", "count": evasion_count},
         ],
@@ -1136,15 +1205,8 @@ async def api_get_dissection_summary(sample_id: str, refresh: bool = Query(False
     # Load dissection data
     dissection = load_dissection(str(WORK_DIR), sample_id)
     if dissection is None:
-        # Try to generate dissection on the fly
-        apk_path = _get_sample_apk_path(sample_id)
-        if apk_path is None:
-            raise HTTPException(status_code=404, detail="APK file not found for sample")
-        try:
-            dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
-            dissection = dissector.dissect()
-        except Exception as e:
-            raise HTTPException(status_code=500, detail=f"Dissection failed: {e}")
+        # Generate on the fly (shared helper runs it off the event loop)
+        dissection = await _get_or_create_dissection(sample_id)
 
     # Load class objects for suspicious class analysis
     apk_path = _get_sample_apk_path(sample_id)
@@ -1205,93 +1267,97 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
     mode = request.get("mode", "quick")
     sections = request.get("sections") if mode == "quick" else None
 
-    # Gather supporting data
-    threat_data = ti.build_threat_intel(result, sample_id)
-    try:
-        obfuscation = build_obfuscation_view(sample_id, result.get("obfuscation_analysis"))
-    except Exception:
-        logger.debug("Failed to build obfuscation view for PDF report")
-        obfuscation = {}
-
-    # Get suspicious classes + methods
-    apk_path = _get_sample_apk_path(sample_id)
-    annotated_methods = []
-
-    if apk_path:
+    def _gather_report_data():
+        """Build everything the PDF needs. Runs in an executor: it performs
+        blocking DNS/LLM calls and Androguard work and must not touch the loop."""
+        threat = ti.build_threat_intel(result, sample_id)
         try:
-            dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
-            classes = dissector.list_decompiled_class_objects()
+            obf = build_obfuscation_view(sample_id, result.get("obfuscation_analysis"))
+        except Exception:
+            logger.debug("Failed to build obfuscation view for PDF report")
+            obf = {}
 
-            SUSPICIOUS_KEYWORDS = [
-                'invoke', 'Cipher', 'ClassLoader', 'reflect', 'DexClassLoader',
-                'Runtime.exec', 'ProcessBuilder', 'HttpURLConnection', 'Base64',
-                'decode', 'encrypt', 'socket', 'intent', 'permission',
-            ]
-            UNWANTED_PATTERNS = [
-                'android.support.', 'androidx.', 'com.android.internal.',
-                'kotlin.', 'com.google.android.',
-                'com.facebook.', 'com.appsflyer.', 'io.sentry.',
-                'com.adjust.', 'com.onesignal.', 'com.amplitude.',
-                'com.firebase.', 'com.google.firebase.',
-            ]
+        apk = _get_sample_apk_path(sample_id)
+        methods = []
 
-            def suspicion_score(cls_data):
-                score = 0
-                for method in cls_data.get('methods', []):
-                    body = method.get('body', '') or ''
-                    name = method.get('name', '') or ''
-                    for kw in SUSPICIOUS_KEYWORDS:
-                        if kw.lower() in name.lower():
-                            score += 2
-                        if kw.lower() in body.lower():
-                            score += 1
-                return score
+        if apk:
+            try:
+                dissector = APKDissector(str(apk), work_dir=str(WORK_DIR), cache=_dissection_cache)
+                classes = dissector.list_decompiled_class_objects()
 
-            # Filter boilerplate and sort by suspicion
-            suspicious = [
-                c for c in classes
-                if suspicion_score(c) > 0
-                and not any(p in c.get('name', '') for p in UNWANTED_PATTERNS)
-            ]
-            suspicious.sort(key=suspicion_score, reverse=True)
+                SUSPICIOUS_KEYWORDS = [
+                    'invoke', 'Cipher', 'ClassLoader', 'reflect', 'DexClassLoader',
+                    'Runtime.exec', 'ProcessBuilder', 'HttpURLConnection', 'Base64',
+                    'decode', 'encrypt', 'socket', 'intent', 'permission',
+                ]
+                UNWANTED_PATTERNS = [
+                    'android.support.', 'androidx.', 'com.android.internal.',
+                    'kotlin.', 'com.google.android.',
+                    'com.facebook.', 'com.appsflyer.', 'io.sentry.',
+                    'com.adjust.', 'com.onesignal.', 'com.amplitude.',
+                    'com.firebase.', 'com.google.firebase.',
+                ]
 
-            method_limit = None if mode == 'full' else 30
-            processed = 0
+                def suspicion_score(cls_data):
+                    score = 0
+                    for method in cls_data.get('methods', []):
+                        body = method.get('body', '') or ''
+                        name = method.get('name', '') or ''
+                        for kw in SUSPICIOUS_KEYWORDS:
+                            if kw.lower() in name.lower():
+                                score += 2
+                            if kw.lower() in body.lower():
+                                score += 1
+                    return score
 
-            for cls in suspicious:
-                if method_limit and processed >= method_limit:
-                    break
-                cls_name = cls.get('name', '')
-                for method in cls.get('methods', []):
+                # Filter boilerplate and sort by suspicion
+                suspicious = [
+                    c for c in classes
+                    if suspicion_score(c) > 0
+                    and not any(p in c.get('name', '') for p in UNWANTED_PATTERNS)
+                ]
+                suspicious.sort(key=suspicion_score, reverse=True)
+
+                method_limit = None if mode == 'full' else 30
+                processed = 0
+
+                for cls in suspicious:
                     if method_limit and processed >= method_limit:
                         break
-                    body = method.get('body', '') or ''
-                    name = method.get('name', '') or ''
-                    flags = [kw for kw in SUSPICIOUS_KEYWORDS
-                             if kw.lower() in name.lower() or kw.lower() in body.lower()]
-                    if not flags:
-                        continue
+                    cls_name = cls.get('name', '')
+                    for method in cls.get('methods', []):
+                        if method_limit and processed >= method_limit:
+                            break
+                        body = method.get('body', '') or ''
+                        name = method.get('name', '') or ''
+                        flags = [kw for kw in SUSPICIOUS_KEYWORDS
+                                 if kw.lower() in name.lower() or kw.lower() in body.lower()]
+                        if not flags:
+                            continue
 
-                    # Static annotations
-                    line_annotations = _annotate_lines(body)
+                        # Static annotations
+                        line_annotations = _annotate_lines(body)
 
-                    # LLM summary — run synchronously here (we're already in executor context)
-                    llm_result = explain_method(cls_name, name, body, flags)
+                        # Blocking LLM call; safe here because this whole
+                        # function runs in an executor thread.
+                        llm_result = explain_method(cls_name, name, body, flags)
 
-                    annotated_methods.append({
-                        'class_name':       cls_name,
-                        'method_name':      name,
-                        'flags':            flags,
-                        'line_annotations': line_annotations,
-                        'llm':              llm_result,
-                    })
-                    processed += 1
+                        methods.append({
+                            'class_name':       cls_name,
+                            'method_name':      name,
+                            'flags':            flags,
+                            'line_annotations': line_annotations,
+                            'llm':              llm_result,
+                        })
+                        processed += 1
 
-        except Exception as e:
-            logger.exception("Method annotation failed during PDF generation (sample %s): %s", sample_id, e)
+            except Exception as e:
+                logger.exception("Method annotation failed during PDF generation (sample %s): %s", sample_id, e)
 
-    # Generate PDF
+        return threat, obf, methods
+
     loop = asyncio.get_event_loop()
+    threat_data, obfuscation, annotated_methods = await loop.run_in_executor(None, _gather_report_data)
     try:
         pdf_bytes = await loop.run_in_executor(
             None,
@@ -1448,8 +1514,12 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict:
                 f.write(chunk)
                 sha256_hash.update(chunk)
     except asyncio.TimeoutError:
+        # Partial upload: remove the directory so stalled transfers do not
+        # accumulate unreferenced files on disk.
+        shutil.rmtree(upload_dir, ignore_errors=True)
         raise HTTPException(status_code=408, detail="Upload timed out after 60 seconds")
     except Exception as e:
+        shutil.rmtree(upload_dir, ignore_errors=True)
         raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}")
 
     sha256 = sha256_hash.hexdigest()
@@ -1508,6 +1578,7 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict:
 
 
 @app.post("/api/analyze/{upload_id}")
+@app.post("/api/analyze/{upload_id}")
 async def api_analyze_upload(upload_id: str) -> dict:
     """Trigger analysis for a previously uploaded APK."""
     upload = upload_registry.get(upload_id)
@@ -1517,6 +1588,17 @@ async def api_analyze_upload(upload_id: str) -> dict:
     apk_path = upload["path"]
     if not Path(apk_path).exists():
         raise HTTPException(status_code=400, detail="Uploaded APK file no longer exists")
+
+    # Idempotency guard: a retry (frontend ErrorState button, dedup re-upload) must
+    # not start a second run_pipeline against the same work directory - the two
+    # writers would interleave json.dump into pipeline_result.json and corrupt it.
+    existing = sample_status.get(upload_id, {})
+    if existing.get("status") in ("queued", "analyzing"):
+        return {
+            "upload_id": upload_id,
+            "status": existing["status"],
+            "message": "Analysis already in progress for this upload.",
+        }
 
     loop = asyncio.get_event_loop()
 
@@ -1538,12 +1620,21 @@ async def api_analyze_upload(upload_id: str) -> dict:
     async def run_analysis_async():
         future = loop.run_in_executor(None, run_analysis)
         try:
-            return await asyncio.wait_for(future, timeout=300)
+            return await asyncio.wait_for(future, timeout=ANALYSIS_AWAIT_TIMEOUT_S)
         except asyncio.TimeoutError:
-            sample_status[upload_id] = {"status": "error", "sample_id": None, "error": "pipeline timed out"}
+            # The executor thread keeps running (asyncio cannot cancel it), and the
+            # pipeline's own limit is higher, so this is NOT a terminal failure.
+            # Leave the status as "analyzing"; run_analysis writes the real outcome.
+            logger.warning(
+                "Analysis for upload %s exceeded %.0fs and is still running in the background",
+                upload_id, ANALYSIS_AWAIT_TIMEOUT_S)
             raise
 
-    asyncio.create_task(run_analysis_async())
+    # Keep a reference so the task is not garbage-collected mid-flight and its
+    # exception is retrievable.
+    t = asyncio.create_task(run_analysis_async())
+    _background_tasks.add(t)
+    t.add_done_callback(_background_tasks.discard)
     upload["status"] = "queued"
 
     return {
@@ -1578,7 +1669,9 @@ async def analyze(request: AnalyzeRequest) -> dict:
     async def run_analysis_async():
         return await loop.run_in_executor(None, run_analysis)
 
-    asyncio.create_task(run_analysis_async())
+    t = asyncio.create_task(run_analysis_async())
+    _background_tasks.add(t)
+    t.add_done_callback(_background_tasks.discard)
 
     return {
         "job_id": job_id,
@@ -1625,10 +1718,22 @@ async def api_full_analysis(file: UploadFile = File(...)):
     
     processor = APKProcessor(str(apk_path))
     results = processor.process()
-    
+
+    if not results['success']:
+        # Never report success for an analysis that failed.
+        return {'status': 'error', 'data': {'error': results.get('error')}}
+
+    if results.get('partial'):
+        # Some steps failed; the payload is usable but must say so.
+        return {
+            'status': 'partial',
+            'failed_steps': results.get('failed_steps', []),
+            'data': results.get('data'),
+        }
+
     return {
         'status': 'success',
-        'data': results if results['success'] else {'error': results.get('error')}
+        'data': results.get('data'),
     }
 
 

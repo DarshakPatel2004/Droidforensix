@@ -173,15 +173,32 @@ def main():
     run_ctors(emu)
     emu.jni_log.clear()
 
-    uc.reg_write(UC_ARM64_REG_SP, emulate.STACK_ADDR + 1024 * 1024 - 0x200)
-    uc.reg_write(UC_ARM64_REG_X0, vm)          # JavaVM*
-    uc.reg_write(UC_ARM64_REG_X1, 0)           # reserved
-    uc.reg_write(UC_ARM64_REG_LR, emulate.RET_STUB)
-    uc.reg_write(UC_ARM64_REG_PC, entry)
+    # Prime the CPU for JNI_OnLoad(vm, reserved) on the target's actual arch.
+    # Writing ARM64 registers on an ARM32/x86 core is a silent no-op in Unicorn,
+    # so JNI_OnLoad would run with SP=0 and R0=0.
+    from unicorn.arm_const import UC_ARM_REG_SP, UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_LR, UC_ARM_REG_PC
+    sp = emulate.STACK_ADDR + 1024 * 1024 - 0x200
+    if emu.arch_name == "arm64":
+        uc.reg_write(UC_ARM64_REG_SP, sp)
+        uc.reg_write(UC_ARM64_REG_X0, vm)          # JavaVM*
+        uc.reg_write(UC_ARM64_REG_X1, 0)           # reserved
+        uc.reg_write(UC_ARM64_REG_LR, emulate.RET_STUB)
+        uc.reg_write(UC_ARM64_REG_PC, entry)
+        start = entry
+    elif emu.arch_name == "arm":
+        uc.reg_write(UC_ARM_REG_SP, sp)
+        uc.reg_write(UC_ARM_REG_R0, vm)            # JavaVM*
+        uc.reg_write(UC_ARM_REG_R1, 0)             # reserved
+        uc.reg_write(UC_ARM_REG_LR, emulate.RET_STUB)
+        # Android armeabi .so text is Thumb-2; PC bit0=1 selects Thumb state.
+        uc.reg_write(UC_ARM_REG_PC, entry | 1)
+        start = entry | 1
+    else:
+        raise SystemExit(f"unsupported arch for this oracle: {emu.arch_name}")
 
     status = "clean"
     try:
-        uc.emu_start(entry, emulate.RET_STUB,
+        uc.emu_start(start, emulate.RET_STUB,
                      timeout=180 * 1_000_000, count=50_000_000)
     except Exception as exc:
         status = str(exc)[:80]

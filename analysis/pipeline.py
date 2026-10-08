@@ -413,8 +413,8 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             f"Pipeline timed out after {elapsed:.0f}s (limit: {pipeline_timeout}s).\n\n"
             f"Options:\n"
             f"  1. Increase pipeline_timeout (default 600s) in run_pipeline() call\n"
-            f"  2. APK is very large — consider running individual steps manually\n"
-            f"  3. APK is very large — consider running individual steps manually"
+            f"  2. Use stop_after=N to run only the first N steps\n"
+            f"  3. Use skip_steps=frozenset({...}) to skip slow optional steps"
         )
 
     _validate_step_input("Step 2 input", extraction, ["sample_id", "package_name", "apktool_output_dir"])

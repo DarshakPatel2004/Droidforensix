@@ -398,8 +398,13 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
                         "api_keys": sorted({m.decode() for m in re.findall(
                             rb"AIza[0-9A-Za-z_-]{30,}", blob)})[:6],
                     }
-                except Exception:
-                    pass
+                except Exception as e:
+                    # validate_zip() can pass via its EOCD fallback while ZipFile()
+                    # itself still fails, so this sweep can fail on an otherwise
+                    # "RECOVERED" kit. Record it: an absent IOC section must not
+                    # read as "this kit contains no indicators".
+                    report["iocs_error"] = "%s: %s" % (type(e).__name__, e)
+                    report.setdefault("iocs", {})
                 return report
     if fam == "TencentLegu" and java_layer_handoff(zfile):
         # Native ran clean and the stub carries the Java-delivery signature:

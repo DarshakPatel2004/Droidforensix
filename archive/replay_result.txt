@@ -1,6 +1,0 @@
-MISMATCH -17516911999494 exp 'more_info' got 'Más información' len 9 vs 15
-MISMATCH -16962861218310 exp 'bug_fixes' got '• Corrección de errores y mejoras de rendimiento.' len 9 vs 49
-MISMATCH -16030853315078 exp 'Novedades' got 'last_update' len 9 vs 11
-MISMATCH -15987903642118 exp 'whats_new' got 'Novedades' len 9 vs 9
-MISMATCH -12917002025478 exp "We're always making changes аոԁ improvements tο this ⨉鳠큤擰⩣鲠䢃낃仮뛠佧라仠뚭䲢뒨亥뛠䲰뒶亲뚥䳣낀䵿뚵䳣뒧亯뚮䳤뒷仠뚭䲪뒰亳뛠䲢듣亴뚨䲪뒭产뛬䳣뒩亵뚳䲷듣享뚥䲦뒳仠뚹䲬뒶亲뛠䲖뒳交뚡䲷뒦亳뛠䲷뒶亲뚮䲦" got "We're always making changes аոԁ improvements tο this арр. Το make sure уοu don't miss a thing, just keep your Updates turned οո." len 128 vs 128
-Matches 175 Mismatches 5

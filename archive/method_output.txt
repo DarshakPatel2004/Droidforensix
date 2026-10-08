@@ -1,8 +1,0 @@
-Found class: Lcom/lqbczc/szubinocgulatizofn/NkWaRdJEKEf58YYznc;
-Method: <init> ()V
-invoke-direct v0, Ljava/lang/Object;-><init>()V
-return-void 
-Method: test (D)Z
-invoke-static v1, v2, Lcom/lqbczc/szubinocgulatizofn/Miner$MinerMonitor;->NkWaRdJEKEf58YYznc(D)Z
-move-result v1
-return v1

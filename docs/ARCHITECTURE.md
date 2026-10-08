@@ -175,7 +175,6 @@ DroidForensix/
 ├── evaluation/         Validation harness, retrained models, metrics
 ├── data/               GeoLite2, packer markers, allowlists, cert feeds
 ├── docs/               This doc, USAGE.md, dashboard guide, codebase reference
-├── archive/            Archived scratch/reversing artifacts (historical, not source)
 ├── tools/              Bundled external binaries (apktool, DIE, jadx.zip, ghidra, node) — gitignored
 ├── jadx/               Extracted JADX (gitignored; unzip from tools/jadx.zip)
 ├── rto_analysis/       RTO unpacking case-study artifacts (gitignored)

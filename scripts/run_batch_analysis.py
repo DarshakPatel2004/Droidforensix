@@ -37,17 +37,51 @@ def load_metadata():
         return list(csv.DictReader(f))
 
 
+METADATA_FIELDS = [
+    "sample_name", "sha256", "md5", "family", "source",
+    "type", "tags", "file_size_bytes", "status", "vt_detections",
+    "collection_date",
+]
+
+
 def save_metadata(records):
-    fieldnames = [
-        "sample_name", "sha256", "md5", "family", "source",
-        "type", "tags", "file_size_bytes", "status", "vt_detections",
-        "collection_date",
-    ]
-    with open(META_PATH, "w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=fieldnames)
+    """Rewrite the corpus metadata CSV atomically, preserving unknown columns.
+
+    Two problems this fixes:
+      * a crash/disk-full mid-rewrite left the file truncated, losing every
+        previously recorded "analyzed" status;
+      * writing a fixed column list silently destroyed any extra column the
+        operator had added to their own CSV.
+    """
+    # Union of the canonical columns, any extra columns already in the file, and
+    # whatever the records carry, so a custom column survives a round-trip.
+    fieldnames = list(METADATA_FIELDS)
+    for r in records:
+        for k in r:
+            if k not in fieldnames:
+                fieldnames.append(k)
+    if META_PATH.exists():
+        try:
+            with open(META_PATH, "r", newline="", encoding="utf-8") as f:
+                existing = csv.DictReader(f)
+                for col in (existing.fieldnames or []):
+                    if col not in fieldnames:
+                        fieldnames.append(col)
+        except Exception:
+            pass
+
+    # Atomic: write a sibling temp file and rename, so a failure never leaves a
+    # half-written corpus status file behind.
+    tmp_path = META_PATH.with_suffix(META_PATH.suffix + ".tmp")
+    with open(tmp_path, "w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=fieldnames, restval="",
+                                extrasaction="ignore")
         writer.writeheader()
         for r in records:
             writer.writerow({k: r.get(k, "") for k in fieldnames})
+        f.flush()
+        os.fsync(f.fileno())
+    os.replace(tmp_path, META_PATH)
 
 
 def _run_pipeline_worker(sample_path: str, work_dir: str, queue: multiprocessing.Queue):

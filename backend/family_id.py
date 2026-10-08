@@ -1625,6 +1625,52 @@ def cert_issuer_boost(sample_cert_issuer: str, family_name: str, cert_profiles_i
     return 0.0
 
 
+_CLASS_PROFILES_CACHE: Optional[Dict[str, Any]] = None
+
+
+def _load_class_profiles() -> Dict[str, Any]:
+    """Load and memoise family class-count profiles.
+
+    Loaded once per process: the previous in-loop lazy load re-read the JSON
+    file for every signature on every match attempt.
+    """
+    global _CLASS_PROFILES_CACHE
+    if _CLASS_PROFILES_CACHE is None:
+        try:
+            import json as _json
+            from pathlib import Path as _Path
+            _prof_path = _Path(__file__).parent.parent / "analysis" / "family_classcount_profiles.json"
+            if _prof_path.exists():
+                with open(_prof_path) as _f:
+                    _CLASS_PROFILES_CACHE = _json.load(_f)
+            else:
+                _CLASS_PROFILES_CACHE = {}
+        except Exception:
+            _CLASS_PROFILES_CACHE = {}
+    return _CLASS_PROFILES_CACHE
+
+
+def _cached_confidence_lacks_boost(cached_outcome: Dict[str, Any]) -> bool:
+    """True when a cache entry advertises a class boost but carries the raw base.
+
+    Such an entry was written before the boost was applied to the returned
+    value, so its confidence contradicts its own reasoning string.
+    """
+    if "class_boost" not in str(cached_outcome.get("reasoning") or ""):
+        return False
+    if cached_outcome.get("method") != "signature_v3":
+        return False
+    cached_family = cached_outcome.get("family")
+    cached_conf = cached_outcome.get("confidence")
+    if not cached_family or not isinstance(cached_conf, (int, float)):
+        return False
+    for sig in FAMILY_SIGNATURES:
+        if sig.family_name.lower() == str(cached_family).lower():
+            # Confidence equal to the signature's base means no boost landed.
+            return abs(float(cached_conf) - float(sig.confidence)) < 1e-9
+    return False
+
+
 def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Match result against the 12 family signatures.
 
@@ -1713,21 +1759,7 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
         # Samples whose class_count falls within the family's interquartile range
         # get a small boost; this helps distinguish families with similar strings
         # but different codebase sizes (e.g., FakeInst ~27 vs SpyMax ~1731).
-        _CLASS_PROFILES = None  # lazy-loaded
-        if _CLASS_PROFILES is None:
-            try:
-                import json as _json
-                from pathlib import Path as _Path
-                _prof_path = _Path(__file__).parent.parent / "analysis" / "family_classcount_profiles.json"
-                if _prof_path.exists():
-                    with open(_prof_path) as _f:
-                        _CLASS_PROFILES = _json.load(_f)
-                else:
-                    _CLASS_PROFILES = {}
-            except Exception:
-                _CLASS_PROFILES = {}
-
-        class_profile = _CLASS_PROFILES.get(sig.family_name)
+        class_profile = _load_class_profiles().get(sig.family_name)
         if class_profile and class_count > 0:
             iq1 = class_profile.get("class_count_iq1", 0)
             iq3 = class_profile.get("class_count_iq3", 0)
@@ -1787,11 +1819,14 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
                 continue
 
         if matched_signals >= sig.min_matches and matched_signals > best_matches:
-            # Apply confidence boost if native API pattern matched
-            confidence = sig.confidence
+            # `confidence` already carries this signature's base value plus the
+            # cert-issuer and class-count boosts applied above. Resetting it here
+            # would discard those boosts while `signal_details` still advertises
+            # them in the reasoning string, making the two disagree.
             if native_api_match:
                 boost = NATIVE_API_PATTERNS.get(sig.family_name, {}).get("confidence_boost", 0)
                 confidence = min(confidence + boost, 1.0)
+            confidence = min(confidence, 1.0)
 
             best_matches = matched_signals
             best = {
@@ -2410,10 +2445,28 @@ def identify_family(sample_id: str, result: Dict[str, Any],
         use_llm = False
 
     cache_path = settings.WORK_DIR / sample_id / "family.json"
+    cert_analysis_now = result.get("certificate_analysis", {}) or {}
     if use_cache and cache_path.exists():
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
-                return json.load(f)
+                cached_outcome = json.load(f)
+            # The pipeline runs family identification (step 9) before certificate
+            # analysis (step 16), so the first cache entry never sees the cert DB.
+            # If a known-bad certificate is available now and the cached verdict
+            # did not come from one, recompute instead of returning the stale
+            # verdict - otherwise "known_bad_cert" can never surface.
+            cache_blind_to_cert = not cached_outcome.get("saw_certificate_analysis")
+            cert_override_available = (
+                bool(cert_analysis_now.get("known_bad"))
+                and bool((cert_analysis_now.get("known_bad_family") or "").strip())
+                and cached_outcome.get("method") != "known_bad_cert"
+            )
+            # Entries written before the class-count boost was applied advertise a
+            # boost in their reasoning while carrying the un-boosted confidence.
+            # Those are internally inconsistent, so recompute instead of serving them.
+            if not (cache_blind_to_cert and cert_override_available) \
+                    and not _cached_confidence_lacks_boost(cached_outcome):
+                return cached_outcome
         except Exception:
             logger.debug("Failed to read family cache for %s", sample_id)
 
@@ -2538,6 +2591,9 @@ def identify_family(sample_id: str, result: Dict[str, Any],
 
     try:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
+        # Record whether certificate analysis was available for this computation,
+        # so a later call that does have it can supersede this cached verdict.
+        outcome["saw_certificate_analysis"] = bool(cert_analysis_now)
         with open(cache_path, "w", encoding="utf-8") as f:
             json.dump(outcome, f, indent=2)
     except Exception:

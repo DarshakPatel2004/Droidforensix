@@ -27,34 +27,45 @@ def _central_directory(data: bytes) -> List[Dict[str, Any]]:
     eocd = data.rfind(EOCD_SIG)
     if eocd < 0:
         return []
+    # EOCD is 22 bytes with a fixed-size tail; a truncated/damaged container can
+    # place the signature too close to EOF for the fields we read below.
+    if eocd + 22 > len(data):
+        return []
     cd_size, cd_off = struct.unpack_from("<II", data, eocd + 12)
     entries: List[Dict[str, Any]] = []
     pos = cd_off
-    while pos < cd_off + cd_size and struct.unpack_from("<I", data, pos)[0] == 0x02014b50:
+    # CD_HEADER_LEN covers sig(4) .. clen(2) inclusive = 46 bytes total.
+    cd_header_len = 46
+    while pos + cd_header_len <= len(data) and pos < cd_off + cd_size:
+        if struct.unpack_from("<I", data, pos)[0] != 0x02014b50:
+            break
         (_vm, _vn, _flag, _meth, _mt, _md, crc, csize, usize,
-         nlen, elen, _clen) = struct.unpack_from("<HHHHHHIIIHHH", data, pos + 4)
-        extra = struct.unpack_from("<H", data, pos + 30)[0]
-        comm = struct.unpack_from("<H", data, pos + 32)[0]
+         nlen, elen, clen) = struct.unpack_from("<HHHHHHIIIHHH", data, pos + 4)
         lho = struct.unpack_from("<I", data, pos + 42)[0]
-        name = data[pos + 46:pos + 46 + nlen].decode("utf-8", "replace")
+        name = data[pos + cd_header_len:pos + cd_header_len + nlen].decode("utf-8", "replace")
         entries.append({"name": name, "crc": crc, "csize": csize, "usize": usize, "lho": lho})
-        pos += 46 + nlen + elen + extra + comm
+        # nlen/elen/clen are counted once each, after the fixed 46-byte header.
+        pos += cd_header_len + nlen + elen + clen
     return entries
 
 
 def _local_headers(data: bytes) -> List[Dict[str, Any]]:
     heads: List[Dict[str, Any]] = []
     off = 0
+    # LFH fixed part is 30 bytes; guard so a trailing signature cannot overrun.
+    lfh_fixed_len = 30
     while True:
         i = data.find(LFH_SIG, off)
         if i < 0:
             break
+        if i + lfh_fixed_len > len(data):
+            break
         ver, flag, meth, mt, md, crc, csize, usize, nlen, elen = struct.unpack_from(
             "<HHHHHIIIHH", data, i + 4)
-        name = data[i + 30:i + 30 + nlen].decode("utf-8", "replace")
+        name = data[i + lfh_fixed_len:i + lfh_fixed_len + nlen].decode("utf-8", "replace")
         heads.append({"offset": i, "flag": flag, "method": meth, "crc": crc,
                       "csize": csize, "usize": usize, "name": name,
-                      "data_start": i + 30 + nlen + elen})
+                      "data_start": i + lfh_fixed_len + nlen + elen})
         off = i + 4
     return heads
 

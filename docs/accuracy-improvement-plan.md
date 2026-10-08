@@ -298,7 +298,7 @@ Add hierarchical DBSCAN on MinHash Jaccard (`analysis/step17_family_clustering.p
 
 ### 5.3 Multi-Sample Attribution Clustering
 
-**File:** `analysis/step18_threat_synthesis.py` (stub) → Threat Synthesis Engine `docs/superpowers/plans/2026-07-01-threat-synthesis-engine.md`.
+**File:** `analysis/step18_threat_synthesis.py` (stub) → Threat Synthesis Engine `docs/plans/2026-07-01-threat-synthesis-engine.md`.
 
 - Cross-sample Jaccard on `family_clustering` + `cert` + `C2` + `native libs`.
 - Graph community detection (Leiden) on `get_family_graph_data:161` edges → new families.
@@ -436,7 +436,7 @@ python evaluation/run_validation_359.py --gt ground_truth_all_corrected.csv
 
 ### C. Future Work Already Planned (`README.md:348`)
 
-- Threat Synthesis Engine Q1 2027 `docs/superpowers/plans/2026-07-01-threat-synthesis-engine.md`
+- Threat Synthesis Engine Q1 2027 `docs/plans/2026-07-01-threat-synthesis-engine.md`
 - Dynamic Validation Q2 2027
 - `Cipher.doFinal` tracing +5-10% recall `README.md:352`
 
