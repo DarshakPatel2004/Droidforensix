@@ -258,3 +258,8 @@ analysis/recovered/
 # Pending sign-off review packets (user reviews here before any apply)
 /singoff/
 _offload/
+
+# Androguard SQLite cache: regenerated on every analysis run
+androguard.db
+androguard.db-shm
+androguard.db-wal
