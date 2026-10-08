@@ -34,7 +34,7 @@ from droidforensix_llm import LLMVerifier, get_verifier, set_verifier
 from backend.pdf_report import generate_report
 from backend.config import settings
 from backend.events import WebSocketEvent, VALID_EVENT_TYPES
-from backend.validators import validate_event
+from backend.validators import validate_event, validate_sample_id
 from backend.transformers import (
     load_result,
     load_all_results,
@@ -341,6 +341,14 @@ async def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> di
         from backend.dissection import _DISSECTION_CACHE
         _dissection_cache.invalidate(sample_id)
         _DISSECTION_CACHE.pop(sample_id, None)
+        # A traversal sample_id would delete a dissection.json outside WORK_DIR.
+        # load_result() normally 404s first, but this delete must not depend on
+        # that: verified that removing this guard lets "..\outside" unlink a
+        # file above WORK_DIR.
+        try:
+            validate_sample_id(sample_id)
+        except ValueError:
+            raise HTTPException(status_code=400, detail="Invalid sample_id")
         dissection_path = WORK_DIR / sample_id / "dissection.json"
         if dissection_path.exists():
             try:

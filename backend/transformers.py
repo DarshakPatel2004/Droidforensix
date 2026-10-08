@@ -82,7 +82,20 @@ def _strip_surrogates(obj):
 
 
 def load_result(sample_id: str) -> Optional[Dict[str, Any]]:
-    """Load pipeline_result.json for a sample."""
+    """Load pipeline_result.json for a sample.
+
+    This is the ungated entry point for GET /api/sample/{sample_id}, so the
+    identifier is validated here: a ".."-relative segment would otherwise read a
+    pipeline_result.json from outside WORK_DIR. Returns None for a malformed id
+    so callers keep their existing 404 path.
+    """
+    from backend.validators import validate_sample_id
+
+    try:
+        validate_sample_id(sample_id)
+    except ValueError:
+        return None
+
     path = WORK_DIR / sample_id / "pipeline_result.json"
     if not path.exists():
         return None
