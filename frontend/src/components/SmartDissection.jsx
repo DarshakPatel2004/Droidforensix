@@ -549,7 +549,13 @@ function CodeHighlight({ code, lineAnnotations = {} }) {
 }
 
 function highlightSyntax(line) {
+  // Escape BEFORE wrapping keywords. This line comes from the analysed APK's DEX
+  // strings, which the malware author fully controls, so it must reach the DOM
+  // as text. The span replacement below is a static template and stays safe.
   let highlighted = line
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
   SUSPICIOUS_KEYWORDS.forEach(keyword => {
     const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
     highlighted = highlighted.replace(regex, `<span class="code-keyword">${keyword}</span>`)

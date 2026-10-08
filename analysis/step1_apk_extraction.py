@@ -59,8 +59,11 @@ def run_apktool(apk_path: str, output_dir: str) -> dict:
     result = {"success": False, "output_dir": output_dir, "error": None}
     try:
         cmd = _tool_cmd(settings.APKTOOL_PATH) + ["d", "-f", "-o", output_dir, apk_path]
+        # No shell: apk_path can be client-supplied (POST /analyze), and on Windows
+        # shell=True routes the list through cmd.exe, where a space-free path
+        # containing & | ^ ! would execute as a separate command.
         proc = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=120, shell=(os.name == "nt")
+            cmd, capture_output=True, text=True, timeout=120
         )
         if proc.returncode == 0:
             result["success"] = True
@@ -284,8 +287,9 @@ def extract_native_strings(apk_dir: str) -> list:
             # Method 1: radare2 (r2)
             if r2_bin:
                 cmd = [r2_bin, "-qq", "-c", "iz", str(so_file)]
+                # so_file's name is the APK author's, so it is attacker-controlled.
                 proc = subprocess.run(
-                    cmd, capture_output=True, text=True, timeout=60, shell=(os.name == "nt")
+                    cmd, capture_output=True, text=True, timeout=60
                 )
                 if proc.returncode == 0:
                     for line in proc.stdout.splitlines():
@@ -307,7 +311,7 @@ def extract_native_strings(apk_dir: str) -> list:
             if rabin2_bin:
                 cmd = [rabin2_bin, "-zz", str(so_file)]
                 proc = subprocess.run(
-                    cmd, capture_output=True, text=True, timeout=60, shell=(os.name == "nt")
+                    cmd, capture_output=True, text=True, timeout=60
                 )
                 if proc.returncode == 0:
                     for line in proc.stdout.splitlines():
