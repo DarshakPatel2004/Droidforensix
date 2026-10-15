@@ -55,6 +55,9 @@ DEX_MAGIC = b"dex\n"
 ELF_MAGIC = b"\x7fELF"
 TTF_MAGIC = b"\x00\x01\x00\x00"
 JSON_MAGIC = b"{"
+# Validation is speculative (it runs on decrypted candidates), so a gzip probe is bounded:
+# a hostile payload must not be able to make validation inflate a bomb.
+GZIP_PROBE_LIMIT = 1 << 20
 
 
 @dataclass(frozen=True)
@@ -136,15 +139,22 @@ def _pkcs7_pad_length(data: bytes) -> int:
 
 
 def _is_gzip(data: bytes) -> bool:
+    """True for a valid gzip stream, inflating at most a bounded probe.
+
+    A hostile candidate could decrypt to a decompression bomb; validation must never let one
+    allocate unbounded memory. A stream that finishes within the probe must actually end
+    (``eof``), so truncated input is still rejected exactly as before.
+    """
     if data[:2] != b"\x1f\x8b":
         return False
     try:
-        zlib.decompress(data, 16 + zlib.MAX_WBITS)
+        decompressor = zlib.decompressobj(16 + zlib.MAX_WBITS)
+        probe = decompressor.decompress(data, GZIP_PROBE_LIMIT)
     except Exception:
         # Any malformed or hostile stream is simply not a gzip payload; validation must never
         # propagate an exception into the search loop.
         return False
-    return True
+    return decompressor.eof or len(probe) == GZIP_PROBE_LIMIT
 
 
 def _is_elf(data: bytes) -> bool:
@@ -227,8 +237,9 @@ class _BlobOutcome:
     enumerated: int
 
 
-# A blob to attack and the parent hit when it came out of a recovered container.
-_WorkItem = tuple[Blob, Hit | None]
+# A blob to attack, the parent hit when it came out of a recovered container, and the key
+# identities already probed against that member (dedupe has to survive across the two tiers).
+_WorkItem = tuple[Blob, Hit | None, set]
 
 
 def break_apk(
@@ -322,27 +333,27 @@ def _sweep(
     """
     found: list[Hit] = []
     enumerated = 0
-    cheap: list[_WorkItem] = [(blob, None) for blob in blobs]
+    cheap: list[_WorkItem] = [(blob, None, set()) for blob in blobs]
     while cheap:
         deep: list[_WorkItem] = []
         while cheap:
-            blob, parent = cheap.pop(0)
+            blob, parent, tried = cheap.pop(0)
             record = blob.record
             if record.outcome == RECOVERED:
                 continue
-            outcome = _attack_blob(blob, plan, budget, record, tier="cheap")
+            outcome = _attack_blob(blob, plan, budget, record, tier="cheap", tried=tried)
             enumerated += outcome.enumerated
-            deep.append((blob, parent))
+            deep.append((blob, parent, tried))
             if outcome.hit is None:
                 continue
             _attach(found, parent, outcome.hit)
             cheap.extend(_nested_entries(outcome, blob, depth, plan, collection))
         while deep:
-            blob, parent = deep.pop(0)
+            blob, parent, tried = deep.pop(0)
             record = blob.record
             if record.outcome == RECOVERED:
                 continue
-            outcome = _attack_blob(blob, plan, budget, record, tier="deep")
+            outcome = _attack_blob(blob, plan, budget, record, tier="deep", tried=tried)
             enumerated += outcome.enumerated
             if outcome.hit is None:
                 continue
@@ -410,7 +421,7 @@ def _nested_entries(
     collection.records.extend(children.records)
     for _name, data in children.plaintext:
         plan.add_strings(data)
-    return [(child_blob, outcome.hit) for child_blob in children.blobs]
+    return [(child_blob, outcome.hit, set()) for child_blob in children.blobs]
 
 
 def _attack_blob(
@@ -420,15 +431,17 @@ def _attack_blob(
     record: MemberRecord,
     *,
     tier: str = "deep",
+    tried: set | None = None,
 ) -> _BlobOutcome:
     """Probe every distinct candidate for one blob and update its coverage row.
 
-    Dedupe is per member: a key that already failed against this ciphertext is not worth
-    spending again, but the very same key must still be tried against every other member.
+    Dedupe is per member and spans the tiers: a key that already failed against this ciphertext
+    (in either tier) is not worth spending again, but the very same key must still be tried
+    against every other member.
     """
     start_attempts = budget.attempts
     enumerated = 0
-    seen: set[tuple[str, str, str]] = set()
+    seen: set[tuple[str, str, str]] = set() if tried is None else tried
     hit: Hit | None = None
     payload: bytes | None = None
     for scheme in _candidate_stream(_stem_of(blob.member), plan, tier):
