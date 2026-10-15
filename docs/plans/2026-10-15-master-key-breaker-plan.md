@@ -22,6 +22,12 @@
 - Run everything through the repo venv: `.venv\Scripts\python.exe -m pytest ...`. Windows: `pathlib` only; corpus paths contain spaces and parentheses.
 - Attribution mapping (spec §5): `E-KDF-EXHAUSTED` = provider space fully searched; `E-KDF-BUDGET` = stopped by `--attempts-cap` (`truncation="attempts"`) or `--budget-s` (`truncation="time"`).
 
+## Amendments
+
+- **No `packers/breaker/__init__.py`.** `.gitignore:83` ignores `_*.py`, which swallows `__init__.py`; this repo ships no tracked `__init__.py` anywhere under `packers/` (namespace packages). So the package has no re-export module and every import targets a concrete submodule: `from packers.breaker.engine import break_apk`. A local-only `__init__.py` would make tests pass here and fail in a fresh clone, so none exists.
+- **T1 done in setup:** `analysis/master_key_breaker/` was already added to `.gitignore` before Task 1 ran (plus `.superpowers/` for harness scratch). Task 1 verifies the rule rather than re-adding it.
+- **Corrected pin:** the MediaPlayer2 keystream vector was re-derived from the sample during Task 1 and is `e04ccdce1cdaf4a619c669831f8034b2` (seed `n + 0xFFFF`, `nextInt()` as 4-byte little-endian). See `tests/test_breaker.py` for the oracle behind it.
+
 ## Review Focus
 
 1. **Genuine-ZipCrypto vs lying-flag discrimination** — a member flagged encrypted whose data is actually plain must be read via raw local-header + inflate (`crc32(inflated) == central CRC`); a genuinely ZipCrypto member must be typed `SKIPPED_ZIPCRYPTO`, never attacked. Tests in **Task 3**.
@@ -35,9 +41,8 @@
 ### Task 1: Package skeleton, output ignore rule, JavaRandom
 
 **Files:**
-- Create: `packers/breaker/__init__.py`
 - Create: `packers/breaker/schemes.py`
-- Modify: `.gitignore` (insert after line 256, `analysis/recovered/`)
+- Modify: `.gitignore` (verify `analysis/master_key_breaker/` is present)
 - Test: `tests/test_breaker.py`
 
 **Interfaces:**
@@ -66,7 +71,7 @@ class TestJavaRandom:
         # Derived from the shipped sample: asset 3664888858717845462, seed = n + 0xFFFF,
         # keystream = nextInt() as 4-byte little-endian. Verified against the real APK.
         ks = JavaRandom(MEDIAPLAYER2_SEED).keystream(16)
-        assert ks == bytes.fromhex("504d43fdabb00fc6c208299d8a4bd69a")
+        assert ks == bytes.fromhex("e04ccdce1cdaf4a619c669831f8034b2")
 
     def test_keystream_prefix_stability(self):
         r = JavaRandom(MEDIAPLAYER2_SEED)
@@ -80,8 +85,8 @@ Expected: FAIL — `ModuleNotFoundError: No module named 'packers.breaker'`
 
 - [ ] **Step 3: Implement**
 
-Add `.gitignore` line `analysis/master_key_breaker/` right after `analysis/recovered/`.
-Create `packers/breaker/__init__.py` (package docstring, no re-exports yet).
+Add `.gitignore` line `analysis/master_key_breaker/` right after `analysis/recovered/` (done during setup — verify, do not duplicate).
+No `__init__.py` (see Amendments).
 In `packers/breaker/schemes.py`, implement `JavaRandom` per spec §4.7: constructor scrambles `seed ^ LCG_MULTIPLIER` masked to 48 bits; `next(bits)` advances `(s * LCG_MULTIPLIER + LCG_ADDEND) & LCG_MASK` and returns `s >> (48 - bits)`; `next_int()` returns the signed 32-bit value of `next(32)`; `keystream(length)` concatenates `next(32).to_bytes(4, "little")` truncated to `length`.
 
 - [ ] **Step 4: Run test to verify it passes**
@@ -92,7 +97,7 @@ Expected: PASS (4 tests)
 - [ ] **Step 5: Commit**
 
 ```bash
-git add .gitignore packers/breaker/__init__.py packers/breaker/schemes.py tests/test_breaker.py
+git add .gitignore packers/breaker/schemes.py tests/test_breaker.py
 git commit -m "breaker: package skeleton, ignore outputs, JavaRandom with pinned vectors"
 ```
 
@@ -603,16 +608,14 @@ git commit -m "breaker: two-stage validation with honest evidence levels"
 
 **Files:**
 - Modify: `packers/breaker/engine.py`
-- Modify: `packers/breaker/__init__.py`
 - Test: `tests/test_breaker.py`
 
 **Interfaces:**
 - Consumes: everything from Tasks 1–5.
-- Produces (in `packers/breaker/engine.py`, re-exported from `packers/breaker/__init__.py`):
+- Produces (all in `packers/breaker/engine.py`):
   - `@dataclass class Hit`: `member: str`, `content: str`, `seed: str`, `provenance: list[str]`, `scheme: dict`, `key_sha256: str`, `key_hex: str`, `iv_hex: str | None`, `payload_sha256: str`, `validation: str`, `artifacts: list[dict]`, `artifacts_total: int`, `children: list[Hit]`
   - `@dataclass class ApkResult`: `apk: str`, `sha256: str`, `hits: list[Hit]`, `members: list[MemberRecord]`, `scheme_count: int`, `wall_s: float`, `outcome: str`, `ciphertext_members: int`, `attempts_total: int`, `truncated: str`
   - `break_apk(apk_path, out_dir, *, attempts_cap=200_000, budget_s=300.0, depth=3, seeds_extra=None, max_strings=2000) -> ApkResult`
-  - `__init__.py` re-exports: `break_apk`, `ApkResult`, `Hit`, `Blob`, `BlobCollection`, `Scheme`
 
 - [ ] **Step 1: Write the failing tests**
 
@@ -625,7 +628,7 @@ from pathlib import Path
 
 from Crypto.Cipher import AES
 
-from packers.breaker import break_apk
+from packers.breaker.engine import break_apk
 from packers.breaker.blobs import E_KDF_BUDGET, E_KDF_EXHAUSTED, RECOVERED
 
 
@@ -755,7 +758,7 @@ Expected: FAIL — `break_apk` not defined.
 
 - [ ] **Step 3: Implement**
 
-`break_apk`: read bytes, `sha256`; `collect_apk`; `plan_from_collection`; attack each blob in order. Candidate stream per blob: `prior_schemes(stem)` → `matrix_schemes` × `name_variants(stem)` → `matrix_schemes` × `plan.mined` → `matrix_schemes` × `plan.extra` → `single_byte_xor_schemes()` → LCG (`Scheme(seed=c.material, cipher="java-lcg", provenance=c.provenance)` for numeric candidates). `stem = member.rsplit("!", 1)[-1].rsplit("/", 1)[-1]`. Per candidate: derive key/iv; skip if `(cipher, key, iv)` seen; count `space_size` at enumeration and `attempts` at probe; check the wall clock each attempt (set `truncation="time"`, stop); stop at `attempts_cap` (`truncation="attempts"`). `probe_matches` → `validate_payload(decrypt(scheme, blob.data))`; on success build `Hit` (`payload_sha256` = sha256 of the full decrypted payload; artifacts = first 50 file members as `{"file", "sha256", "size"}`; `artifacts_total`; `key_sha256=sha256(key).hexdigest()`; LCG key bytes = `int(seed).to_bytes(8,"big")`), mark `RECOVERED`, stop the blob. Probe match without validation → `probe_false_positives += 1`. Record `E_KDF_EXHAUSTED` when the stream drains, `E_KDF_BUDGET` on truncation; on time truncation, remaining blobs get `E_KDF_BUDGET` with `attempts=0`. `scheme_count` = total candidates enumerated. Write `hit.json` (`{"apk", "sha256", "hits": [...]}`) and `coverage.json` (`{"apk", "sha256", "wall_s", "scheme_count", "members_total", "members_ignored_dirs", "members": [rows]}`) under `out_dir / sha256[:16] /`. `outcome` = `RECOVERED` if any hit, else `E_KDF_BUDGET` if truncated, else `E_KDF_EXHAUSTED`. Update `__init__.py` re-exports.
+`break_apk`: read bytes, `sha256`; `collect_apk`; `plan_from_collection`; attack each blob in order. Candidate stream per blob: `prior_schemes(stem)` → `matrix_schemes` × `name_variants(stem)` → `matrix_schemes` × `plan.mined` → `matrix_schemes` × `plan.extra` → `single_byte_xor_schemes()` → LCG (`Scheme(seed=c.material, cipher="java-lcg", provenance=c.provenance)` for numeric candidates). `stem = member.rsplit("!", 1)[-1].rsplit("/", 1)[-1]`. Per candidate: derive key/iv; skip if `(cipher, key, iv)` seen; count `space_size` at enumeration and `attempts` at probe; check the wall clock each attempt (set `truncation="time"`, stop); stop at `attempts_cap` (`truncation="attempts"`). `probe_matches` → `validate_payload(decrypt(scheme, blob.data))`; on success build `Hit` (`payload_sha256` = sha256 of the full decrypted payload; artifacts = first 50 file members as `{"file", "sha256", "size"}`; `artifacts_total`; `key_sha256=sha256(key).hexdigest()`; LCG key bytes = `int(seed).to_bytes(8,"big")`), mark `RECOVERED`, stop the blob. Probe match without validation → `probe_false_positives += 1`. Record `E_KDF_EXHAUSTED` when the stream drains, `E_KDF_BUDGET` on truncation; on time truncation, remaining blobs get `E_KDF_BUDGET` with `attempts=0`. `scheme_count` = total candidates enumerated. Write `hit.json` (`{"apk", "sha256", "hits": [...]}`) and `coverage.json` (`{"apk", "sha256", "wall_s", "scheme_count", "members_total", "members_ignored_dirs", "members": [rows]}`) under `out_dir / sha256[:16] /`. `outcome` = `RECOVERED` if any hit, else `E_KDF_BUDGET` if truncated, else `E_KDF_EXHAUSTED`.
 
 - [ ] **Step 4: Run tests to verify they pass**
 
@@ -765,7 +768,7 @@ Expected: PASS (8 tests)
 - [ ] **Step 5: Commit**
 
 ```bash
-git add packers/breaker/engine.py packers/breaker/__init__.py tests/test_breaker.py
+git add packers/breaker/engine.py tests/test_breaker.py
 git commit -m "breaker: search engine with budgets, typed misses, and hit/coverage outputs"
 ```
 
@@ -943,7 +946,7 @@ from pathlib import Path
 
 import pytest
 
-from packers.breaker import break_apk
+from packers.breaker.engine import break_apk
 
 ROOT = Path(__file__).resolve().parent.parent
 PENDRIVE = ROOT / "PENDRIVE DATA" / "PENDRIVE DATA"
