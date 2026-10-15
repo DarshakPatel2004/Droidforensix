@@ -1,5 +1,6 @@
 """Tests for the master key breaker (packers/breaker/)."""
 import hashlib
+import json
 import os
 import struct
 import zipfile
@@ -14,6 +15,15 @@ from packers.breaker.blobs import (
     collect_apk,
     collect_from_zip,
 )
+from packers.breaker.seeds import (
+    SeedCandidate,
+    SeedPlan,
+    load_extra_seeds,
+    mine_strings,
+    name_variants,
+    numeric_candidates,
+    plan_from_collection,
+)
 from packers.breaker.schemes import (
     KEY_LENGTHS,
     JavaRandom,
@@ -26,6 +36,7 @@ from packers.breaker.schemes import (
 )
 
 MEDIAPLAYER2_SEED = 3664888858717910997
+MEDIAPLAYER2_STEM = "3664888858717845462"
 RTO_KEY_HEX = "6eada2ac127d60e3c17e4940981c5bc6"  # tests/test_framework.py
 RTO_IV_HEX = "d0045d33d393892263a7b43ccac6e578"   # tests/test_framework.py
 
@@ -275,3 +286,69 @@ class TestBlobCollector:
         c = collect_apk(apk)
         assert not c.blobs, "payload starts with a ZIP magic -> plaintext, not a blob"
         assert {r.name: r.outcome for r in c.records}["assets/mp2shaped"] == SKIPPED_PLAINTEXT
+
+
+class TestSeedProviders:
+    def test_mine_strings_dedupes_orders_and_bounds(self):
+        data = b"\x00hello\x00world\x00hello\x00ab\x00" + b"\xff" * 200
+        assert mine_strings(data) == [b"hello", b"world"]
+        assert mine_strings(b"\x00" + b"y" * 200 + b"\x00") == []
+        assert mine_strings(b"\x00password123\x00") == [b"password123"]
+
+    def test_name_variants_cover_case_and_digits(self):
+        provs = {c.provenance for c in name_variants("AbC")}
+        assert {"name:stem", "name:lower", "name:upper", "name:+0", "name:+9"} <= provs
+        assert SeedCandidate("AbC", "name:stem") in name_variants("AbC")
+
+    def test_numeric_candidates_include_verified_mediaplayer2_delta(self):
+        vals = {c.material: c.provenance for c in numeric_candidates(MEDIAPLAYER2_STEM)}
+        assert vals["3664888858717910997"] == "numeric:+0xffff"
+        assert vals[MEDIAPLAYER2_STEM] == "numeric:n"
+        assert all(c.numeric for c in numeric_candidates(MEDIAPLAYER2_STEM))
+        assert numeric_candidates("not-a-number") == []
+
+    def test_numeric_candidates_mask_to_signed_64(self):
+        assert "-1" in {c.material for c in numeric_candidates("18446744073709551615")}
+
+    def test_load_extra_seeds_accepts_three_formats(self, tmp_path):
+        array = tmp_path / "array.json"
+        array.write_text(json.dumps(["seedA", "seedB"]))
+        wrapped = tmp_path / "wrapped.json"
+        wrapped.write_text(json.dumps({"seeds": ["seedC"]}))
+        key_log = tmp_path / "keylog.json"
+        key_log.write_text(json.dumps({"key_log": [["getBytes", "seedD"], ["digest", "seedE"], ["junk", 5]]}))
+        assert [s.material for s in load_extra_seeds(array)] == ["seedA", "seedB"]
+        assert [s.material for s in load_extra_seeds(wrapped)] == ["seedC"]
+        assert [s.material for s in load_extra_seeds(key_log)] == ["seedD", "seedE"]
+        assert [s.provenance for s in load_extra_seeds(key_log)] == ["extra:getBytes", "extra:digest"]
+        assert [s.provenance for s in load_extra_seeds(wrapped)] == ["extra"]
+
+    def test_load_extra_seeds_decodes_byte_arrays(self, tmp_path):
+        path = tmp_path / "bytes.json"
+        path.write_text(json.dumps({"key_log": [["getBytes", [115, 101, 101, 100]]]}))
+        assert [s.material for s in load_extra_seeds(path)] == ["seed"]
+
+    def test_plan_mines_collection_plaintext_with_cap(self, tmp_path):
+        apk = tmp_path / "p.apk"
+        with zipfile.ZipFile(apk, "w") as zf:
+            zf.writestr("classes.dex", b"dex\n035\x00" + b"\x00" * 20 + b"thePassword123" + b"\x00" * 200)
+            zf.writestr("assets/ct", b"\xcc" * 1024)
+        plan = plan_from_collection(collect_apk(apk), max_strings=10)
+        assert any(s.material == "thePassword123" for s in plan.mined)
+        assert len(plan.mined) <= 10
+        assert all(s.provenance == "mined" for s in plan.mined)
+
+    def test_plan_adds_extra_seeds_file(self, tmp_path):
+        extra = tmp_path / "extra.json"
+        extra.write_text(json.dumps(["traceKey42"]))
+        apk = tmp_path / "q.apk"
+        with zipfile.ZipFile(apk, "w") as zf:
+            zf.writestr("assets/ct", b"\xcc" * 1024)
+        plan = plan_from_collection(collect_apk(apk), extra_path=extra)
+        assert [s.material for s in plan.extra] == ["traceKey42"]
+
+    def test_add_strings_respects_cap(self):
+        plan = SeedPlan(mined=[], extra=[])
+        plan.add_strings(b"\x00aaaa\x00bbbb\x00cccc\x00", cap=2)
+        assert len(plan.mined) == 2
+        assert [s.material for s in plan.mined] == ["aaaa", "bbbb"]
