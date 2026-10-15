@@ -559,3 +559,56 @@ class TestBreakApk:
         res = break_apk(apk, tmp_path / "out")
         assert res.hits == []
         assert res.members[0].probe_false_positives >= 1
+
+
+def _payload_bytes(size: int = 700) -> bytes:
+    """A valid ZIP payload big enough that its ciphertext clears MIN_BLOB_SIZE."""
+    return _write_bytes_zip({"assets/blob": os.urandom(size)})
+
+
+class TestRecursion:
+    def test_nested_container_is_attacked_up_to_depth(self, tmp_path):
+        inner_pt = _payload_bytes()
+        inner_stem = "inner7"
+        inner_ct = _encrypt_prior(inner_pt, inner_stem)  # prior:myg0n inside the outer kit
+        outer_pt = _write_bytes_zip({"assets/" + inner_stem: inner_ct})
+        apk = tmp_path / "r.apk"
+        _make_apk(apk, {"assets/outer": _encrypt_prior(outer_pt, "outer")},
+                  method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", depth=2)
+        assert len(res.hits) == 1 and len(res.hits[0].children) == 1
+        assert res.hits[0].children[0].member.endswith("assets/inner7")
+        # nested members are folded into the same coverage book as top-level ones
+        assert res.members[0].name == "assets/outer"
+        assert any(m.name.startswith("assets/outer!") for m in res.members)
+        assert res.outcome == RECOVERED
+
+    def test_depth_one_does_not_recurse(self, tmp_path):
+        inner_ct = _encrypt_prior(_payload_bytes(), "inner7")
+        outer_pt = _write_bytes_zip({"assets/inner7": inner_ct})
+        apk = tmp_path / "r1.apk"
+        _make_apk(apk, {"assets/outer": _encrypt_prior(outer_pt, "outer")},
+                  method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", depth=1)
+        assert res.hits and res.hits[0].children == []
+        assert not any(m.name.startswith("assets/outer!") for m in res.members)
+
+    def test_decrypted_strings_enable_sibling_recovery(self, tmp_path):
+        # sibling blob keyed by a string that only exists inside the first recovered kit
+        secret = "harvestedSecret9"
+        sib_key = hashlib.sha1(secret.encode()).digest()[:16]
+        sib_pt = _payload_bytes()
+        pad = 16 - len(sib_pt) % 16
+        sib_ct = AES.new(sib_key, AES.MODE_CBC, bytes(16)).encrypt(sib_pt + bytes([pad]) * pad)
+        inner = _write_bytes_zip({
+            "assets/dexish": b"dex\n035\x00" + secret.encode() + b"\x00" * 200,
+            "assets/pad": os.urandom(600),
+        })
+        apk = tmp_path / "h.apk"
+        _make_apk(apk, {
+            "assets/first": _encrypt_prior(inner, "first"),
+            "assets/sibling": sib_ct,
+        }, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", depth=2)
+        recovered = {h.member for h in res.hits} | {c.member for h in res.hits for c in h.children}
+        assert any("sibling" in m for m in recovered)
