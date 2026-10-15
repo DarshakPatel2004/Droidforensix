@@ -127,7 +127,9 @@ def _is_gzip(data: bytes) -> bool:
         return False
     try:
         zlib.decompress(data, 16 + zlib.MAX_WBITS)
-    except zlib.error:
+    except Exception:
+        # Any malformed or hostile stream is simply not a gzip payload; validation must never
+        # propagate an exception into the search loop.
         return False
     return True
 
@@ -141,7 +143,9 @@ def _is_json(data: bytes) -> bool:
         return False
     try:
         json.loads(data)
-    except (ValueError, UnicodeDecodeError):
+    except Exception:
+        # ValueError covers malformed JSON, UnicodeDecodeError bad encodings, and RecursionError
+        # a deeply nested payload. None of them is a reason to abort a run.
         return False
     return True
 
