@@ -672,9 +672,14 @@ class TestBreakApk:
         assert hit.member == "assets/UZrF0u" and hit.provenance == ["prior:myg0n"]
         assert hit.validation == "zip-strict" and hit.content == "stored"
         assert hit.artifacts_total == 2
-        assert hit.payload_sha256 == hashlib.sha256(_kit_bytes()).hexdigest()
+        # payload_sha256 is over the full decrypted buffer (PKCS#7 padding included), matching the
+        # hand-verified corpus pins in Task 9; the kit is hashed once so the zip's timestamp cannot
+        # drift between the two calls.
+        pad = 16 - len(kit) % 16
+        assert hit.payload_sha256 == hashlib.sha256(kit + bytes([pad]) * pad).hexdigest()
         hit_json = json.loads((tmp_path / "out" / res.sha256[:16] / "hit.json").read_text())
-        assert hit_json["hits"][0]["key_hex"] == hit.key_hex        coverage = (tmp_path / "out" / res.sha256[:16] / "coverage.json").read_text()
+        assert hit_json["hits"][0]["key_hex"] == hit.key_hex
+        coverage = (tmp_path / "out" / res.sha256[:16] / "coverage.json").read_text()
         assert "key_hex" not in coverage and json.loads(coverage)["scheme_count"] > 0
 
     def test_recovers_lumolight_zero_iv_prior(self, tmp_path):

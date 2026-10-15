@@ -7,8 +7,12 @@ import struct
 import zipfile
 
 import pytest
+from Crypto.Cipher import AES
 
 from packers.breaker.blobs import (
+    RECOVERED,
+    E_KDF_BUDGET,
+    E_KDF_EXHAUSTED,
     SKIPPED_FILTER,
     SKIPPED_PLAINTEXT,
     SKIPPED_SIZE,
@@ -16,7 +20,7 @@ from packers.breaker.blobs import (
     collect_apk,
     collect_from_zip,
 )
-from packers.breaker.engine import probe_matches, validate_payload
+from packers.breaker.engine import break_apk, probe_matches, validate_payload
 from packers.breaker.seeds import (
     SeedCandidate,
     SeedPlan,
@@ -177,10 +181,34 @@ class TestCipherLayer:
         assert decrypt(scheme, ct) == pt
 
 
-def _make_apk(path, members: dict) -> None:
-    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+def _make_apk(path, members: dict, method=zipfile.ZIP_DEFLATED) -> None:
+    with zipfile.ZipFile(path, "w", method) as zf:
         for name, data in members.items():
             zf.writestr(name, data)
+
+
+def _write_bytes_zip(members: dict) -> bytes:
+    buf = io.BytesIO()
+    with zipfile.ZipFile(buf, "w") as zf:
+        for name, data in members.items():
+            zf.writestr(name, data)
+    return buf.getvalue()
+
+
+def _kit_bytes() -> bytes:
+    return _write_bytes_zip({
+        "bootstrap.dex": b"dex\n035\x00" + b"\x00" * 500,
+        "config.json": b"{}",
+    })
+
+
+def _encrypt_prior(plaintext: bytes, stem: str) -> bytes:
+    """The prior:myg0n recipe: seed = stem + \"2\", SHA1[:16] key, SHA256[:16] IV, AES-CBC."""
+    from Crypto.Cipher import AES
+    seed = (stem + "2").encode()
+    key, iv = hashlib.sha1(seed).digest()[:16], hashlib.sha256(seed).digest()[:16]
+    pad = 16 - len(plaintext) % 16
+    return AES.new(key, AES.MODE_CBC, iv).encrypt(plaintext + bytes([pad]) * pad)
 
 
 def _set_encrypted_flag(path, member: str) -> None:
@@ -430,3 +458,104 @@ class TestValidation:
 
     def test_plaintext_garbage_is_not_validated(self):
         assert validate_payload(b"\x9e\x11\x33" * 100) is None
+
+
+class TestBreakApk:
+    def test_recovers_myg0n_prior_and_writes_outputs(self, tmp_path):
+        kit = _kit_bytes()
+        apk = tmp_path / "m.apk"
+        _make_apk(apk, {"assets/UZrF0u": _encrypt_prior(kit, "UZrF0u")},
+                  method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert res.outcome == RECOVERED and len(res.hits) == 1
+        hit = res.hits[0]
+        assert hit.member == "assets/UZrF0u" and hit.provenance == ["prior:myg0n"]
+        assert hit.validation == "zip-strict" and hit.content == "stored"
+        assert hit.artifacts_total == 2
+        # payload_sha256 covers the full decrypted buffer, PKCS#7 padding included. That is the
+        # same convention as the hand-verified corpus pins in Task 9 (RTO.apk's kit hash was
+        # derived from the existing pipeline's decrypted buffer), so the pins stay independent
+        # of this implementation.
+        pad = 16 - len(kit) % 16
+        assert hit.payload_sha256 == hashlib.sha256(kit + bytes([pad]) * pad).hexdigest()
+        hit_json = json.loads((tmp_path / "out" / res.sha256[:16] / "hit.json").read_text())
+        assert hit_json["hits"][0]["key_hex"] == hit.key_hex
+        coverage = (tmp_path / "out" / res.sha256[:16] / "coverage.json").read_text()
+        assert "key_hex" not in coverage and json.loads(coverage)["scheme_count"] > 0
+
+    def test_recovers_lumolight_zero_iv_prior(self, tmp_path):
+        stem = "bhtn0kbg"
+        key = hashlib.sha1(stem.encode()).digest()[:16]
+        pt = _kit_bytes()
+        pad = 16 - len(pt) % 16
+        ct = AES.new(key, AES.MODE_CBC, bytes(16)).encrypt(pt + bytes([pad]) * pad)
+        apk = tmp_path / "l.apk"
+        _make_apk(apk, {f"assets/sub/{stem}": ct}, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert res.hits[0].provenance == ["prior:gen2-zero-iv"]
+
+    def test_mined_string_seed_is_found(self, tmp_path):
+        seed = "thePassword123"
+        key = hashlib.sha1(seed.encode()).digest()[:16]
+        pt = _kit_bytes()
+        pad = 16 - len(pt) % 16
+        ct = AES.new(key, AES.MODE_CBC, bytes(16)).encrypt(pt + bytes([pad]) * pad)
+        apk = tmp_path / "p.apk"
+        _make_apk(apk, {
+            "classes.dex": b"dex\n035\x00" + b"\x00" * 20 + seed.encode() + b"\x00" * 200,
+            "assets/pwblob": ct,
+        }, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert res.hits and res.hits[0].provenance == ["mined"]
+
+    def test_extra_seeds_file_is_found(self, tmp_path):
+        seed = "traceKey42"
+        key = hashlib.sha1(seed.encode()).digest()[:16]
+        pt = _kit_bytes()
+        pad = 16 - len(pt) % 16
+        ct = AES.new(key, AES.MODE_CBC, bytes(16)).encrypt(pt + bytes([pad]) * pad)
+        extra = tmp_path / "extra.json"
+        extra.write_text(json.dumps({"seeds": [seed]}))
+        apk = tmp_path / "e.apk"
+        _make_apk(apk, {"assets/traceblob": ct}, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", seeds_extra=extra)
+        assert res.hits[0].provenance == ["extra"]
+
+    def test_lcg_numeric_delta_recovers_and_is_deterministic(self, tmp_path):
+        stem = "123456789012345"
+        seed = int(stem) + 0xFFFF
+        pt = _kit_bytes()
+        from packers.breaker.schemes import JavaRandom
+        ct = bytes(a ^ b for a, b in zip(pt, JavaRandom(seed).keystream(len(pt))))
+        apk = tmp_path / "n.apk"
+        _make_apk(apk, {f"assets/{stem}": ct}, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert res.hits[0].provenance == ["numeric:+0xffff"]
+        assert res.hits[0].scheme["cipher"] == "java-lcg"
+        res2 = break_apk(apk, tmp_path / "out2")
+        assert res2.hits[0].seed == res.hits[0].seed
+
+    def test_attempts_cap_marks_budget_not_exhaustion(self, tmp_path):
+        apk = tmp_path / "x.apk"
+        _make_apk(apk, {"assets/randomblob": os.urandom(2048)}, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", attempts_cap=25)
+        assert res.outcome == E_KDF_BUDGET
+        assert res.members[0].outcome == E_KDF_BUDGET
+        assert res.members[0].truncation == "attempts" and res.members[0].attempts == 25
+        res2 = break_apk(apk, tmp_path / "out2", attempts_cap=25)
+        assert res2.members[0].attempts == 25  # prefix-stable determinism
+
+    def test_runtime_keyed_blob_is_exhausted_not_recovered(self, tmp_path):
+        apk = tmp_path / "y.apk"
+        _make_apk(apk, {"assets/rt": os.urandom(1024)}, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert res.hits == [] and res.outcome in (E_KDF_EXHAUSTED, E_KDF_BUDGET)
+
+    def test_probe_false_positive_is_counted_not_reported(self, tmp_path):
+        scheme_pt = b"PK\x03\x04" + b"\x00" * 44 + b"\x77" * 4096  # PK prefix, invalid zip
+        apk = tmp_path / "fp.apk"
+        _make_apk(apk, {"assets/fpblob": _encrypt_prior(scheme_pt, "fpblob")},
+                  method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert res.hits == []
+        assert res.members[0].probe_false_positives >= 1

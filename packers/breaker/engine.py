@@ -8,17 +8,47 @@ produce a hit. Probe matches that fail validation are counted, never reported.
 """
 from __future__ import annotations
 
+import hashlib
+import io
 import json
 import struct
+import time
+import zipfile
 import zlib
-from dataclasses import dataclass
+from collections.abc import Iterator
+from dataclasses import asdict, dataclass, field
+from pathlib import Path
 
-from packers.breaker.blobs import PROBE_MAGICS
-from packers.breaker.schemes import Scheme, decrypt
+from packers.breaker.blobs import (
+    E_KDF_BUDGET,
+    E_KDF_EXHAUSTED,
+    PENDING,
+    PROBE_MAGICS,
+    RECOVERED,
+    Blob,
+    MemberRecord,
+    collect_from_zip,
+)
+from packers.breaker.schemes import (
+    Scheme,
+    decrypt,
+    derive,
+    matrix_schemes,
+    prior_schemes,
+    single_byte_xor_schemes,
+)
+from packers.breaker.seeds import (
+    SeedPlan,
+    name_variants,
+    numeric_candidates,
+    plan_from_collection,
+)
 from packers.framework import validate_dex, validate_zip
 
 PROBE_LEN = 48
 BLOCK_SIZE = 16
+ARTIFACT_CAP = 50
+OUT_DIR_DIGEST_CHARS = 16
 EOCD_SEARCH_WINDOW = 65557
 ZIP_EOCD_SIG = b"PK\x05\x06"
 DEX_MAGIC = b"dex\n"
@@ -114,3 +144,256 @@ def _is_json(data: bytes) -> bool:
     except (ValueError, UnicodeDecodeError):
         return False
     return True
+
+
+@dataclass
+class Hit:
+    """A recovered payload. ``key_hex``/``iv_hex`` are key material: local files only."""
+
+    member: str
+    content: str
+    seed: str
+    provenance: list[str]
+    scheme: dict
+    key_sha256: str
+    key_hex: str
+    iv_hex: str | None
+    payload_sha256: str
+    validation: str
+    artifacts: list[dict]
+    artifacts_total: int
+    children: list["Hit"] = field(default_factory=list)
+
+
+@dataclass
+class ApkResult:
+    apk: str
+    sha256: str
+    hits: list[Hit]
+    members: list[MemberRecord]
+    scheme_count: int
+    wall_s: float
+    outcome: str
+    ciphertext_members: int
+    attempts_total: int
+    truncated: str
+
+
+@dataclass
+class _Budget:
+    """One wall clock and one attempt cap for the whole APK. First shortage wins."""
+
+    attempts_cap: int
+    deadline: float
+    attempts: int = 0
+    truncated: str = "none"
+
+    def spend(self) -> bool:
+        if self.attempts >= self.attempts_cap:
+            self._mark("attempts")
+            return False
+        if time.monotonic() >= self.deadline:
+            self._mark("time")
+            return False
+        self.attempts += 1
+        return True
+
+    def _mark(self, reason: str) -> None:
+        if self.truncated == "none":
+            self.truncated = reason
+
+
+def break_apk(
+    apk_path: Path | str,
+    out_dir: Path | str,
+    *,
+    attempts_cap: int = 200_000,
+    budget_s: float = 300.0,
+    depth: int = 3,
+    seeds_extra: Path | str | None = None,
+    max_strings: int = 2000,
+) -> ApkResult:
+    """Attack every candidate member of one APK and write the honesty-preserving outputs."""
+    started = time.monotonic()
+    apk_path = Path(apk_path)
+    raw = apk_path.read_bytes()
+    sha256 = hashlib.sha256(raw).hexdigest()
+    collection = collect_from_zip(raw, depth=0)
+    plan = plan_from_collection(collection, extra_path=seeds_extra, max_strings=max_strings)
+    budget = _Budget(attempts_cap=attempts_cap, deadline=started + budget_s)
+    seen: set[tuple[str, str, str]] = set()
+    hits: list[Hit] = []
+    scheme_count = 0
+    records = {record.name: record for record in collection.records}
+    for blob in collection.blobs:
+        record = records[blob.member]
+        hit, enumerated = _attack_blob(blob, plan, budget, seen, record)
+        scheme_count += enumerated
+        if hit is not None:
+            hits.append(hit)
+    result = ApkResult(
+        apk=str(apk_path),
+        sha256=sha256,
+        hits=hits,
+        members=collection.records,
+        scheme_count=scheme_count,
+        wall_s=time.monotonic() - started,
+        outcome=_outcome(hits, budget),
+        ciphertext_members=sum(
+            1 for record in collection.records
+            if record.outcome in (RECOVERED, E_KDF_EXHAUSTED, E_KDF_BUDGET)
+        ),
+        attempts_total=budget.attempts,
+        truncated=budget.truncated,
+    )
+    _write_outputs(Path(out_dir), result, collection)
+    return result
+
+
+def _outcome(hits: list[Hit], budget: _Budget) -> str:
+    if hits:
+        return RECOVERED
+    return E_KDF_BUDGET if budget.truncated != "none" else E_KDF_EXHAUSTED
+
+
+def _candidate_stream(stem: str, plan: SeedPlan) -> Iterator[Scheme]:
+    """Cheapest, most likely candidates first: known recipes, then the matrix per seed."""
+    yield from prior_schemes(stem)
+    for candidate in name_variants(stem):
+        yield from matrix_schemes(candidate.material, candidate.provenance)
+    for candidate in plan.mined:
+        yield from matrix_schemes(candidate.material, candidate.provenance)
+    for candidate in plan.extra:
+        yield from matrix_schemes(candidate.material, candidate.provenance)
+    yield from single_byte_xor_schemes()
+    for candidate in numeric_candidates(stem):
+        yield Scheme(seed=candidate.material, cipher="java-lcg", provenance=candidate.provenance)
+
+
+def _attack_blob(
+    blob: Blob,
+    plan: SeedPlan,
+    budget: _Budget,
+    seen: set[tuple[str, str, str]],
+    record: MemberRecord,
+) -> tuple[Hit | None, int]:
+    """Probe every distinct candidate for one blob. Returns the hit (if any) and the space size."""
+    start_attempts = budget.attempts
+    enumerated = 0
+    hit: Hit | None = None
+    for scheme in _candidate_stream(_stem_of(blob.member), plan):
+        enumerated += 1
+        key, iv = derive(scheme)
+        identity = (scheme.cipher, key.hex(), iv.hex())
+        if identity in seen:
+            continue
+        seen.add(identity)
+        if not budget.spend():
+            record.truncation = budget.truncated
+            break
+        candidate_hit = _probe_candidate(blob, scheme, key, iv, record)
+        if candidate_hit is not None:
+            hit = candidate_hit
+            break
+    record.space_size = enumerated
+    record.attempts = budget.attempts - start_attempts
+    record.outcome = (
+        RECOVERED if hit is not None
+        else E_KDF_BUDGET if budget.truncated != "none"
+        else E_KDF_EXHAUSTED
+    )
+    return hit, enumerated
+
+
+def _probe_candidate(
+    blob: Blob, scheme: Scheme, key: bytes, iv: bytes, record: MemberRecord
+) -> Hit | None:
+    if not probe_matches(scheme, blob.data):
+        return None
+    try:
+        plaintext = decrypt(scheme, blob.data)
+    except (ValueError, TypeError):
+        record.probe_false_positives += 1
+        return None
+    payload = plaintext
+    validation = validate_payload(payload)
+    if validation is None:
+        record.probe_false_positives += 1
+        return None
+    return _build_hit(blob, scheme, key, iv, payload, validation)
+
+
+def _build_hit(
+    blob: Blob, scheme: Scheme, key: bytes, iv: bytes, plaintext: bytes, validation: Validation
+) -> Hit:
+    artifacts, artifacts_total = _payload_artifacts(plaintext)
+    return Hit(
+        member=blob.member,
+        content=blob.content,
+        seed=scheme.seed,
+        provenance=[scheme.provenance] if scheme.provenance else [],
+        scheme={
+            "cipher": scheme.cipher,
+            "key_hash": scheme.key_hash,
+            "key_len": scheme.key_len,
+            "iv": scheme.iv,
+            "xor_mode": scheme.xor_mode,
+            "seed": scheme.seed,
+            "provenance": scheme.provenance,
+        },
+        key_sha256=hashlib.sha256(key).hexdigest(),
+        key_hex=key.hex(),
+        iv_hex=iv.hex() if iv else None,
+        payload_sha256=hashlib.sha256(plaintext).hexdigest(),
+        validation=validation.evidence,
+        artifacts=artifacts,
+        artifacts_total=artifacts_total,
+    )
+
+
+def _payload_artifacts(data: bytes) -> tuple[list[dict], int]:
+    """List the files inside a recovered ZIP payload (capped); empty for other payloads."""
+    if data[:4] != b"PK\x03\x04":
+        return [], 0
+    try:
+        with zipfile.ZipFile(io.BytesIO(data)) as archive:
+            names = [info.filename for info in archive.infolist() if not info.filename.endswith("/")]
+            artifacts = []
+            for name in names[:ARTIFACT_CAP]:
+                try:
+                    member = archive.read(name)
+                except Exception:
+                    continue
+                artifacts.append(
+                    {"file": name, "sha256": hashlib.sha256(member).hexdigest(), "size": len(member)}
+                )
+            return artifacts, len(names)
+    except Exception:
+        return [], 0
+
+
+def _stem_of(member: str) -> str:
+    """The packer's own name for this member: strip any recursion prefix, then the directory."""
+    return member.rsplit("!", 1)[-1].rsplit("/", 1)[-1]
+
+
+def _write_outputs(out_dir: Path, result: ApkResult, collection) -> None:
+    target = out_dir / result.sha256[:OUT_DIR_DIGEST_CHARS]
+    target.mkdir(parents=True, exist_ok=True)
+    hits_payload = {"apk": result.apk, "sha256": result.sha256, "hits": [asdict(h) for h in result.hits]}
+    (target / "hit.json").write_text(json.dumps(hits_payload, indent=2), encoding="utf-8")
+    coverage = {
+        "apk": result.apk,
+        "sha256": result.sha256,
+        "wall_s": result.wall_s,
+        "outcome": result.outcome,
+        "truncated": result.truncated,
+        "scheme_count": result.scheme_count,
+        "attempts_total": result.attempts_total,
+        "ciphertext_members": result.ciphertext_members,
+        "members_total": collection.members_total,
+        "members_ignored_dirs": collection.members_ignored_dirs,
+        "members_out_of_scope": collection.members_out_of_scope,
+        "members": [asdict(record) for record in result.members],
+    }
+    (target / "coverage.json").write_text(json.dumps(coverage, indent=2), encoding="utf-8")
