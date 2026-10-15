@@ -4,7 +4,10 @@ import io
 import json
 import os
 import struct
+import subprocess
+import sys
 import zipfile
+from pathlib import Path
 
 import pytest
 from Crypto.Cipher import AES
@@ -612,3 +615,47 @@ class TestRecursion:
         res = break_apk(apk, tmp_path / "out", depth=2)
         recovered = {h.member for h in res.hits} | {c.member for h in res.hits for c in h.children}
         assert any("sibling" in m for m in recovered)
+
+
+class TestCli:
+    def test_cli_batch_writes_summary_and_exits_zero(self, tmp_path):
+        _make_apk(tmp_path / "good.apk",
+                  {"assets/UZrF0u": _encrypt_prior(_kit_bytes(), "UZrF0u")},
+                  method=zipfile.ZIP_STORED)
+        _make_apk(tmp_path / "dead.apk", {"assets/rt": os.urandom(1024)},
+                  method=zipfile.ZIP_STORED)
+        out = tmp_path / "out"
+        proc = subprocess.run(
+            [sys.executable, "scripts/breaker.py", "--input", str(tmp_path), "--out", str(out),
+             "--attempts-cap", "50"],
+            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True,
+        )
+        assert proc.returncode == 0, proc.stderr
+        summary = json.loads(proc.stdout)
+        assert summary["apks_deduped"] == 2 and summary["recovered"] == 1
+        assert summary["budget"] == 1 and summary["miss"] == 0
+        lines = (out / "summary.csv").read_text().strip().splitlines()
+        assert lines[0] == "apk_path,sha256,ciphertext_members,recovered,attempts_total,truncated,wall_s,outcome"
+        assert len(lines) == 3
+        assert sum("RECOVERED" in line for line in lines[1:]) == 1
+        assert sum("E-KDF-BUDGET" in line for line in lines[1:]) == 1
+
+    def test_cli_single_file_and_stdout_schema(self, tmp_path):
+        apk = tmp_path / "good.apk"
+        _make_apk(apk, {"assets/UZrF0u": _encrypt_prior(_kit_bytes(), "UZrF0u")},
+                  method=zipfile.ZIP_STORED)
+        out = tmp_path / "out"
+        proc = subprocess.run(
+            [sys.executable, "scripts/breaker.py", "--input", str(apk), "--out", str(out)],
+            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True,
+        )
+        assert proc.returncode == 0, proc.stderr
+        summary = json.loads(proc.stdout)
+        assert set(summary) == {
+            "apks_input", "apks_deduped", "recovered", "miss", "budget", "out"
+        }
+        assert summary["apks_input"] == 1 and summary["recovered"] == 1
+        # stdout and coverage stay free of key material; only hit.json may carry it.
+        assert "key" not in proc.stdout.lower()
+        coverage = next(Path(out).rglob("coverage.json")).read_text()
+        assert "key_hex" not in coverage
