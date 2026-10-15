@@ -593,6 +593,19 @@ class TestBreakApk:
         assert len(res.hits) == 1
         assert res.hits[0].validation == "dex-header"
 
+    @pytest.mark.filterwarnings("ignore:Duplicate name")
+    def test_duplicate_names_do_not_share_content(self, tmp_path):
+        # Each duplicate entry must be read as the bytes that entry actually holds. zipfile's
+        # read(name) resolves to the LAST entry, which would report the random one as recovered.
+        apk = tmp_path / "dup2.apk"
+        with zipfile.ZipFile(apk, "w", zipfile.ZIP_STORED) as zf:
+            zf.writestr("assets/twice", os.urandom(2048))  # not recoverable
+            zf.writestr("assets/twice", _encrypt_prior(_payload_bytes(), "twice"))
+        res = break_apk(apk, tmp_path / "out")
+        rows = [m for m in res.members if m.name == "assets/twice"]
+        assert len(rows) == 2
+        assert sum(row.outcome == RECOVERED for row in rows) == 1
+
     def test_deep_tier_does_not_reprobe_prior_schemes(self, tmp_path):
         # The cheap tier runs the priors; the deep tier must not pay for them again or count
         # them twice. space_size is an honesty number, so it must equal the true total.
