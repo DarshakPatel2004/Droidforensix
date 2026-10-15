@@ -680,6 +680,25 @@ class TestRecursion:
         assert res.hits and res.hits[0].children == []
         assert not any(m.name.startswith("assets/outer!") for m in res.members)
 
+    def test_validated_dex_hit_releases_strings_for_siblings(self, tmp_path):
+        # Spec 4.8: a validated DEX hit is a seed source too. Strings it carries must reach the
+        # seed plan, or a sibling blob keyed by one of them is unreachable by construction.
+        secret = "dexCarriedSecret7"
+        dex = b"dex\n035\x00" + secret.encode() + b"\x00" * 600
+        sib_key = hashlib.sha1(secret.encode()).digest()[:16]
+        sib_pt = _payload_bytes()
+        pad = 16 - len(sib_pt) % 16
+        sib_ct = AES.new(sib_key, AES.MODE_CBC, bytes(16)).encrypt(sib_pt + bytes([pad]) * pad)
+        apk = tmp_path / "dexh.apk"
+        _make_apk(apk, {
+            "assets/dexfirst": _encrypt_prior(dex, "dexfirst"),
+            "assets/sibling": sib_ct,
+        }, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        recovered = {h.member for h in res.hits}
+        assert "assets/dexfirst" in recovered
+        assert "assets/sibling" in recovered
+
     def test_decrypted_strings_enable_sibling_recovery(self, tmp_path):
         # sibling blob keyed by a string that only exists inside the first recovered kit
         secret = "harvestedSecret9"
