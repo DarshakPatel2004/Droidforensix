@@ -203,6 +203,13 @@ class _Budget:
             self.truncated = reason
 
 
+@dataclass
+class _BlobOutcome:
+    hit: Hit | None
+    payload: bytes | None
+    enumerated: int
+
+
 def break_apk(
     apk_path: Path | str,
     out_dir: Path | str,
@@ -221,16 +228,17 @@ def break_apk(
     collection = collect_from_zip(raw, depth=0)
     plan = plan_from_collection(collection, extra_path=seeds_extra, max_strings=max_strings)
     budget = _Budget(attempts_cap=attempts_cap, deadline=started + budget_s)
-    seen: set[tuple[str, str, str]] = set()
     hits: list[Hit] = []
     scheme_count = 0
     records = {record.name: record for record in collection.records}
     for blob in collection.blobs:
-        record = records[blob.member]
-        hit, enumerated = _attack_blob(blob, plan, budget, seen, record)
-        scheme_count += enumerated
-        if hit is not None:
-            hits.append(hit)
+        outcome = _attack_blob(blob, plan, budget, records[blob.member])
+        scheme_count += outcome.enumerated
+        if outcome.hit is None:
+            continue
+        hits.append(outcome.hit)
+        scheme_count += _recurse(outcome.hit, outcome.payload, blob.depth, plan, budget, depth, collection)
+    collection.records.sort(key=lambda record: record.name)
     result = ApkResult(
         apk=str(apk_path),
         sha256=sha256,
@@ -274,13 +282,18 @@ def _attack_blob(
     blob: Blob,
     plan: SeedPlan,
     budget: _Budget,
-    seen: set[tuple[str, str, str]],
     record: MemberRecord,
-) -> tuple[Hit | None, int]:
-    """Probe every distinct candidate for one blob. Returns the hit (if any) and the space size."""
+) -> _BlobOutcome:
+    """Probe every distinct candidate for one blob and update its coverage row.
+
+    Dedupe is per member: a key that already failed against this ciphertext is not worth
+    spending again, but the very same key must still be tried against every other member.
+    """
     start_attempts = budget.attempts
     enumerated = 0
+    seen: set[tuple[str, str, str]] = set()
     hit: Hit | None = None
+    payload: bytes | None = None
     for scheme in _candidate_stream(_stem_of(blob.member), plan):
         enumerated += 1
         key, iv = derive(scheme)
@@ -291,9 +304,9 @@ def _attack_blob(
         if not budget.spend():
             record.truncation = budget.truncated
             break
-        candidate_hit = _probe_candidate(blob, scheme, key, iv, record)
-        if candidate_hit is not None:
-            hit = candidate_hit
+        matched = _probe_candidate(blob, scheme, key, iv, record)
+        if matched is not None:
+            hit, payload = matched
             break
     record.space_size = enumerated
     record.attempts = budget.attempts - start_attempts
@@ -302,25 +315,59 @@ def _attack_blob(
         else E_KDF_BUDGET if budget.truncated != "none"
         else E_KDF_EXHAUSTED
     )
-    return hit, enumerated
+    return _BlobOutcome(hit=hit, payload=payload, enumerated=enumerated)
 
 
 def _probe_candidate(
     blob: Blob, scheme: Scheme, key: bytes, iv: bytes, record: MemberRecord
-) -> Hit | None:
+) -> tuple[Hit, bytes] | None:
     if not probe_matches(scheme, blob.data):
         return None
     try:
-        plaintext = decrypt(scheme, blob.data)
+        payload = decrypt(scheme, blob.data)
     except (ValueError, TypeError):
         record.probe_false_positives += 1
         return None
-    payload = plaintext
     validation = validate_payload(payload)
     if validation is None:
         record.probe_false_positives += 1
         return None
-    return _build_hit(blob, scheme, key, iv, payload, validation)
+    return _build_hit(blob, scheme, key, iv, payload, validation), payload
+
+
+def _recurse(
+    hit: Hit,
+    payload: bytes | None,
+    blob_depth: int,
+    plan: SeedPlan,
+    budget: _Budget,
+    depth: int,
+    collection,
+) -> int:
+    """Attack the members of a recovered container at the next depth. Returns schemes enumerated."""
+    if payload is None or blob_depth + 1 >= depth:
+        return 0
+    if hit.validation not in ("zip-strict", "zip-eocd"):
+        return 0
+    children = collect_from_zip(payload, depth=blob_depth + 1, prefix=hit.member + "!")
+    collection.members_total += children.members_total
+    collection.members_ignored_dirs += children.members_ignored_dirs
+    collection.members_out_of_scope += children.members_out_of_scope
+    collection.records.extend(children.records)
+    for _name, data in children.plaintext:
+        plan.add_strings(data)
+    child_records = {record.name: record for record in children.records}
+    enumerated = 0
+    for child_blob in children.blobs:
+        outcome = _attack_blob(child_blob, plan, budget, child_records[child_blob.member])
+        enumerated += outcome.enumerated
+        if outcome.hit is None:
+            continue
+        hit.children.append(outcome.hit)
+        enumerated += _recurse(
+            outcome.hit, outcome.payload, child_blob.depth, plan, budget, depth, collection
+        )
+    return enumerated
 
 
 def _build_hit(
