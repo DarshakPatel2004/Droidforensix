@@ -345,7 +345,12 @@ def _nested_entries(
         return []
     if outcome.hit.validation not in ("zip-strict", "zip-eocd"):
         return []
-    children = collect_from_zip(outcome.payload, depth=blob.depth + 1, prefix=outcome.hit.member + "!")
+    try:
+        children = collect_from_zip(outcome.payload, depth=blob.depth + 1, prefix=outcome.hit.member + "!")
+    except Exception:
+        # zip-eocd passed the weak evidence check but the payload is not readable (zipfile
+        # raises on hostile input). The hit stands; it simply has no members to recurse into.
+        return []
     collection.members_total += children.members_total
     collection.members_ignored_dirs += children.members_ignored_dirs
     collection.members_out_of_scope += children.members_out_of_scope

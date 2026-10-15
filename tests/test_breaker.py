@@ -598,6 +598,25 @@ class TestRecursion:
         assert any(m.name.startswith("assets/outer!") for m in res.members)
         assert res.outcome == RECOVERED
 
+    def test_unreadable_eocd_hit_does_not_crash_recursion(self, tmp_path):
+        # A hit may validate only at the weaker zip-eocd level: EOCD present, strict parse fails.
+        # Recursing into such a payload must yield no children, not raise BadZipFile.
+        eocd = (
+            b"PK\x05\x06"
+            + (0).to_bytes(2, "little") + (0).to_bytes(2, "little")
+            + (1).to_bytes(2, "little") + (1).to_bytes(2, "little")
+            + (46).to_bytes(4, "little") + (0).to_bytes(4, "little")
+            + (0).to_bytes(2, "little")
+        )
+        payload = b"PK\x03\x04" + b"\x00" * 600 + eocd
+        apk = tmp_path / "eocd.apk"
+        _make_apk(apk, {"assets/outer": _encrypt_prior(payload, "outer")},
+                  method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", depth=2)
+        assert len(res.hits) == 1
+        assert res.hits[0].validation == "zip-eocd"
+        assert res.hits[0].children == []
+
     def test_depth_one_does_not_recurse(self, tmp_path):
         inner_ct = _encrypt_prior(_payload_bytes(), "inner7")
         outer_pt = _write_bytes_zip({"assets/inner7": inner_ct})
