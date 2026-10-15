@@ -297,9 +297,10 @@ def _candidate_stream(stem: str, plan: SeedPlan, tier: str) -> Iterator[Scheme]:
     """Candidates for one member, split into the cheap tier and the deep tier.
 
     ``cheap`` is the closed-form known recipes (a few hundred probes each); ``deep`` is the
-    combinatorial matrix and the degenerate sweeps. The tiers are disjoint: the sweep runs a
-    member's cheap tier before any member's deep tier, so the deep tier must not re-probe what
-    the cheap tier already tried - that would double the budget and the ``space_size`` count.
+    combinatorial matrix and the degenerate sweeps. The tiers can overlap (a prior such as
+    ``gen2-zero-iv`` is also a matrix point), so the sweep runs every member's cheap tier before
+    any member's deep tier and carries the probed-identity set along: nothing is ever paid for
+    twice, while nothing the cheap tier covers can be starved out by another member's deep search.
     """
     if tier == "cheap":
         yield from prior_schemes(stem)
