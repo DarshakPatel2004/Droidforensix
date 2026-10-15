@@ -32,6 +32,15 @@
 - **Nested members are first-class for coverage.** A recovered container's `records` are folded into the top-level collection and its member counters added to the top-level counters, so `members_total == len(records) + members_ignored_dirs + members_out_of_scope` holds at every depth and nested rows appear (prefixed) in `coverage.json`. The recursion condition is `blob.depth + 1 < depth` (`depth=1` top level only).
 - **Dedupe is per member**, not per APK: a key that failed against one ciphertext must still be tried against every other member.
 - **Extra dead-end negative controls (Task 9):** the spec names `Tubi-inin` and `Google Video` alongside the Ijiami `Calculator` samples, so the acceptance suite gates them too (66 and 41 encrypted members respectively, zero hits).
+- **Whole-branch review round (fresh-context reviewer, after Task 9).** The reviewer reproduced five defects; each was fixed with its own failing test first:
+  - `zip-eocd` hits crashed recursion (`BadZipFile` escaped `break_apk`, aborting a batch). An unreadable payload now yields no children.
+  - The CLI had no per-input isolation, so one non-ZIP file killed the batch. Each input is now one row; a fault becomes `E-ENGINE-FAULT` (with the diagnostic on stderr), `summary.csv` gains no new column, and the stdout summary gains an `errors` count.
+  - The deep tier re-probed and re-counted every member's priors (measured `space_size 1292` where the true total is `1248`). The tiers are now disjoint; the pinned test recomputes `space_size` from the public providers.
+  - Repeated member names (legal in ZIP) collided on a name-keyed row lookup and left a `PENDING` row unattacked. Coverage rows now travel on the `Blob` itself, and `_close_books` refuses to write outputs while any row is unresolved or the member book does not balance.
+  - `validate_payload` documented "never raises" but a deeply nested JSON payload raised `RecursionError`; the header evidence upgrade for DEX (`dex-header`) was unreachable for any AES-padded payload; and spec 4.8's "harvest strings from a validated DEX hit" was not implemented. All three are fixed and pinned.
+- **AES matrix key lengths (review round):** the spec's truncation set `{16, 20, 24, 32}` is about key material generally; a 20-byte AES key is structurally impossible and only burned budget (18 of 66 AES candidates) while inflating `space_size`. AES candidates now use `AES_KEY_LENGTHS = (16, 24, 32)`, so the matrix is 61 schemes instead of 79, and the pinned count test was corrected with it.
+- **`--attempts-cap` is per APK, not per blob** (spec §6 says per blob). One shared cap bounds a whole APK's cost: per-member caps would let a 66-member input multiply a run's cost by two orders of magnitude. Recorded per member as `truncation="attempts"`.
+- **A non-existent `--input` exits 2** (argparse usage error) rather than 0: a mistyped path is a caller error, not a per-APK verdict. Only verdicts write rows.
 
 ## Review Focus
 

@@ -3,7 +3,9 @@
 
 Runs the KDF/cipher search engine over one APK or a directory of APKs, writes the
 honesty-preserving outputs (hit.json / coverage.json per APK, summary.csv for the
-batch), and prints a single JSON line of counts. Misses are typed, never silent.
+batch), and prints a single JSON line of counts. Misses are typed, never silent, and
+one unreadable input becomes a typed ``E-ENGINE-FAULT`` row instead of taking the
+whole batch down.
 
 Static only: this script reads APK bytes, derives candidate keys, decrypts and
 validates structure. It never executes a sample.
@@ -109,14 +111,16 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--input", required=True, help="APK file or directory to scan")
     parser.add_argument("--out", required=True, help="directory for hit/coverage/summary outputs")
-    parser.add_argument("--attempts-cap", type=int, default=200_000)
-    parser.add_argument("--budget-s", type=float, default=300.0)
-    parser.add_argument("--depth", type=int, default=3)
+    parser.add_argument("--attempts-cap", type=int, default=200_000,
+                        help="candidate probes per APK, shared across its members")
+    parser.add_argument("--budget-s", type=float, default=300.0, help="wall-clock budget per APK")
+    parser.add_argument("--depth", type=int, default=3, help="max nesting depth (1 = top level only)")
     parser.add_argument("--seeds-extra", default=None, help="optional JSON/text file of extra seeds")
-    parser.add_argument("--max-strings", type=int, default=2000)
-    parser.add_argument("--jobs", type=int, default=1)
+    parser.add_argument("--max-strings", type=int, default=2000, help="cap on mined seed strings")
+    parser.add_argument("--jobs", type=int, default=1, help="worker processes for the batch")
     args = parser.parse_args(argv)
     if not pathlib.Path(args.input).exists():
+        # A bad path is a usage error, not a verdict: fail before any output is promised.
         parser.error(f"input does not exist: {args.input}")
     return args
 
