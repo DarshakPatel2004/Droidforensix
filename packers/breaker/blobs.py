@@ -61,12 +61,17 @@ ZIP_LOCAL_SIG = b"PK\x03\x04"
 
 @dataclass(frozen=True)
 class Blob:
-    """A member's real content, ready to be attacked."""
+    """A member's real content, ready to be attacked, plus its own coverage row.
+
+    The row travels with the blob so that repeated member names (legal in ZIP) can never
+    collide on a name-keyed lookup and leave an unreported row behind.
+    """
 
     member: str
     data: bytes
     content: str  # "stored" | "inflated"
     depth: int
+    record: "MemberRecord"
 
 
 @dataclass
@@ -206,7 +211,9 @@ def _classify(
         record.outcome = SKIPPED_SIZE
         return
     record.entropy = shannon_entropy(content[:ENTROPY_SAMPLE])
-    collection.blobs.append(Blob(member=name, data=content, content=kind, depth=depth))
+    collection.blobs.append(
+        Blob(member=name, data=content, content=kind, depth=depth, record=record)
+    )
 
 
 def _magic_kind(content: bytes) -> str | None:
