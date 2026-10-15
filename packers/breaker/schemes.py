@@ -19,7 +19,10 @@ LCG_ADDEND = 0xB
 LCG_MASK = (1 << 48) - 1
 
 HASH_ORDER: tuple[str, ...] = ("sha1", "sha256", "md5", "sha512")
-KEY_LENGTHS: tuple[int, ...] = (16, 20, 24, 32)
+# AES accepts 128/192/256-bit keys only. A 20-byte candidate can never decrypt anything: it
+# would raise inside the cipher, burn budget, and inflate the reported space_size. (The spec's
+# {16, 20, 24, 32} truncation set is about key material generally; AES uses its valid subset.)
+AES_KEY_LENGTHS: tuple[int, ...] = (16, 24, 32)
 IV_ORDER: tuple[str, ...] = ("zeros", "sha1", "sha256", "md5", "sha512")
 DIGEST_SIZES: dict[str, int] = {"md5": 16, "sha1": 20, "sha256": 32, "sha512": 64}
 
@@ -192,11 +195,11 @@ def _substring_windows(stem: str) -> list[Scheme]:
 
 
 def matrix_schemes(seed: str, provenance: str) -> Iterator[Scheme]:
-    """The bounded sweep for one seed: 79 schemes (see the pinned count test)."""
+    """The bounded sweep for one seed: 61 schemes (see the pinned count test)."""
     key_specs = [
         (key_hash, key_len)
         for key_hash in HASH_ORDER
-        for key_len in KEY_LENGTHS
+        for key_len in AES_KEY_LENGTHS
         if key_len <= DIGEST_SIZES[key_hash]
     ]
     for key_hash, key_len in key_specs:

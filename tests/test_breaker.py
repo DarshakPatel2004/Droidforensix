@@ -35,7 +35,7 @@ from packers.breaker.seeds import (
     plan_from_collection,
 )
 from packers.breaker.schemes import (
-    KEY_LENGTHS,
+    AES_KEY_LENGTHS,
     JavaRandom,
     Scheme,
     decrypt,
@@ -105,12 +105,19 @@ class TestSchemeModel:
         assert not [s for s in prior_schemes("x" * 40) if s.provenance == "prior:rto-substring"]
 
     def test_matrix_count_is_pinned(self):
-        assert len(list(matrix_schemes("seed", "test"))) == 79
+        assert len(list(matrix_schemes("seed", "test"))) == 61
+
+    def test_matrix_never_emits_structurally_impossible_aes_keys(self):
+        # AES accepts 128/192/256-bit keys only. A 20-byte candidate would raise inside the
+        # cipher: pure budget waste that also inflates the reported space_size.
+        for scheme in matrix_schemes("seed", "test"):
+            if scheme.cipher.startswith("aes"):
+                assert scheme.key_len in (16, 24, 32)
 
     def test_matrix_uses_framework_key_truncation_rules(self):
         schemes = list(matrix_schemes("seed", "test"))
         assert {s.key_len for s in schemes if s.key_hash == "md5"} == {16}  # md5 digest is 16 bytes
-        assert {s.key_len for s in schemes if s.key_hash == "sha256"} == set(KEY_LENGTHS)
+        assert {s.key_len for s in schemes if s.key_hash == "sha256"} == set(AES_KEY_LENGTHS)
 
     def test_matrix_carries_provenance_and_covers_every_cipher(self):
         schemes = list(matrix_schemes("seed", "mined"))
