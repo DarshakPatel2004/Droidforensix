@@ -671,6 +671,25 @@ class TestCli:
         assert sum("RECOVERED" in line for line in lines[1:]) == 1
         assert sum("E-KDF-BUDGET" in line for line in lines[1:]) == 1
 
+    def test_cli_isolates_one_unreadable_apk(self, tmp_path):
+        # The batch contract is "always finish and write a typed verdict": a file that is not a
+        # ZIP at all must become an error row, not kill the run (and the good APK still runs).
+        _make_apk(tmp_path / "good.apk",
+                  {"assets/UZrF0u": _encrypt_prior(_kit_bytes(), "UZrF0u")},
+                  method=zipfile.ZIP_STORED)
+        (tmp_path / "junk.apk").write_bytes(os.urandom(4096))
+        out = tmp_path / "out"
+        proc = subprocess.run(
+            [sys.executable, "scripts/breaker.py", "--input", str(tmp_path), "--out", str(out)],
+            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True,
+        )
+        assert proc.returncode == 0, proc.stderr
+        summary = json.loads(proc.stdout)
+        assert summary["recovered"] == 1 and summary["errors"] == 1
+        rows = (out / "summary.csv").read_text().strip().splitlines()[1:]
+        assert any(row.endswith("E-ENGINE-FAULT") for row in rows)
+        assert any("RECOVERED" in row for row in rows)
+
     def test_cli_single_file_and_stdout_schema(self, tmp_path):
         apk = tmp_path / "good.apk"
         _make_apk(apk, {"assets/UZrF0u": _encrypt_prior(_kit_bytes(), "UZrF0u")},
@@ -683,7 +702,7 @@ class TestCli:
         assert proc.returncode == 0, proc.stderr
         summary = json.loads(proc.stdout)
         assert set(summary) == {
-            "apks_input", "apks_deduped", "recovered", "miss", "budget", "out"
+            "apks_input", "apks_deduped", "recovered", "miss", "budget", "errors", "out"
         }
         assert summary["apks_input"] == 1 and summary["recovered"] == 1
         # stdout and coverage stay free of key material; only hit.json may carry it.
