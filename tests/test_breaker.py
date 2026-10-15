@@ -1,6 +1,19 @@
 """Tests for the master key breaker (packers/breaker/)."""
 import hashlib
+import os
+import struct
+import zipfile
 
+import pytest
+
+from packers.breaker.blobs import (
+    SKIPPED_FILTER,
+    SKIPPED_PLAINTEXT,
+    SKIPPED_SIZE,
+    SKIPPED_ZIPCRYPTO,
+    collect_apk,
+    collect_from_zip,
+)
 from packers.breaker.schemes import (
     KEY_LENGTHS,
     JavaRandom,
@@ -149,3 +162,116 @@ class TestCipherLayer:
         pt = b"PK\x03\x04" + bytes(range(60))
         ct = bytes(a ^ b for a, b in zip(pt, JavaRandom(MEDIAPLAYER2_SEED).keystream(len(pt))))
         assert decrypt(scheme, ct) == pt
+
+
+def _make_apk(path, members: dict) -> None:
+    with zipfile.ZipFile(path, "w", zipfile.ZIP_DEFLATED) as zf:
+        for name, data in members.items():
+            zf.writestr(name, data)
+
+
+def _set_encrypted_flag(path, member: str) -> None:
+    """Flip bit 0 of the flag field in both the local header and the central directory."""
+    raw = bytearray(path.read_bytes())
+    with zipfile.ZipFile(path) as zf:
+        lfh = zf.getinfo(member).header_offset
+    raw[lfh + 6] |= 0x1
+    cd = raw.rindex(b"PK\x01\x02")
+    raw[cd + 8] |= 0x1
+    path.write_bytes(raw)
+
+
+class TestBlobCollector:
+    def test_filters_and_ordering(self, tmp_path):
+        apk = tmp_path / "a.apk"
+        _make_apk(apk, {
+            "assets/small": b"\x00" * 100,                    # below MIN_BLOB_SIZE
+            "assets/big": b"\xab" * 4096,                     # attacked
+            "assets/bigger": b"\xcd" * 8192,                  # attacked, ordered first
+            "assets/icon.png": b"\x89PNG" + b"\x00" * 600,    # extension filter
+            "res/raw/thing": b"\xef" * 900,                   # ignored dir: counted, no row
+            "classes.dex": b"\xaa" * 900,                     # extension filter (.dex)
+            "kotlin/builtins": b"\x11" * 900,                 # out of scope: nested non-asset
+        })
+        c = collect_apk(apk)
+        assert [b.member for b in c.blobs] == ["assets/bigger", "assets/big"]
+        outcomes = {r.name: r.outcome for r in c.records}
+        assert outcomes["assets/small"] == SKIPPED_SIZE
+        assert outcomes["assets/icon.png"] == SKIPPED_FILTER
+        assert outcomes["classes.dex"] == SKIPPED_FILTER
+        assert c.members_ignored_dirs == 1
+        assert c.members_out_of_scope == 1
+        assert "kotlin/builtins" not in outcomes
+        assert c.members_total == 7
+        assert c.members_total == len(c.records) + c.members_ignored_dirs + c.members_out_of_scope
+
+    def test_plaintext_magic_member_is_skipped_and_offered_for_recursion(self, tmp_path):
+        apk = tmp_path / "b.apk"
+        inner = tmp_path / "inner.bin"
+        _make_apk(inner, {"assets/x": b"\xaa" * 1024})
+        _make_apk(apk, {"assets/nested": inner.read_bytes(), "assets/ct": b"\xbb" * 1024})
+        c = collect_apk(apk)
+        assert {r.name: r.outcome for r in c.records}["assets/nested"] == SKIPPED_PLAINTEXT
+        assert [n for n, _ in c.recurse] == ["assets/nested"]
+        assert [n for n, _ in c.plaintext] == ["assets/nested"]
+        assert [b.member for b in c.blobs] == ["assets/ct"]
+
+    def test_flag_lie_deflate_member_is_read_as_inflated_content(self, tmp_path):
+        apk = tmp_path / "c.apk"
+        payload = bytes(range(256)) * 8  # 2048 bytes, no plaintext magic
+        _make_apk(apk, {"assets/payload": payload})
+        _set_encrypted_flag(apk, "assets/payload")
+        with zipfile.ZipFile(apk) as zf:
+            with pytest.raises(RuntimeError):
+                zf.read("assets/payload")
+        c = collect_apk(apk)
+        blob = c.blobs[0]
+        assert blob.content == "inflated" and blob.data == payload
+
+    def test_genuine_zipcrypto_member_is_typed_not_attacked(self, tmp_path):
+        apk = tmp_path / "d.apk"
+        _make_apk(apk, {"assets/real": os.urandom(1024)})  # incompressible: room to damage it
+        _set_encrypted_flag(apk, "assets/real")
+        # Real ZipCrypto members carry a 12-byte encryption header, so the stored stream no
+        # longer inflates. Overwrite its first 12 bytes with zeros (length unchanged, so the
+        # central directory stays valid) to reproduce that deterministically.
+        raw = bytearray(apk.read_bytes())
+        with zipfile.ZipFile(apk) as zf:
+            info = zf.getinfo("assets/real")
+        name_len, extra_len = struct.unpack("<HH", raw[info.header_offset + 26:info.header_offset + 30])
+        data_at = info.header_offset + 30 + name_len + extra_len
+        raw[data_at:data_at + 12] = b"\x00" * 12
+        apk.write_bytes(bytes(raw))
+        c = collect_apk(apk)
+        assert c.blobs == []
+        assert {r.name: r.outcome for r in c.records}["assets/real"] == SKIPPED_ZIPCRYPTO
+
+    def test_stored_flag_lie_member_is_kept(self, tmp_path):
+        apk = tmp_path / "e.apk"
+        with zipfile.ZipFile(apk, "w", zipfile.ZIP_STORED) as zf:
+            zf.writestr("assets/plainstored", b"\x7f" * 1024)
+        _set_encrypted_flag(apk, "assets/plainstored")
+        c = collect_apk(apk)
+        assert c.blobs and c.blobs[0].content == "stored"
+
+    def test_collect_from_zip_prefixes_nested_paths(self, tmp_path):
+        inner = tmp_path / "kit.zip"
+        _make_apk(inner, {"assets/deep": b"\x01" * 700})
+        c = collect_from_zip(inner.read_bytes(), depth=1, prefix="kit.zip!")
+        assert c.blobs[0].member == "kit.zip!assets/deep" and c.blobs[0].depth == 1
+
+    def test_encrypted_member_survives_deflate_and_crc_round_trip(self, tmp_path):
+        # The MediaPlayer2 shape, reduced: stored bytes are plaintext DEFLATE data wearing the
+        # encrypted flag; the central CRC covers the inflated bytes.
+        import zlib
+        payload = b"PK\x03\x04" + bytes(range(256)) * 8
+        apk = tmp_path / "f.apk"
+        with zipfile.ZipFile(apk, "w", zipfile.ZIP_DEFLATED) as zf:
+            zf.writestr("assets/mp2shaped", payload)
+        _set_encrypted_flag(apk, "assets/mp2shaped")
+        with zipfile.ZipFile(apk) as zf:
+            info = zf.getinfo("assets/mp2shaped")
+        assert info.CRC == zlib.crc32(payload)
+        c = collect_apk(apk)
+        assert not c.blobs, "payload starts with a ZIP magic -> plaintext, not a blob"
+        assert {r.name: r.outcome for r in c.records}["assets/mp2shaped"] == SKIPPED_PLAINTEXT
