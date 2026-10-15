@@ -47,8 +47,10 @@ from packers.breaker.schemes import (
 
 MEDIAPLAYER2_SEED = 3664888858717910997
 MEDIAPLAYER2_STEM = "3664888858717845462"
-RTO_KEY_HEX = "6eada2ac127d60e3c17e4940981c5bc6"  # tests/test_framework.py
-RTO_IV_HEX = "d0045d33d393892263a7b43ccac6e578"   # tests/test_framework.py
+# The RTO reference key/IV are published in tests/test_framework.py; this file pins their sha256
+# instead of the raw bytes so no real key material is duplicated into another tracked file.
+RTO_KEY_SHA256 = "2887ee7cfb89eca8c65db19f9b3314090e2317f800269e2292afd0a4ad2257b8"
+RTO_IV_SHA256 = "a82f1cd1b3be3503002d3c68a3f9beeff1909bdc93437101fcac0a0b3a629308"
 
 
 class TestJavaRandom:
@@ -79,7 +81,8 @@ class TestSchemeModel:
         priors = prior_schemes("myg0N")
         assert priors[0].seed == "myg0N2"
         key, iv = derive(priors[0])
-        assert key.hex() == RTO_KEY_HEX and iv.hex() == RTO_IV_HEX
+        assert hashlib.sha256(key).hexdigest() == RTO_KEY_SHA256
+        assert hashlib.sha256(iv).hexdigest() == RTO_IV_SHA256
 
     def test_prior_order_covers_all_known_families(self):
         provs = [s.provenance for s in prior_schemes("UZrF0u")]
