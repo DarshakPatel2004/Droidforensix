@@ -16,6 +16,7 @@ from packers.breaker.blobs import (
     RECOVERED,
     E_KDF_BUDGET,
     E_KDF_EXHAUSTED,
+    PENDING,
     SKIPPED_FILTER,
     SKIPPED_PLAINTEXT,
     SKIPPED_SIZE,
@@ -553,6 +554,20 @@ class TestBreakApk:
         _make_apk(apk, {"assets/rt": os.urandom(1024)}, method=zipfile.ZIP_STORED)
         res = break_apk(apk, tmp_path / "out")
         assert res.hits == [] and res.outcome in (E_KDF_EXHAUSTED, E_KDF_BUDGET)
+
+    @pytest.mark.filterwarnings("ignore:Duplicate name")
+    def test_duplicate_member_names_each_get_their_own_row(self, tmp_path):
+        # A ZIP may legally repeat a name. Each occurrence is its own blob and must get its own
+        # coverage row - never a leftover "pending" row that was silently never attacked.
+        apk = tmp_path / "dup.apk"
+        with zipfile.ZipFile(apk, "w", zipfile.ZIP_STORED) as zf:
+            zf.writestr("assets/twice", _encrypt_prior(_payload_bytes(), "twice"))
+            zf.writestr("assets/twice", _encrypt_prior(_payload_bytes(), "twice"))
+        res = break_apk(apk, tmp_path / "out")
+        rows = [m for m in res.members if m.name == "assets/twice"]
+        assert len(rows) == 2
+        assert all(row.outcome != PENDING for row in rows)
+        assert all(row.outcome == RECOVERED for row in rows)
 
     def test_deep_tier_does_not_reprobe_prior_schemes(self, tmp_path):
         # The cheap tier runs the priors; the deep tier must not pay for them again or count

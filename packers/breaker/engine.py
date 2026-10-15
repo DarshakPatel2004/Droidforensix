@@ -210,8 +210,8 @@ class _BlobOutcome:
     enumerated: int
 
 
-# A blob to attack, its coverage row, and the parent hit when it came out of a recovered container.
-_WorkItem = tuple[Blob, MemberRecord, Hit | None]
+# A blob to attack and the parent hit when it came out of a recovered container.
+_WorkItem = tuple[Blob, Hit | None]
 
 
 def break_apk(
@@ -232,8 +232,8 @@ def break_apk(
     collection = collect_from_zip(raw, depth=0)
     plan = plan_from_collection(collection, extra_path=seeds_extra, max_strings=max_strings)
     budget = _Budget(attempts_cap=attempts_cap, deadline=started + budget_s)
-    records = {record.name: record for record in collection.records}
-    hits, scheme_count = _sweep(collection.blobs, plan, budget, depth, collection, records)
+    hits, scheme_count = _sweep(collection.blobs, plan, budget, depth, collection)
+    _close_books(collection)
     collection.records.sort(key=lambda record: record.name)
     result = ApkResult(
         apk=str(apk_path),
@@ -288,7 +288,6 @@ def _sweep(
     budget: _Budget,
     depth: int,
     collection,
-    records: dict[str, MemberRecord],
 ) -> tuple[list[Hit], int]:
     """Attack a list of blobs cheapest-first, and return the hits found.
 
@@ -301,22 +300,24 @@ def _sweep(
     """
     found: list[Hit] = []
     enumerated = 0
-    cheap: list[_WorkItem] = [(blob, records[blob.member], None) for blob in blobs]
+    cheap: list[_WorkItem] = [(blob, None) for blob in blobs]
     while cheap:
         deep: list[_WorkItem] = []
         while cheap:
-            blob, record, parent = cheap.pop(0)
+            blob, parent = cheap.pop(0)
+            record = blob.record
             if record.outcome == RECOVERED:
                 continue
             outcome = _attack_blob(blob, plan, budget, record, tier="cheap")
             enumerated += outcome.enumerated
-            deep.append((blob, record, parent))
+            deep.append((blob, parent))
             if outcome.hit is None:
                 continue
             _attach(found, parent, outcome.hit)
             cheap.extend(_nested_entries(outcome, blob, depth, plan, collection))
         while deep:
-            blob, record, parent = deep.pop(0)
+            blob, parent = deep.pop(0)
+            record = blob.record
             if record.outcome == RECOVERED:
                 continue
             outcome = _attack_blob(blob, plan, budget, record, tier="deep")
@@ -333,6 +334,28 @@ def _attach(found: list[Hit], parent: Hit | None, hit: Hit) -> None:
         found.append(hit)
     else:
         parent.children.append(hit)
+
+
+def _close_books(collection) -> None:
+    """Assert the two coverage invariants before any output is written.
+
+    A leftover ``PENDING`` row means a member was probed (or skipped) without a verdict, and an
+    unbalanced member count means members vanished from the report. Both are bugs, not
+    conditions to paper over, so they raise instead of shipping a dishonest coverage file.
+    """
+    pending = sorted(record.name for record in collection.records if record.outcome == PENDING)
+    if pending:
+        raise RuntimeError(f"coverage rows left unresolved: {pending[:5]}")
+    accounted = (
+        len(collection.records)
+        + collection.members_ignored_dirs
+        + collection.members_out_of_scope
+    )
+    if accounted != collection.members_total:
+        raise RuntimeError(
+            f"member book does not balance: {accounted} accounted != "
+            f"{collection.members_total} total"
+        )
 
 
 def _nested_entries(
@@ -359,11 +382,7 @@ def _nested_entries(
     collection.records.extend(children.records)
     for _name, data in children.plaintext:
         plan.add_strings(data)
-    child_records = {record.name: record for record in children.records}
-    return [
-        (child_blob, child_records[child_blob.member], outcome.hit)
-        for child_blob in children.blobs
-    ]
+    return [(child_blob, outcome.hit) for child_blob in children.blobs]
 
 
 def _attack_blob(
