@@ -554,6 +554,20 @@ class TestBreakApk:
         res = break_apk(apk, tmp_path / "out")
         assert res.hits == [] and res.outcome in (E_KDF_EXHAUSTED, E_KDF_BUDGET)
 
+    def test_deep_tier_does_not_reprobe_prior_schemes(self, tmp_path):
+        # The cheap tier runs the priors; the deep tier must not pay for them again or count
+        # them twice. space_size is an honesty number, so it must equal the true total.
+        stem = "a" * 40  # long stem: no substring-window priors, counts stay exact
+        apk = tmp_path / "d.apk"
+        _make_apk(apk, {"assets/" + stem: os.urandom(2048)}, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", attempts_cap=10_000_000)
+        expected = len(list(prior_schemes(stem)))
+        for variant in name_variants(stem):
+            expected += len(list(matrix_schemes(variant.material, variant.provenance)))
+        expected += len(list(single_byte_xor_schemes()))
+        expected += len(list(numeric_candidates(stem)))
+        assert res.members[0].space_size == expected
+
     def test_probe_false_positive_is_counted_not_reported(self, tmp_path):
         scheme_pt = b"PK\x03\x04" + b"\x00" * 44 + b"\x77" * 4096  # PK prefix, invalid zip
         apk = tmp_path / "fp.apk"

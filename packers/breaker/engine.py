@@ -260,14 +260,16 @@ def _outcome(hits: list[Hit], budget: _Budget) -> str:
     return E_KDF_BUDGET if budget.truncated != "none" else E_KDF_EXHAUSTED
 
 
-def _candidate_stream(stem: str, plan: SeedPlan, *, priors_only: bool = False) -> Iterator[Scheme]:
-    """Cheapest, most likely candidates first: known recipes, then the matrix per seed.
+def _candidate_stream(stem: str, plan: SeedPlan, tier: str) -> Iterator[Scheme]:
+    """Candidates for one member, split into the cheap tier and the deep tier.
 
-    ``priors_only`` yields just the cheap tier (the closed-form recipes keyed off the member
-    name), which the sweep runs against every member before any member gets the deep search.
+    ``cheap`` is the closed-form known recipes (a few hundred probes each); ``deep`` is the
+    combinatorial matrix and the degenerate sweeps. The tiers are disjoint: the sweep runs a
+    member's cheap tier before any member's deep tier, so the deep tier must not re-probe what
+    the cheap tier already tried - that would double the budget and the ``space_size`` count.
     """
-    yield from prior_schemes(stem)
-    if priors_only:
+    if tier == "cheap":
+        yield from prior_schemes(stem)
         return
     for candidate in name_variants(stem):
         yield from matrix_schemes(candidate.material, candidate.provenance)
@@ -306,7 +308,7 @@ def _sweep(
             blob, record, parent = cheap.pop(0)
             if record.outcome == RECOVERED:
                 continue
-            outcome = _attack_blob(blob, plan, budget, record, priors_only=True)
+            outcome = _attack_blob(blob, plan, budget, record, tier="cheap")
             enumerated += outcome.enumerated
             deep.append((blob, record, parent))
             if outcome.hit is None:
@@ -317,7 +319,7 @@ def _sweep(
             blob, record, parent = deep.pop(0)
             if record.outcome == RECOVERED:
                 continue
-            outcome = _attack_blob(blob, plan, budget, record, priors_only=False)
+            outcome = _attack_blob(blob, plan, budget, record, tier="deep")
             enumerated += outcome.enumerated
             if outcome.hit is None:
                 continue
@@ -370,7 +372,7 @@ def _attack_blob(
     budget: _Budget,
     record: MemberRecord,
     *,
-    priors_only: bool = False,
+    tier: str = "deep",
 ) -> _BlobOutcome:
     """Probe every distinct candidate for one blob and update its coverage row.
 
@@ -382,7 +384,7 @@ def _attack_blob(
     seen: set[tuple[str, str, str]] = set()
     hit: Hit | None = None
     payload: bytes | None = None
-    for scheme in _candidate_stream(_stem_of(blob.member), plan, priors_only=priors_only):
+    for scheme in _candidate_stream(_stem_of(blob.member), plan, tier):
         enumerated += 1
         key, iv = derive(scheme)
         identity = (scheme.cipher, key.hex(), iv.hex())
