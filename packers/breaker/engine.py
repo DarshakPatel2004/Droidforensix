@@ -382,13 +382,19 @@ def _nested_entries(
     plan: SeedPlan,
     collection,
 ) -> list[_WorkItem]:
-    """Next-depth work items for a recovered container: fold in its rows and mine its strings."""
-    if outcome.payload is None or blob.depth + 1 >= depth:
+    """What a validated hit teaches us: mined strings, folded-in rows, and next-depth work."""
+    payload = outcome.payload
+    if payload is None:
         return []
-    if outcome.hit.validation not in ("zip-strict", "zip-eocd"):
+    evidence = outcome.hit.validation
+    if evidence.startswith("dex"):
+        # Spec 4.8: a validated DEX hit is a seed source for sibling blobs even at max depth.
+        plan.add_strings(payload)
+        return []
+    if evidence not in ("zip-strict", "zip-eocd") or blob.depth + 1 >= depth:
         return []
     try:
-        children = collect_from_zip(outcome.payload, depth=blob.depth + 1, prefix=outcome.hit.member + "!")
+        children = collect_from_zip(payload, depth=blob.depth + 1, prefix=outcome.hit.member + "!")
     except Exception:
         # zip-eocd passed the weak evidence check but the payload is not readable (zipfile
         # raises on hostile input). The hit stands; it simply has no members to recurse into.
