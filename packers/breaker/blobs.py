@@ -187,18 +187,20 @@ def _classify(
     record: MemberRecord,
 ) -> None:
     record.size = len(content)
-    if PurePosixPath(file_name).suffix.lower() in SKIP_EXTENSIONS:
-        record.outcome = SKIPPED_FILTER
-        return
     magic = _magic_kind(content)
     if magic is not None:
-        # Identify plaintext before applying the size budget: a small plaintext container is
-        # still worth recursing into and mining, and it is never attacked either way.
+        # Content classification comes first: a plaintext member is identified (and mined, and
+        # recursed into when it is a container) whatever its extension or size, because those
+        # two filters are about attack-worthiness, not about identity. Real .dex/.so members
+        # are the richest seed sources we have.
         record.outcome = SKIPPED_PLAINTEXT
         record.detail = f"plaintext {magic}"
         collection.plaintext.append((name, content))
         if magic == "zip":
             collection.recurse.append((name, content))
+        return
+    if PurePosixPath(file_name).suffix.lower() in SKIP_EXTENSIONS:
+        record.outcome = SKIPPED_FILTER
         return
     if len(content) < MIN_BLOB_SIZE:
         record.outcome = SKIPPED_SIZE
