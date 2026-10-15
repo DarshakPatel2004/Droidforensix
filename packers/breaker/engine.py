@@ -241,7 +241,12 @@ def break_apk(
     seeds_extra: Path | str | None = None,
     max_strings: int = 2000,
 ) -> ApkResult:
-    """Attack every candidate member of one APK and write the honesty-preserving outputs."""
+    """Attack every candidate member of one APK and write the honesty-preserving outputs.
+
+    ``attempts_cap`` is shared by every member of the APK (one budget per APK, so a single
+    member's deep sweep cannot multiply the run's cost); ``budget_s`` is the same idea for the
+    wall clock. Both are recorded per member as ``truncation`` when they bite.
+    """
     started = time.monotonic()
     apk_path = Path(apk_path)
     raw = apk_path.read_bytes()
