@@ -467,6 +467,12 @@ class TestValidation:
         assert validate_payload(b"{\x00\xff not json") is None
         assert validate_payload(b"\x00\x01\x00\x00" + b"\x00" * 100).evidence == "ttf-magic"
 
+    def test_validator_never_raises_on_hostile_input(self):
+        # A hostile payload must yield None, not an exception that would abort a whole batch.
+        deep = b'{"a":' + b"[" * 200_000 + b"]" * 200_000 + b"}"
+        assert validate_payload(deep) is None
+        assert validate_payload(b"\x1f\x8b" + os.urandom(64)) is None
+
     def test_plaintext_garbage_is_not_validated(self):
         assert validate_payload(b"\x9e\x11\x33" * 100) is None
 
