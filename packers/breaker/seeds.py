@@ -133,13 +133,17 @@ class SeedPlan:
 
     mined: list[SeedCandidate] = field(default_factory=list)
     extra: list[SeedCandidate] = field(default_factory=list)
+    max_strings: int = MAX_STRINGS_DEFAULT
 
-    def add_strings(self, data: bytes, *, cap: int = MAX_STRINGS_DEFAULT) -> None:
-        if len(self.mined) >= cap:
+    def add_strings(self, data: bytes, *, cap: int | None = None) -> None:
+        """Mine one buffer. The plan's own cap bounds the whole run, so a recovered container
+        cannot outgrow the caller's ``--max-strings``."""
+        limit = self.max_strings if cap is None else min(cap, self.max_strings)
+        if len(self.mined) >= limit:
             return
         seen = {candidate.material for candidate in self.mined}
         for run in mine_strings(data):
-            if len(self.mined) >= cap:
+            if len(self.mined) >= limit:
                 return
             material = run.decode("latin-1")
             if material in seen:
@@ -149,9 +153,9 @@ class SeedPlan:
 
 
 def plan_from_collection(collection, *, extra_path=None, max_strings: int = MAX_STRINGS_DEFAULT) -> SeedPlan:
-    plan = SeedPlan()
+    plan = SeedPlan(max_strings=max_strings)
     for _name, data in collection.plaintext:
-        plan.add_strings(data, cap=max_strings)
+        plan.add_strings(data)
     if extra_path is not None:
         plan.extra.extend(load_extra_seeds(extra_path))
     return plan

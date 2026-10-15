@@ -473,6 +473,20 @@ class TestValidation:
         assert validate_payload(deep) is None
         assert validate_payload(b"\x1f\x8b" + os.urandom(64)) is None
 
+    def test_gzip_validation_does_not_materialise_a_bomb(self):
+        import gzip
+        import tracemalloc
+        bomb = gzip.compress(b"\x00" * (64 * 1024 * 1024))  # ~64 KiB in, 64 MiB out
+        tracemalloc.start()
+        validation = validate_payload(bomb)
+        _current, peak = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+        assert validation is not None and validation.evidence == "gzip"
+        assert peak < 8 * 1024 * 1024
+        # Truncated streams are still rejected, so the bounded probe did not weaken the evidence.
+        truncated = gzip.compress(os.urandom(50_000))[:2000]  # cut mid-stream, not at the end
+        assert validate_payload(truncated) is None
+
     def test_plaintext_garbage_is_not_validated(self):
         assert validate_payload(b"\x9e\x11\x33" * 100) is None
 
@@ -607,18 +621,23 @@ class TestBreakApk:
         assert sum(row.outcome == RECOVERED for row in rows) == 1
 
     def test_deep_tier_does_not_reprobe_prior_schemes(self, tmp_path):
-        # The cheap tier runs the priors; the deep tier must not pay for them again or count
-        # them twice. space_size is an honesty number, so it must equal the true total.
+        # The cheap tier runs the priors, the deep tier runs the rest. A key identity must never
+        # be paid for twice (and space_size must equal the true enumeration of the two tiers).
         stem = "a" * 40  # long stem: no substring-window priors, counts stay exact
         apk = tmp_path / "d.apk"
         _make_apk(apk, {"assets/" + stem: os.urandom(2048)}, method=zipfile.ZIP_STORED)
         res = break_apk(apk, tmp_path / "out", attempts_cap=10_000_000)
-        expected = len(list(prior_schemes(stem)))
+        stream = list(prior_schemes(stem))
         for variant in name_variants(stem):
-            expected += len(list(matrix_schemes(variant.material, variant.provenance)))
-        expected += len(list(single_byte_xor_schemes()))
-        expected += len(list(numeric_candidates(stem)))
-        assert res.members[0].space_size == expected
+            stream += list(matrix_schemes(variant.material, variant.provenance))
+        stream += list(single_byte_xor_schemes())
+        stream += [Scheme(seed=c.material, cipher="java-lcg", provenance=c.provenance)
+                   for c in numeric_candidates(stem)]
+        identities = {(s.cipher, derive(s)[0].hex(), derive(s)[1].hex()) for s in stream}
+        row = res.members[0]
+        assert row.outcome == E_KDF_EXHAUSTED
+        assert row.space_size == len(stream)   # enumeration: every candidate yielded
+        assert row.attempts == len(identities)  # probing: every distinct key exactly once
 
     def test_probe_false_positive_is_counted_not_reported(self, tmp_path):
         scheme_pt = b"PK\x03\x04" + b"\x00" * 44 + b"\x77" * 4096  # PK prefix, invalid zip
@@ -692,6 +711,29 @@ class TestRecursion:
         res = break_apk(apk, tmp_path / "out", depth=1)
         assert res.hits and res.hits[0].children == []
         assert not any(m.name.startswith("assets/outer!") for m in res.members)
+
+    def test_nested_mining_honours_the_string_cap(self, tmp_path):
+        # --max-strings must bound nested mining too: a recovered container is not a licence to
+        # ignore the caller's cap and expand the deep search.
+        keeper = "firstMinedSecret1"
+        wanted = "secondMinedSecret2"
+        sib_key = hashlib.sha1(wanted.encode()).digest()[:16]
+        sib_pt = _payload_bytes()
+        pad = 16 - len(sib_pt) % 16
+        sib_ct = AES.new(sib_key, AES.MODE_CBC, bytes(16)).encrypt(sib_pt + bytes([pad]) * pad)
+        inner = _write_bytes_zip({
+            "assets/one.dex": b"dex\n035\x00" + keeper.encode() + b"\x00" * 200,
+            "assets/two.dex": b"dex\n035\x00" + wanted.encode() + b"\x00" * 200,
+        })
+        apk = tmp_path / "cap.apk"
+        _make_apk(apk, {
+            "assets/first": _encrypt_prior(inner, "first"),
+            "assets/sibling": sib_ct,
+        }, method=zipfile.ZIP_STORED)
+        capped = {h.member for h in break_apk(apk, tmp_path / "o1", depth=2, max_strings=1).hits}
+        assert "assets/sibling" not in capped
+        roomy = {h.member for h in break_apk(apk, tmp_path / "o2", depth=2, max_strings=2).hits}
+        assert "assets/sibling" in roomy
 
     def test_validated_dex_hit_releases_strings_for_siblings(self, tmp_path):
         # Spec 4.8: a validated DEX hit is a seed source too. Strings it carries must reach the
