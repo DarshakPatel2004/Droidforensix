@@ -563,6 +563,18 @@ class TestBreakApk:
         assert res.hits == []
         assert res.members[0].probe_false_positives >= 1
 
+    def test_cheap_recipe_sweep_reaches_every_member_before_deep_search(self, tmp_path):
+        # The big member is attacked first and can never be cracked; its expensive deep sweep
+        # must not eat a budget that another member's cheap known recipe needs.
+        apk = tmp_path / "sweep.apk"
+        _make_apk(apk, {
+            "assets/zzzbig": os.urandom(4096),
+            "assets/UZrF0u": _encrypt_prior(_payload_bytes(), "UZrF0u"),
+        }, method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out", attempts_cap=1000)
+        assert [h.member for h in res.hits] == ["assets/UZrF0u"]
+        assert res.outcome == RECOVERED
+
 
 def _payload_bytes(size: int = 700) -> bytes:
     """A valid ZIP payload big enough that its ciphertext clears MIN_BLOB_SIZE."""

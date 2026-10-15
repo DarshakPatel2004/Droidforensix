@@ -210,6 +210,10 @@ class _BlobOutcome:
     enumerated: int
 
 
+# A blob to attack, its coverage row, and the parent hit when it came out of a recovered container.
+_WorkItem = tuple[Blob, MemberRecord, Hit | None]
+
+
 def break_apk(
     apk_path: Path | str,
     out_dir: Path | str,
@@ -228,16 +232,8 @@ def break_apk(
     collection = collect_from_zip(raw, depth=0)
     plan = plan_from_collection(collection, extra_path=seeds_extra, max_strings=max_strings)
     budget = _Budget(attempts_cap=attempts_cap, deadline=started + budget_s)
-    hits: list[Hit] = []
-    scheme_count = 0
     records = {record.name: record for record in collection.records}
-    for blob in collection.blobs:
-        outcome = _attack_blob(blob, plan, budget, records[blob.member])
-        scheme_count += outcome.enumerated
-        if outcome.hit is None:
-            continue
-        hits.append(outcome.hit)
-        scheme_count += _recurse(outcome.hit, outcome.payload, blob.depth, plan, budget, depth, collection)
+    hits, scheme_count = _sweep(collection.blobs, plan, budget, depth, collection, records)
     collection.records.sort(key=lambda record: record.name)
     result = ApkResult(
         apk=str(apk_path),
@@ -264,9 +260,15 @@ def _outcome(hits: list[Hit], budget: _Budget) -> str:
     return E_KDF_BUDGET if budget.truncated != "none" else E_KDF_EXHAUSTED
 
 
-def _candidate_stream(stem: str, plan: SeedPlan) -> Iterator[Scheme]:
-    """Cheapest, most likely candidates first: known recipes, then the matrix per seed."""
+def _candidate_stream(stem: str, plan: SeedPlan, *, priors_only: bool = False) -> Iterator[Scheme]:
+    """Cheapest, most likely candidates first: known recipes, then the matrix per seed.
+
+    ``priors_only`` yields just the cheap tier (the closed-form recipes keyed off the member
+    name), which the sweep runs against every member before any member gets the deep search.
+    """
     yield from prior_schemes(stem)
+    if priors_only:
+        return
     for candidate in name_variants(stem):
         yield from matrix_schemes(candidate.material, candidate.provenance)
     for candidate in plan.mined:
@@ -278,11 +280,92 @@ def _candidate_stream(stem: str, plan: SeedPlan) -> Iterator[Scheme]:
         yield Scheme(seed=candidate.material, cipher="java-lcg", provenance=candidate.provenance)
 
 
+def _sweep(
+    blobs: list[Blob],
+    plan: SeedPlan,
+    budget: _Budget,
+    depth: int,
+    collection,
+    records: dict[str, MemberRecord],
+) -> tuple[list[Hit], int]:
+    """Attack a list of blobs cheapest-first, and return the hits found.
+
+    Work is a FIFO queue drained in two phases: every member's closed-form recipes (a few
+    hundred probes each) run before any member starts its combinatorial deep search, and that
+    holds across recovered containers too. Without the ordering a single member's deep sweep
+    - or a recovered container's inline nested sweep - starves every other member's known
+    recipe, which is exactly what the corpus measurement showed: a 274 KB pinned member went
+    unprobed while an earlier member spent the whole APK budget.
+    """
+    found: list[Hit] = []
+    enumerated = 0
+    cheap: list[_WorkItem] = [(blob, records[blob.member], None) for blob in blobs]
+    while cheap:
+        deep: list[_WorkItem] = []
+        while cheap:
+            blob, record, parent = cheap.pop(0)
+            if record.outcome == RECOVERED:
+                continue
+            outcome = _attack_blob(blob, plan, budget, record, priors_only=True)
+            enumerated += outcome.enumerated
+            deep.append((blob, record, parent))
+            if outcome.hit is None:
+                continue
+            _attach(found, parent, outcome.hit)
+            cheap.extend(_nested_entries(outcome, blob, depth, plan, collection))
+        while deep:
+            blob, record, parent = deep.pop(0)
+            if record.outcome == RECOVERED:
+                continue
+            outcome = _attack_blob(blob, plan, budget, record, priors_only=False)
+            enumerated += outcome.enumerated
+            if outcome.hit is None:
+                continue
+            _attach(found, parent, outcome.hit)
+            cheap.extend(_nested_entries(outcome, blob, depth, plan, collection))
+    return found, enumerated
+
+
+def _attach(found: list[Hit], parent: Hit | None, hit: Hit) -> None:
+    if parent is None:
+        found.append(hit)
+    else:
+        parent.children.append(hit)
+
+
+def _nested_entries(
+    outcome: _BlobOutcome,
+    blob: Blob,
+    depth: int,
+    plan: SeedPlan,
+    collection,
+) -> list[_WorkItem]:
+    """Next-depth work items for a recovered container: fold in its rows and mine its strings."""
+    if outcome.payload is None or blob.depth + 1 >= depth:
+        return []
+    if outcome.hit.validation not in ("zip-strict", "zip-eocd"):
+        return []
+    children = collect_from_zip(outcome.payload, depth=blob.depth + 1, prefix=outcome.hit.member + "!")
+    collection.members_total += children.members_total
+    collection.members_ignored_dirs += children.members_ignored_dirs
+    collection.members_out_of_scope += children.members_out_of_scope
+    collection.records.extend(children.records)
+    for _name, data in children.plaintext:
+        plan.add_strings(data)
+    child_records = {record.name: record for record in children.records}
+    return [
+        (child_blob, child_records[child_blob.member], outcome.hit)
+        for child_blob in children.blobs
+    ]
+
+
 def _attack_blob(
     blob: Blob,
     plan: SeedPlan,
     budget: _Budget,
     record: MemberRecord,
+    *,
+    priors_only: bool = False,
 ) -> _BlobOutcome:
     """Probe every distinct candidate for one blob and update its coverage row.
 
@@ -294,7 +377,7 @@ def _attack_blob(
     seen: set[tuple[str, str, str]] = set()
     hit: Hit | None = None
     payload: bytes | None = None
-    for scheme in _candidate_stream(_stem_of(blob.member), plan):
+    for scheme in _candidate_stream(_stem_of(blob.member), plan, priors_only=priors_only):
         enumerated += 1
         key, iv = derive(scheme)
         identity = (scheme.cipher, key.hex(), iv.hex())
@@ -308,8 +391,8 @@ def _attack_blob(
         if matched is not None:
             hit, payload = matched
             break
-    record.space_size = enumerated
-    record.attempts = budget.attempts - start_attempts
+    record.space_size += enumerated
+    record.attempts += budget.attempts - start_attempts
     record.outcome = (
         RECOVERED if hit is not None
         else E_KDF_BUDGET if budget.truncated != "none"
@@ -333,41 +416,6 @@ def _probe_candidate(
         record.probe_false_positives += 1
         return None
     return _build_hit(blob, scheme, key, iv, payload, validation), payload
-
-
-def _recurse(
-    hit: Hit,
-    payload: bytes | None,
-    blob_depth: int,
-    plan: SeedPlan,
-    budget: _Budget,
-    depth: int,
-    collection,
-) -> int:
-    """Attack the members of a recovered container at the next depth. Returns schemes enumerated."""
-    if payload is None or blob_depth + 1 >= depth:
-        return 0
-    if hit.validation not in ("zip-strict", "zip-eocd"):
-        return 0
-    children = collect_from_zip(payload, depth=blob_depth + 1, prefix=hit.member + "!")
-    collection.members_total += children.members_total
-    collection.members_ignored_dirs += children.members_ignored_dirs
-    collection.members_out_of_scope += children.members_out_of_scope
-    collection.records.extend(children.records)
-    for _name, data in children.plaintext:
-        plan.add_strings(data)
-    child_records = {record.name: record for record in children.records}
-    enumerated = 0
-    for child_blob in children.blobs:
-        outcome = _attack_blob(child_blob, plan, budget, child_records[child_blob.member])
-        enumerated += outcome.enumerated
-        if outcome.hit is None:
-            continue
-        hit.children.append(outcome.hit)
-        enumerated += _recurse(
-            outcome.hit, outcome.payload, child_blob.depth, plan, budget, depth, collection
-        )
-    return enumerated
 
 
 def _build_hit(
