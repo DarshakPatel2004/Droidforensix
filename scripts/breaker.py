@@ -44,31 +44,48 @@ def discover(input_path: pathlib.Path) -> list[pathlib.Path]:
     )
 
 
-def dedupe(paths: list[pathlib.Path]) -> list[pathlib.Path]:
+def dedupe(paths: list[pathlib.Path]) -> list[tuple[pathlib.Path, str]]:
     """Same bytes = same work: keep the first path per sha256, in input order."""
-    unique: list[pathlib.Path] = []
+    unique: list[tuple[pathlib.Path, str]] = []
     seen: set[str] = set()
     for path in paths:
         digest = hashlib.sha256(path.read_bytes()).hexdigest()
         if digest in seen:
             continue
         seen.add(digest)
-        unique.append(path)
+        unique.append((path, digest))
     return unique
 
 
 def attack(job: tuple) -> dict:
-    """One APK, one summary row. Module level so ProcessPoolExecutor can pickle it."""
-    apk_path, out_dir, attempts_cap, budget_s, depth, seeds_extra, max_strings = job
-    result = break_apk(
-        apk_path,
-        out_dir,
-        attempts_cap=attempts_cap,
-        budget_s=budget_s,
-        depth=depth,
-        seeds_extra=seeds_extra,
-        max_strings=max_strings,
-    )
+    """One APK, one summary row. Module level so ProcessPoolExecutor can pickle it.
+
+    A single bad input must never take the batch down: the row is typed
+    ``E-ENGINE-FAULT`` and the diagnostic goes to stderr, so stdout stays machine-readable.
+    """
+    apk_path, sha256, out_dir, attempts_cap, budget_s, depth, seeds_extra, max_strings = job
+    try:
+        result = break_apk(
+            apk_path,
+            out_dir,
+            attempts_cap=attempts_cap,
+            budget_s=budget_s,
+            depth=depth,
+            seeds_extra=seeds_extra,
+            max_strings=max_strings,
+        )
+    except Exception as exc:  # noqa: BLE001 - deliberate per-input isolation
+        print(f"breaker: {apk_path}: {type(exc).__name__}: {exc}", file=sys.stderr)
+        return {
+            "apk_path": apk_path,
+            "sha256": sha256,
+            "ciphertext_members": 0,
+            "recovered": 0,
+            "attempts_total": 0,
+            "truncated": "error",
+            "wall_s": 0.0,
+            "outcome": "E-ENGINE-FAULT",
+        }
     return {
         "apk_path": result.apk,
         "sha256": result.sha256,
@@ -111,9 +128,9 @@ def main(argv: list[str] | None = None) -> int:
     candidates = discover(pathlib.Path(args.input))
     unique = dedupe(candidates)
     jobs = [
-        (str(path), str(out_dir), args.attempts_cap, args.budget_s, args.depth,
+        (str(path), digest, str(out_dir), args.attempts_cap, args.budget_s, args.depth,
          args.seeds_extra, args.max_strings)
-        for path in unique
+        for path, digest in unique
     ]
     if args.jobs > 1 and len(jobs) > 1:
         with ProcessPoolExecutor(max_workers=args.jobs) as pool:
@@ -126,8 +143,11 @@ def main(argv: list[str] | None = None) -> int:
         "apks_input": len(candidates),
         "apks_deduped": len(unique),
         "recovered": sum(row["recovered"] for row in rows),
-        "miss": sum(1 for row in rows if not row["recovered"] and row["truncated"] == "none"),
-        "budget": sum(1 for row in rows if not row["recovered"] and row["truncated"] != "none"),
+        "miss": sum(1 for row in rows
+                    if not row["recovered"] and row["truncated"] == "none"),
+        "budget": sum(1 for row in rows
+                      if not row["recovered"] and row["truncated"] in ("attempts", "time")),
+        "errors": sum(1 for row in rows if row["outcome"] == "E-ENGINE-FAULT"),
         "out": str(out_dir),
     }))
     return 0
