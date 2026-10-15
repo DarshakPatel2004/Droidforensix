@@ -1,5 +1,6 @@
 """Tests for the master key breaker (packers/breaker/)."""
 import hashlib
+import io
 import json
 import os
 import struct
@@ -15,6 +16,7 @@ from packers.breaker.blobs import (
     collect_apk,
     collect_from_zip,
 )
+from packers.breaker.engine import probe_matches, validate_payload
 from packers.breaker.seeds import (
     SeedCandidate,
     SeedPlan,
@@ -352,3 +354,79 @@ class TestSeedProviders:
         plan.add_strings(b"\x00aaaa\x00bbbb\x00cccc\x00", cap=2)
         assert len(plan.mined) == 2
         assert [s.material for s in plan.mined] == ["aaaa", "bbbb"]
+
+
+def _encrypt_scheme(scheme: Scheme, plaintext: bytes) -> bytes:
+    """Encrypt with the scheme's own key/iv - the inverse of the engine's decrypt()."""
+    from Crypto.Cipher import AES
+    key, iv = derive(scheme)
+    pad = 16 - len(plaintext) % 16
+    padded = plaintext + bytes([pad]) * pad
+    if scheme.cipher == "aes-ecb":
+        return AES.new(key, AES.MODE_ECB).encrypt(padded)
+    return AES.new(key, AES.MODE_CBC, iv).encrypt(padded)
+
+
+class TestValidation:
+    def test_probe_uses_16_aligned_prefix(self):
+        scheme = Scheme(seed="s", cipher="aes-cbc", key_hash="sha1", key_len=16, iv="zeros")
+        pt = b"PK\x03\x04" + b"\x00" * 44
+        assert probe_matches(scheme, _encrypt_scheme(scheme, pt))
+        assert not probe_matches(scheme, b"\x00" * 48)
+
+    def test_probe_refuses_short_or_unalignable_input(self):
+        scheme = Scheme(seed="s", cipher="aes-cbc", key_hash="sha1", key_len=16, iv="zeros")
+        assert not probe_matches(scheme, b"PK\x03\x04")
+        assert not probe_matches(scheme, b"PK\x03\x04" + b"\x00" * 7)
+
+    def test_probe_false_positive_is_detectable(self):
+        # PK prefix in the first block, garbage after: the probe matches, strong validation must not.
+        scheme = Scheme(seed="s", cipher="aes-cbc", key_hash="sha1", key_len=16, iv="zeros")
+        ct = _encrypt_scheme(scheme, b"PK\x03\x04" + b"\x00" * 44 + b"\x77" * 4096)
+        assert probe_matches(scheme, ct)
+        assert validate_payload(decrypt(scheme, ct)) is None
+
+    def test_zip_strict_evidence(self):
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w") as zf:
+            zf.writestr("classes.dex", b"dex\n035\x00" + b"\x00" * 200)
+        v = validate_payload(buf.getvalue())
+        assert v is not None and v.kind == "zip" and v.evidence == "zip-strict"
+
+    def test_zip_eocd_fallback_evidence(self):
+        # The strict parse fails: the EOCD claims one entry and a 46-byte central directory at
+        # offset 0, where there is a local-file header instead. Both ZIP signatures are present,
+        # which is exactly what the weaker evidence level asserts.
+        eocd = (
+            b"PK\x05\x06"
+            + (0).to_bytes(2, "little") + (0).to_bytes(2, "little")
+            + (1).to_bytes(2, "little") + (1).to_bytes(2, "little")
+            + (46).to_bytes(4, "little") + (0).to_bytes(4, "little")
+            + (0).to_bytes(2, "little")
+        )
+        payload = b"PK\x03\x04" + b"\x00" * 200 + eocd
+        v = validate_payload(payload)
+        assert v is not None and v.evidence == "zip-eocd"
+
+    def test_broken_zip_without_eocd_is_rejected(self):
+        assert validate_payload(b"PK\x03\x04" + b"\x00" * 200) is None
+
+    def test_dex_header_evidence_upgrades_magic(self):
+        body = b"dex\n035\x00" + b"\x00" * 24 + (400).to_bytes(4, "little") + b"\x00" * (400 - 36)
+        assert validate_payload(body).evidence == "dex-header"
+        assert validate_payload(b"dex\n035\x00" + b"\x00" * 300).evidence == "dex-magic"
+
+    def test_gzip_and_elf_evidence(self):
+        import gzip
+        assert validate_payload(gzip.compress(b"x" * 100)).evidence == "gzip"
+        assert validate_payload(b"\x7fELF\x02\x01" + b"\x00" * 100).evidence == "elf"
+        assert validate_payload(b"\x7fELF\x02\x01" + b"\x00" * 10) is None  # too short
+
+    def test_json_and_ttf_evidence(self):
+        assert validate_payload(b'{"a": 1}').evidence == "json"
+        assert validate_payload(b"{not json") is None
+        assert validate_payload(b"{\x00\xff not json") is None
+        assert validate_payload(b"\x00\x01\x00\x00" + b"\x00" * 100).evidence == "ttf-magic"
+
+    def test_plaintext_garbage_is_not_validated(self):
+        assert validate_payload(b"\x9e\x11\x33" * 100) is None
