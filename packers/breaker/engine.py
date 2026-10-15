@@ -117,9 +117,22 @@ def _zip_evidence(data: bytes) -> str | None:
 def _dex_evidence(data: bytes) -> str | None:
     if not validate_dex(data):
         return None
-    if len(data) >= 36 and struct.unpack("<I", data[32:36])[0] == len(data):
-        return "dex-header"
+    if len(data) >= 36:
+        file_size = struct.unpack("<I", data[32:36])[0]
+        # AES pads the buffer, so the header's file_size matches the *unpadded* length.
+        if file_size == len(data) or file_size == len(data) - _pkcs7_pad_length(data):
+            return "dex-header"
     return "dex-magic"
+
+
+def _pkcs7_pad_length(data: bytes) -> int:
+    """PKCS#7 pad length of a decrypted buffer, or 0 when the tail is not valid padding."""
+    if not data:
+        return 0
+    pad = data[-1]
+    if 1 <= pad <= BLOCK_SIZE and data.endswith(bytes([pad]) * pad):
+        return pad
+    return 0
 
 
 def _is_gzip(data: bytes) -> bool:

@@ -582,6 +582,17 @@ class TestBreakApk:
         assert all(row.outcome != PENDING for row in rows)
         assert all(row.outcome == RECOVERED for row in rows)
 
+    def test_padded_dex_hit_reports_dex_header_evidence(self, tmp_path):
+        # AES always pads, so an exact file_size == len(data) test can never succeed on a real
+        # recovered payload: the upgrade must compare the header size against the unpadded length.
+        dex = b"dex\n035\x00" + b"\x00" * 24 + (600).to_bytes(4, "little") + b"\x00" * (600 - 36)
+        apk = tmp_path / "dex.apk"
+        _make_apk(apk, {"assets/dexblob": _encrypt_prior(dex, "dexblob")},
+                  method=zipfile.ZIP_STORED)
+        res = break_apk(apk, tmp_path / "out")
+        assert len(res.hits) == 1
+        assert res.hits[0].validation == "dex-header"
+
     def test_deep_tier_does_not_reprobe_prior_schemes(self, tmp_path):
         # The cheap tier runs the priors; the deep tier must not pay for them again or count
         # them twice. space_size is an honesty number, so it must equal the true total.
