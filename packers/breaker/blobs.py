@@ -152,7 +152,9 @@ def _member_content(
     if info.flag_bits & 0x1:
         return _flagged_content(raw, info)
     try:
-        content = archive.read(info.filename)
+        # Read by ZipInfo, not by name: read(name) resolves to the LAST entry when a ZIP repeats
+        # a name, which would hand every duplicate the same bytes and fabricate a recovery.
+        content = archive.read(info)
     except Exception as exc:  # zipfile raises a variety of types for broken members
         return None, "", f"unreadable: {type(exc).__name__}: {exc}"[:DETAIL_LIMIT]
     kind = "stored" if info.compress_type == zipfile.ZIP_STORED else "inflated"
