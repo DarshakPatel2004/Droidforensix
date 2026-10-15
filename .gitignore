@@ -254,6 +254,10 @@ _hole5/
 chat_*.md
 PoC_*.zip
 analysis/recovered/
+analysis/master_key_breaker/
+
+# Skill harness workspace (task briefs, progress ledger); local tooling only
+.superpowers/
 
 # Pending sign-off review packets (user reviews here before any apply)
 /singoff/
