@@ -403,12 +403,18 @@ git commit -m "payload-evidence: merge payload evidence into extraction, additiv
 Add to `tests/test_step0_master_key.py` (reusing `packed_triage`, `_encrypt_like_myg0n`, `_write_apk`; the existing `_kit_payload()` is unchanged):
 
 ```python
+# The breaker skips members under 512 bytes (packers/breaker/blobs.py MIN_BLOB_SIZE),
+# so kit payloads must carry padding past that bound to ever be attacked.
+KIT_NATIVE_PAD = 1024
+
+
 def _kit_payload_with_native() -> bytes:
     """A minimal recovered kit that carries one native member and nothing else useful."""
+    dex = b"dex\n035\x00" + b"\x00" * 12 + b"\x00" * KIT_NATIVE_PAD
     buffer = io.BytesIO()
     with zipfile.ZipFile(buffer, "w") as archive:
         archive.writestr("lib/armeabi-v7a/libx.so", b"\x7fELF" + b"\x00" * 32)
-        archive.writestr("bootstrap.dex", b"dex\n035\x00" + b"\x00" * 12)
+        archive.writestr("bootstrap.dex", dex)
     return buffer.getvalue()
 
 
@@ -479,6 +485,17 @@ def test_recovered_evidence_is_not_bound_for_the_taxonomy(packed_triage, tmp_pat
 ```
 
 The existing `test_result_never_carries_key_material` already dumps the whole report, so it now also covers the new key — do not weaken it.
+
+**Amendment (measured during Task 3):** the un-padded `_kit_payload_with_native` body originally
+specified above cannot work. The member the breaker attacks is the *outer* APK member
+`assets/myg0N`, whose real content is the AES ciphertext of the whole kit ZIP, and `_classify`
+(`packers/breaker/blobs.py:209-214`) applies `MIN_BLOB_SIZE` (512 B) to that content after the
+extension filter (no extension → not filtered). Measured on the real code path: un-padded the kit
+is 302 B and the outer member 304 B — skipped, so the run ends `FAILED` / `E-KDF-EXHAUSTED` with no
+recovery and no evidence key; padded the outer member is 1328 B and the run reaches `RECOVERED`,
+`payloads = 1`. The pre-existing `_kit_payload()` already sits over the bound via its own
+`b"\x00" * 1024` filler, which is why no earlier test hit this. The padding changes no asserted
+value.
 
 - [ ] **Step 2: Run the step 0 tests to verify they fail**
 
