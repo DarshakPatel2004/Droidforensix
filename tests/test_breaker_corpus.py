@@ -8,6 +8,7 @@ from pathlib import Path
 
 import pytest
 
+from analysis.payload_evidence import collect_payload_evidence
 from packers.breaker.engine import break_apk
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -169,3 +170,75 @@ def test_second_chance_cap_decides_mediaplayer2(tmp_path, monkeypatch):
     kit = Path(funded["artifacts"][0]["file"])
     assert kit.name == "kit.zip"
     assert hashlib.sha256(kit.read_bytes()).hexdigest() == payload_sha
+
+
+RECOVERED = ROOT / "analysis" / "recovered"
+
+# (payload, min classes, permission that must be present)
+REAL_PAYLOAD_CASES = [
+    (RECOVERED / "myg0N_payload" / "payload_split1.apk", 5000, "android.permission.CALL_PHONE"),
+    (RECOVERED / "PNB_One" / "payload_split1.apk", 5000, None),
+]
+
+
+@pytest.mark.parametrize("payload_path,min_classes,permission", REAL_PAYLOAD_CASES,
+                         ids=lambda value: getattr(value, "name", str(value)))
+def test_real_recovered_app_yields_class_and_permission_evidence(payload_path, min_classes, permission):
+    if not payload_path.exists():
+        pytest.skip(f"payload absent: {payload_path}")
+    evidence = collect_payload_evidence([payload_path.read_bytes()])
+    assert evidence["payloads"] == 1
+    assert evidence["truncated"] == "none", "the caps must not bite on a real recovered app"
+    assert evidence["class_count"] > min_classes
+    if permission:
+        assert permission in evidence["permissions"]
+
+
+def test_real_recovered_app_yields_native_library_evidence():
+    payload_path = RECOVERED / "PNB_One" / "miner.apk"
+    if not payload_path.exists():
+        pytest.skip(f"payload absent: {payload_path}")
+    evidence = collect_payload_evidence([payload_path.read_bytes()])
+    assert len(evidence["native_libs"]) == 2
+    assert all(name.lower().endswith(".so") or name.lower().startswith("lib/")
+               for name in evidence["native_libs"])
+
+
+def test_pnb_one_activation_evidence_end_to_end(tmp_path, monkeypatch):
+    """The genuine sample spec §1 cites, through the real breaker and collector.
+
+    Seven of its eight hits are ZIP payloads (the eighth is `ttf-magic`): one multidex
+    payload (63 dex), one full APK with the manifest, one ELF-magic native payload.
+    Triage and the dispatcher are stubbed, as in the MediaPlayer2 acceptance test; the
+    breaker, materialisation, collection and report attachment all run for real.
+    """
+    from analysis import step0_master_key as step0
+
+    apk = PENDRIVE / "apk fraud" / "21" / "PNB ONE ACTIVATION.apk"
+    if not apk.exists():
+        pytest.skip(f"sample absent: {apk}")
+    monkeypatch.setattr(step0, "_load_triage",
+                        lambda _apk: {"verdict": "packed_custom", "confidence": 1.0})
+    monkeypatch.setattr(step0, "_attempt_unpack", lambda *a, **k: {
+        "verdict": "FAILED", "ecode": "E-NATIVE-NO-RECOVERY", "artifacts": [],
+        "route": "NATIVE", "family": None, "kdf": None, "iocs": {},
+    })
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert master_key["verdict"] == "RECOVERED"
+    assert master_key["ecode"] is None, "the recovered sample is no longer E-coded"
+    evidence = master_key["recovered_evidence"]
+    assert evidence["payloads"] == 7, "the ttf-magic hit is not analysed"
+    assert evidence["truncated"] == "none", "the caps must not bite on this sample"
+    assert evidence["class_count"] > 7000, "the 1146-class third dex payload is counted too"
+    assert evidence["errors"] == []
+    assert "android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" in evidence["permissions"]
+    assert "android.permission.SEND_SMS" in evidence["permissions"]
+    assert evidence["native_libs"] == [
+        "arm64-v8a",
+        "armeabi-v7a",
+        "lib/arm64-v8a/liblixhokfsmav.so",
+        "lib/armeabi-v7a/liblixhokfsmav.so",
+    ], "two of these are ELF-magic only - no lib/ path and no .so suffix"
