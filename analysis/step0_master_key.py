@@ -15,6 +15,11 @@ Purpose:
   On success, artifacts feed gap_features_cache.json strings for
   mine_family_knowledge.py → family_id.py, rescuing opaque families
   (Opfake/FakeInstaller) that currently have 0 static signal.
+- Second chance (breaker follow-up, plan doc 2026-10-15): when the dispatcher fails, one
+  bounded master key breaker sweep (packers/breaker/, BREAKER_ATTEMPTS_CAP attempts per
+  APK) runs over at-rest asset blobs. A hit is materialised into the same
+  <work_dir>/<sha16>/kit.zip layout, so enrichment is unchanged; a miss leaves the
+  unpack verdict/ecode untouched and is reported only in result["breaker"].
 - On E-code (E-NATIVE-NOENTRY, E-NATIVE-NO-RECOVERY, E-JAVA-RUNTIME-DELIVERY,
   E-NATIVE-LAZY-DECRYPT etc from unpack.py + PENDRIVE_MASTER_KEY_INTEL.md)
   mark sample as E-coded so evaluation/metrics_recompute.py can treat it as
@@ -28,6 +33,7 @@ See: docs/accuracy-improvement-plan.md Phase 0, docs/MASTER_KEY_STRATEGY.md,
      docs/FULL_KNOWLEDGE_TRANSFER.md §2-4,15
 """
 
+import hashlib
 import json
 import logging
 import pathlib
@@ -59,6 +65,15 @@ E_CODE_CATCH_ALLS = frozenset({
 # Triage verdicts that require Master Key attempt (KT §15 matrix)
 # clean_static → skip oracle, packed_* / indeterminate(suspect) → attempt
 PACKED_VERDICTS = ("packed_custom", "packed_known", "indeterminate", "obfuscated_native")
+
+# Master key breaker second chance: runs only after the unpack dispatcher failed.
+# The cap is per APK (packers.breaker.engine), so it bounds the added wall clock of
+# one packed sample; the name-prior tier runs first and normally lands in ~1 second.
+BREAKER_ATTEMPTS_CAP = 20_000
+BREAKER_BUDGET_S = 120.0
+# breaker hit.json carries key material, so evidence may only be written to a
+# local-only path (analysis/master_key_breaker/ is gitignored - verified).
+BREAKER_EVIDENCE_DIR = REPO / "analysis" / "master_key_breaker"
 
 
 def _load_triage(apk_path: pathlib.Path) -> Dict[str, Any]:
@@ -110,7 +125,130 @@ def _attempt_unpack(apk_path: pathlib.Path, work_dir: pathlib.Path, triage_repor
         return {"verdict": "FAILED", "ecode": "E-ORACLE-FAULT", "detail": str(e)[:200], "artifacts": []}
 
 
-def run_master_key_preprocess(apk_path: str, work_dir: str) -> Dict[str, Any]:
+def _load_breaker():
+    """Import the breaker lazily so step0 never fails to import without it."""
+    from packers.breaker.engine import break_apk
+    return break_apk
+
+
+def _payload_name(payload: bytes) -> str:
+    """On-disk name for a recovered payload; ``kit.zip`` is what enrichment reads."""
+    if payload[:4] == b"PK\x03\x04":
+        return "kit.zip"
+    if payload[:4] == b"dex\n":
+        return "_recovered.dex"
+    return "_recovered.bin"
+
+
+def _materialize_payload(apk_path: pathlib.Path, hit: Any) -> bytes | None:
+    """Re-decrypt one breaker hit into bytes, or None when it cannot be replayed.
+
+    The engine keeps no payload bytes (it records hashes), but ``hit.scheme`` carries
+    every ``Scheme`` field, so ``Scheme(**hit.scheme)`` + ``decrypt`` reproduces the
+    plaintext exactly. Nested container children are skipped: enrichment mines the
+    top-level ``kit.zip``, and a child adds nothing to it.
+    """
+    from packers.breaker.blobs import collect_from_zip
+    from packers.breaker.schemes import Scheme, decrypt
+
+    if "!" in hit.member:
+        return None
+    collection = collect_from_zip(apk_path.read_bytes(), depth=0)
+    blob = next((b for b in collection.blobs if b.member == hit.member), None)
+    if blob is None:
+        return None
+    return decrypt(Scheme(**hit.scheme), blob.data)
+
+
+def _breaker_second_chance(
+    apk_path: pathlib.Path,
+    work_dir: pathlib.Path,
+    attempts_cap: int = BREAKER_ATTEMPTS_CAP,
+    evidence_dir: Any = None,
+) -> Dict[str, Any]:
+    """One bounded breaker run after the unpack dispatcher failed.
+
+    Returns a report in the unpack shape on a hit, a FAILED report otherwise. Either
+    way ``diagnostics`` is the only place the typed outcome (E-KDF-* / E-ENGINE-FAULT)
+    is recorded, so a breaker run can never rewrite the ecode unpack produced.
+    """
+    diagnostics: Dict[str, Any] = {
+        "outcome": "E-ENGINE-FAULT",
+        "attempts_total": 0,
+        "truncated": "none",
+        "wall_s": 0.0,
+        "recovered": [],
+        "detail": None,
+    }
+    failed = {
+        "verdict": "FAILED", "ecode": None, "artifacts": [], "kdf": None,
+        "iocs": {}, "family": None, "diagnostics": diagnostics,
+    }
+    evidence = pathlib.Path(evidence_dir) if evidence_dir is not None else BREAKER_EVIDENCE_DIR
+    try:
+        result = _load_breaker()(
+            apk_path, evidence, attempts_cap=attempts_cap, budget_s=BREAKER_BUDGET_S
+        )
+    except Exception as e:
+        # A breaker fault is a diagnostic, never a pipeline failure (CLI parity).
+        diagnostics["detail"] = f"{type(e).__name__}: {e}"[:200]
+        logger.warning("MasterKey Step0: breaker second chance faulted: %s", diagnostics["detail"])
+        return failed
+
+    diagnostics.update(
+        outcome=result.outcome,
+        attempts_total=result.attempts_total,
+        truncated=result.truncated,
+        wall_s=round(result.wall_s, 3),
+        recovered=[hit.member for hit in result.hits],
+    )
+
+    kit_dir = work_dir / result.sha256[:16]
+    artifacts: list[Dict[str, Any]] = []
+    kdf: Dict[str, Any] | None = None
+    non_zip_written = False
+    for hit in result.hits:
+        payload = _materialize_payload(apk_path, hit)
+        if payload is None:
+            continue
+        name = _payload_name(payload)
+        if name != "kit.zip" and non_zip_written:
+            # One sample file per kind: a second non-ZIP payload would overwrite the
+            # first, leaving two hashes describing one path. Kit still wins below.
+            continue
+        target = kit_dir / name
+        target.parent.mkdir(parents=True, exist_ok=True)
+        target.write_bytes(payload)
+        artifacts.append({
+            "file": str(target),
+            "sha256": hashlib.sha256(payload).hexdigest(),
+            "validated": hit.validation,
+        })
+        kdf = {
+            "cipher": hit.scheme["cipher"],
+            "key_hash": hit.scheme["key_hash"],
+            "key_len": hit.scheme["key_len"],
+            "iv": hit.scheme["iv"],
+            "seed": hit.seed,
+            "provenance": hit.scheme["provenance"],
+            "validation": hit.validation,
+            "key_sha256": hit.key_sha256,
+        }
+        if name == "kit.zip":
+            break  # a recovered kit is what the pipeline enriches from
+        non_zip_written = True
+
+    if not artifacts:
+        return failed
+    return {
+        "verdict": "RECOVERED", "ecode": None, "artifacts": artifacts, "kdf": kdf,
+        "iocs": {}, "family": None, "diagnostics": diagnostics,
+    }
+
+
+def run_master_key_preprocess(
+    apk_path: str, work_dir: str, breaker_attempts_cap: int = BREAKER_ATTEMPTS_CAP
+) -> Dict[str, Any]:
     """
     Master Key Step 0 - called from pipeline.py after Step1.
 
@@ -125,6 +263,7 @@ def run_master_key_preprocess(apk_path: str, work_dir: str) -> Dict[str, Any]:
         "artifacts": [...],  # self-validated (PK/dex magic) if RECOVERED
         "kt_taxonomy": "myg0N kit (custom, beaten)" | "Ijiami VMP (E-coded)" | ...,
         "should_enrich_strings": bool,  # True if RECOVERED → pipeline should use decrypted dex strings
+        "breaker": {...}|None,  # second chance diagnostics: typed outcome, never key material
     }
 
     KT §15: indeterminate is NEVER benign - dropper-shape (no launcher + FCM) escalates to suspect.
@@ -151,23 +290,45 @@ def run_master_key_preprocess(apk_path: str, work_dir: str) -> Dict[str, Any]:
             "artifacts": [],
             "kt_taxonomy": "clean_static - static pipeline sufficient (KT §8, 44/55 pendrive benign)",
             "should_enrich_strings": False,
+            "breaker": None,
             "triage_report": triage_report,
         }
 
     # Packed → attempt Master Key unpack (myg0N KDF brute + oracle)
     unpack_report = _attempt_unpack(apk, wd / "master_key", triage_report)
-    ecode = unpack_report.get("ecode")
+    # Second chance: the breaker owns at-rest asset blobs (a superset of the myg0N
+    # brute the dispatcher runs). It runs only when the dispatcher failed, and a miss
+    # leaves every field below exactly as unpack produced it - the breach, if any, is
+    # reported in "breaker", never in "ecode".
+    breaker_diagnostics = None
+    effective = unpack_report
+    if unpack_report.get("verdict") != "RECOVERED":
+        breaker_report = _breaker_second_chance(
+            apk, wd / "master_key", attempts_cap=breaker_attempts_cap
+        )
+        breaker_diagnostics = breaker_report["diagnostics"]
+        if breaker_report["verdict"] == "RECOVERED" and breaker_report["artifacts"]:
+            effective = breaker_report
+    recovered_by_breaker = effective is not unpack_report
+    ecode = effective.get("ecode")
     is_e_coded = bool(ecode and ecode.lower() in E_CODE_CATCH_ALLS)
     # Also handle E-codes with parentheses: E-NATIVE-NOENTRY(Ijiami) etc
     if ecode and not is_e_coded:
         base = ecode.split("(")[0].strip().lower()
         is_e_coded = base in E_CODE_CATCH_ALLS
 
-    should_enrich = unpack_report.get("verdict") == "RECOVERED" and bool(unpack_report.get("artifacts"))
+    should_enrich = effective.get("verdict") == "RECOVERED" and bool(effective.get("artifacts"))
 
     # Map to KT taxonomy for reporting
-    family = unpack_report.get("family") or "Unknown"
-    if should_enrich:
+    family = effective.get("family") or "Unknown"
+    if recovered_by_breaker:
+        recovered_kdf = effective.get("kdf") or {}
+        taxonomy = (
+            "at-rest asset blob recovered on second chance "
+            f"({recovered_kdf.get('cipher')}/{recovered_kdf.get('provenance')}, "
+            f"seed={recovered_kdf.get('seed')}) - master key breaker"
+        )
+    elif should_enrich:
         taxonomy = f"myg0N kit (custom, beaten) - {family} (MASTER_KEY §2-5, FULL_KT §4)"
     elif ecode == "E-NATIVE-NOENTRY":
         taxonomy = f"Commercial VMP {family} (Ijiami/Bangcle/360Jiagu - E-coded expected per MASTER_KEY §16, KT §4)"
@@ -182,15 +343,16 @@ def run_master_key_preprocess(apk_path: str, work_dir: str) -> Dict[str, Any]:
         "triage_verdict": verdict,
         "triage_confidence": confidence,
         "route": unpack_report.get("route", "NATIVE"),
-        "verdict": unpack_report.get("verdict", "FAILED"),
+        "verdict": effective.get("verdict", "FAILED"),
         "ecode": ecode,
         "is_e_coded": is_e_coded,
-        "artifacts": unpack_report.get("artifacts", []),
-        "kdf": unpack_report.get("kdf"),
-        "iocs": unpack_report.get("iocs", {}),
+        "artifacts": effective.get("artifacts", []),
+        "kdf": effective.get("kdf"),
+        "iocs": effective.get("iocs", {}),
         "family_sniff": family,
         "kt_taxonomy": taxonomy,
         "should_enrich_strings": should_enrich,
+        "breaker": breaker_diagnostics,
         "triage_report": triage_report,
         "unpack_report": unpack_report,
     }

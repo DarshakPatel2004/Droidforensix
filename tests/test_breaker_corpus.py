@@ -2,6 +2,7 @@
 
 Run with:  $env:DFX_BREAKER_ACCEPTANCE=1; .venv\\Scripts\\python.exe -m pytest tests/test_breaker_corpus.py -v
 """
+import hashlib
 import os
 from pathlib import Path
 
@@ -130,3 +131,41 @@ def test_named_dead_ends_produce_no_hits(apk):
     # An encrypted member must have been probed; a loader with nothing encrypted is a skip.
     if result.ciphertext_members:
         assert result.attempts_total > 0
+
+
+def test_second_chance_cap_decides_mediaplayer2(tmp_path, monkeypatch):
+    """The pipeline default (20k) sits deliberately below MP2's 32,960-probe LCG hit.
+
+    Triage and the dispatcher are stubbed (the real dispatcher would spark the emulator
+    oracle); everything else - collection, sweep, materialisation, enrichment contract -
+    runs against the real MediaPlayer2 APK.
+    """
+    from analysis import step0_master_key as step0
+
+    apk, _member, payload_sha, _dex_name, _dex_size, _dex_sha = MEDIAPLAYER2
+    if not apk.exists():
+        pytest.skip(f"sample absent: {apk}")
+    monkeypatch.setattr(
+        step0, "_load_triage", lambda _apk: {"verdict": "packed_custom", "confidence": 1.0}
+    )
+    monkeypatch.setattr(step0, "_attempt_unpack", lambda *a, **k: {
+        "verdict": "FAILED", "ecode": "E-ZIPCRYPTO-RUNTIME", "artifacts": [],
+        "route": "NATIVE", "family": None, "kdf": None, "iocs": {},
+    })
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+
+    starved = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+    assert starved["verdict"] == "FAILED", "20k default must not reach MP2's 32,960th probe"
+    assert starved["ecode"] == "E-ZIPCRYPTO-RUNTIME"  # unpack verdict, untouched
+    assert starved["breaker"]["truncated"] == "attempts"
+    assert starved["breaker"]["recovered"] == []
+
+    funded = step0.run_master_key_preprocess(
+        str(apk), str(tmp_path / "work2"), breaker_attempts_cap=50_000
+    )
+    assert funded["verdict"] == "RECOVERED"
+    assert funded["should_enrich_strings"] is True
+    assert funded["kdf"]["cipher"] == "java-lcg"
+    kit = Path(funded["artifacts"][0]["file"])
+    assert kit.name == "kit.zip"
+    assert hashlib.sha256(kit.read_bytes()).hexdigest() == payload_sha
