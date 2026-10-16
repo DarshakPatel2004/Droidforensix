@@ -234,10 +234,16 @@ def merge_evidence(extraction: dict, evidence: dict | None) -> dict:
     evidence carries it: the class count as ``max`` of stub and payload (spec 4.4), the
     others as sorted unions. The full evidence record is kept under
     ``recovered_payload_evidence`` for provenance whenever ``evidence`` is truthy. A
-    falsy ``evidence`` (``{}`` or ``None``) returns ``extraction`` unchanged.
+    falsy ``evidence`` (``{}`` or ``None``) returns a copy of ``extraction`` unchanged.
+
+    The class-count ``max`` is the subject of spec 4.4's documented fallback: the
+    evaluation A/B measures it, and if that shows it hurts the metric the class-count
+    merge is dropped downstream - the payload's count then survives only in
+    ``recovered_payload_evidence["class_count"]``, a key no signature band consumes.
+    That decision is downstream; this function always applies ``max``.
     """
     if not evidence:
-        return extraction
+        return dict(extraction)
     merged = dict(extraction)
     if evidence["class_count"]:
         merged["decompiled_classes"] = max(
@@ -247,11 +253,11 @@ def merge_evidence(extraction: dict, evidence: dict | None) -> dict:
         merged["native_libs_found"] = sorted(
             set(merged.get("native_libs_found", [])) | set(evidence["native_libs"])
         )
+    manifest_info = dict(merged.get("manifest_info", {}))
     if evidence["permissions"]:
-        manifest_info = dict(merged.get("manifest_info", {}))
         manifest_info["uses_permissions"] = sorted(
             set(manifest_info.get("uses_permissions", [])) | set(evidence["permissions"])
         )
-        merged["manifest_info"] = manifest_info
+    merged["manifest_info"] = manifest_info
     merged["recovered_payload_evidence"] = evidence
     return merged
