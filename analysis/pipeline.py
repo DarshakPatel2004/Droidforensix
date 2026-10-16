@@ -50,9 +50,11 @@ from backend.dissection import APKDissector
 #     docs/accuracy-improvement-plan.md Phase 0
 try:
     from analysis.step0_master_key import run_master_key_preprocess, enrich_strings_with_recovered
+    from analysis.payload_evidence import merge_evidence
 except ImportError:
     run_master_key_preprocess = None
     enrich_strings_with_recovered = None
+    merge_evidence = None
 
 
 class PipelineError(Exception):
@@ -477,6 +479,18 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             })
         except Exception as e:
             logger.warning("MasterKey enrich failed: %s", e)
+
+    # Recovered-payload evidence: classes/permissions/native libs of a breaker-recovered
+    # payload are merged additively into `extraction`, the one dict family_id and the
+    # result assembly read. See
+    # docs/plans/specs/2026-10-16-recovered-payload-evidence-design.md §4.3.
+    if master_key_result and merge_evidence:
+        recovered_evidence = master_key_result.get("recovered_evidence")
+        if recovered_evidence:
+            try:
+                extraction = merge_evidence(extraction, recovered_evidence)
+            except Exception as e:
+                logger.warning("MasterKey evidence merge failed: %s", e)
 
     if time.time() - global_start > pipeline_timeout:
         raise PipelineError(

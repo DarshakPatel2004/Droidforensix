@@ -41,6 +41,8 @@ import sys
 import zipfile
 from typing import Any, Dict
 
+from analysis.payload_evidence import collect_payload_evidence, merge_evidence
+
 logger = logging.getLogger(__name__)
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
@@ -160,6 +162,16 @@ def _materialize_payload(apk_path: pathlib.Path, hit: Any) -> bytes | None:
     return decrypt(Scheme(**hit.scheme), blob.data)
 
 
+def _materialize_hits(apk_path: pathlib.Path, hits: list[Any]) -> list[tuple[Any, bytes]]:
+    """Replay every hit once, analysis only: nothing is ever written to disk."""
+    materialized: list[tuple[Any, bytes]] = []
+    for hit in hits:
+        payload = _materialize_payload(apk_path, hit)
+        if payload is not None:
+            materialized.append((hit, payload))
+    return materialized
+
+
 def _breaker_second_chance(
     apk_path: pathlib.Path,
     work_dir: pathlib.Path,
@@ -207,10 +219,10 @@ def _breaker_second_chance(
     artifacts: list[Dict[str, Any]] = []
     kdf: Dict[str, Any] | None = None
     non_zip_written = False
-    for hit in result.hits:
-        payload = _materialize_payload(apk_path, hit)
-        if payload is None:
-            continue
+    # Every hit is replayed once up front (analysis only). The write loop below stops
+    # at kit.zip, but the evidence must still cover the hits that come after it.
+    materialized = _materialize_hits(apk_path, result.hits)
+    for hit, payload in materialized:
         name = _payload_name(payload)
         if name != "kit.zip" and non_zip_written:
             # One sample file per kind: a second non-ZIP payload would overwrite the
@@ -240,10 +252,18 @@ def _breaker_second_chance(
 
     if not artifacts:
         return failed
-    return {
+    evidence = collect_payload_evidence([
+        payload for hit, payload in materialized if hit.validation.startswith("zip")
+    ])
+    report: Dict[str, Any] = {
         "verdict": "RECOVERED", "ecode": None, "artifacts": artifacts, "kdf": kdf,
         "iocs": {}, "family": None, "diagnostics": diagnostics,
     }
+    # Only ZIP-validated payloads are analysed, and only a recovery that analysed
+    # something carries evidence.
+    if evidence["payloads"] > 0:
+        report["recovered_evidence"] = evidence
+    return report
 
 
 def run_master_key_preprocess(
@@ -264,6 +284,7 @@ def run_master_key_preprocess(
         "kt_taxonomy": "myg0N kit (custom, beaten)" | "Ijiami VMP (E-coded)" | ...,
         "should_enrich_strings": bool,  # True if RECOVERED → pipeline should use decrypted dex strings
         "breaker": {...}|None,  # second chance diagnostics: typed outcome, never key material
+        "recovered_evidence": {...}|None,  # additive recovered-payload evidence from a breaker ZIP recovery; never key material
     }
 
     KT §15: indeterminate is NEVER benign - dropper-shape (no launcher + FCM) escalates to suspect.
@@ -339,7 +360,7 @@ def run_master_key_preprocess(
     else:
         taxonomy = f"Unpacked attempt failed {ecode or 'no ecode'} - needs manual review"
 
-    return {
+    report: Dict[str, Any] = {
         "triage_verdict": verdict,
         "triage_confidence": confidence,
         "route": unpack_report.get("route", "NATIVE"),
@@ -356,6 +377,10 @@ def run_master_key_preprocess(
         "triage_report": triage_report,
         "unpack_report": unpack_report,
     }
+    # Evidence is additive: it reaches the report only when the breaker recovered one.
+    if effective.get("recovered_evidence"):
+        report["recovered_evidence"] = effective["recovered_evidence"]
+    return report
 
 
 def enrich_strings_with_recovered(strings_result: Dict[str, Any], master_key: Dict[str, Any]) -> Dict[str, Any]:
