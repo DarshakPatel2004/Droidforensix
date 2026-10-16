@@ -13,6 +13,7 @@ import logging
 import re
 import time
 import zipfile
+from dataclasses import dataclass, field
 from typing import Sequence
 
 logger = logging.getLogger(__name__)
@@ -91,6 +92,97 @@ def _member_permissions(
         return []
 
 
+@dataclass(frozen=True)
+class _Limits:
+    """Bounds for one evidence walk (spec section 6)."""
+
+    max_payload_bytes: int
+    max_member_bytes: int
+    max_dex_members: int
+    budget_s: float
+
+
+@dataclass
+class _Tally:
+    """Accumulators for one evidence walk; becomes the spec section 8 record."""
+
+    payloads: int = 0
+    members_scanned: int = 0
+    members_skipped: int = 0
+    class_count: int = 0
+    charged: int = 0
+    truncated: str = "none"
+    permissions: set[str] = field(default_factory=set)
+    native_libs: set[str] = field(default_factory=set)
+    errors: list[str] = field(default_factory=list)
+
+    def cap(self, reason: str) -> None:
+        """Record the first cap that bites."""
+        if self.truncated == "none":
+            self.truncated = reason
+
+    def record(self) -> dict:
+        """The sorted evidence record (spec section 8)."""
+        return {
+            "payloads": self.payloads,
+            "members_scanned": self.members_scanned,
+            "members_skipped": self.members_skipped,
+            "class_count": self.class_count,
+            "permissions": sorted(self.permissions),
+            "native_libs": sorted(self.native_libs),
+            "truncated": self.truncated,
+            "errors": self.errors,
+        }
+
+
+def _scan_members(
+    archive: zipfile.ZipFile,
+    members: list[zipfile.ZipInfo],
+    tally: _Tally,
+    limits: _Limits,
+    started: float,
+) -> bool:
+    """Walk one payload's members into ``tally``; True asks to stop the whole walk."""
+    dex_parsed = 0  # per payload, so a multi-payload recovery is not truncated cumulatively
+    for info in members:
+        if time.monotonic() - started >= limits.budget_s:
+            tally.cap("budget")
+            return True
+        tally.members_scanned += 1
+        if info.file_size > limits.max_member_bytes:
+            tally.members_skipped += 1
+            tally.cap("bytes")
+            continue
+        if tally.charged + info.file_size > limits.max_payload_bytes:
+            tally.members_skipped += 1
+            tally.cap("bytes")
+            return True  # over the per-sample budget: stop the whole walk
+        # Only members admitted for analysis are charged: a member rejected by the
+        # per-member size cap above is never read, so it is not "bytes analysed"
+        # (spec section 6). Do not move this above that check.
+        tally.charged += info.file_size
+        try:
+            head = _member_head(archive, info)
+        except Exception as exc:
+            tally.members_skipped += 1
+            tally.errors.append(_error_text(info.filename, exc))
+            continue
+        tally.native_libs.update(native_lib_names(info.filename, head))
+        if info.file_size == 0:
+            continue  # a 0-byte member (the observed classes.dex stub) holds no evidence
+        name = info.filename.lower()
+        if name.endswith(DEX_SUFFIX):
+            if dex_parsed >= limits.max_dex_members:
+                tally.members_skipped += 1
+                tally.cap("members")
+                continue
+            dex_parsed += 1
+            tally.class_count += _dex_class_count(archive, info, tally.errors)
+        elif name.endswith(MANIFEST_SUFFIX):
+            tally.permissions.update(_member_permissions(archive, info, tally.errors))
+    return False
+
+
 def collect_payload_evidence(
     payloads: Sequence[bytes],
     *,
@@ -106,84 +198,30 @@ def collect_payload_evidence(
     count. The returned record is the spec section 8 evidence record. This
     function never raises: every failure becomes an ``errors`` entry.
     """
+    limits = _Limits(
+        max_payload_bytes=max_payload_bytes,
+        max_member_bytes=max_member_bytes,
+        max_dex_members=max_dex_members,
+        budget_s=budget_s,
+    )
+    tally = _Tally()
     started = time.monotonic()
-    truncated = "none"
-
-    def cap(reason: str) -> None:
-        nonlocal truncated
-        if truncated == "none":  # the first cap that bites wins
-            truncated = reason
-
-    analysed = 0
-    scanned = 0
-    skipped = 0
-    class_count = 0
-    charged = 0  # declared member bytes charged to the per-sample budget
-    permissions: set[str] = set()
-    native_libs: set[str] = set()
-    errors: list[str] = []
-    stop = False
 
     for index, payload in enumerate(payloads):
         if time.monotonic() - started >= budget_s:
-            cap("budget")
+            tally.cap("budget")
             break
         if payload[:len(ZIP_MAGIC)] != ZIP_MAGIC:
             continue  # not a ZIP at all: the breaker's structural validation owns this
         try:
             archive = zipfile.ZipFile(io.BytesIO(payload))
+            members = archive.infolist()  # inside the try: a hostile ZIP must not raise
         except Exception as exc:
-            errors.append(f"payload {index}: {type(exc).__name__}: {str(exc)[:80]}")
+            tally.errors.append(f"payload {index}: {type(exc).__name__}: {str(exc)[:80]}")
             continue
-        analysed += 1
-        dex_parsed = 0  # per payload, so a multi-payload recovery is not truncated cumulatively
-
+        tally.payloads += 1  # a ZIP-magic payload counts only once its listing succeeded
         with archive:
-            for info in archive.infolist():
-                if time.monotonic() - started >= budget_s:
-                    cap("budget")
-                    stop = True
-                    break
-                scanned += 1
-                if info.file_size > max_member_bytes:
-                    skipped += 1
-                    cap("bytes")
-                    continue
-                if charged + info.file_size > max_payload_bytes:
-                    skipped += 1
-                    cap("bytes")
-                    stop = True
-                    break  # over the per-sample budget: stop the whole walk
-                charged += info.file_size
-                try:
-                    head = _member_head(archive, info)
-                except Exception as exc:
-                    skipped += 1
-                    errors.append(_error_text(info.filename, exc))
-                    continue
-                native_libs.update(native_lib_names(info.filename, head))
-                if info.file_size == 0:
-                    continue  # a 0-byte member (the observed classes.dex stub) holds no evidence
-                name = info.filename.lower()
-                if name.endswith(DEX_SUFFIX):
-                    if dex_parsed >= max_dex_members:
-                        skipped += 1
-                        cap("members")
-                        continue
-                    dex_parsed += 1
-                    class_count += _dex_class_count(archive, info, errors)
-                elif name.endswith(MANIFEST_SUFFIX):
-                    permissions.update(_member_permissions(archive, info, errors))
-        if stop:
-            break
+            if _scan_members(archive, members, tally, limits, started):
+                break
 
-    return {
-        "payloads": analysed,
-        "members_scanned": scanned,
-        "members_skipped": skipped,
-        "class_count": class_count,
-        "permissions": sorted(permissions),
-        "native_libs": sorted(native_libs),
-        "truncated": truncated,
-        "errors": errors,
-    }
+    return tally.record()
