@@ -533,7 +533,7 @@ No new metric event, and no other pipeline change: line 636/773 (`manifest = ext
 - [ ] **Step 7: Verify imports and the whole fast suite**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_module_imports.py -v` then `.venv\Scripts\python.exe -m pytest tests/ -m "not slow"`
-Expected: import test passes; suite green (Task 6 is the behavioral check for this call site — there is no fast test that executes `run_pipeline`).
+Expected: import test passes; suite green (Task 5 Step 4 is the behavioral check for this call site — there is no fast test that executes `run_pipeline`).
 
 - [ ] **Step 8: Commit**
 
