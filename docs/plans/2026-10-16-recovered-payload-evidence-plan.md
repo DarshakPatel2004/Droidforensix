@@ -29,8 +29,8 @@
 Inputs a person running this on a packed APK will hit that the spec implies but no single step's happy path exercises. Each line's test is added to the task that owns the code.
 
 1. **A payload whose dex/permissions live in nested `.apk` members** (the myg0N `kit.zip` shape: measured 5 classes / 0 permissions / 0 natives for `analysis/unpack_baseline/348f8b090b51ba27/kit.zip`). Expected: nothing is extracted, no error. Task 1: `test_nested_apk_members_contribute_nothing`.
-2. **A payload whose `classes*.dex` sum past 64 MiB** (PNB ONE ACTIVATION's 49-dex payload is ~56 MB). Expected: a partial class count, `truncated == "bytes"`, no crash. Task 1: `test_collect_stops_at_the_total_bytes_cap`.
-3. **A recovered class count far outside the stub-calibrated bands** (measured 5448-5768 classes for real recovered apps). Expected: `classes:` signature signals can disappear; only the measured A/B reveals whether that helps. Task 5: the off/on delta and the §4.4 fallback.
+2. **A payload whose dex members sum past 64 MiB** (no local sample does — PNB ONE ACTIVATION's seven ZIP payloads total 10.1 MB of dex — but a decompression bomb or a 100 MB multidex app would). Expected: a partial class count, `truncated == "bytes"`, no crash. Task 1: `test_collect_stops_at_the_total_bytes_cap`.
+3. **A recovered class count far outside the stub-calibrated bands** (measured 5448-7012 classes for real recovered apps). Expected: `classes:` signature signals can disappear; only the measured A/B reveals whether that helps. Task 5: the off/on delta and the §4.4 fallback.
 4. **Payload native libraries flipping `native:no` to `native:yes`.** Expected: faithful to the real app. Task 4: `test_real_recovered_app_yields_native_library_evidence`, plus Task 5's per-sample report.
 5. **A hostile or corrupt ZIP payload** (valid `PK` magic, broken central directory, or a member whose declared size exceeds the caps). Expected: no evidence, an `errors` entry, no unbounded read. Tasks 1: `test_collect_records_a_broken_zip_and_keeps_going`, `test_collect_stops_at_the_per_member_size_cap`.
 
@@ -550,7 +550,7 @@ git commit -m "step0: merge recovered-payload evidence into the classifier input
 - Modify: `tests/test_breaker_corpus.py`
 
 **Interfaces:**
-- Consumes: `collect_payload_evidence` (Task 1), `step0._breaker_second_chance` and `step0.BREAKER_EVIDENCE_DIR` (Task 3), and the file-level `pytestmark` in `tests/test_breaker_corpus.py` (slow + `DFX_BREAKER_ACCEPTANCE=1`).
+- Consumes: `collect_payload_evidence` (Task 1), `step0.run_master_key_preprocess` and `step0.BREAKER_EVIDENCE_DIR` (Task 3), and the file-level `pytestmark` in `tests/test_breaker_corpus.py` (slow + `DFX_BREAKER_ACCEPTANCE=1`).
 - Produces: nothing other tasks consume. This is the last fast-to-run proof that the breaker → materialize → collect → attach chain works on genuine recovered apps.
 
 Measured on this machine (2026-10-16) with these exact fixtures, androguard 4.1.4:
@@ -609,18 +609,27 @@ def test_pnb_one_activation_evidence_end_to_end(tmp_path, monkeypatch):
 
     Seven of its eight hits are ZIP payloads (the eighth is `ttf-magic`): one multidex
     payload (63 dex), one full APK with the manifest, one ELF-magic native payload.
+    Triage and the dispatcher are stubbed, as in the MediaPlayer2 acceptance test; the
+    breaker, materialisation, collection and report attachment all run for real.
     """
     from analysis import step0_master_key as step0
 
     apk = PENDRIVE / "apk fraud" / "21" / "PNB ONE ACTIVATION.apk"
     if not apk.exists():
         pytest.skip(f"sample absent: {apk}")
+    monkeypatch.setattr(step0, "_load_triage",
+                        lambda _apk: {"verdict": "packed_custom", "confidence": 1.0})
+    monkeypatch.setattr(step0, "_attempt_unpack", lambda *a, **k: {
+        "verdict": "FAILED", "ecode": "E-NATIVE-NO-RECOVERY", "artifacts": [],
+        "route": "NATIVE", "family": None, "kdf": None, "iocs": {},
+    })
     monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
 
-    report = step0._breaker_second_chance(apk, tmp_path / "work")
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
 
-    assert report["verdict"] == "RECOVERED"
-    evidence = report["recovered_evidence"]
+    assert master_key["verdict"] == "RECOVERED"
+    assert master_key["ecode"] is None, "the recovered sample is no longer E-coded"
+    evidence = master_key["recovered_evidence"]
     assert evidence["payloads"] == 7, "the ttf-magic hit is not analysed"
     assert evidence["truncated"] == "none", "the caps must not bite on this sample"
     assert evidence["class_count"] > 7000, "the 1146-class third dex payload is counted too"
