@@ -127,7 +127,7 @@ change is needed.
 This is the finding that shaped the merge. Signature rules declare
 `class_count_min` / `class_count_max` bands (e.g. 100-700, 50-300, 10-50,
 `backend/family_id.py:123-443`), not thresholds. A value cannot be in two bands, and the
-real app's count (tens of thousands across 49 dex files) falls outside most bands - so
+real app's count (thousands, across up to 63 dex members per payload) falls outside most bands - so
 merging the real count can make the `classes:` signal **disappear**, which is a
 subtraction even though the merge is "additive".
 
@@ -191,7 +191,7 @@ Named constants in `analysis/payload_evidence.py`, exposed as parameters with de
 |---|---|---|
 | `MAX_PAYLOAD_BYTES` | 64 MiB | total payload bytes analysed per sample |
 | `MAX_MEMBER_BYTES` | 32 MiB | per-member skip threshold (the observed 4.6 MB blob passes; a decompression bomb does not) |
-| `MAX_DEX_MEMBERS` | 64 | dex members parsed (the observed multidex payload has 49) |
+| `MAX_DEX_MEMBERS` | 64 | dex members parsed **per payload** (the observed multidex payload carries 63; the counter resets for the next payload so a multi-payload recovery is not truncated cumulatively) |
 | `EVIDENCE_BUDGET_S` | 20 | wall-clock guard; on expiry, stop adding and set `truncated` |
 
 Permissions and native-library names are sorted; class count is a sum over parsed dex
@@ -255,8 +255,14 @@ enrichment.
 
 **Opt-in real-payload tests (`tests/test_breaker_corpus.py`, `DFX_BREAKER_ACCEPTANCE=1`)**
 
-- PNB ONE ACTIVATION: `class_count > 0`, `REQUEST_INSTALL_PACKAGES` present, native
-  members detected.
+- PNB ONE ACTIVATION, through the real breaker: `class_count > 7000` (its multidex payload
+  carries 63 dex members), 22 permissions including
+  `android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS` and `android.permission.SEND_SMS`
+  (measured 2026-10-16 - this manifest does **not** carry `REQUEST_INSTALL_PACKAGES`, contrary
+  to an earlier draft of this section), and four native members of which two,
+  `arm64-v8a` and `armeabi-v7a`, are detectable only by ELF magic.
+- Two further real recovered apps in `analysis/recovered/` for class-count and permission
+  coverage, and one for native libraries.
 - A sample with no recovery: `recovered_evidence` absent from the pipeline result.
 
 **Wiring tests (`tests/test_step0_master_key.py`)**
