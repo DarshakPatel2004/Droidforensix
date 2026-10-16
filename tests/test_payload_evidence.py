@@ -206,3 +206,19 @@ def test_merge_records_provenance_even_when_no_signal_was_found():
 def test_merge_is_idempotent():
     once = pe.merge_evidence(_extraction(), EVIDENCE)
     assert pe.merge_evidence(once, EVIDENCE) == once
+
+
+def test_merge_keeps_existing_natives_and_other_manifest_keys():
+    extraction = {
+        "decompiled_classes": 120,
+        "native_libs_found": ["lib/armeabi-v7a/liby.so"],
+        "manifest_info": {
+            "uses_permissions": ["android.permission.INTERNET"],
+            "package": "com.example",
+        },
+    }
+    merged = pe.merge_evidence(extraction, EVIDENCE)
+    assert merged["native_libs_found"] == [
+        "lib/arm64-v8a/libx.so", "lib/armeabi-v7a/liby.so",
+    ]
+    assert merged["manifest_info"]["package"] == "com.example"
