@@ -41,7 +41,7 @@ import sys
 import zipfile
 from typing import Any, Dict
 
-from analysis.payload_evidence import collect_payload_evidence, merge_evidence
+from analysis.payload_evidence import collect_payload_evidence
 
 logger = logging.getLogger(__name__)
 
