@@ -139,3 +139,70 @@ def test_collect_is_deterministic():
     payload = _zip({"lib/x.so": b"\x00", "classes.dex": b"x" * 8})
     first = pe.collect_payload_evidence([payload])
     assert first == pe.collect_payload_evidence([payload])
+
+
+EVIDENCE = {
+    "payloads": 1, "members_scanned": 64, "members_skipped": 0, "class_count": 5448,
+    "permissions": ["android.permission.CALL_PHONE"],
+    "native_libs": ["lib/arm64-v8a/libx.so"], "truncated": "none", "errors": [],
+}
+
+
+def _extraction():
+    return {
+        "decompiled_classes": 120,
+        "native_libs_found": [],
+        "manifest_info": {"uses_permissions": ["android.permission.INTERNET"]},
+    }
+
+
+def test_merge_takes_the_larger_class_count():
+    assert pe.merge_evidence(_extraction(), EVIDENCE)["decompiled_classes"] == 5448
+
+
+def test_merge_keeps_the_stub_count_when_it_is_larger():
+    extraction = _extraction()
+    extraction["decompiled_classes"] = 9000
+    assert pe.merge_evidence(extraction, EVIDENCE)["decompiled_classes"] == 9000
+
+
+def test_merge_unions_and_sorts_permissions_and_natives():
+    merged = pe.merge_evidence(_extraction(), EVIDENCE)
+    assert merged["native_libs_found"] == ["lib/arm64-v8a/libx.so"]
+    assert merged["manifest_info"]["uses_permissions"] == [
+        "android.permission.CALL_PHONE", "android.permission.INTERNET",
+    ]
+
+
+def test_merge_does_not_mutate_the_input_extraction():
+    extraction = _extraction()
+    pe.merge_evidence(extraction, EVIDENCE)
+    assert extraction["decompiled_classes"] == 120
+    assert extraction["manifest_info"]["uses_permissions"] == ["android.permission.INTERNET"]
+    assert "recovered_payload_evidence" not in extraction
+
+
+def test_merge_creates_manifest_info_when_apktool_failed():
+    merged = pe.merge_evidence({"decompiled_classes": 0, "native_libs_found": []}, EVIDENCE)
+    assert merged["manifest_info"]["uses_permissions"] == ["android.permission.CALL_PHONE"]
+
+
+def test_merge_with_empty_evidence_returns_the_input_unchanged():
+    extraction = _extraction()
+    assert pe.merge_evidence(extraction, {}) == extraction
+    assert pe.merge_evidence(extraction, None) == extraction
+
+
+def test_merge_records_provenance_even_when_no_signal_was_found():
+    extraction = _extraction()
+    silent = {**EVIDENCE, "class_count": 0, "permissions": [], "native_libs": []}
+    merged = pe.merge_evidence(extraction, silent)
+    assert merged["decompiled_classes"] == extraction["decompiled_classes"]
+    assert merged["native_libs_found"] == extraction["native_libs_found"]
+    assert merged["manifest_info"] == extraction["manifest_info"]
+    assert merged["recovered_payload_evidence"]["payloads"] == 1
+
+
+def test_merge_is_idempotent():
+    once = pe.merge_evidence(_extraction(), EVIDENCE)
+    assert pe.merge_evidence(once, EVIDENCE) == once

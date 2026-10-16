@@ -225,3 +225,33 @@ def collect_payload_evidence(
                 break
 
     return tally.record()
+
+
+def merge_evidence(extraction: dict, evidence: dict | None) -> dict:
+    """Additively merge recovered-payload ``evidence`` into ``extraction`` (spec 4.3).
+
+    Returns a new dict; the input is never mutated. Each signal merges only when the
+    evidence carries it: the class count as ``max`` of stub and payload (spec 4.4), the
+    others as sorted unions. The full evidence record is kept under
+    ``recovered_payload_evidence`` for provenance whenever ``evidence`` is truthy. A
+    falsy ``evidence`` (``{}`` or ``None``) returns ``extraction`` unchanged.
+    """
+    if not evidence:
+        return extraction
+    merged = dict(extraction)
+    if evidence["class_count"]:
+        merged["decompiled_classes"] = max(
+            merged.get("decompiled_classes", 0), evidence["class_count"]
+        )
+    if evidence["native_libs"]:
+        merged["native_libs_found"] = sorted(
+            set(merged.get("native_libs_found", [])) | set(evidence["native_libs"])
+        )
+    if evidence["permissions"]:
+        manifest_info = dict(merged.get("manifest_info", {}))
+        manifest_info["uses_permissions"] = sorted(
+            set(manifest_info.get("uses_permissions", [])) | set(evidence["permissions"])
+        )
+        merged["manifest_info"] = manifest_info
+    merged["recovered_payload_evidence"] = evidence
+    return merged
