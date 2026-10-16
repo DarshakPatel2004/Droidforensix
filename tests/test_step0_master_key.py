@@ -24,6 +24,9 @@ KIT_MEMBER = "assets/myg0N"
 # key = sha1(seed)[:16], iv = sha256(seed)[:16], AES-CBC, PKCS#7.
 KIT_SEED = "myg0N2"
 KIT_MARKER = "ZZ_BREAKER_WIRING_MARKER_42"
+# The breaker skips members under 512 bytes (packers/breaker/blobs.py MIN_BLOB_SIZE),
+# so kit payloads must carry padding past that bound to ever be attacked.
+KIT_NATIVE_PAD = 1024
 
 FAILED_REPORT = {
     "verdict": "FAILED",
@@ -43,6 +46,16 @@ def _kit_payload() -> bytes:
     with zipfile.ZipFile(buffer, "w") as archive:
         archive.writestr("bootstrap.dex", dex)
         archive.writestr("assets/filler.bin", b"\x00" * 1024)
+    return buffer.getvalue()
+
+
+def _kit_payload_with_native() -> bytes:
+    """A minimal recovered kit that carries one native member and nothing else useful."""
+    dex = b"dex\n035\x00" + b"\x00" * 12 + b"\x00" * KIT_NATIVE_PAD
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        archive.writestr("lib/armeabi-v7a/libx.so", b"\x7fELF" + b"\x00" * 32)
+        archive.writestr("bootstrap.dex", dex)
     return buffer.getvalue()
 
 
@@ -266,3 +279,69 @@ def test_two_non_zip_recoveries_do_not_collide(packed_triage, tmp_path, monkeypa
     artifact = master_key["artifacts"][0]
     # The single artifact must describe the bytes actually on disk.
     assert artifact["sha256"] == hashlib.sha256(Path(artifact["file"]).read_bytes()).hexdigest()
+
+
+def test_recovery_attaches_recovered_evidence(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    ciphertext, _padded = _encrypt_like_myg0n(_kit_payload_with_native())
+    apk = tmp_path / "kit.apk"
+    _write_apk(apk, ciphertext)
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    evidence = master_key["recovered_evidence"]
+    assert evidence["payloads"] == 1
+    assert evidence["members_scanned"] == 2
+    assert evidence["native_libs"] == ["lib/armeabi-v7a/libx.so"]
+
+
+def test_miss_has_no_recovered_evidence_key(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    apk = tmp_path / "plain.apk"
+    _write_apk(apk, blob=None)
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert "recovered_evidence" not in master_key
+
+
+def test_non_zip_recovery_has_no_recovered_evidence(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    ciphertext, _padded = _encrypt_like_myg0n(b"dex\n035\x00" + bytes(range(256)) * 3)
+    apk = tmp_path / "dex.apk"
+    _write_apk(apk, ciphertext)
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert master_key["verdict"] == "RECOVERED"
+    assert "recovered_evidence" not in master_key
+
+
+def test_every_zip_recovery_is_analysed_not_only_the_written_kit(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    first = _kit_payload_with_native()
+    second = _kit_payload_with_native()
+    apk = tmp_path / "two.apk"
+    with zipfile.ZipFile(apk, "w") as archive:
+        archive.writestr("AndroidManifest.xml", b"<manifest/>")
+        archive.writestr("classes.dex", b"dex\n035\x00" + b"\x00" * 128)
+        archive.writestr("assets/AAAA", _encrypt_like_myg0n(first, "AAAA")[0])
+        archive.writestr("assets/BBBB", _encrypt_like_myg0n(second, "BBBB")[0])
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert len(master_key["artifacts"]) == 1, "only the first kit is materialised"
+    assert master_key["recovered_evidence"]["payloads"] == 2, "both ZIP recoveries are analysed"
+
+
+def test_recovered_evidence_is_not_bound_for_the_taxonomy(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    ciphertext, _padded = _encrypt_like_myg0n(_kit_payload_with_native())
+    apk = tmp_path / "kit.apk"
+    _write_apk(apk, ciphertext)
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    # Evidence is additive: it changes no contract field and no taxonomy wording.
+    assert master_key["ecode"] is None
+    assert master_key["kt_taxonomy"].startswith("at-rest asset blob recovered on second chance")
