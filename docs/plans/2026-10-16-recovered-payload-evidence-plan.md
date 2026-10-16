@@ -252,7 +252,7 @@ Signature and return schema exactly as the Interfaces block. The algorithm, in t
 5. `zipfile.ZipFile(io.BytesIO(payload)).infolist()` inside `try`; on failure append `f"payload {index}: {type(exc).__name__}: {str(exc)[:80]}"` to `errors` and continue with the next payload.
 6. `members_scanned` increments before any cap check for that member; members never reached because the walk stopped are neither scanned nor skipped.
 7. A member with `info.file_size > max_member_bytes` is skipped (`members_skipped += 1`, `_cap("bytes")`) without reading its bytes.
-8. Otherwise, if `charged + info.file_size > max_payload_bytes`, skip it and `_cap("bytes")`, then stop the whole walk. `charged` accumulates `info.file_size` for every member inspected (the conservative accounting: a member's declared size is charged even though the head probe reads 4 bytes).
+8. Otherwise, if `charged + info.file_size > max_payload_bytes`, skip it and `_cap("bytes")`, then stop the whole walk. `charged` accumulates `info.file_size` for every member **admitted here**, i.e. every member that passed the per-member cap and is therefore analysed — spec §6 bounds `MAX_PAYLOAD_BYTES` by bytes *analysed* per sample, and a member rule 7 rejected is never read. The declared size is charged rather than the 4 bytes the head probe reads: conservative, since a hostile header can only make the cap bite sooner.
 9. Read the member's head with `archive.open(info).read(4)` (a streaming 4-byte probe, no full inflate) inside `try`; on failure count it in `members_skipped` and append the exception name to `errors`.
 10. Union `native_lib_names(info.filename, head)` into the native set.
 11. `info.file_size == 0` contributes nothing further (no dex parse, no error).
