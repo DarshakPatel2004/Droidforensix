@@ -128,11 +128,14 @@ class TestSchemeModel:
         assert {s.cipher for s in schemes} == {"aes-cbc", "aes-ecb", "xor", "rc4"}
         assert all(s.seed == "seed" for s in schemes)
 
-    def test_single_byte_xor_is_256_seed_independent_candidates(self):
+    def test_single_byte_xor_excludes_the_identity_key(self):
+        # 255 keys, not 256: key 0 is the identity - "decrypting" with it returns the
+        # ciphertext, which is how an already-plaintext JSON member was reported as a
+        # recovery. A no-op is not a candidate (phase-1 plan, weak-class hardening).
         schemes = list(single_byte_xor_schemes())
-        assert len(schemes) == 256
+        assert len(schemes) == 255
         assert all(s.cipher == "xor" and s.xor_mode == "byte" for s in schemes)
-        assert {int(s.seed) for s in schemes} == set(range(256))
+        assert {int(s.seed) for s in schemes} == set(range(1, 256))
 
 
 def _rc4_reference(key: bytes, data: bytes) -> bytes:
