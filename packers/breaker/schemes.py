@@ -249,8 +249,14 @@ def matrix_schemes(seed: str, provenance: str) -> Iterator[Scheme]:
 
 
 def single_byte_xor_schemes() -> Iterator[Scheme]:
-    """256 seed-independent XOR keys; tried after the seed-derived candidates."""
-    for byte in range(256):
+    """255 seed-independent XOR keys; tried after the seed-derived candidates.
+
+    Key 0 is excluded: XOR with 0 is the identity, so "decrypting" with it returns the
+    ciphertext unchanged. That reported already-plaintext members (a JSON blob validates
+    with no decryption at all) as recoveries, which is the weak class phase 1's sweep
+    recorded as its first hardening candidate.
+    """
+    for byte in range(1, 256):
         yield Scheme(
             seed=str(byte),
             cipher="xor",
