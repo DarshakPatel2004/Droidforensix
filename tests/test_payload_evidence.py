@@ -1,10 +1,16 @@
 """Unit tests for analysis/payload_evidence.py (spec 2026-10-16)."""
 import io
 import zipfile
+from pathlib import Path
 
 import pytest
 
 from analysis import payload_evidence as pe
+
+ROOT = Path(__file__).resolve().parent.parent
+# A small real app APK: its binary AndroidManifest.xml is the positive path for the AXML
+# parse plus the permission regex. The corpus is untracked, so absent means skip.
+SAMPLE_APK = ROOT / "samples" / "legitimate" / "org.fdroid.fdroid.privileged.apk"
 
 
 def _zip(members: dict[str, bytes]) -> bytes:
@@ -23,6 +29,36 @@ def test_native_lib_names_matches_lib_path_so_suffix_and_elf_magic():
     assert pe.native_lib_names("res/drawable/icon.png", b"\x89PNG") == []
 
 
+def test_native_lib_names_matches_a_nested_lib_directory():
+    # The spec says "members under lib/", not "at the archive root": a packer that hides
+    # its libraries under assets/plugins/lib/ must still be counted.
+    assert pe.native_lib_names("assets/plugins/lib/x.xyz", b"") == ["assets/plugins/lib/x.xyz"]
+
+
+def test_native_lib_names_ignores_directory_entries():
+    # A ZIP directory entry (trailing slash) is not a library. Counting it would put a
+    # bare directory name - "lib/arm64-v8a/" - into the evidence instead of nothing.
+    assert pe.native_lib_names("lib/arm64-v8a/", b"") == []
+    assert pe.native_lib_names("assets/", b"") == []
+
+
+@pytest.mark.parametrize("name", [
+    "lib/arm64-v8a/liblcfw.so",
+    "lib/arm64-v8a/liblixhokfsmav.so",
+    "lib/armeabi-v7a/liblcfw.so",
+    "lib/armeabi-v7a/liblixhokfsmav.so",
+])
+def test_native_lib_names_keeps_the_measured_corpus_names(name):
+    # Four of the six distinct native names in the recorded A/B evidence, by path.
+    assert pe.native_lib_names(name, b"") == [name]
+
+
+def test_native_lib_names_keeps_the_measured_magic_only_names():
+    # The other two were caught by the ELF magic alone, so the magic branch must stay.
+    assert pe.native_lib_names("arm64-v8a", b"\x7fELFrest") == ["arm64-v8a"]
+    assert pe.native_lib_names("armeabi-v7a", b"\x7fELFrest") == ["armeabi-v7a"]
+
+
 def test_class_count_from_dex_rejects_undecodable_bytes():
     with pytest.raises(Exception):
         pe.class_count_from_dex(b"not a dex at all")
@@ -31,6 +67,19 @@ def test_class_count_from_dex_rejects_undecodable_bytes():
 def test_permissions_from_binary_manifest_rejects_non_axml():
     with pytest.raises(Exception):
         pe.permissions_from_binary_manifest(b"not xml")
+
+
+@pytest.mark.skipif(not SAMPLE_APK.exists(), reason="no sample APK on this machine")
+def test_permissions_from_binary_manifest_reads_a_real_binary_manifest():
+    # The negative test above only proves the parser rejects junk. This is the positive
+    # path on real AXML bytes - AXMLPrinter then the regex then sorted(set(...)) - which
+    # only the opt-in corpus test covered before.
+    with zipfile.ZipFile(SAMPLE_APK) as archive:
+        data = archive.read("AndroidManifest.xml")
+    assert pe.permissions_from_binary_manifest(data) == [
+        "android.permission.DELETE_PACKAGES",
+        "android.permission.INSTALL_PACKAGES",
+    ]
 
 
 def test_collect_ignores_payloads_without_zip_magic():
@@ -206,6 +255,17 @@ def test_merge_records_provenance_even_when_no_signal_was_found():
 def test_merge_is_idempotent():
     once = pe.merge_evidence(_extraction(), EVIDENCE)
     assert pe.merge_evidence(once, EVIDENCE) == once
+
+
+def test_merge_rejects_a_malformed_evidence_record():
+    # A record missing a signal key is a collector bug. Fail with a message naming the
+    # key instead of a bare KeyError: the pipeline guard catches the exception and logs
+    # the reason, so the message is what the operator reads. ``.get()`` defaults were
+    # rejected in review - silently merging nothing would hide the bug.
+    with pytest.raises(ValueError, match="native_libs"):
+        pe.merge_evidence(_extraction(), {"class_count": 1, "permissions": []})
+    with pytest.raises(ValueError, match="class_count, permissions, native_libs"):
+        pe.merge_evidence(_extraction(), {"payloads": 1})
 
 
 def test_merge_keeps_existing_natives_and_other_manifest_keys():

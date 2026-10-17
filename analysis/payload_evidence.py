@@ -30,6 +30,7 @@ HEAD_PROBE_BYTES = 4  # enough to sniff the ELF magic without inflating a member
 DEX_SUFFIX = ".dex"
 MANIFEST_SUFFIX = "androidmanifest.xml"
 PERMISSION_RE = re.compile(r'<uses-permission[^>]*android:name="([^"]+)"')
+LIB_DIR_RE = re.compile(r"(?:^|/)lib/")  # a lib/ path component, not only a leading one
 
 
 def class_count_from_dex(data: bytes) -> int:
@@ -49,12 +50,15 @@ def permissions_from_binary_manifest(data: bytes) -> list[str]:
 def native_lib_names(member_name: str, head: bytes) -> list[str]:
     """Return ``[member_name]`` when the member is a native library, else ``[]``.
 
-    Native means a path under ``lib/`` (case-insensitive), a name ending in
-    ``.so``, or a head whose first bytes are the ELF magic. The magic check
-    catches stripped libraries renamed without an extension.
+    Native means a path with a ``lib/`` component (case-insensitive), a name ending in
+    ``.so``, or a head whose first bytes are the ELF magic. The magic check catches
+    stripped libraries renamed without an extension. A directory entry (trailing slash)
+    is a container, not a library.
     """
     lowered = member_name.lower()
-    if lowered.startswith("lib/") or lowered.endswith(".so") or head[:4] == ELF_MAGIC:
+    if lowered.endswith("/"):
+        return []
+    if LIB_DIR_RE.search(lowered) or lowered.endswith(".so") or head[:4] == ELF_MAGIC:
         return [member_name]
     return []
 
@@ -227,6 +231,22 @@ def collect_payload_evidence(
     return tally.record()
 
 
+_EVIDENCE_SIGNAL_KEYS = ("class_count", "permissions", "native_libs")
+
+
+def _require_signal_keys(evidence: dict) -> None:
+    """Fail fast with a message naming what is missing; the pipeline guard logs it.
+
+    ``.get()`` defaults were rejected in review: a record missing a key is a collector
+    bug, and merging nothing silently would hide it.
+    """
+    missing = [key for key in _EVIDENCE_SIGNAL_KEYS if key not in evidence]
+    if missing:
+        raise ValueError(
+            "recovered evidence record is missing required keys: " + ", ".join(missing)
+        )
+
+
 def merge_evidence(extraction: dict, evidence: dict | None) -> dict:
     """Additively merge recovered-payload ``evidence`` into ``extraction`` (spec 4.3).
 
@@ -244,6 +264,7 @@ def merge_evidence(extraction: dict, evidence: dict | None) -> dict:
     """
     if not evidence:
         return dict(extraction)
+    _require_signal_keys(evidence)
     merged = dict(extraction)
     if evidence["class_count"]:
         merged["decompiled_classes"] = max(
