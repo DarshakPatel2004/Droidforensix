@@ -51,7 +51,7 @@ Inputs a person running this on a packed APK will hit that the spec implies but 
   - `collect_payload_evidence(payloads: Sequence[bytes], *, max_payload_bytes: int = MAX_PAYLOAD_BYTES, max_member_bytes: int = MAX_MEMBER_BYTES, max_dex_members: int = MAX_DEX_MEMBERS, budget_s: float = EVIDENCE_BUDGET_S) -> dict` — the record documented in spec §8:
     `{"payloads": int, "members_scanned": int, "members_skipped": int, "class_count": int, "permissions": [str], "native_libs": [str], "truncated": "none"|"bytes"|"members"|"budget", "errors": [str]}`, with `permissions`/`native_libs` sorted and `class_count` the sum over parsed dex members. `max_dex_members` is applied per payload; `max_payload_bytes` per sample.
 
-- [ ] **Step 1: Write the failing helper tests**
+- [x] **Step 1: Write the failing helper tests**
 
 Create `tests/test_payload_evidence.py`:
 
@@ -91,12 +91,12 @@ def test_permissions_from_binary_manifest_rejects_non_axml():
         pe.permissions_from_binary_manifest(b"not xml")
 ```
 
-- [ ] **Step 2: Run the helper tests to verify they fail**
+- [x] **Step 2: Run the helper tests to verify they fail**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_payload_evidence.py -v`
 Expected: FAIL — `ModuleNotFoundError: No module named 'analysis.payload_evidence'`.
 
-- [ ] **Step 3: Implement the helpers**
+- [x] **Step 3: Implement the helpers**
 
 Create `analysis/payload_evidence.py`. Module docstring points at the spec path and says evidence is static, bounded, and never raises from `collect_payload_evidence`. Define the four constants and:
 
@@ -118,12 +118,12 @@ def permissions_from_binary_manifest(data: bytes) -> list[str]:
 
 `native_lib_names(member_name, head)` is a one-line predicate returning `[member_name]` or `[]`, per the Interfaces block. Use `logging.getLogger(__name__)` for the module logger.
 
-- [ ] **Step 4: Run the helper tests to verify they pass**
+- [x] **Step 4: Run the helper tests to verify they pass**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_payload_evidence.py -v`
 Expected: 3 passed. (androguard logs through loguru; the `DEX`/`AXMLPrinter` debug lines are noise, not failures.)
 
-- [ ] **Step 5: Write the failing collector tests**
+- [x] **Step 5: Write the failing collector tests**
 
 Append to `tests/test_payload_evidence.py`:
 
@@ -236,12 +236,12 @@ def test_collect_is_deterministic():
     assert first == pe.collect_payload_evidence([payload])
 ```
 
-- [ ] **Step 6: Run the collector tests to verify they fail**
+- [x] **Step 6: Run the collector tests to verify they fail**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_payload_evidence.py -v`
 Expected: FAIL — `AttributeError: module 'analysis.payload_evidence' has no attribute 'collect_payload_evidence'`.
 
-- [ ] **Step 7: Implement `collect_payload_evidence`**
+- [x] **Step 7: Implement `collect_payload_evidence`**
 
 Signature and return schema exactly as the Interfaces block. The algorithm, in this order (each rule is a decision the tests pin):
 
@@ -260,12 +260,12 @@ Signature and return schema exactly as the Interfaces block. The algorithm, in t
 13. A member whose lowercased name ends in `androidmanifest.xml`: read it fully and union `permissions_from_binary_manifest(data)`, appending any exception to `errors`.
 14. Finish with `permissions`/`native_libs` sorted and `class_count` summed.
 
-- [ ] **Step 8: Run the collector tests to verify they pass**
+- [x] **Step 8: Run the collector tests to verify they pass**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_payload_evidence.py -v`
 Expected: all pass.
 
-- [ ] **Step 9: Commit**
+- [x] **Step 9: Commit**
 
 ```powershell
 git add analysis/payload_evidence.py tests/test_payload_evidence.py
@@ -289,7 +289,7 @@ git commit -m "payload-evidence: collect classes, permissions and natives from a
   - `recovered_payload_evidence = evidence` — written whenever `evidence` is truthy, even when no signal was found;
   - falsy `evidence` (`{}`/`None`) returns `extraction` unchanged.
 
-- [ ] **Step 1: Write the failing merge tests**
+- [x] **Step 1: Write the failing merge tests**
 
 Append to `tests/test_payload_evidence.py`:
 
@@ -361,21 +361,21 @@ def test_merge_is_idempotent():
     assert pe.merge_evidence(once, EVIDENCE) == once
 ```
 
-- [ ] **Step 2: Run the merge tests to verify they fail**
+- [x] **Step 2: Run the merge tests to verify they fail**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_payload_evidence.py -k merge -v`
 Expected: FAIL — no attribute `merge_evidence`.
 
-- [ ] **Step 3: Implement `merge_evidence`**
+- [x] **Step 3: Implement `merge_evidence`**
 
 Add to `analysis/payload_evidence.py`, with a docstring naming the spec's §4.3 merge policy (additive, `max` for the class count, sorted unions) and the fallback note from §4.4. Shallow-copy `extraction`, copy `manifest_info` before editing it, and gate each field write on the evidence value being truthy, per the Interfaces block.
 
-- [ ] **Step 4: Run all module tests to verify they pass**
+- [x] **Step 4: Run all module tests to verify they pass**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_payload_evidence.py -v`
 Expected: all pass.
 
-- [ ] **Step 5: Commit**
+- [x] **Step 5: Commit**
 
 ```powershell
 git add analysis/payload_evidence.py tests/test_payload_evidence.py
@@ -398,7 +398,7 @@ git commit -m "payload-evidence: merge payload evidence into extraction, additiv
   - `run_master_key_preprocess` puts that record on the returned report under `"recovered_evidence"` (only when present); misses, `SKIPPED` reports and dispatcher recoveries have no such key.
   - The pipeline merges it into `extraction` before result assembly.
 
-- [ ] **Step 1: Write the failing step 0 tests**
+- [x] **Step 1: Write the failing step 0 tests**
 
 Add to `tests/test_step0_master_key.py` (reusing `packed_triage`, `_encrypt_like_myg0n`, `_write_apk`; the existing `_kit_payload()` is unchanged):
 
@@ -497,25 +497,25 @@ recovery and no evidence key; padded the outer member is 1328 B and the run reac
 `b"\x00" * 1024` filler, which is why no earlier test hit this. The padding changes no asserted
 value.
 
-- [ ] **Step 2: Run the step 0 tests to verify they fail**
+- [x] **Step 2: Run the step 0 tests to verify they fail**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_step0_master_key.py -v`
 Expected: the five new tests FAIL on a missing `recovered_evidence` key; the nine existing tests still pass.
 
-- [ ] **Step 3: Refactor `_breaker_second_chance` to materialize once and collect evidence**
+- [x] **Step 3: Refactor `_breaker_second_chance` to materialize once and collect evidence**
 
 Materialize every hit into a list of `(hit, payload)` pairs (skipping `None`), then use that list for the existing write loop (the `kit.zip`-wins `break` and the one-non-ZIP-file rule stay exactly as they are). Analyze `[payload for hit, payload in materialized if hit.validation.startswith("zip")]` through `collect_payload_evidence`, and add `"recovered_evidence": record` to the RECOVERED return only when `record["payloads"] > 0`. Import both functions at module level from `analysis.payload_evidence`.
 
-- [ ] **Step 4: Surface the record from `run_master_key_preprocess`**
+- [x] **Step 4: Surface the record from `run_master_key_preprocess`**
 
 After building the report dict, add the key when `effective.get("recovered_evidence")` is truthy. Do not add it otherwise (misses, `SKIPPED`, dispatcher recoveries). Add `"recovered_evidence"` to the docstring's returned-dict listing with the one-line contract (additive evidence from a breaker ZIP recovery; never key material).
 
-- [ ] **Step 5: Run the step 0 tests to verify they pass**
+- [x] **Step 5: Run the step 0 tests to verify they pass**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_step0_master_key.py -v`
 Expected: all 14 pass.
 
-- [ ] **Step 6: Add the merge call to the pipeline**
+- [x] **Step 6: Add the merge call to the pipeline**
 
 In `analysis/pipeline.py`, extend the existing import block:
 
@@ -547,12 +547,12 @@ Then insert immediately after the enrichment block that ends at line 479:
 
 No new metric event, and no other pipeline change: line 636/773 (`manifest = extraction.get("manifest_info", {})`) and the result assemblies already read the merged values.
 
-- [ ] **Step 7: Verify imports and the whole fast suite**
+- [x] **Step 7: Verify imports and the whole fast suite**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/test_module_imports.py -v` then `.venv\Scripts\python.exe -m pytest tests/ -m "not slow"`
 Expected: import test passes; suite green (Task 5 Step 4 is the behavioral check for this call site — there is no fast test that executes `run_pipeline`).
 
-- [ ] **Step 8: Commit**
+- [x] **Step 8: Commit**
 
 ```powershell
 git add analysis/step0_master_key.py analysis/pipeline.py tests/test_step0_master_key.py
@@ -584,7 +584,7 @@ and, end to end through the real breaker on `PENDRIVE DATA/PENDRIVE DATA/apk fra
 
 `analysis/recovered/` and `PENDRIVE DATA/` are gitignored, so these tests skip when the fixtures are absent (repo convention).
 
-- [ ] **Step 1: Write the failing opt-in tests**
+- [x] **Step 1: Write the failing opt-in tests**
 
 Append to `tests/test_breaker_corpus.py` (import `collect_payload_evidence` from `analysis.payload_evidence`):
 
@@ -663,17 +663,17 @@ def test_pnb_one_activation_evidence_end_to_end(tmp_path, monkeypatch):
 
 Class counts are asserted as a floor, not an exact value: androguard's DEX enumeration is the variable, and the point of the test is that real recovered apps yield real evidence.
 
-- [ ] **Step 2: Run them to verify they fail, then pass**
+- [x] **Step 2: Run them to verify they fail, then pass**
 
 Run: `$env:DFX_BREAKER_ACCEPTANCE=1; .venv\Scripts\python.exe -m pytest tests/test_breaker_corpus.py -v -k "evidence"`
 Expected first: FAIL on the missing import or a wrong signature; after Task 1 is in place: PASS. A `truncated != "none"` failure means the caps or the accounting are wrong — fix the collector, not the assertion.
 
-- [ ] **Step 3: Confirm the fast suite still skips them**
+- [x] **Step 3: Confirm the fast suite still skips them**
 
 Run: `.venv\Scripts\python.exe -m pytest tests/ -m "not slow"`
 Expected: green, with the new tests deselected.
 
-- [ ] **Step 4: Commit**
+- [x] **Step 4: Commit**
 
 ```powershell
 git add tests/test_breaker_corpus.py
