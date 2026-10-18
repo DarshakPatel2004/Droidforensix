@@ -4,6 +4,14 @@ Status: **final, 23-Sep-2026**. Every number below is verified directly against
 `evaluation/validation_359/validation_report.json` + `predictions.json`
 (gitignored artifacts; regenerate with the command at the bottom).
 
+> **Artifact provenance (2026-10-18).** The artifacts named above have since been
+> overwritten, so they no longer back the 377-row figures below.
+> `validation_report.json` today is the 24-Sep **dev-side** run over the old
+> 377-row manifest (264 rows, 0.3598) and `predictions.json` is an **incomplete
+> 6-Oct full-corpus** run (265 rows, 0.3547). The 23-Sep run's per-sample
+> predictions no longer exist, and the manifest itself was cut to 323 rows on
+> 6-Oct (`ff4b752`). See `evaluation/DEV_BASELINE.md` for the current anchor.
+
 ## Protocol
 
 - Runner: `evaluation/run_validation_359.py`; dataset: `ground_truth_all.csv`
