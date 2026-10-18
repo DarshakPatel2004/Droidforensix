@@ -180,6 +180,9 @@ typed diagnostics instead of hiding them.
   not reproducible from the current 323-row manifest; the newest self-consistent baseline
   is `predictions.json` + `validation_report.partial.json` (6-Oct, 265 rows, accuracy
   0.3547), and that is what the delta is computed against.
+  *(2026-10-18: the anchor has since moved. A fresh dev-side baseline on the current
+  manifest now backs new A/Bs - see `evaluation/DEV_BASELINE.md` - and this phase's
+  recorded delta keeps its 6-Oct anchor as a matter of record.)*
 - **Corpus-level claims are labelled as such.** The evidence table in section 1 is read
   from local `hit.json` files, not extrapolated.
 
@@ -315,4 +318,9 @@ enrichment.
 - Nested-members analysis, `resources.arsc`, and smali/API-call-level evidence.
 - Recalibrating signature bands against real app sizes rather than stub sizes.
 - Resolving the stale evaluation baseline (`validation_report.json`, 24-Sep) so future
-  deltas are not anchored to a different manifest revision.
+  deltas are not anchored to a different manifest revision. **Resolved 2026-10-18:**
+  the anchor is the dev-side baseline in `evaluation/DEV_BASELINE.md` (228 rows on the
+  current 323-row manifest; command, code revision and result recorded there), which
+  also tabulates what each historical artifact actually is. The stale split membership
+  is documented in `evaluation/HOLDOUT_SPLIT.md` and pinned by
+  `tests/evaluation/test_family_dev_split.py`.

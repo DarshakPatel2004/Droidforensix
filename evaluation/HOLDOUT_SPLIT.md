@@ -65,3 +65,18 @@ any declared tuning milestone.
 | modern_eval | 44 | 19 |
 | pendrive | 13 | 5 |
 | **total** | **264** | **113** |
+
+## Effective membership after the 6-Oct corpus offload
+
+Membership above is frozen against the 23-Sep 377-row manifest. The 6-Oct
+offload (`ff4b752`) moved 54 `modern_eval` rows to `_offload/` and rebuilt
+`ground_truth_all.csv` to 323 rows, so 54 frozen rows no longer exist:
+**effective dev = 228, holdout = 95** (36 dev + 18 holdout rows offloaded).
+
+`filter_by_split` intersects membership with the manifest **silently**, so the
+shrink is invisible at run time. `tests/evaluation/test_family_dev_split.py`
+pins the effective counts and the 54-row drift so the next divergence fails
+loudly; if the corpus moves again, update those pins and
+`evaluation/DEV_BASELINE.md` together. Membership itself is deliberately **not**
+re-rolled: regenerating with seed 42 would move previously-sealed rows between
+sides, which is exactly what this split exists to prevent.
