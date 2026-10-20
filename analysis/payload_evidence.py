@@ -42,7 +42,12 @@ def class_count_from_dex(data: bytes) -> int:
 def permissions_from_binary_manifest(data: bytes) -> list[str]:
     """Sorted unique ``<uses-permission>`` names in a binary (AXML) manifest."""
     from androguard.core.axml import AXMLPrinter
-    xml = AXMLPrinter(data).get_xml()  # raises on non-AXML input
+    try:
+        xml = AXMLPrinter(data).get_xml()
+    except Exception as exc:  # androguard fails with TypeError on non-AXML input
+        raise ValueError("not a binary (AXML) manifest") from exc
+    if xml is None:
+        raise ValueError("not a binary (AXML) manifest")
     text = xml.decode("utf-8", "ignore") if isinstance(xml, (bytes, bytearray)) else str(xml)
     return sorted(set(PERMISSION_RE.findall(text)))
 
