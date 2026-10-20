@@ -32,7 +32,7 @@ import sys
 import zipfile
 from collections import Counter
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set
+from typing import Any, Dict, List, Set
 
 logging.disable(logging.CRITICAL)  # androguard DEBUG spam
 
@@ -53,6 +53,8 @@ from analysis.step5_c2_extraction import (
     is_benign_url,
     parse_url,
 )
+
+logger = logging.getLogger(__name__)
 
 GT_CSV = ROOT / "ground_truth_all.csv"
 PREDICTIONS_JSON = ROOT / "evaluation" / "validation_359_fixed" / "predictions.json"
@@ -139,7 +141,8 @@ def _opcode_trigrams(raw_dex: "DEX") -> set:
                 continue
             try:
                 ops = [ins.get_op_value() for ins in code.get_bc().get_instructions()]
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in _opcode_trigrams: %s", exc)
                 continue
             for i in range(len(ops) - 2):
                 trigrams.add((ops[i] << 16) | (ops[i + 1] << 8) | ops[i + 2])
@@ -168,8 +171,8 @@ def extract_sample_features(apk_path: str) -> Dict[str, Any]:
             out["native_libs"] = sorted(
                 n.split("/")[-1] for n in a.get_files() if n.endswith(".so")
             )
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in extract_sample_features: %s", exc)
         
         # Permissions
         try:
@@ -410,8 +413,6 @@ def _accuracy(features: Dict[str, Any], signatures: List[Any]) -> Dict[str, Any]
     specific_total = 0
     specific_correct = 0
     evaluated = 0
-    flipped_correct = 0  # samples that were correct with baseline and lost it
-    flipped_wrong = 0  # samples that were wrong and became correct
     try:
         for sha, f in features.items():
             if f.get("parse_error"):

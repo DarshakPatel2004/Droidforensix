@@ -19,8 +19,8 @@ Usage:
 
 import logging
 from pathlib import Path
-from typing import Dict, Any, Optional
-from dataclasses import dataclass, asdict
+from typing import Dict, Any, List, Optional
+from dataclasses import dataclass
 from datetime import datetime
 import hashlib
 import json
@@ -180,7 +180,6 @@ class APKProcessor:
             }
             
             # Extract network indicators from suspicious strings
-            import re
             for item in androguard_data['suspicious_strings']:
                 value = item['value']
                 
@@ -231,7 +230,6 @@ class APKProcessor:
         logger.info("[Step 3/7] Performing entropy analysis...")
         
         try:
-            import struct
             import zipfile
             
             entropy_data = {
@@ -293,7 +291,6 @@ class APKProcessor:
         logger.info("[Step 4/7] Detecting encoding schemes...")
         
         try:
-            import base64
             
             encoding_data = {
                 'base64_candidates': [],

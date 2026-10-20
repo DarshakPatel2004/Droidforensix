@@ -44,7 +44,7 @@ from unicorn.x86_const import (UC_X86_REG_RSP, UC_X86_REG_RAX, UC_X86_REG_RDI,
                                UC_X86_REG_RCX)
 from unicorn.arm_const import (UC_ARM_REG_SP, UC_ARM_REG_R0, UC_ARM_REG_R1,
                                UC_ARM_REG_R2, UC_ARM_REG_R3, UC_ARM_REG_PC,
-                               UC_ARM_REG_LR)
+                               UC_ARM_REG_LR, UC_ARM_REG_R7)
 from unicorn.arm64_const import (UC_ARM64_REG_SP, UC_ARM64_REG_X0, UC_ARM64_REG_X1,
                                  UC_ARM64_REG_X2, UC_ARM64_REG_X3,
                                  UC_ARM64_REG_PC, UC_ARM64_REG_LR)
@@ -1360,7 +1360,7 @@ class Emulator:
                 else:
                     uc_.reg_write(X0, 0)
             else:
-                nr = uc_.reg_read(R7)
+                nr = uc_.reg_read(UC_ARM_REG_R7)
                 a1 = uc_.reg_read(UC_ARM_REG_R1)
                 if nr == 192:  # mmap2
                     uc_.reg_write(R0, self.bump((a1 + 4095) & ~4095 or 4096))

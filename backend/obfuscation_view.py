@@ -11,7 +11,6 @@ Transforms the raw Step 8 result into a dashboard-friendly structure with:
 import json
 import logging
 import re
-from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 from backend.config import settings
@@ -81,7 +80,8 @@ def _load_obfuscation_result(sample_id: str) -> Optional[Dict[str, Any]]:
     try:
         with open(path, "r", encoding="utf-8") as f:
             return json.load(f)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in _load_obfuscation_result: %s", exc)
         return None
 
 

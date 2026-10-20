@@ -1,6 +1,5 @@
 """Unit tests for backend/code_analysis.py"""
 
-import pytest
 
 from backend.code_analysis import (
     _parse_method_bodies,

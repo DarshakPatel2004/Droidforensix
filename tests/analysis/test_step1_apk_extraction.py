@@ -3,7 +3,6 @@
 import zipfile
 from pathlib import Path
 
-import pytest
 
 from analysis.step1_apk_extraction import (
     classify_extraction_status,

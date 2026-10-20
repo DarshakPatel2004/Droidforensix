@@ -10,11 +10,14 @@ jadx is used opportunistically (if installed) to obtain call-site ids/keys;
 dex-only fallbacks are provided for NPStringFog key harvesting.
 """
 
+import logging
 import json
 import re
 import struct
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+
+logger = logging.getLogger(__name__)
 
 HEX_RE = re.compile(r"NPStringFog\.decode\(\"([0-9A-Fa-f]+)\"")
 GETSTRING_RE = re.compile(r"getString\((-?\d+)L?\)")
@@ -208,7 +211,8 @@ def mine_xor_callsites(sources_dir: str) -> Dict[str, str]:
     for f in src.rglob("*.java"):
         try:
             txt = f.read_text(errors="replace")
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in mine_xor_callsites: %s", exc)
             continue
         for m in XOR_CALLSITE_RE.finditer(txt):
             data, key = parse(m.group(2)), parse(m.group(3))
@@ -252,7 +256,8 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
             for ct in cts:
                 try:
                     decoded.setdefault(npstringfog_decode(ct, key), dn)
-                except Exception:
+                except Exception as exc:
+                    logger.warning("Suppressed error in deobfuscate_strings: %s", exc)
                     continue
             break
 
@@ -271,7 +276,8 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
         for f in src.rglob("*.java"):
             try:
                 txt = f.read_text(errors="replace")
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in deobfuscate_strings: %s", exc)
                 continue
             found = GETSTRING_RE.findall(txt)
             if found:
@@ -285,7 +291,8 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
                         s = paranoid_get_string(cid, [chunk_set])
                         ok[str(cid)] = s
                         break
-                    except Exception:
+                    except Exception as exc:
+                        logger.warning("Suppressed error in deobfuscate_strings: %s", exc)
                         continue
             clean = {k: v for k, v in ok.items() if v.isprintable()}
             if clean:

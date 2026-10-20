@@ -14,8 +14,7 @@ Credentials are read from environment variables:
 import json
 import os
 import time
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
 import requests
 from requests.auth import HTTPBasicAuth

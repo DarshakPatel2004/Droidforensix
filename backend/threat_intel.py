@@ -22,7 +22,6 @@ import os
 import re
 import socket
 import time
-from collections import defaultdict
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.request import urlopen, Request
@@ -125,7 +124,8 @@ def _geo_lookup(ip: str) -> Optional[Dict[str, Any]]:
             'lon': response.location.longitude,
             'isp': response.traits.isp or '',
         }
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in _geo_lookup: %s", exc)
         return None
 
 
@@ -531,7 +531,8 @@ def _load_geo_cache() -> Dict[str, Any]:
     try:
         with open(geo_path, 'r', encoding='utf-8') as f:
             return json.load(f)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in _load_geo_cache: %s", exc)
         return {}
 
 
@@ -816,6 +817,53 @@ def to_stix(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]:
             'labels': [c2.get('classification', ''), c2.get('status', ''), 'c2'],
         })
     return bundle
+
+
+# Domains and IPs come from the analysed malware, so they are format-checked before
+# they go into a rule: a quote or semicolon in a domain would break out of the rule.
+_RULE_DOMAIN_RE = re.compile(r'^[A-Za-z0-9-]+(\.[A-Za-z0-9-]+)+$')
+_SURICATA_SID_BASE = 1000000  # Suricata reserves sids below 1,000,000 for its own rules
+
+
+def _is_safe_domain(value: str) -> bool:
+    return bool(_RULE_DOMAIN_RE.match(value)) and len(value) <= 253
+
+
+def _is_safe_ipv4(value: str) -> bool:
+    try:
+        return isinstance(ipaddress.ip_address(value), ipaddress.IPv4Address)
+    except ValueError:
+        return False
+
+
+def to_suricata(result: Dict[str, Any], sample_id: str) -> str:
+    """Suricata rules for this sample's non-benign C2 domains and IPv4 addresses."""
+    lines: List[str] = []
+    sid = _SURICATA_SID_BASE
+    seen = set()
+    for c2 in _export_c2s(result):
+        if c2.get('classification') == 'benign':
+            continue
+        domain = (c2.get('domain') or '').lower()
+        ip = c2.get('ip') or ''
+        if domain and _is_safe_domain(domain) and ('dns', domain) not in seen:
+            seen.add(('dns', domain))
+            lines.append(
+                f'alert dns $HOME_NET any -> any any (msg:"DroidForensix C2 domain {domain}"; '
+                f'dns.query; content:"{domain}"; nocase; endswith; classtype:trojan-activity; '
+                f'sid:{sid}; rev:1; metadata:sample_sha256 {sample_id};)'
+            )
+            sid += 1
+        elif ip and _is_safe_ipv4(ip) and ('ip', ip) not in seen:
+            seen.add(('ip', ip))
+            lines.append(
+                f'alert ip $HOME_NET any -> {ip} any (msg:"DroidForensix C2 address {ip}"; '
+                f'classtype:trojan-activity; sid:{sid}; rev:1; metadata:sample_sha256 {sample_id};)'
+            )
+            sid += 1
+    if not lines:
+        return f'# DroidForensix: no malicious or suspicious C2 indicators for {sample_id}\n'
+    return '\n'.join(lines) + '\n'
 
 
 def to_yara(result: Dict[str, Any], sample_id: str) -> str:

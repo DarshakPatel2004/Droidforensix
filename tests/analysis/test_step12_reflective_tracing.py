@@ -1,4 +1,3 @@
-import pytest
 from analysis.step12_reflective_tracing import (
     find_reflective_calls,
     resolve_reflection_targets,

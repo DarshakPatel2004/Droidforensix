@@ -1,4 +1,3 @@
-import pytest
 from analysis.step5_c2_extraction import (
     extract_c2_infrastructure,
     classify_ip,
@@ -649,7 +648,7 @@ def test_reputation_enrichment_boosts_listed_domain(tmp_path, monkeypatch):
         result = s5.enrich_with_reputation([dict(record)], cache_dir)
         enriched = result[0]
         assert enriched["reputation"]["listed"] is True
-        assert enriched["confidence"] == 1.0, f"0.7 + 0.8 should cap at 1.0"
+        assert enriched["confidence"] == 1.0, "0.7 + 0.8 should cap at 1.0"
         assert enriched["reputation_boost"] == "urlhaus_listed"
     finally:
         monkeypatch.setattr(s5, "C2_REPUTATION_URLHAUS_MAX_RECORDS", original_cap)

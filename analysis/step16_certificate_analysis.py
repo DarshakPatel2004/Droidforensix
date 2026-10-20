@@ -7,13 +7,12 @@ checks against known-bad certificate databases,
 flags self-signed vs organization-signed.
 """
 
-import hashlib
 import json
 import logging
 import zipfile
 from datetime import datetime
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Dict, Any, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -98,7 +97,8 @@ def parse_certificate_from_apk(apk_path: str) -> Optional[Dict[str, Any]]:
             if not cert_files:
                 return None
             cert_data = zf.read(cert_files[0])
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in parse_certificate_from_apk: %s", exc)
         return None
 
     try:

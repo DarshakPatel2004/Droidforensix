@@ -158,8 +158,8 @@ def extract_native_jni_symbols(apk_path: str) -> Set[str]:
                                 for sym in section.iter_symbols():
                                     if sym.name and sym.name.startswith("Java_"):
                                         symbols.add(sym.name)
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.warning("Suppressed error in extract_native_jni_symbols: %s", exc)
                 finally:
                     try:
                         import os
@@ -174,7 +174,6 @@ def extract_native_jni_symbols(apk_path: str) -> Set[str]:
 def get_jni_family_signature(symbols: Set[str]) -> Optional[str]:
     """Map JNI symbols to known family signatures (from family_id.py NATIVE_API_PATTERNS)."""
     # BaseBridge: libandroidterm.so with fork/ioctl/open/close/dup2
-    basebridge_jni = {"Java_", "fork", "ioctl", "open", "close", "dup2"}
     if any("androidterm" in s for s in symbols) or \
        any(s in symbols for s in ["fork", "ioctl", "open", "close", "dup2"]):
         return "BaseBridge"
@@ -387,8 +386,8 @@ def is_campaign_host(value: str) -> bool:
 
         if is_tier3(value):
             return False
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in is_campaign_host: %s", exc)
     return True
 
 
@@ -399,7 +398,8 @@ def extract_hosts_from_dex_bytes(raw: bytes) -> Set[str]:
     for url in URL_RE.findall(text):
         try:
             host = urlparse(url).hostname
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in extract_hosts_from_dex_bytes: %s", exc)
             continue
         if host:
             candidates.add(host.lower().rstrip("."))
@@ -513,7 +513,7 @@ def _load_cached_features(sample_id: str) -> Dict[str, Any]:
     """Load all cached features for a sample."""
     gap_cache = _load_gap_features_cache()
     obf_cache = _load_obfuscation_cache()
-    cert_profiles = _load_cert_profiles()
+    _load_cert_profiles()
     
     cached: Dict[str, Any] = {}
     

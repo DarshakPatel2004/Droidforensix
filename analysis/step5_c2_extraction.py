@@ -1077,8 +1077,8 @@ def calculate_c2_confidence(parsed: dict, source_context: str, ip_legitimacy: Op
         dom = (parsed.get("domain") or "").lower()
         if dom and is_tier3(dom):
             return 0.1
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in calculate_c2_confidence: %s", exc)
     score = 0.5
 
     # Boost for valid URL structure
@@ -1250,8 +1250,8 @@ def _urlhaus_reputation_hint(domain: str, cache_dir: Path) -> Optional[dict]:
     try:
         cache_path.parent.mkdir(parents=True, exist_ok=True)
         cache_path.write_text(json.dumps(cache, indent=2), encoding="utf-8")
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in _urlhaus_reputation_hint: %s", exc)
     return result
 
 
@@ -1332,8 +1332,8 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     from analysis.step5_allowlists import is_tier3
                     if parsed.get("domain") and is_tier3(parsed["domain"]):
                         continue
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.warning("Suppressed error in extract_c2_infrastructure: %s", exc)
 
                 ip_legitimacy = None
                 if parsed["ip"]:
@@ -1392,8 +1392,8 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     from analysis.step5_allowlists import is_tier3
                     if parsed.get("domain") and is_tier3(parsed["domain"]):
                         continue
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.warning("Suppressed error in extract_c2_infrastructure: %s", exc)
 
                 ip_legitimacy = None
                 if parsed["ip"]:
@@ -1450,8 +1450,8 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     from analysis.step5_allowlists import is_tier3
                     if is_tier3(domain_lower):
                         continue
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.warning("Suppressed error in extract_c2_infrastructure: %s", exc)
 
                 confidence = round(calculate_c2_confidence(
                     {"domain": domain_lower, "ip": None, "protocol": "unknown", "port": None, "path": None, "query_params": None},

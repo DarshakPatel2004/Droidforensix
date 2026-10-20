@@ -9,14 +9,16 @@ decode success, meaningful output, and entropy alignment.
 import base64
 import binascii
 import json
+import logging
 import math
 import re
-from pathlib import Path
-from typing import Dict, List, Any, Optional, Tuple
+from typing import List, Optional, Tuple
 
 from backend.config import settings
 
 from analysis.decoding_engine import classify_entropy
+
+logger = logging.getLogger(__name__)
 
 
 class EncodingDetectionError(Exception):
@@ -258,7 +260,8 @@ def try_base64_decode(s: str) -> Optional[str]:
             return decoded.decode("utf-8")
         except UnicodeDecodeError:
             return decoded.hex()
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in try_base64_decode: %s", exc)
         return None
 
 
@@ -274,7 +277,8 @@ def try_urlsafe_base64_decode(s: str) -> Optional[str]:
             return decoded.decode("utf-8")
         except UnicodeDecodeError:
             return decoded.hex()
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in try_urlsafe_base64_decode: %s", exc)
         return None
 
 
@@ -286,7 +290,8 @@ def try_hex_decode(s: str) -> Optional[str]:
             return decoded.decode("utf-8")
         except UnicodeDecodeError:
             return decoded.hex()
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in try_hex_decode: %s", exc)
         return None
 
 

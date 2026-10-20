@@ -25,9 +25,7 @@ import os
 import zipfile
 import re
 import logging
-from pathlib import Path
-from collections import defaultdict
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Dict, List, Any, Optional
 
 from backend.elf_analyzer import ELFBreaker
 
@@ -353,7 +351,8 @@ class APKAnalyzer:
                                 
                                 if method_info['suspicious']:
                                     self.results['bytecode_methods'].append(method_info)
-                        except Exception:
+                        except Exception as exc:
+                            logger.warning("Suppressed error in analyze_bytecode_deep: %s", exc)
                             continue
             
             logger.info(f"Analyzed {len(self.results['bytecode_methods'])} interesting methods")

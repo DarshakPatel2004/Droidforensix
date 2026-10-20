@@ -123,7 +123,7 @@ def check_gap_cache():
                 keyword_counts[kw] += 1
                 samples_with_any.add(sha)
 
-    print(f"\n=== Intent Action Strings in gap_features_cache.json ===")
+    print("\n=== Intent Action Strings in gap_features_cache.json ===")
     print(f"Samples with at least one intent action string: {len(samples_with_any)} / {len(cache)}")
     print()
     for kw, count in keyword_counts.most_common():
@@ -192,7 +192,6 @@ def main():
     print("=" * 80)
 
     # Sort families by count
-    family_list = sorted(family_manifests.items(), key=lambda x: -len(set(x[0] + "_agg")))
 
     # Print families with their intent actions
     for family, data in sorted(family_manifests.items(), key=lambda x: family_counts.get(x[0], 0), reverse=True):

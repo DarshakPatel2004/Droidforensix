@@ -8,7 +8,7 @@ strings, ELF, certificate, and family clustering.
 """
 
 import logging
-from typing import Dict, List, Any
+from typing import Dict, Any
 
 logger = logging.getLogger(__name__)
 

@@ -20,7 +20,6 @@ Run: python analysis/mine_family_knowledge.py
 import collections
 import csv
 import json
-import os
 import re
 import sys
 from pathlib import Path

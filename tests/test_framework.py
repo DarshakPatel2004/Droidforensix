@@ -8,7 +8,6 @@ import pytest
 from packers import (
     KDFScheme,
     PackerFamily,
-    Verdict,
     derive_key,
     shannon_entropy,
     validate_dex,

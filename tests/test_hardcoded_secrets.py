@@ -1,4 +1,3 @@
-import pytest
 from analysis.hardcoded_secrets import (
     scan_strings,
     scan_source_files,

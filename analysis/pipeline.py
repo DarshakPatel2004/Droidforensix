@@ -24,6 +24,7 @@ from pathlib import Path
 from typing import Callable, Optional
 
 from backend.config import settings
+from analysis.custody import append_event, digest_value, file_digest
 from analysis.step1_apk_extraction import extract_apk
 from analysis.step2_string_enumeration import enumerate_strings
 from analysis.step3_encoding_detection import detect_encoding
@@ -140,8 +141,8 @@ def _emit(emitter: EventEmitter, event_type: str, data: dict):
     if emitter:
         try:
             emitter(event_type, data)
-        except Exception:
-            logger.debug("Event emitter failed for %s", event_type)
+        except Exception as exc:
+            logger.warning("Event emitter failed for %s: %s", event_type, exc)
 
 
 CACHE_META_NAME = "pipeline_meta.json"
@@ -265,6 +266,11 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
             "error_message": f"Step {step_num} ({step_name}) timed out after {timeout}s",
             "severity": "high",
         })
+        append_event(Path(work_dir) / sample_id, "step_failed", {
+            "step_number": step_num,
+            "step_name": step_name,
+            "error": f"timeout after {timeout}s",
+        })
         raise PipelineError(
             f"Step {step_num} ({step_name}) timed out after {timeout}s.\n\n"
             f"Options:\n"
@@ -280,6 +286,11 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
             "error_message": f"Step {step_num} ({step_name}): {e}",
             "severity": "high",
         })
+        append_event(Path(work_dir) / sample_id, "step_failed", {
+            "step_number": step_num,
+            "step_name": step_name,
+            "error": f"{type(e).__name__}: {e}",
+        })
         raise PipelineError(
             f"Step {step_num} ({step_name}) failed: {type(e).__name__}: {e}\n\n"
             f"Check:\n"
@@ -294,6 +305,12 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
     remaining_eta = _estimate_remaining_eta(apk_size, remaining_steps)
     progress_pct = int((step_num / TOTAL_STEPS) * 100)
 
+    append_event(Path(work_dir) / sample_id, "step_succeeded", {
+        "step_number": step_num,
+        "step_name": step_name,
+        "duration_seconds": round(step_duration, 3),
+        "output_sha256": digest_value(result),
+    })
     _emit(emitter, "step_completed", {
         "sample_id": sample_id,
         "step_number": step_num,
@@ -377,6 +394,11 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     step_duration = time.time() - step_start
     timeline["step1"] = round(step_duration, 3)
     sample_id = extraction["sample_id"]
+    append_event(Path(work_dir) / sample_id, "input_received", {
+        "apk_sha256": sample_id,
+        "apk_name": Path(apk_path).name,
+        "apk_size": apk_size,
+    })
     elapsed = time.time() - global_start
     remaining_steps = TOTAL_STEPS - step_num
     remaining_eta = _estimate_remaining_eta(apk_size, remaining_steps)
@@ -1014,6 +1036,9 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
 
     result_path = Path(work_dir) / sample_id / "pipeline_result.json"
     _save_pipeline_result(result, result_path, Path(apk_path), apk_size, stop_after, skip_steps)
+    append_event(Path(work_dir) / sample_id, "result_written", {
+        "result_sha256": file_digest(result_path),
+    })
 
     _emit(event_emitter, "analysis_complete", {
         "sample_id": sample_id,

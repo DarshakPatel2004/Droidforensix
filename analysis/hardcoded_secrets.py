@@ -14,16 +14,17 @@ Patterns cover: API keys, auth tokens, private keys, JWT, cloud service keys,
 database connection strings, OAuth secrets, and Android-specific credentials.
 """
 
+import logging
 import base64
 import binascii
 import json
-import os
 import re
 import urllib.parse
 from pathlib import Path
 from typing import Dict, List, Optional, Any, Set, Tuple
 
-from backend.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 SECRET_PATTERNS: List[Dict[str, Any]] = [
@@ -324,7 +325,8 @@ def _try_base64_decode(value: str) -> Optional[str]:
             text = decoded.decode("utf-8", errors="replace")
             if _is_printable_text(text):
                 return text[:500]
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in _try_base64_decode: %s", exc)
             continue
     return None
 
@@ -337,8 +339,8 @@ def _try_base64url_decode(value: str) -> Optional[str]:
         text = decoded.decode("utf-8", errors="replace")
         if _is_printable_text(text):
             return text[:500]
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in _try_base64url_decode: %s", exc)
     return None
 
 
@@ -349,8 +351,8 @@ def _try_hex_decode(value: str) -> Optional[str]:
         text = decoded.decode("utf-8", errors="replace")
         if _is_printable_text(text):
             return text[:500]
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in _try_hex_decode: %s", exc)
     return None
 
 
@@ -443,8 +445,8 @@ def auto_decode_secret(
             decoded = base64.b64decode(stripped)
             if len(decoded) > 20 and decoded[0] == 0x30:
                 return f"(potential headerless crypto key — {len(stripped)} chars base64)"
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in auto_decode_secret: %s", exc)
 
     # Generic: if value looks like base64, try to decode
     if BASE64_RX.match(stripped) and len(stripped) >= 16:
@@ -552,7 +554,7 @@ def scan_strings(
                 matched_value = match.group(0)
             else:
                 matched_value = match.group(min(key_group, num_groups))
-            if matched_value in seen_values:
+            if matched_value in seen_values or matched_value in notebooks:
                 continue
             validation = pattern_def.get("validation")
             if validation and not validation(match):
@@ -601,7 +603,8 @@ def scan_source_files(
         try:
             with open(file_path, "r", encoding="utf-8", errors="ignore") as f:
                 lines = f.readlines()
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in scan_source_files: %s", exc)
             continue
 
         rel_path = str(file_path.relative_to(source_path))

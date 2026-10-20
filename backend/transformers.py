@@ -12,8 +12,6 @@ import json
 import logging
 import math
 import time
-from functools import lru_cache
-from pathlib import Path
 from typing import Dict, List, Any, Optional
 
 from backend.config import settings
@@ -172,8 +170,8 @@ def load_family_index() -> dict[str, str]:
                     sid = fd.get("sample_id") or sample_dir.name
                     fam = fd.get("family", "unknown")
                     index[sid] = fam.lower()
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("Suppressed error in load_family_index: %s", exc)
     _FAMILY_INDEX_CACHE = index
     _FAMILY_INDEX_MTIME = now
     return index

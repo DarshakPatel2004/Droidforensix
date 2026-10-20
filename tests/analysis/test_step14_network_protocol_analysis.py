@@ -1,4 +1,3 @@
-import pytest
 from analysis.step14_network_protocol_analysis import (
     analyze_network_protocols,
     classify_endpoint,

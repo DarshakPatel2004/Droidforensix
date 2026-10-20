@@ -7,13 +7,16 @@ each extracted value and outputs structured JSON.
 """
 
 import json
+import logging
 import math
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 
 from backend.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class StringEnumerationError(Exception):
@@ -161,8 +164,8 @@ def extract_resource_strings(apktool_dir: str) -> List[Dict[str, Any]]:
                         "entropy": round(entropy_of_string(value), 4),
                         "source": f"res/values/strings.xml:{child.get('name', 'unknown')}",
                     })
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in extract_resource_strings: %s", exc)
 
     # Read raw/ directory files
     raw_dir = apktool_path / "res" / "raw"
@@ -183,7 +186,8 @@ def extract_resource_strings(apktool_dir: str) -> List[Dict[str, Any]]:
                         "entropy": round(shannon_entropy(data), 4),
                         "source": f"res/raw/{raw_file.name}",
                     })
-                except Exception:
+                except Exception as exc:
+                    logger.warning("Suppressed error in extract_resource_strings: %s", exc)
                     continue
 
     return results
@@ -229,10 +233,11 @@ def extract_androguard_strings(apk_path: str) -> List[Dict[str, Any]]:
                         "entropy": round(entropy_of_string(string), 4),
                         "source": "dex",
                     })
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in extract_androguard_strings: %s", exc)
                 continue
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in extract_androguard_strings: %s", exc)
     return results
 
 

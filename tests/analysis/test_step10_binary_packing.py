@@ -1,4 +1,3 @@
-import pytest
 from analysis.step10_binary_packing import (
     detect_binary_packing,
     detect_dex_in_dex,

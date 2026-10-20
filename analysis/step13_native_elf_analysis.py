@@ -45,8 +45,8 @@ def extract_elf_files(apk_path: str) -> List[Dict[str, Any]]:
                         "size": info.file_size,
                         "compress_size": info.compress_size,
                     })
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in extract_elf_files: %s", exc)
     return native_libs
 
 
@@ -110,7 +110,8 @@ def extract_symbols_from_elf(elf_path: str) -> List[str]:
                         if sym.name:
                             symbols.append(sym.name)
         return symbols
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in extract_symbols_from_elf: %s", exc)
         return []
 
 
@@ -143,8 +144,8 @@ def _build_elf_sections(elf_path: str) -> Dict[str, Dict]:
                     "size": size,
                     "entropy": round(shannon_entropy(data), 2),
                 }
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in _build_elf_sections: %s", exc)
     return sections
 
 

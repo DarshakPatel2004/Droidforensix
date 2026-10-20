@@ -67,14 +67,16 @@ def find_reflective_calls(apk_info: Dict[str, Any]) -> Dict[str, Any]:
             try:
                 text = fpath.read_text(encoding="utf-8", errors="ignore")
                 all_calls.extend(scan_source_for_reflection(text, str(fpath.relative_to(base))))
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in find_reflective_calls: %s", exc)
                 continue
 
         for fpath in src_dir.rglob("*.java"):
             try:
                 text = fpath.read_text(encoding="utf-8", errors="ignore")
                 all_calls.extend(scan_source_for_reflection(text, str(fpath.relative_to(base))))
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in find_reflective_calls: %s", exc)
                 continue
 
     resolved = resolve_reflection_targets(all_calls)

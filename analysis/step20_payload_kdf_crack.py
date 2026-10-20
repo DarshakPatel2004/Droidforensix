@@ -15,7 +15,6 @@ padding validity; decrypted ZIP/APK members are recursed up to max_depth.
 import hashlib
 import io
 import json
-import struct
 import zipfile
 import zlib
 from pathlib import Path
