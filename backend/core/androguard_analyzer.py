@@ -20,19 +20,19 @@ Returns:
     }
 """
 
-import sys
-import os
-import zipfile
-import re
 import logging
-from typing import Dict, List, Any, Optional
+import os
+import re
+import sys
+import zipfile
+from typing import Any, Dict, List, Optional
 
 from backend.elf_analyzer import ELFBreaker
 
 try:
+    from androguard.core.analysis import analysis
     from androguard.core.apk import APK
     from androguard.core.dex import DEX
-    from androguard.core.analysis import analysis
 except ImportError:
     print("ERROR: androguard not installed. Run: pip install androguard")
     sys.exit(1)

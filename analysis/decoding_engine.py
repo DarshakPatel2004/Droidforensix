@@ -8,12 +8,12 @@ Enhancements for DroidForensix:
   4. C2 indicator extraction (URLs, IPs, domains, commands, packages)
 """
 
-import logging
 import base64
 import binascii
+import logging
 import math
 import re
-from typing import Dict, List, Any, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
 from analysis.ip_validation import calculate_ip_legitimacy_score, is_reserved_ip
 
@@ -64,12 +64,12 @@ ENGLISH_DICTIONARY = {
     "with", "work", "world", "would", "year", "you", "your",
     # Java/Android-specific common tokens useful for decoded identifiers
     "abstract", "boolean", "break", "case", "catch", "char", "class", "const",
-    "continue", "default", "do", "double", "else", "enum", "extends", "false",
-    "final", "finally", "float", "for", "goto", "if", "implements", "import",
-    "instanceof", "int", "interface", "long", "native", "new", "null", "package",
+    "continue", "default", "double", "else", "enum", "extends", "false",
+    "final", "finally", "float", "goto", "implements", "import",
+    "instanceof", "int", "interface", "long", "native", "null", "package",
     "private", "protected", "short", "static", "strictfp", "super", "switch",
-    "synchronized", "this", "throw", "throws", "transient", "true", "try",
-    "void", "volatile", "while", "android", "app", "activity", "service",
+    "synchronized", "throw", "throws", "transient", "true", "try",
+    "volatile", "android", "app", "activity", "service",
     "content", "intent", "broadcast", "receiver", "provider", "manifest",
     "permission", "string", "object", "system", "context", "manager", "method",
 }

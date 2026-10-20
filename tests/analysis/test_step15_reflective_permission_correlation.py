@@ -1,8 +1,9 @@
 import pytest
+
 from analysis.step15_reflective_permission_correlation import (
-    correlate_reflective_permission_usage,
-    classify_permission_category,
     PERMISSION_API_MAP,
+    classify_permission_category,
+    correlate_reflective_permission_usage,
 )
 
 

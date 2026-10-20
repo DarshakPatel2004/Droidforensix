@@ -8,8 +8,7 @@ Multi-layer validation strategy for reducing false positives in C2 IP detection:
 """
 
 import re
-from typing import Dict, List, Tuple, Optional
-
+from typing import Dict, List, Optional, Tuple
 
 # ---------------------------------------------------------------------------
 # Layer 2: Reserved / Private IP Range Definitions

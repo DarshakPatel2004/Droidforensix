@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
@@ -12,8 +12,7 @@ SOCKET_CALL_RE = re.compile(r'(?:Socket|HttpURLConnection|HttpsURLConnection|OkH
 BENIGN_DOMAINS = {
     "googleapis.com", "google.com", "gstatic.com", "googleadservices.com",
     "googlesyndication.com", "doubleclick.net", "facebook.com", "fbcdn.net",
-    "twitter.com", "x.com", "github.com", "stackoverflow.com", "stackoverflow.com",
-    "microsoft.com", "live.com", "apple.com", "icloud.com", "amazon.com",
+    "twitter.com", "x.com", "github.com", "stackoverflow.com", "microsoft.com", "live.com", "apple.com", "icloud.com", "amazon.com",
     "amazonaws.com", "cloudfront.net", "amplitude.com", "mixpanel.com",
     "firebaseio.com", "crashlytics.com", "sentry.io", "datadoghq.com",
     "newrelic.com", "segment.io", "adjust.com", "appsflyer.com",

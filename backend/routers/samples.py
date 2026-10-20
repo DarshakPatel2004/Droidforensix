@@ -89,8 +89,8 @@ async def api_get_custody(sample_id: str) -> dict:
     """Chain-of-custody log for a sample, re-verified on every request."""
     try:
         validate_sample_id(sample_id)
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid sample_id")
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Invalid sample_id") from exc
     sample_dir = settings.WORK_DIR / sample_id
     if not sample_dir.is_dir():
         raise HTTPException(status_code=404, detail="Sample not found")
@@ -510,7 +510,7 @@ async def api_get_community_intel(sample_id: str) -> dict:
             None, get_cached_community_intel, sample_id, package_name, family
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Community intel search failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Community intel search failed: {e}") from e
 
     return payload
 

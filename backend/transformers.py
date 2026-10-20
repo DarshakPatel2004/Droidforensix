@@ -12,7 +12,7 @@ import json
 import logging
 import math
 import time
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 from backend.config import settings
 

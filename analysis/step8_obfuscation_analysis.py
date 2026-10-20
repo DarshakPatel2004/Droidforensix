@@ -23,7 +23,7 @@ import shutil
 import subprocess
 import zipfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 from backend.config import settings
 from backend.elf_analyzer import ELFBreaker
@@ -538,12 +538,12 @@ def analyze_with_androguard(apk_path: Path) -> Dict[str, Any]:
     try:
         from androguard.misc import AnalyzeAPK
     except ImportError as e:
-        raise ObfuscationAnalysisError(f"Androguard not installed: {e}")
+        raise ObfuscationAnalysisError(f"Androguard not installed: {e}") from e
 
     try:
         a, d, dx = AnalyzeAPK(str(apk_path))
     except Exception as e:
-        raise ObfuscationAnalysisError(f"Androguard failed to analyze APK: {e}")
+        raise ObfuscationAnalysisError(f"Androguard failed to analyze APK: {e}") from e
 
     indicators = {
         "reflection": [],

@@ -11,9 +11,14 @@ import pytest
 from fastapi.testclient import TestClient
 
 from backend.config import settings
+from backend.dissection import (
+    APKDissector,
+    SampleAPKCache,
+    _class_cache_locks,
+    _class_cache_locks_lock,
+    load_dissection,
+)
 from backend.main import app
-from backend.dissection import APKDissector, SampleAPKCache, load_dissection, _class_cache_locks, _class_cache_locks_lock
-
 
 
 @pytest.fixture

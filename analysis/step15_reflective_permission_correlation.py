@@ -7,7 +7,7 @@ as unused here — this is a scoping choice, not a defect.
 """
 
 import logging
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 

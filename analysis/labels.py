@@ -32,8 +32,6 @@ CATCH_ALL_LABELS = frozenset({
     "e-oracle-fault", "e-arm32-envargs", "e-zipcrypto-runtime",
     "e_native_noentry", "e_native_no_recovery", "e_java_runtime_delivery",
     # Bare vendor generics shared with the GT-repair list.
-    "e_native_noentry", "e_native_no_recovery", "e_java_runtime_delivery",
-    # Bare vendor generics shared with the GT-repair list.
     "trojan", "spyware", "andraware", "andro",
     # SDKs, ad networks, and packers are not families: rows labeled with
     # them (Cnzz analytics, SecApk packer, SMSreg/AdLibrary SDKs) carry no

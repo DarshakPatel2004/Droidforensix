@@ -16,15 +16,14 @@ import json
 import logging
 import os
 import re
+from dataclasses import dataclass
+from enum import Enum
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set
-from enum import Enum
-from dataclasses import dataclass
-
-from backend.config import settings
 
 from analysis.mine_family_knowledge import is_generic_token
+from backend.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -2380,7 +2379,10 @@ def _llm_family(result: Dict[str, Any], max_tokens: int = 400) -> Optional[Dict[
             )
             raw = resp.choices[0].message.content
         else:
-            from analysis.step7_llm_assessment import _ollama_available, _normalize_ollama_host
+            from analysis.step7_llm_assessment import (
+                _normalize_ollama_host,
+                _ollama_available,
+            )
             host = _normalize_ollama_host(os.environ.get("OLLAMA_HOST", settings.OLLAMA_HOST))
             if not _ollama_available(host):
                 logger.warning(

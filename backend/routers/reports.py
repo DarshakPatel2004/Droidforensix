@@ -172,7 +172,7 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
             )
         )
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"PDF generation failed: {e}")
+        raise HTTPException(status_code=500, detail=f"PDF generation failed: {e}") from e
 
     filename = f"droidforensix_{sample_id[:12]}_{mode}.pdf"
     return Response(

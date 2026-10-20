@@ -14,9 +14,8 @@ import math
 import re
 from typing import List, Optional, Tuple
 
-from backend.config import settings
-
 from analysis.decoding_engine import classify_entropy
+from backend.config import settings
 
 logger = logging.getLogger(__name__)
 

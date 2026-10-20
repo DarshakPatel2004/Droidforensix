@@ -19,7 +19,6 @@ from typing import Any, Dict, List, Optional
 import requests
 from requests.auth import HTTPBasicAuth
 
-
 CIRCL_BASE_URL = "https://www.circl.lu"
 DEFAULT_TIMEOUT = 15  # seconds; pDNS is flaky so keep it short
 DEFAULT_PDNS_TIMEOUT = 8  # even shorter for pDNS since it often hangs

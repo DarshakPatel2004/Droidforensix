@@ -1,13 +1,14 @@
 import json
+
 from analysis.step16_certificate_analysis import (
+    DEFAULT_CERT_DB_PATH,
+    add_known_bad_cert,
     analyze_certificate,
-    parse_certificate_from_apk,
     check_known_bad_certificate,
     fingerprint_via_androguard,
-    load_known_bad_certs,
     get_known_bad_certs,
-    add_known_bad_cert,
-    DEFAULT_CERT_DB_PATH,
+    load_known_bad_certs,
+    parse_certificate_from_apk,
 )
 
 

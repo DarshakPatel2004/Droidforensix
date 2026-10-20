@@ -1,9 +1,10 @@
 import pytest
+
 from analysis.step11_string_clustering import (
-    cluster_high_entropy_strings,
-    string_similarity,
     classify_obfuscation_type,
+    cluster_high_entropy_strings,
     shannon_entropy,
+    string_similarity,
 )
 
 

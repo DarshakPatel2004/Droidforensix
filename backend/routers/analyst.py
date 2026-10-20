@@ -32,8 +32,8 @@ class AnalystStateUpdate(BaseModel):
 def _require_sample(sample_id: str) -> None:
     try:
         validate_sample_id(sample_id)
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid sample_id")
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail="Invalid sample_id") from exc
     if not (settings.WORK_DIR / sample_id).is_dir():
         raise HTTPException(status_code=404, detail="Sample not found")
 

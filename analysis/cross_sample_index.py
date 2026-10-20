@@ -13,7 +13,7 @@ sequential. Before parallelizing the pipeline, a file lock is required.
 
 import json
 import logging
-from typing import Dict, Any
+from typing import Any, Dict
 
 from backend.config import settings
 

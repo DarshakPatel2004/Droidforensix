@@ -1,6 +1,13 @@
 import json
 
-from analysis.custody import CUSTODY_NAME, GENESIS_HASH, append_event, digest_value, read_entries, verify
+from analysis.custody import (
+    CUSTODY_NAME,
+    GENESIS_HASH,
+    append_event,
+    digest_value,
+    read_entries,
+    verify,
+)
 
 
 def _write_three(sample_dir):

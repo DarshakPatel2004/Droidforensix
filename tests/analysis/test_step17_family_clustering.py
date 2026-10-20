@@ -1,12 +1,13 @@
 import pytest
+
 from analysis.step17_family_clustering import (
-    hash_method_signature,
+    NUM_PERMUTATIONS,
+    MinHash,
     build_sample_signature,
-    match_against_index,
+    hash_method_signature,
     jaccard_similarity,
     load_or_build_index,
-    MinHash,
-    NUM_PERMUTATIONS,
+    match_against_index,
 )
 
 
@@ -177,6 +178,7 @@ class TestLoadOrBuildIndex:
 class TestBackwardCompatibility:
     def test_load_index_old_version(self, tmp_path, monkeypatch):
         import json
+
         from analysis.cross_sample_index import load_index
 
         old_index = {
@@ -199,6 +201,7 @@ class TestBackwardCompatibility:
 
     def test_load_index_current_version(self, tmp_path, monkeypatch):
         import json
+
         from analysis.cross_sample_index import load_index
 
         current_index = {

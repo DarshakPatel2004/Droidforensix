@@ -31,13 +31,13 @@ MODEL_PATH = ROOT / "analysis" / "family_ml.pkl"
 VECTORIZER_PATH = ROOT / "analysis" / "family_ml_vectorizer.pkl"
 
 try:
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    from sklearn.preprocessing import MultiLabelBinarizer
-    from sklearn.model_selection import StratifiedKFold, cross_val_score
-    from sklearn.metrics import accuracy_score  # noqa: F401  availability probe
     import lightgbm as lgb
     import numpy as np  # noqa: F401  availability probe
-    from scipy.sparse import hstack, csr_matrix
+    from scipy.sparse import csr_matrix, hstack
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    from sklearn.metrics import accuracy_score  # noqa: F401  availability probe
+    from sklearn.model_selection import StratifiedKFold, cross_val_score
+    from sklearn.preprocessing import MultiLabelBinarizer
     HAS_DEPS = True
 except ImportError as e:
     HAS_DEPS = False
@@ -164,7 +164,7 @@ def predict_for_result(result: Dict, sample_id: str = None) -> Tuple[str, float]
         perms_short = [p.split(".")[-1] for p in perms]
         X_perm = mlb.transform([perms_short])
         import numpy as np
-        from scipy.sparse import hstack, csr_matrix
+        from scipy.sparse import csr_matrix, hstack
         X_num = np.array([[class_count or 0, 1 if perms else 0]], dtype=float)
         X = hstack([X_str, csr_matrix(X_perm), csr_matrix(X_num)]).tocsr()
         # Align dims - if new perms unseen, mlb may have different shape; pad

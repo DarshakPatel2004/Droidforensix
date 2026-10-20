@@ -23,8 +23,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Optional
 
-from backend.config import settings
 from analysis.custody import append_event, digest_value, file_digest
+from analysis.hardcoded_secrets import analyze_hardcoded_secrets
 from analysis.step1_apk_extraction import extract_apk
 from analysis.step2_string_enumeration import enumerate_strings
 from analysis.step3_encoding_detection import detect_encoding
@@ -34,24 +34,30 @@ from analysis.step6_correlation import build_threat_chains
 from analysis.step7_llm_assessment import assess_with_llm
 from analysis.step8_obfuscation_analysis import analyze_obfuscation
 from analysis.step9_post_process import post_process_result
-from analysis.hardcoded_secrets import analyze_hardcoded_secrets
 from analysis.step10_binary_packing import detect_binary_packing
 from analysis.step11_string_clustering import cluster_high_entropy_strings
 from analysis.step12_reflective_tracing import find_reflective_calls
 from analysis.step13_native_elf_analysis import analyze_native_libraries_from_apk
 from analysis.step14_network_protocol_analysis import analyze_network_protocols
-from analysis.step15_reflective_permission_correlation import correlate_reflective_permission_usage
+from analysis.step15_reflective_permission_correlation import (
+    correlate_reflective_permission_usage,
+)
 from analysis.step16_certificate_analysis import analyze_certificate
 from analysis.step17_family_clustering import cluster_family
 from analysis.step18_threat_synthesis import synthesize_threat_profile
-from backend.family_id import identify_family
+from backend.config import settings
 from backend.dissection import APKDissector
+from backend.family_id import identify_family
+
 # Master Key + KT wiring for accuracy (Phase 0 - decrypt before classify)
 # See docs/MASTER_KEY_STRATEGY.md, docs/FULL_KNOWLEDGE_TRANSFER.md §2-4,15,
 #     docs/accuracy-improvement-plan.md Phase 0
 try:
-    from analysis.step0_master_key import run_master_key_preprocess, enrich_strings_with_recovered
     from analysis.payload_evidence import merge_evidence
+    from analysis.step0_master_key import (
+        enrich_strings_with_recovered,
+        run_master_key_preprocess,
+    )
 except ImportError:
     run_master_key_preprocess = None
     enrich_strings_with_recovered = None
@@ -258,7 +264,7 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
     timeout = STEP_TIMEOUTS.get(step_num, 120)
     try:
         result = run_with_timeout(func, args, timeout, step_name)
-    except TimeoutError:
+    except TimeoutError as exc:
         _emit(emitter, "error", {
             "sample_id": sample_id,
             "step_number": step_num,
@@ -277,7 +283,7 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
             f"  1. Increase timeout for this step in STEP_TIMEOUTS (analysis/pipeline.py)\n"
             f"  2. If step {step_num} repeatedly times out, the APK may be too large or obfuscated\n"
             f"  3. Re-run with --skip-step={step_num} if this step is optional"
-        )
+        ) from exc
     except Exception as e:
         _emit(emitter, "error", {
             "sample_id": sample_id,
@@ -297,7 +303,7 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
             f"  1. Is the APK valid? Try: python -m analysis.pipeline <apk> --skip-step={step_num}\n"
             f"  2. Is there enough disk space? Pipeline requires ~500MB temporary space\n"
             f"  3. For configuration issues, check backend/config.py"
-        )
+        ) from e
 
     step_duration = time.time() - step_start
     elapsed = time.time() - global_start
@@ -389,7 +395,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             f"  2. Check required tools: apktool, androguard\n"
             f"  3. Ensure WORK_DIR in backend/config.py is writable\n"
             f"  4. Try with --use-androguard-only to skip external tools"
-        )
+        ) from e
 
     step_duration = time.time() - step_start
     timeline["step1"] = round(step_duration, 3)

@@ -1,10 +1,11 @@
 """Unit tests for Step 8 obfuscation analysis."""
 
 import pytest
+
 from analysis.step8_obfuscation_analysis import (
-    shannon_entropy,
     calculate_obfuscation_score,
     dex_entropy_from_apk,
+    shannon_entropy,
 )
 
 

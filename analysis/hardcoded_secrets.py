@@ -14,15 +14,14 @@ Patterns cover: API keys, auth tokens, private keys, JWT, cloud service keys,
 database connection strings, OAuth secrets, and Android-specific credentials.
 """
 
-import logging
 import base64
 import binascii
 import json
+import logging
 import re
 import urllib.parse
 from pathlib import Path
-from typing import Dict, List, Optional, Any, Set, Tuple
-
+from typing import Any, Dict, List, Optional, Set, Tuple
 
 logger = logging.getLogger(__name__)
 

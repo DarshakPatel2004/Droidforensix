@@ -11,9 +11,9 @@ Covers three things the §15 matrix depends on:
 import pytest
 
 from scripts.triage import (
+    _has_push_messaging,
     dropper_shape_signals,
     escalate_indeterminate,
-    _has_push_messaging,
 )
 
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}name"

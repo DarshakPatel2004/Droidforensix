@@ -26,8 +26,8 @@ from typing import Any, Dict, List, Set
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
-from backend import family_id as fid
 from analysis.draft_signatures import COMMITTED_FAMILIES, DRAFT_SIGNATURES
+from backend import family_id as fid
 
 CACHE_PATH = ROOT / "analysis" / "gap_features_cache.json"
 GT_PATH = ROOT / "ground_truth_all.csv"

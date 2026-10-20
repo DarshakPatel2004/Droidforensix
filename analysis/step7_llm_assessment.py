@@ -17,10 +17,10 @@ Fallback to local Ollama is still supported:
 import json
 import os
 import re
+import socket
 import time
 import urllib.parse
-import socket
-from typing import Dict, Any, Optional
+from typing import Any, Dict, Optional
 
 import requests
 
@@ -726,9 +726,9 @@ fallback_assessment = heuristic_fallback
 def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_retries: int = 2) -> Optional[str]:
     """Call NVIDIA NIM chat completions endpoint and return raw response text."""
     try:
-        from openai import OpenAI, APITimeoutError
+        from openai import APITimeoutError, OpenAI
     except ImportError as e:
-        raise LLMAssessmentError(f"openai package not installed: {e}")
+        raise LLMAssessmentError(f"openai package not installed: {e}") from e
 
     # OpenRouter requires HTTP-Referer and X-Title headers
     default_headers = {

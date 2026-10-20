@@ -1,9 +1,9 @@
 """Parse AndroidManifest.xml files from validation_359 samples and analyze intent actions."""
-import os
-import json
-import xml.etree.ElementTree as ET
-from collections import defaultdict, Counter
 import csv
+import json
+import os
+import xml.etree.ElementTree as ET
+from collections import Counter, defaultdict
 
 BASE = r"D:\DroidForensix"
 VAL_DIR = os.path.join(BASE, "evaluation", "validation_359")

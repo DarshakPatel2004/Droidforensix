@@ -146,14 +146,14 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict:
                     break
                 f.write(chunk)
                 sha256_hash.update(chunk)
-    except asyncio.TimeoutError:
+    except asyncio.TimeoutError as exc:
         # Partial upload: remove the directory so stalled transfers do not
         # accumulate unreferenced files on disk.
         shutil.rmtree(upload_dir, ignore_errors=True)
-        raise HTTPException(status_code=408, detail="Upload timed out after 60 seconds")
+        raise HTTPException(status_code=408, detail="Upload timed out after 60 seconds") from exc
     except Exception as e:
         shutil.rmtree(upload_dir, ignore_errors=True)
-        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}") from e
 
     sha256 = sha256_hash.hexdigest()
 
@@ -172,7 +172,7 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict:
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to validate file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to validate file: {e}") from e
 
     # SHA-256 dedup: if this exact file was uploaded before, return existing upload_id
     if sha256 in _sha256_to_upload:
@@ -346,7 +346,7 @@ async def api_full_analysis(file: UploadFile = File(...)):
         with open(apk_path, "wb") as f:
             f.write(await file.read())
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}") from e
     
     processor = APKProcessor(str(apk_path))
     results = processor.process()
@@ -377,7 +377,7 @@ async def api_androguard_analysis(file: UploadFile = File(...)):
         with open(apk_path, "wb") as f:
             f.write(await file.read())
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to save uploaded file: {e}") from e
     
     analyzer = APKAnalyzer(str(apk_path))
     results = analyzer.run()

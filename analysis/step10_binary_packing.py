@@ -4,7 +4,7 @@ import math
 import zipfile
 from functools import lru_cache
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 

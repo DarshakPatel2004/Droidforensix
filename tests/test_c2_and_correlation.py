@@ -1,11 +1,11 @@
 from analysis.step5_c2_extraction import (
-    extract_c2_infrastructure,
-    classify_ip,
-    parse_url,
     calculate_c2_confidence,
-    is_benign_url,
+    classify_ip,
+    extract_c2_infrastructure,
     is_ad_network,
     is_analytics_domain,
+    is_benign_url,
+    parse_url,
 )
 from analysis.step6_correlation import build_threat_chains
 from analysis.step7_llm_assessment import fallback_assessment
@@ -312,7 +312,7 @@ def test_yandex_benign_domain_filtered():
 
 
 def test_threat_intel_ip_helpers():
-    from backend.threat_intel import _is_valid_ip, _classify_ip
+    from backend.threat_intel import _classify_ip, _is_valid_ip
     
     assert _is_valid_ip("1.2.3.4") is True
     assert _is_valid_ip("256.0.0.1") is False
@@ -327,6 +327,7 @@ def test_threat_intel_ip_helpers():
 def test_build_threat_intel_liveness_enrichment(tmp_path, monkeypatch):
     import json
     import socket
+
     import backend.threat_intel
     from backend.config import settings
     
@@ -620,6 +621,7 @@ def test_reputation_enrichment_boosts_listed_domain(tmp_path, monkeypatch):
     """Listed domains get a bounded +0.8 boost, cached, from a monkeypatched cache."""
     import json as _json
     import time as _time
+
     from analysis import step5_c2_extraction as s5
 
     cache_dir = tmp_path / "sub"

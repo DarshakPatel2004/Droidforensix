@@ -40,4 +40,4 @@ def test_bad_subcommand_fails():
     except SystemExit as e:
         assert e.code == 2
     else:
-        assert False, "expected SystemExit for missing required argument"
+        raise AssertionError("expected SystemExit for missing required argument")
