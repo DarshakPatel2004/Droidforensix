@@ -130,7 +130,9 @@ def mock_deps(monkeypatch, tmp_path):
         if sample_id == "test_sample_001":
             return SAMPLE_RESULT
         return None
-    monkeypatch.setattr("backend.main.load_result", _mock_load)
+    # Each router binds load_result at import time, so each one needs the patch.
+    for module in ("samples", "dissection", "intel", "jobs", "reports"):
+        monkeypatch.setattr(f"backend.routers.{module}.load_result", _mock_load)
     monkeypatch.setattr("backend.transformers.load_result", _mock_load)
 
     # The attribution endpoint persists its payload to WORK_DIR/<id>/attribution_cache.json
@@ -141,7 +143,7 @@ def mock_deps(monkeypatch, tmp_path):
 
     def _mock_identify(sample_id, result):
         return SAMPLE_RESULT["family_identification"]
-    monkeypatch.setattr("backend.main.identify_family", _mock_identify)
+    monkeypatch.setattr("backend.routers.samples.identify_family", _mock_identify)
 
     # Mock transformers.load_all_results for related samples
     def _mock_all():
@@ -150,7 +152,7 @@ def mock_deps(monkeypatch, tmp_path):
 
     # Mock community intel search (no network in tests)
     monkeypatch.setattr(
-        "backend.main.get_cached_community_intel",
+        "backend.routers.samples.get_cached_community_intel",
         lambda sample_id, package_name, family: {
             "package_name": package_name,
             "family": family,
@@ -236,10 +238,10 @@ def mock_deps(monkeypatch, tmp_path):
     def _mock_analyzer(apk_path, work_dir, sample_id, cache=None):
         return MockAnalyzer()
 
-    monkeypatch.setattr("backend.main.CodeAnalyzer", lambda apk_path, work_dir, sample_id, cache=None: MockAnalyzer())
+    monkeypatch.setattr("backend.routers.dissection.CodeAnalyzer", lambda apk_path, work_dir, sample_id, cache=None: MockAnalyzer())
 
     # Mock _get_sample_apk_path to return a fake path
-    monkeypatch.setattr("backend.main._get_sample_apk_path", lambda sid: "C:\\fake\\path.apk")
+    monkeypatch.setattr("backend.routers.dissection._get_sample_apk_path", lambda sid: "C:\\fake\\path.apk")
 
 
 class TestThreatSummary:
