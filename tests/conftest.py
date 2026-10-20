@@ -10,7 +10,7 @@ gitignored, so they keep reappearing after cleanup.
 The fixture redirects WORK_DIR (and UPLOADS_DIR) to a per-test tmp dir. Two
 things make that necessary rather than merely tidy:
 
-- ``backend.main`` and ``backend.transformers`` bind ``WORK_DIR = settings.WORK_DIR``
+- ``backend.routers.dissection`` and ``backend.transformers`` bind ``WORK_DIR = settings.WORK_DIR``
   at import time, so patching ``settings`` alone leaves those modules pointing at
   the real directory.
 - the analysis step functions read ``settings.WORK_DIR`` at call time.
@@ -26,7 +26,7 @@ import pytest
 os.environ["DROIDFORENSIX_TESTING"] = "1"
 
 # Modules that bind WORK_DIR at import time; patching settings alone is not enough.
-_MODULES_BINDING_WORK_DIR = ("backend.main", "backend.transformers")
+_MODULES_BINDING_WORK_DIR = ("backend.routers.dissection", "backend.transformers")
 
 
 @pytest.fixture(autouse=True)

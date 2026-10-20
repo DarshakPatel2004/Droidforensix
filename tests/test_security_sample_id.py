@@ -58,12 +58,12 @@ def work_dir(tmp_path, monkeypatch):
     )
     monkeypatch.setattr(settings, "WORK_DIR", root)
 
-    # main.py and transformers.py each bind WORK_DIR at import time, so patching
+    # routers/dissection.py and transformers.py each bind WORK_DIR at import time, so patching
     # settings alone would leave them pointing at the real directory - and the
     # traversal tests would pass for the wrong reason (nothing happening at all).
-    import backend.main as main
+    import backend.routers.dissection as dissection_routes
     import backend.transformers as transformers
-    monkeypatch.setattr(main, "WORK_DIR", root)
+    monkeypatch.setattr(dissection_routes, "WORK_DIR", root)
     monkeypatch.setattr(transformers, "WORK_DIR", root)
     return root
 
@@ -165,7 +165,7 @@ def test_dissection_delete_guard_is_load_bearing(client, work_dir):
 
     from fastapi import HTTPException
 
-    from backend.main import _get_or_create_dissection
+    from backend.routers.dissection import _get_or_create_dissection
 
     outside = work_dir.parent / "outside"
     outside.mkdir()
