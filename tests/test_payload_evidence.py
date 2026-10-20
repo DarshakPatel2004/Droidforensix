@@ -65,7 +65,7 @@ def test_class_count_from_dex_rejects_undecodable_bytes():
 
 
 def test_permissions_from_binary_manifest_rejects_non_axml():
-    with pytest.raises((TypeError, ValueError)):
+    with pytest.raises(ValueError, match="binary .AXML. manifest"):
         pe.permissions_from_binary_manifest(b"not xml")
 
 
