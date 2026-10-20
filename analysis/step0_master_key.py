@@ -39,7 +39,7 @@ import logging
 import pathlib
 import sys
 import zipfile
-from typing import Any, Dict
+from typing import Any, Dict, Optional
 
 from analysis.payload_evidence import collect_payload_evidence
 
@@ -261,9 +261,26 @@ def _breaker_second_chance(
     }
     # Only ZIP-validated payloads are analysed, and only a recovery that analysed
     # something carries evidence.
-    if evidence["payloads"] > 0:
+    if _analysed_only(evidence):
         report["recovered_evidence"] = evidence
     return report
+
+
+def _analysed_only(evidence: dict) -> Optional[dict]:
+    """Evidence reaches the report only when it analysed at least one payload."""
+    return evidence if evidence["payloads"] > 0 else None
+
+
+def _evidence_from_artifacts(artifacts: list) -> Optional[dict]:
+    """Dispatcher recoveries are not in memory: read the written artifacts back."""
+    payloads = []
+    for artifact in artifacts:
+        path = artifact.get("file", "")
+        try:
+            payloads.append(pathlib.Path(path).read_bytes())
+        except OSError as exc:
+            logger.warning("payload evidence skipped %s: %s", path, exc)
+    return _analysed_only(collect_payload_evidence(payloads))
 
 
 def run_master_key_preprocess(
@@ -377,9 +394,13 @@ def run_master_key_preprocess(
         "triage_report": triage_report,
         "unpack_report": unpack_report,
     }
-    # Evidence is additive: it reaches the report only when the breaker recovered one.
-    if effective.get("recovered_evidence"):
-        report["recovered_evidence"] = effective["recovered_evidence"]
+    # Evidence is additive: a breaker recovery carries its own, a dispatcher recovery
+    # is analysed from the artifacts it wrote.
+    evidence = effective.get("recovered_evidence")
+    if not recovered_by_breaker and effective.get("verdict") == "RECOVERED":
+        evidence = _evidence_from_artifacts(effective.get("artifacts", []))
+    if evidence:
+        report["recovered_evidence"] = evidence
     return report
 
 

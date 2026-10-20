@@ -814,3 +814,13 @@ So the criterion holds **in substance and is false as written**. For all three, 
 ### 9. Criterion correction (plan Step 3 / Step 7 wording)
 
 Plan Step 3 says to "Assert the two result dicts are equal after dropping `timeline`". That wording is **unachievable**: any recorded path differs because the two arms run in different work directories by construction, and wall-clock fields are not dropped; for an LLM-scored sample the `llm_assessment` prose also re-rolls. The corrected, testable reading is **outcome-bearing fields unchanged** — `extraction` byte-identical and `recovered_evidence` identical (here `None` in both arms) — with all other differences confined to artifact paths, wall clocks, and LLM prose. Read that way the criterion is met: the 3 controls plus the 11 affected-no-evidence samples are an independent, larger sample of "no recovery ⇒ no change".
+
+### Unpack-path parity (2026-10-20, measured A/B)
+
+Dispatcher (`_attempt_unpack`) recoveries now get `recovered_evidence` too, read back
+from the artifacts they wrote. Affected set: the 7 dispatcher-recovered samples in the
+dev anchor (`0e81a0fd`, `1869b4b8`, `fcd233be`, `44b5086d`, `95236ef7`, `5af77b5f`,
+`bca248d3`). Both arms ran live through the pipeline with GT lookup disabled. Evidence
+attached on 7/7 ON and 0/7 OFF. Predictions identical across all three columns, so the
+delta is 0.0: accuracy 0.3553, macro-precision 0.2822, macro-recall 0.2956, all equal
+to the anchor. The other 221 rows are byte-identical to the anchor by construction.

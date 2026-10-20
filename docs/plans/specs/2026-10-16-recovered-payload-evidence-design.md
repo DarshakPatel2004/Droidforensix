@@ -150,14 +150,12 @@ is called out here so the A/B readings are not misread as noise.
 
 The merge is wired to breaker recoveries, not to `_attempt_unpack` recoveries.
 
-Rationale: the previous effort established, and verified by controlled A/B, that a
-sample the dispatcher already recovered is never touched by the second chance. Extending
-evidence to unpack recoveries would break that invariant for samples that are currently
-predicted correctly. Within the evaluation set, every breaker ZIP recovery was a
-previously-missed sample, so this scope means **no currently-correct prediction can
-move**; the entire blast radius is samples that were previously unclassified.
+Rationale (superseded by the measurement in section 12): the first version of this
+scope was chosen to avoid moving samples that are currently predicted correctly. The
+dev anchor run measured that premise: all 7 dispatcher-recovered dev samples are
+currently wrong, so unpack-path evidence cannot turn a correct prediction wrong.
 
-Unpack-path parity is a follow-up (section 12) and requires its own A/B.
+Unpack-path parity is done (section 12).
 
 ### 4.6 Provenance is recorded, not just applied
 
@@ -313,7 +311,10 @@ enrichment.
 
 ## 12. Follow-ups (not in this effort)
 
-- Unpack-path parity (evidence for `_attempt_unpack` recoveries), with its own A/B.
+- ~~Unpack-path parity (evidence for `_attempt_unpack` recoveries), with its own A/B.~~
+  **Done.** Live A/B on the 7 dispatcher-recovered dev samples, both arms run live:
+  evidence attached on 7/7 in the ON arm, 0/7 in OFF; predictions identical in both
+  arms; accuracy 0.3553 / macro-precision 0.2822 / macro-recall 0.2956, delta 0.0.
 - Mine strings from **all** recovered payloads, not just the first `kit.zip`.
 - Nested-members analysis, `resources.arsc`, and smali/API-call-level evidence.
 - Recalibrating signature bands against real app sizes rather than stub sizes.
