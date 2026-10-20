@@ -345,3 +345,59 @@ def test_recovered_evidence_is_not_bound_for_the_taxonomy(packed_triage, tmp_pat
     # Evidence is additive: it changes no contract field and no taxonomy wording.
     assert master_key["ecode"] is None
     assert master_key["kt_taxonomy"].startswith("at-rest asset blob recovered on second chance")
+
+
+def _dispatcher_recovery(artifact_file):
+    return {
+        "verdict": "RECOVERED", "ecode": None, "route": "NATIVE", "family": None, "iocs": {},
+        "artifacts": [{"file": str(artifact_file), "sha256": "0" * 64, "validated": True}],
+    }
+
+
+def test_dispatcher_recovery_attaches_recovered_evidence(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    kit = tmp_path / "kit.zip"
+    kit.write_bytes(_kit_payload_with_native())
+    monkeypatch.setattr(step0, "_attempt_unpack", lambda *a, **k: _dispatcher_recovery(kit))
+
+    def no_breaker(*a, **k):
+        raise AssertionError("dispatcher recovery must not reach the breaker")
+
+    monkeypatch.setattr(step0, "_breaker_second_chance", no_breaker)
+    apk = tmp_path / "kit.apk"
+    _write_apk(apk, blob=None)
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert master_key["verdict"] == "RECOVERED"
+    assert master_key["recovered_evidence"]["payloads"] == 1
+    assert master_key["recovered_evidence"]["native_libs"] == ["lib/armeabi-v7a/libx.so"]
+
+
+def test_dispatcher_recovery_of_non_zip_attaches_nothing(packed_triage, tmp_path, monkeypatch):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    dex = tmp_path / "bootstrap.dex"
+    dex.write_bytes(b"dex\n035\x00" + bytes(range(256)))
+    monkeypatch.setattr(step0, "_attempt_unpack", lambda *a, **k: _dispatcher_recovery(dex))
+    apk = tmp_path / "dex.apk"
+    _write_apk(apk, blob=None)
+
+    master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert master_key["verdict"] == "RECOVERED"
+    assert "recovered_evidence" not in master_key
+
+
+def test_dispatcher_missing_artifact_warns_and_skips(packed_triage, tmp_path, monkeypatch, caplog):
+    monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
+    gone = tmp_path / "vanished.zip"
+    monkeypatch.setattr(step0, "_attempt_unpack", lambda *a, **k: _dispatcher_recovery(gone))
+    apk = tmp_path / "gone.apk"
+    _write_apk(apk, blob=None)
+
+    with caplog.at_level("WARNING"):
+        master_key = step0.run_master_key_preprocess(str(apk), str(tmp_path / "work"))
+
+    assert master_key["verdict"] == "RECOVERED"
+    assert "recovered_evidence" not in master_key
+    assert any("vanished.zip" in r.getMessage() for r in caplog.records)
