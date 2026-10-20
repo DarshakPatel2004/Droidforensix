@@ -228,7 +228,12 @@ def build_obfuscation_view(sample_id: str, result: Optional[Dict[str, Any]] = No
 
 def deobfuscate_text(text: str, hint: Optional[str] = None) -> Dict[str, Any]:
     """Best-effort deobfuscation of a user-supplied string."""
-    from analysis.step4_decoding import decode_base64, decode_urlsafe_base64, decode_hex, decode_xor
+    from analysis.step4_decoding import (
+        decode_base64,
+        decode_hex,
+        decode_urlsafe_base64,
+        decode_xor,
+    )
 
     text = text.strip()
     if not text:

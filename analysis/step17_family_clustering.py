@@ -10,9 +10,9 @@ import hashlib
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
-from analysis.cross_sample_index import load_index, add_to_index
+from analysis.cross_sample_index import add_to_index, load_index
 
 logger = logging.getLogger(__name__)
 
@@ -37,7 +37,7 @@ class MinHash:
     def jaccard(self, other: 'MinHash') -> float:
         if self.num_perm != other.num_perm:
             raise ValueError("MinHash instances must have same num_perm")
-        return sum(1 for a, b in zip(self.hash_values, other.hash_values) if a == b) / self.num_perm
+        return sum(1 for a, b in zip(self.hash_values, other.hash_values, strict=True) if a == b) / self.num_perm
 
 
 def hash_method_signature(full_signature: str) -> str:
@@ -95,7 +95,7 @@ def build_sample_signature(methods: List[Dict[str, Any]]) -> Dict[str, Any]:
 def jaccard_similarity(a: List[int], b: List[int]) -> float:
     if not a or not b:
         return 0.0
-    return sum(1 for x, y in zip(a, b) if x == y) / len(a)
+    return sum(1 for x, y in zip(a, b, strict=True) if x == y) / len(a)
 
 
 def match_against_index(

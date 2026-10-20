@@ -58,17 +58,22 @@ manager = ConnectionManager()
 def make_event_emitter(loop: asyncio.AbstractEventLoop):
     """Create a callback that emits pipeline events via WebSocket."""
     def emit(event_type: str, data: dict):
-        print(f"[EMITTER] {event_type} connections={len(manager.active_connections)}")
+        logger.debug("Emitting %s to %d connection(s)", event_type, len(manager.active_connections))
         if event_type not in VALID_EVENT_TYPES:
-            print(f"[EMITTER] invalid type {event_type}")
+            logger.warning("Dropping event with unknown type %s", event_type)
             return
         event = WebSocketEvent(event_type=event_type, data=data)
         event_dict = event.to_dict()
-        print(f"[EMITTER] event_dict valid={validate_event(event_dict)}")
-        if validate_event(event_dict):
-            # Schedule broadcast on the event loop
-            fut = asyncio.run_coroutine_threadsafe(
-                manager.broadcast(event_dict), loop
-            )
-            fut.add_done_callback(lambda f: print(f"[EMITTER] broadcast done err={f.exception()}"))
+        if not validate_event(event_dict):
+            logger.warning("Dropping %s event that failed validation", event_type)
+            return
+        # Schedule broadcast on the event loop
+        fut = asyncio.run_coroutine_threadsafe(manager.broadcast(event_dict), loop)
+        fut.add_done_callback(_log_broadcast_failure)
     return emit
+
+
+def _log_broadcast_failure(fut) -> None:
+    error = fut.exception()
+    if error is not None:
+        logger.warning("WebSocket broadcast failed: %s", error)

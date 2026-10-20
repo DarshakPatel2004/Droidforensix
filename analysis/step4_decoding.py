@@ -5,13 +5,13 @@ Decodes detected encodings, extracts artifacts (URLs, IPs, domains, emails,
 phone numbers), detects binary payloads via magic bytes, and post-processes.
 """
 
-import logging
 import base64
 import binascii
 import json
+import logging
 import re
 import socket
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 import phonenumbers

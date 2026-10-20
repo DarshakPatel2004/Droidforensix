@@ -15,17 +15,16 @@ from unittest.mock import MagicMock, patch
 import pytest
 
 from analysis.pipeline import (
-    TOTAL_STEPS,
     STEP_NAMES,
     STEP_TIMEOUTS,
+    TOTAL_STEPS,
+    InterruptableThread,
     PipelineError,
     TimeoutError,
-    InterruptableThread,
-    run_with_timeout,
     _validate_step_input,
     run_pipeline,
+    run_with_timeout,
 )
-
 
 # ---------------------------------------------------------------------------
 # Fixtures

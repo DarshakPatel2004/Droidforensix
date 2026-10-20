@@ -5,18 +5,18 @@ anti-analysis indicators, embedded blobs, suspicious strings, and
 string deobfuscation.
 """
 
-import re
-import math
 import logging
-from typing import Dict, List, Any, Optional, Tuple
+import math
+import re
 from collections import Counter
+from typing import Any, Dict, List, Optional, Tuple
 
 logger = logging.getLogger(__name__)
 
 try:
-    from elftools.elf.elffile import ELFFile
     from elftools.elf.constants import SH_FLAGS
     from elftools.elf.dynamic import DynamicSection
+    from elftools.elf.elffile import ELFFile
     from elftools.elf.sections import Section, SymbolTableSection  # noqa: F401  availability probe
     HAS_PYELFFLTOOLS = True
 except ImportError:
@@ -357,7 +357,7 @@ class ELFBreaker:
         except Exception as exc:
             logger.warning("Suppressed error in _detect_packing: %s", exc)
 
-        for sig_bytes, sig_name, sig_desc in PACKER_SIGNATURES:
+        for sig_bytes, _sig_name, sig_desc in PACKER_SIGNATURES:
             pos = 0
             count = 0
             while True:
@@ -676,14 +676,13 @@ class ELFBreaker:
     _RARE_DIGRAPHS = {
         'aa', 'uu', 'vv', 'xx', 'zz', 'qq', 'jj', 'kk', 'yy',
         'bq', 'cq', 'dx', 'fb', 'fc', 'fd', 'ff', 'fg', 'fh',
-        'gq', 'gx', 'hx', 'hq', 'jf', 'jg', 'jh', 'jj', 'jk',
+        'gq', 'gx', 'hx', 'hq', 'jf', 'jg', 'jh', 'jk',
         'kq', 'kx', 'mx', 'px', 'qb', 'qc', 'qd', 'qf', 'qg',
-        'qh', 'qj', 'qk', 'ql', 'qm', 'qn', 'qo', 'qp', 'qq',
-        'qr', 'qs', 'qt', 'qv', 'qw', 'qx', 'qy', 'qz', 'rx',
+        'qh', 'qj', 'qk', 'ql', 'qm', 'qn', 'qo', 'qp', 'qr', 'qs', 'qt', 'qv', 'qw', 'qx', 'qy', 'qz', 'rx',
         'sz', 'tx', 'ux', 'vb', 'vc', 'vd', 'vf', 'vg', 'vh',
         'vj', 'vk', 'vl', 'vm', 'vn', 'vp', 'vq', 'vr', 'vs',
-        'vt', 'vv', 'vw', 'vx', 'vy', 'vz', 'wx', 'xj', 'xk',
-        'xx', 'xz', 'zj', 'zq', 'zx', 'zz',
+        'vt', 'vw', 'vx', 'vy', 'vz', 'wx', 'xj', 'xk',
+        'xz', 'zj', 'zq', 'zx',
     }
     _ENGLISH_FREQ = {
         'a': 8.17, 'b': 1.49, 'c': 2.78, 'd': 4.25, 'e': 12.70,
@@ -706,7 +705,7 @@ class ELFBreaker:
         'send', 'recv', 'sleep', 'wait', 'lock', 'free', 'alloc',
         'class', 'const', 'enum', 'char', 'byte', 'long', 'void',
         'catch', 'throw', 'this', 'http', 'https', 'file', 'text',
-        'init', 'load', 'save', 'edit', 'find', 'view', 'help',
+        'load', 'save', 'edit', 'find', 'view', 'help',
         'custom', 'config', 'create', 'delete', 'update', 'insert',
         'result', 'error', 'success', 'timeout', 'attempt',
         'malware', 'trojan', 'virus', 'payload', 'exploit',
@@ -723,13 +722,12 @@ class ELFBreaker:
         'native', 'shared', 'module', 'package', 'archive',
         'upload', 'download', 'install', 'extract',
         'network', 'device', 'system', 'driver', 'kernel',
-        'inject', 'hook', 'proxy', 'shell', 'exec',
-        'android', 'java', 'string', 'intent', 'service',
+        'inject', 'hook', 'shell', 'android', 'java', 'string', 'intent', 'service',
         'receiver', 'activity', 'manager', 'provider', 'content',
-        'handle', 'receive', 'process', 'dispatch', 'forward',
+        'handle', 'receive', 'dispatch', 'forward',
         'register', 'notify', 'subscribe', 'publish',
         'broadcast', 'notification', 'alarm', 'schedule',
-        'connect', 'listen', 'accept', 'request', 'respond',
+        'connect', 'listen', 'accept', 'respond',
     })
 
     @staticmethod
@@ -804,7 +802,7 @@ class ELFBreaker:
         for t in tokens:
             if len(t) >= 3:
                 tl = t.lower()
-                if tl in ELFBreaker._MINI_DICT or (len(tl) >= 6 and tl[-3:] in {'ing', 'ion', 'ate', 'ive', 'ble', 'ted', 'ted', 'ter', 'tor', 'ser'}):
+                if tl in ELFBreaker._MINI_DICT or (len(tl) >= 6 and tl[-3:] in {'ing', 'ion', 'ate', 'ive', 'ble', 'ted', 'ter', 'tor', 'ser'}):
                     dict_hits += 1
 
         has_dict_word = dict_hits >= 2

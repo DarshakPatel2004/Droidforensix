@@ -10,8 +10,8 @@ jadx is used opportunistically (if installed) to obtain call-site ids/keys;
 dex-only fallbacks are provided for NPStringFog key harvesting.
 """
 
-import logging
 import json
+import logging
 import re
 import struct
 from pathlib import Path

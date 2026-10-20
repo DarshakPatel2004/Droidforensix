@@ -52,10 +52,10 @@ class TestToolPaths:
 
     def test_seven_zip_path_valid(self):
         """SEVEN_ZIP_PATH should be set (either bundled or from PATH)."""
-        from backend.config import settings
-
         # Either the path exists or '7z' is on system PATH
         import shutil
+
+        from backend.config import settings
 
         seven_zip = Path(settings.SEVEN_ZIP_PATH)
         seven_zip_on_path = shutil.which(seven_zip.name if seven_zip.name else "7z")

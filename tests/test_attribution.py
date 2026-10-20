@@ -5,7 +5,6 @@ from fastapi.testclient import TestClient
 
 from backend.main import app
 
-
 # Sample result used for mocking load_result.
 # Keys mirror a real pipeline_result.json: permissions live under
 # manifest.uses_permissions, and there is no top-level "heuristic" or

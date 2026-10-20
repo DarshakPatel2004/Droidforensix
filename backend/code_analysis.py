@@ -13,7 +13,6 @@ from typing import Any, Dict, List, Optional
 
 from backend.dissection import APKDissector
 
-
 _SUSPICIOUS_PATTERNS: Dict[str, Dict[str, Any]] = {
     "reflection_abuse": {
         "patterns": [

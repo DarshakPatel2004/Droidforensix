@@ -150,7 +150,7 @@ def main() -> None:
 
     bundle = _load_bundle()
     model, feats = bundle
-    importances = {f: float(i) for f, i in zip(feats, model.feature_importances_)}
+    importances = {f: float(i) for f, i in zip(feats, model.feature_importances_, strict=True)}
 
     rows = list(csv.DictReader(FEATURES_CSV.open(newline="", encoding="utf-8")))
     population = _load_population_stats(rows, list(feats))

@@ -2,7 +2,7 @@ import logging
 import math
 import zipfile
 from pathlib import Path
-from typing import Dict, List, Any, Optional
+from typing import Any, Dict, List, Optional
 
 logger = logging.getLogger(__name__)
 

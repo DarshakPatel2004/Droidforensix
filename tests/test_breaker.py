@@ -13,10 +13,10 @@ import pytest
 from Crypto.Cipher import AES
 
 from packers.breaker.blobs import (
-    RECOVERED,
     E_KDF_BUDGET,
     E_KDF_EXHAUSTED,
     PENDING,
+    RECOVERED,
     SKIPPED_FILTER,
     SKIPPED_PLAINTEXT,
     SKIPPED_SIZE,
@@ -25,15 +25,6 @@ from packers.breaker.blobs import (
     collect_from_zip,
 )
 from packers.breaker.engine import break_apk, probe_matches, validate_payload
-from packers.breaker.seeds import (
-    SeedCandidate,
-    SeedPlan,
-    load_extra_seeds,
-    mine_strings,
-    name_variants,
-    numeric_candidates,
-    plan_from_collection,
-)
 from packers.breaker.schemes import (
     AES_KEY_LENGTHS,
     JavaRandom,
@@ -43,6 +34,15 @@ from packers.breaker.schemes import (
     matrix_schemes,
     prior_schemes,
     single_byte_xor_schemes,
+)
+from packers.breaker.seeds import (
+    SeedCandidate,
+    SeedPlan,
+    load_extra_seeds,
+    mine_strings,
+    name_variants,
+    numeric_candidates,
+    plan_from_collection,
 )
 
 MEDIAPLAYER2_SEED = 3664888858717910997
@@ -194,7 +194,7 @@ class TestCipherLayer:
     def test_java_lcg_roundtrip_uses_verified_convention(self):
         scheme = Scheme(seed=str(MEDIAPLAYER2_SEED), cipher="java-lcg")
         pt = b"PK\x03\x04" + bytes(range(60))
-        ct = bytes(a ^ b for a, b in zip(pt, JavaRandom(MEDIAPLAYER2_SEED).keystream(len(pt))))
+        ct = bytes(a ^ b for a, b in zip(pt, JavaRandom(MEDIAPLAYER2_SEED).keystream(len(pt)), strict=True))
         assert decrypt(scheme, ct) == pt
 
 
@@ -563,7 +563,7 @@ class TestBreakApk:
         seed = int(stem) + 0xFFFF
         pt = _kit_bytes()
         from packers.breaker.schemes import JavaRandom
-        ct = bytes(a ^ b for a, b in zip(pt, JavaRandom(seed).keystream(len(pt))))
+        ct = bytes(a ^ b for a, b in zip(pt, JavaRandom(seed).keystream(len(pt)), strict=True))
         apk = tmp_path / "n.apk"
         _make_apk(apk, {f"assets/{stem}": ct}, method=zipfile.ZIP_STORED)
         res = break_apk(apk, tmp_path / "out")

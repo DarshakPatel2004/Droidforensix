@@ -1,9 +1,9 @@
 from analysis.step12_reflective_tracing import (
+    REFLECTION_PATTERNS,
+    SENSITIVE_API_MAP,
     find_reflective_calls,
     resolve_reflection_targets,
     scan_source_for_reflection,
-    REFLECTION_PATTERNS,
-    SENSITIVE_API_MAP,
 )
 
 

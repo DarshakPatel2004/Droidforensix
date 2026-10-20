@@ -83,7 +83,7 @@ def main() -> None:
 
     # Build per-family profiles
     issuer_by_family: dict[str, list[str]] = defaultdict(list)
-    for sha, info in results.items():
+    for _sha, info in results.items():
         if info["issuer"]:
             issuer_by_family[info["family"]].append(info["issuer"])
 

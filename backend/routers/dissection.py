@@ -95,8 +95,8 @@ async def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> di
         # file above WORK_DIR.
         try:
             validate_sample_id(sample_id)
-        except ValueError:
-            raise HTTPException(status_code=400, detail="Invalid sample_id")
+        except ValueError as exc:
+            raise HTTPException(status_code=400, detail="Invalid sample_id") from exc
         dissection_path = WORK_DIR / sample_id / "dissection.json"
         if dissection_path.exists():
             try:
@@ -128,7 +128,7 @@ async def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> di
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(None, _build)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Dissection failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Dissection failed: {e}") from e
 
 
 @router.get("/api/sample/{sample_id}/dissection")
@@ -236,7 +236,7 @@ async def api_get_dissection_classes(
         page = lightweight[offset:offset + limit]
         return {"classes": page, "total": total, "offset": offset, "limit": limit}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Dissection failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Dissection failed: {e}") from e
 
 
 @router.get("/api/sample/{sample_id}/dissection/class-methods/{class_name:path}")
@@ -274,7 +274,7 @@ async def api_get_class_methods(sample_id: str, class_name: str, refresh: bool =
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Failed to load class methods: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to load class methods: {e}") from e
 
 
 @router.get("/api/sample/{sample_id}/dissection/code/{class_name:path}")
@@ -303,7 +303,7 @@ async def api_get_class_code(sample_id: str, class_name: str, refresh: bool = Qu
     except HTTPException:
         raise
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Dissection failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Dissection failed: {e}") from e
 
 
 @router.get("/api/sample/{sample_id}/dissection/strings")
@@ -332,9 +332,9 @@ async def api_get_dissection_strings(sample_id: str):
 
         return JSONResponse(content=_clean(data))
     except json.JSONDecodeError as e:
-        raise HTTPException(status_code=500, detail=f"Failed to parse strings JSON: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to parse strings JSON: {e}") from e
     except OSError as e:
-        raise HTTPException(status_code=500, detail=f"Failed to read strings file: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to read strings file: {e}") from e
 
 
 class ExplainMethodRequest(BaseModel):
@@ -369,7 +369,7 @@ async def api_get_code_analysis(sample_id: str, class_name: str) -> dict:
     try:
         analysis = await loop.run_in_executor(None, analyzer.analyze_class, class_name)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Code analysis failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Code analysis failed: {e}") from e
 
     if analysis is None:
         raise HTTPException(status_code=404, detail=f"Class '{class_name}' not found or has no decompiled source")
@@ -389,7 +389,7 @@ async def api_get_string_references(sample_id: str, string_value: str) -> dict:
     try:
         refs = await loop.run_in_executor(None, analyzer.get_string_references, string_value)
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"String reference lookup failed: {e}")
+        raise HTTPException(status_code=500, detail=f"String reference lookup failed: {e}") from e
 
     if refs is None:
         return {"string": string_value, "usages": []}

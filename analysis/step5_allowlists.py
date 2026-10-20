@@ -38,7 +38,7 @@ CDN_PROVIDERS = {
     "azureedge.net", "blob.core.windows.net", "azure.com",
     # Akamai / Fastly / CDN
     "akamai.net", "akamaihd.net", "akamaiedge.net", "fastly.net", "fastly-edge.com",
-    "cloudfront.net", "jsdelivr.net", "cdn.jsdelivr.net",
+    "jsdelivr.net", "cdn.jsdelivr.net",
     # Map / tile CDNs observed in FP
     "openstreetmap.org", "overlay.openstreetmap.nl", "basemap.nationalmap.gov",
     "openhab.org", "tile.openstreetmap.org",
@@ -91,7 +91,7 @@ def is_tier3(domain: str) -> bool:
     """Check if domain is Tier 3 legitimate infrastructure."""
     if not domain:
         return False
-    d = domain.lower().lstrip("www.")
+    d = domain.lower().removeprefix("www.")
     if d in TIER3_ALLOWLIST:
         return True
     # Subdomain match: e.g. api.ktor.io -> ktor.io

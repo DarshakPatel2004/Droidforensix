@@ -2,8 +2,8 @@ from analysis.step3_encoding_detection import (
     detect_encoding,
     has_meaningful_content,
     is_benign_source,
-    is_suspicious_source,
     is_likely_obfuscated_payload,
+    is_suspicious_source,
 )
 from analysis.step4_decoding import decode_payloads
 

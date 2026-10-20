@@ -147,7 +147,7 @@ def crack_apk(apk_path: str, out_dir: str, depth: int = 0,
             continue
         if name.startswith(("res/", "META-INF/", "lib/")):
             continue  # dropper payloads ship under assets/ or at root
-        res = crack_asset(blob, rel, subdir="/" in rel.strip("assets/"))
+        res = crack_asset(blob, rel, subdir="/" in rel.removeprefix("assets/"))
         if "seed" not in res:
             continue
         tag = f"{prefix}{rel}"

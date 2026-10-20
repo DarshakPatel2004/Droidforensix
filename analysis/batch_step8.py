@@ -3,11 +3,11 @@
 Batch run step8 obfuscation analysis on all 359 samples.
 Outputs to analysis/obfuscation_cache.json (consolidated).
 """
-import logging
+import csv
 import json
+import logging
 import os
 import sys
-import csv
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path

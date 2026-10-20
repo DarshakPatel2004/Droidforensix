@@ -2,15 +2,14 @@
 
 
 from backend.code_analysis import (
-    _parse_method_bodies,
-    _detect_techniques,
-    _extract_calls,
+    _SUSPICIOUS_PATTERNS,
     _assess_risk,
     _classify_string,
+    _detect_techniques,
+    _extract_calls,
+    _parse_method_bodies,
     _reconstruct_attack_flow,
-    _SUSPICIOUS_PATTERNS,
 )
-
 
 # ---------------------------------------------------------------------------
 # _parse_method_bodies

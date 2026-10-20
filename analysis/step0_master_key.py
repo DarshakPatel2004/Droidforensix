@@ -80,7 +80,7 @@ BREAKER_EVIDENCE_DIR = REPO / "analysis" / "master_key_breaker"
 def _load_triage(apk_path: pathlib.Path) -> Dict[str, Any]:
     """Run H1-H6 triage without subprocess - direct import for speed."""
     try:
-        from triage import triage_apk, load_json, MARKERS_PATH, ALLOWLIST_PATH
+        from triage import ALLOWLIST_PATH, MARKERS_PATH, load_json, triage_apk
         markers = load_json(MARKERS_PATH)
         allowlist = load_json(ALLOWLIST_PATH)
         report = triage_apk(apk_path, markers, allowlist)

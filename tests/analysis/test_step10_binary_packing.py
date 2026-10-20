@@ -1,8 +1,8 @@
 from analysis.step10_binary_packing import (
+    PACKING_INDICATORS,
+    analyze_dex_sections,
     detect_binary_packing,
     detect_dex_in_dex,
-    analyze_dex_sections,
-    PACKING_INDICATORS,
 )
 
 

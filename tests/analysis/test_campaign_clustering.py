@@ -3,6 +3,7 @@
 import pytest
 
 from analysis.campaign_clustering import (
+    build_campaign_graph,
     campaign_evidence,
     campaign_hosts,
     cluster_purity,
@@ -11,7 +12,6 @@ from analysis.campaign_clustering import (
     extract_sample_features,
     is_campaign_host,
     strict_tier_summary,
-    build_campaign_graph,
 )
 
 

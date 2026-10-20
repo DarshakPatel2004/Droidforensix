@@ -22,6 +22,15 @@ from droidforensix_llm import LLMVerifier, get_verifier, set_verifier
 
 logger = logging.getLogger(__name__)
 
+# Startup and shutdown progress is logged at INFO. Give the backend logger a handler
+# so those messages show when the app is started without its own logging setup.
+_backend_logger = logging.getLogger("backend")
+if not _backend_logger.handlers:
+    _handler = logging.StreamHandler()
+    _handler.setFormatter(logging.Formatter("%(levelname)s %(name)s: %(message)s"))
+    _backend_logger.addHandler(_handler)
+    _backend_logger.setLevel(logging.INFO)
+
 
 # ---------------------------------------------------------------------------
 # Ollama Lifecycle (via LLMVerifier)
@@ -44,9 +53,9 @@ def ensure_ollama_running():
     set_verifier(verifier)
     
     if not verifier.start():
-        print("[STARTUP] [WARN] Ollama could not be started — LLM features may fail")
+        logger.warning("Ollama could not be started; LLM features may fail")
     else:
-        print(f"[STARTUP] [OK] Ollama ready (model: {verifier.model})")
+        logger.info("Ollama ready (model: %s)", verifier.model)
 
 
 def stop_ollama():
@@ -55,7 +64,7 @@ def stop_ollama():
         verifier = get_verifier()
         verifier.stop()
     except Exception as e:
-        print(f"[SHUTDOWN] [WARN] Error stopping Ollama: {e}")
+        logger.warning("Error stopping Ollama: %s", e)
 
 
 # ---------------------------------------------------------------------------
@@ -65,7 +74,7 @@ def stop_ollama():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Startup
-    print("[STARTUP] Initializing DroidForensix backend...")
+    logger.info("Initializing DroidForensix backend")
     settings.WORK_DIR.mkdir(parents=True, exist_ok=True)
     settings.REPORTS_DIR.mkdir(parents=True, exist_ok=True)
     settings.SAMPLES_DIR.mkdir(parents=True, exist_ok=True)
@@ -74,16 +83,16 @@ async def lifespan(app: FastAPI):
     # Ensure Ollama is running (required for LLM-based features)
     ensure_ollama_running()
     
-    print("[STARTUP] [OK] Backend ready")
+    logger.info("Backend ready")
     yield
     
     # Shutdown
-    print("[SHUTDOWN] Cleaning up connections...")
+    logger.info("Cleaning up connections")
     manager.active_connections.clear()
     
     # Stop Ollama (if we started it)
     stop_ollama()
-    print("[SHUTDOWN] [OK] Ollama stopped")
+    logger.info("Ollama stopped")
 
 
 # ---------------------------------------------------------------------------

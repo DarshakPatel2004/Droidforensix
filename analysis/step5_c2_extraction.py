@@ -13,8 +13,8 @@ import re
 import socket
 import time
 from pathlib import Path
-from typing import Dict, List, Any, Optional
-from urllib.parse import urlparse, parse_qs
+from typing import Any, Dict, List, Optional
+from urllib.parse import parse_qs, urlparse
 
 from analysis.ip_validation import calculate_ip_legitimacy_score
 from backend.config import settings
@@ -83,7 +83,6 @@ BENIGN_DOMAINS = {
     "www.w3.org",
     "xml.org",
     "xmlpull.org",
-    "www.w3.org",
     "xmlns.org",
     # Development platforms / libraries
     "github.com",
@@ -243,7 +242,6 @@ BENIGN_DOMAINS = {
     "www.crunchyroll.com",
     "musicbrainz.org",
     "www.icecast.org",
-    "ns.adobe.com",
     "www.brynosaurus.com",
     # Document / ebook format schemas and services
     "schemas.microsoft.com",
@@ -493,8 +491,8 @@ BENIGN_DOMAINS = {
     "onesignal.com", "api.onesignal.com",
     "amplitude.com", "api.amplitude.com",
     "firebase.io", "firebaseio.com",
-    "googleapis.com", "firebasestorage.googleapis.com",
-    "crashlytics.com", "crashlytics.com",
+    "firebasestorage.googleapis.com",
+    "crashlytics.com",
     # Financial / banking SDKs
     "raiffeisen.at", "www.raiffeisen.at",
     # OCR / document scanning SDKs
@@ -522,19 +520,18 @@ BENIGN_DOMAINS = {
     # App builder / no-code platforms (common false C2s in benign apps)
     "kodular.io", "appypie.com", "appsyonamovil.com",
     # Analytics / advertising / attribution (legitimate SDK integrations)
-    "google-analytics.com", "googletagmanager.com", "appsflyer.com",
-    "adjust.com", "amplitude.com", "onesignal.com",
+    "google-analytics.com", "googletagmanager.com",
     # Payment / commerce SDKs (legitimate, embedded in benign apps)
     "stripe.com", "paypalobjects.com", "mclient.alipay.com",
     "gauravpaypal.com", "dream11.com",
     # Social / communication APIs
     "whatsapp.com", "fb.gg", "disqus.com", "flickr.com",
-    "t.me", "telegram.me",
+    "telegram.me",
     # Media / content / CDN
     "grofers.com", "adobe.com", "macromedia.com",
     "appscreative.info", "go360days.com",
     # Mobile platforms / OEM services
-    "miui.com", "xiaomi.net", "novastar.tech",
+    "miui.com", "novastar.tech",
     "aka.ms", "live.com", "xboxlive.com",
     # Open source / documentation / libraries
     "gnu.org", "openssl.org", "sil.org", "instabug.com",
@@ -759,7 +756,7 @@ def is_benign_url(url: str) -> bool:
             return True
         parsed = urlparse(url_clean)
         if parsed.hostname:
-            hostname = parsed.hostname.lower().lstrip("www.")
+            hostname = parsed.hostname.lower().removeprefix("www.")
             if hostname in BENIGN_DOMAINS:
                 return True
             # Also match any subdomain of a benign domain
@@ -784,7 +781,7 @@ def is_ad_network(domain: str) -> bool:
     """Return True if domain belongs to a known ad/analytics network."""
     if not domain:
         return False
-    domain_lower = domain.lower().lstrip("www.")
+    domain_lower = domain.lower().removeprefix("www.")
     if domain_lower in AD_NETWORK_DOMAINS:
         return True
     # Match subdomains (e.g. api.airpush.com -> airpush.com)
@@ -803,7 +800,7 @@ def is_analytics_domain(domain: str) -> bool:
     """
     if not domain:
         return False
-    domain_lower = domain.lower().lstrip("www.")
+    domain_lower = domain.lower().removeprefix("www.")
     if domain_lower in ANALYTICS_DOMAINS:
         return True
     # Match subdomains (e.g. api.mixpanel.com -> mixpanel.com)
@@ -877,16 +874,16 @@ PSEUDO_TLDS = frozenset({
     "total", "count", "index", "offset", "order", "group", "scope", "level",
     "stack", "queue", "thread", "task", "job", "event", "state", "status",
     # Additional method/field names that look like TLDs
-    "call", "add", "get", "set", "put", "del", "find", "next", "prev",
+    "call", "add", "get", "put", "del", "find", "next", "prev",
     "first", "last", "head", "tail", "begin", "end", "start", "stop",
     "read", "write", "send", "recv", "load", "save", "open", "close",
     "exec", "run", "do", "make", "new", "free", "bind", "join", "split",
     "enter", "exit", "init", "done", "wait", "notify", "lock", "unlock",
-    "info", "meta", "args", "opts", "flags", "items", "entry", "rows",
+    "info", "meta", "opts", "flags", "items", "entry", "rows",
     "cols", "cell", "node", "edge", "link", "obj", "ctx", "biz", "loop",
     "domain", "view", "form", "page", "msg", "str", "int", "bool", "arr",
     # 2-letter codes that are real TLDs but overwhelmingly code refs in APK strings
-    "in", "at", "id", "pl",
+    "pl",
 })
 
 # Known real TLDs to avoid over-filtering legitimate 2-part domains
@@ -895,7 +892,7 @@ REAL_TLDS = frozenset({
     "fr", "au", "ca", "cn", "in", "ru", "br", "kr", "it", "es", "mx", "nl",
     "se", "no", "fi", "dk", "pl", "at", "ch", "be", "ie", "nz", "sg", "hk",
     "tw", "my", "ph", "th", "vn", "id", "za", "eg", "ng", "ke", "ar", "cl",
-    "co", "us", "xyz", "top", "club", "online", "site", "live", "app", "dev",
+    "us", "xyz", "top", "club", "online", "site", "live", "app", "dev",
     "info", "biz", "pro", "me", "mobi", "asia", "tel", "int", "eu",
     "tech", "ai", "cloud", "shop", "store", "blog", "wiki",
     "media", "news", "video", "tv", "cc", "guru", "rocks", "world",
@@ -964,7 +961,7 @@ _COMMON_ENGLISH_WORDS = frozenset({
     'about', 'against', 'between', 'into', 'through', 'during', 'before',
     'after', 'above', 'below', 'from', 'up', 'down', 'in', 'out', 'on',
     'off', 'over', 'under', 'again', 'further', 'then', 'once',
-    'here', 'there', 'when', 'where', 'why', 'thing', 'things', 'test',
+    'here', 'there', 'thing', 'things', 'test',
     'demo', 'sample', 'example', 'hello', 'world', 'foo', 'bar', 'baz',
     'name', 'user', 'pass', 'login', 'admin', 'root', 'home', 'page',
     'site', 'file', 'data', 'info', 'text', 'msg', 'mail',
@@ -1014,7 +1011,7 @@ def _is_likely_junk_domain(domain: str) -> bool:
 
 def _is_benign_domain(domain: str) -> bool:
     """Return True if domain is in the known benign list (including subdomain matching)."""
-    domain_lower = domain.lower().lstrip("www.")
+    domain_lower = domain.lower().removeprefix("www.")
     if domain_lower in BENIGN_DOMAINS:
         return True
     parts = domain_lower.split(".")
@@ -1190,7 +1187,7 @@ def enrich_with_circl(c2_records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
         return c2_records
 
     # Merge CIRCL data back into original records
-    for original, circl_data in zip(c2_records, enriched):
+    for original, circl_data in zip(c2_records, enriched, strict=True):
         original["circl"] = circl_data.get("circl", {})
 
     return c2_records
@@ -1224,8 +1221,8 @@ def _urlhaus_reputation_hint(domain: str, cache_dir: Path) -> Optional[dict]:
         hit.pop("ts", None)
         return hit
 
-    import urllib.request
     import urllib.error
+    import urllib.request
     payload = f"host={key}".encode("utf-8")
     try:
         req = urllib.request.Request(
@@ -1367,7 +1364,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                 c2_id += 1
 
     # Also scan source strings directly for URLs not caught by payloads
-    for category_name, items in strings_result.get("categories", {}).items():
+    for _category_name, items in strings_result.get("categories", {}).items():
         for item in items:
             value = item.get("value", "")
             if not isinstance(value, str):

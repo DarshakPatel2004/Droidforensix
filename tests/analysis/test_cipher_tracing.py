@@ -2,7 +2,6 @@
 
 import base64
 
-
 from analysis.cipher_tracing import (
     derived_key_candidates,
     emulate_key_chain,
@@ -11,7 +10,6 @@ from analysis.cipher_tracing import (
     trace_cipher_in_apk,
 )
 from analysis.step4_decoding import decode_payload, extract_artifacts
-
 
 PLAINTEXT_URL = "https://evil-c2.example.com/beacon"
 AES_KEY = "0123456789abcdef"  # 16 bytes

@@ -364,7 +364,7 @@ class TestObfuscationStep:
 # ---------------------------------------------------------------------------
 class TestFamilyCacheSelfHeal:
     def test_entry_claiming_boost_at_base_confidence_is_stale(self):
-        from backend.family_id import _cached_confidence_lacks_boost, FAMILY_SIGNATURES
+        from backend.family_id import FAMILY_SIGNATURES, _cached_confidence_lacks_boost
 
         sig = next(s for s in FAMILY_SIGNATURES if s.family_name == "KungFu")
         base = sig.confidence

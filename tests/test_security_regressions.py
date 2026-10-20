@@ -18,7 +18,6 @@ from fastapi.testclient import TestClient
 from backend.config import settings
 from backend.main import app
 
-
 # Filenames that reach the handler as literal traversal and must be rejected.
 # NOTE: an absolute drive path ("C:\\...\\x.apk") is deliberately absent - it is
 # not a case our code has to handle. python-multipart strips the drive/UNC
@@ -49,8 +48,8 @@ def uploads_dir(tmp_path, monkeypatch):
 
     # The security property is the write, not the analysis; stub the analysis so
     # these tests stay fast and do not depend on apktool/androguard.
-    from backend.core.apk_processor import APKProcessor
     from backend.core.androguard_analyzer import APKAnalyzer
+    from backend.core.apk_processor import APKProcessor
 
     monkeypatch.setattr(
         APKProcessor, "process", lambda self: {"success": True, "data": {}}

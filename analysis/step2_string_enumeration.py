@@ -12,7 +12,7 @@ import math
 import re
 import xml.etree.ElementTree as ET
 from pathlib import Path
-from typing import List, Dict, Any
+from typing import Any, Dict, List
 
 from backend.config import settings
 

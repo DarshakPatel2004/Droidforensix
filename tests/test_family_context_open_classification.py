@@ -35,7 +35,7 @@ class TestOpenClassificationBranch:
         # 50 shared bytes of a real family's discriminator -> candidate appears.
         kb = family_id._kb_load()
         target = None
-        for name, fp in kb.items():
+        for _name, fp in kb.items():
             if fp.get("strings"):
                 target = fp["strings"][0]["token"]
                 break

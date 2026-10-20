@@ -24,10 +24,10 @@ import socket
 import time
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
-from urllib.request import urlopen, Request
+from urllib.request import Request, urlopen
 
-from backend.config import settings
 from backend.censys_enrichment import enrich_ip as _censys_enrich
+from backend.config import settings
 from backend.family_id import identify_family
 
 logger = logging.getLogger(__name__)
@@ -212,7 +212,7 @@ BENIGN_SDK_DOMAINS = {
     # Other Chinese services
     'lovequiz.us',
     # Additional ad/analytics networks
-    'mopub.com', 'www.mopub.com',
+    'www.mopub.com',
     # .NET framework namespaces (common in Xamarin/Mono Android apps)
     'system.net', 'system.io', 'system.web', 'system.data', 'system.core',
     # Google OAuth / Firebase / Firebase Auth
@@ -283,53 +283,48 @@ _JUNK_DOMAIN_WORDS = frozenset({
     'parameter', 'argument', 'option', 'setting', 'configuration',
     'property', 'attribute', 'field', 'member', 'element', 'component',
     'module', 'package', 'library', 'framework', 'platform', 'system',
-    'service', 'manager', 'controller', 'handler', 'provider', 'factory',
+    'service', 'manager', 'controller', 'provider', 'factory',
     'builder', 'creator', 'generator', 'parser', 'formatter', 'converter',
     'validator', 'checker', 'matcher', 'comparator', 'iterator', 'enumerator',
     'collection', 'container', 'wrapper', 'proxy', 'adapter', 'bridge',
-    'facade', 'decorator', 'observer', 'listener', 'subscriber', 'publisher',
-    'event', 'action', 'operation', 'task', 'job', 'work', 'process',
-    'thread', 'routine', 'procedure', 'method', 'routine', 'logic',
+    'facade', 'decorator', 'observer', 'subscriber', 'publisher',
+    'action', 'operation', 'task', 'job', 'work', 'thread', 'routine', 'procedure', 'method', 'logic',
     'algorithm', 'pattern', 'structure', 'model', 'view', 'template',
     'instance', 'reference', 'pointer', 'handle', 'identifier', 'key',
     'name', 'title', 'label', 'tag', 'category', 'type', 'kind', 'sort',
     'group', 'class', 'family', 'series', 'version', 'edition', 'release',
     'build', 'revision', 'update', 'upgrade', 'patch', 'fix', 'change',
-    'add', 'remove', 'delete', 'insert', 'update', 'replace', 'swap',
-    'move', 'copy', 'clone', 'merge', 'split', 'join', 'connect',
+    'add', 'remove', 'delete', 'insert', 'replace', 'swap',
+    'move', 'merge', 'split', 'join', 'connect',
     'disconnect', 'open', 'close', 'read', 'write', 'load', 'save',
-    'fetch', 'send', 'receive', 'get', 'set', 'put', 'post', 'create',
+    'fetch', 'send', 'receive', 'get', 'put', 'post', 'create',
     'destroy', 'init', 'setup', 'configure', 'initialize', 'reset',
     'clear', 'clean', 'refresh', 'reload', 'restart', 'resume', 'pause',
     'cancel', 'abort', 'skip', 'ignore', 'reject', 'accept', 'approve',
-    'confirm', 'verify', 'validate', 'check', 'test', 'debug', 'trace',
-    'log', 'record', 'track', 'monitor', 'watch', 'observe', 'detect',
-    'find', 'search', 'lookup', 'query', 'select', 'filter', 'sort',
-    'order', 'arrange', 'organize', 'group', 'merge', 'combine', 'split',
-    'divide', 'separate', 'extract', 'parse', 'format', 'convert',
+    'verify', 'validate', 'check', 'trace',
+    'record', 'track', 'monitor', 'watch', 'observe', 'detect',
+    'find', 'search', 'lookup', 'query', 'select', 'filter', 'order', 'arrange', 'organize', 'combine', 'divide', 'separate', 'extract', 'parse', 'format', 'convert',
     'transform', 'translate', 'encode', 'decode', 'compress', 'decompress',
-    'encrypt', 'decrypt', 'hash', 'sign', 'verify', 'authenticate',
+    'encrypt', 'decrypt', 'hash', 'sign', 'authenticate',
     'authorize', 'login', 'logout', 'register', 'subscribe', 'unsubscribe',
     'follow', 'unfollow', 'like', 'unlike', 'share', 'comment', 'rate',
-    'review', 'feedback', 'support', 'help', 'info', 'about', 'contact',
+    'review', 'feedback', 'support', 'help', 'about', 'contact',
     'privacy', 'terms', 'conditions', 'policy', 'legal', 'copyright',
     'license', 'permission', 'access', 'right', 'role', 'status', 'state',
-    'mode', 'style', 'theme', 'layout', 'design', 'format', 'structure',
-    'content', 'context', 'environment', 'setting', 'preference', 'option',
-    'feature', 'functionality', 'capability', 'capacity', 'limit', 'bound',
+    'mode', 'style', 'theme', 'layout', 'design', 'content', 'context', 'environment', 'preference', 'feature', 'functionality', 'capability', 'capacity', 'limit', 'bound',
     'range', 'scope', 'domain', 'zone', 'region', 'area', 'location',
     'position', 'place', 'point', 'spot', 'site', 'address', 'url',
-    'link', 'reference', 'source', 'origin', 'destination', 'target',
+    'link', 'source', 'origin', 'destination', 'target',
     'goal', 'objective', 'purpose', 'intent', 'reason', 'cause', 'effect',
-    'result', 'outcome', 'consequence', 'impact', 'influence', 'factor',
-    'aspect', 'element', 'part', 'piece', 'segment', 'section', 'portion',
-    'fraction', 'percentage', 'ratio', 'rate', 'speed', 'velocity',
+    'outcome', 'consequence', 'impact', 'influence', 'factor',
+    'aspect', 'part', 'piece', 'segment', 'section', 'portion',
+    'fraction', 'percentage', 'ratio', 'speed', 'velocity',
     'frequency', 'period', 'duration', 'interval', 'delay', 'timeout',
     'threshold', 'boundary', 'margin', 'padding', 'spacing', 'gap',
     'width', 'height', 'depth', 'length', 'size', 'scale', 'dimension',
     'weight', 'mass', 'volume', 'density', 'intensity', 'strength',
-    'force', 'power', 'energy', 'work', 'effort', 'attempt', 'try',
-    'success', 'failure', 'error', 'warning', 'notice', 'alert',
+    'force', 'power', 'energy', 'effort', 'attempt', 'try',
+    'notice',
 })
 
 
@@ -579,7 +574,8 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
         from concurrent.futures import ThreadPoolExecutor
 
         def resolve_dns(hostname, timeout=2.0):
-            from concurrent.futures import ThreadPoolExecutor, TimeoutError as _FutTimeoutError
+            from concurrent.futures import ThreadPoolExecutor
+            from concurrent.futures import TimeoutError as _FutTimeoutError
             def _resolve():
                 return socket.getaddrinfo(hostname, 80, socket.AF_INET)
             with ThreadPoolExecutor(max_workers=1) as pool:
@@ -587,8 +583,8 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
                 try:
                     addrs = future.result(timeout=timeout)
                     return list(sorted(set(a[4][0] for a in addrs)))
-                except _FutTimeoutError:
-                    raise _FutTimeoutError(f"DNS resolution timed out for {hostname}")
+                except _FutTimeoutError as exc:
+                    raise _FutTimeoutError(f"DNS resolution timed out for {hostname}") from exc
 
         def resolve_one(c):
             domain = c.get('domain')

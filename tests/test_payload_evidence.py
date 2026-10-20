@@ -60,12 +60,12 @@ def test_native_lib_names_keeps_the_measured_magic_only_names():
 
 
 def test_class_count_from_dex_rejects_undecodable_bytes():
-    with pytest.raises(Exception):
+    with pytest.raises(ValueError):
         pe.class_count_from_dex(b"not a dex at all")
 
 
 def test_permissions_from_binary_manifest_rejects_non_axml():
-    with pytest.raises(Exception):
+    with pytest.raises((TypeError, ValueError)):
         pe.permissions_from_binary_manifest(b"not xml")
 
 

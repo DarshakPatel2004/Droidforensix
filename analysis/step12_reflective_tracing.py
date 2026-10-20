@@ -1,7 +1,7 @@
 import logging
 import re
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 
@@ -92,7 +92,7 @@ def resolve_reflection_targets(calls: List[Dict[str, Any]]) -> List[Dict[str, An
     sensitive = []
     for call in calls:
         target = call["target"]
-        for api_class, methods in SENSITIVE_API_MAP.items():
+        for api_class, _methods in SENSITIVE_API_MAP.items():
             if api_class.lower() in target.lower():
                 sensitive.append({
                     **call,
