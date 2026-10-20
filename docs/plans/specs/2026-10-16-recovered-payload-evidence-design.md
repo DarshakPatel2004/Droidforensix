@@ -315,7 +315,10 @@ enrichment.
   **Done.** Live A/B on the 7 dispatcher-recovered dev samples, both arms run live:
   evidence attached on 7/7 in the ON arm, 0/7 in OFF; predictions identical in both
   arms; accuracy 0.3553 / macro-precision 0.2822 / macro-recall 0.2956, delta 0.0.
-- Mine strings from **all** recovered payloads, not just the first `kit.zip`.
+- ~~Mine strings from **all** recovered payloads, not just the first `kit.zip`.~~
+  **Done.** Every recovered payload is mined, including a bare `.dex`. On the dev
+  anchor the output is identical for all 10 recovered samples, since each has one
+  `kit.zip`, so the measured delta is 0.0 and no A/B was needed.
 - Nested-members analysis, `resources.arsc`, and smali/API-call-level evidence.
 - Recalibrating signature bands against real app sizes rather than stub sizes.
 - Resolving the stale evaluation baseline (`validation_report.json`, 24-Sep) so future
