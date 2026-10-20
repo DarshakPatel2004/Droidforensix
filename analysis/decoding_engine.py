@@ -98,12 +98,16 @@ def shannon_entropy(data: bytes) -> float:
     return entropy
 
 
+# Byte-level lookup tables: bytes.translate runs in C, far faster than a per-byte Python loop.
+_PRINTABLE_MASK = bytes(1 if 32 <= b <= 126 or b in (9, 10, 13) else 0 for b in range(256))
+_XOR_TABLES = [bytes(b ^ key for b in range(256)) for key in range(256)]
+
+
 def printable_ratio(data: bytes) -> float:
     """Ratio of printable ASCII / whitespace bytes."""
     if not data:
         return 0.0
-    printable = sum(1 for b in data if 32 <= b <= 126 or b in (9, 10, 13))
-    return printable / len(data)
+    return data.translate(_PRINTABLE_MASK).count(1) / len(data)
 
 
 # ---------------------------------------------------------------------------
@@ -163,7 +167,7 @@ def xor_bruteforce(data: bytes, min_printable: float = 0.70) -> List[Tuple[int, 
 
     candidates = []
     for key in range(1, 256):
-        decrypted = bytes(b ^ key for b in data)
+        decrypted = data.translate(_XOR_TABLES[key])
         ratio = printable_ratio(decrypted)
         if ratio >= min_printable:
             try:

@@ -12,6 +12,11 @@ Per-step timings are recorded in every `pipeline_result.json` under `timeline`
 | 2nd | step5 (C2 extraction) ≈ 11 s |
 | 3rd | step8 (obfuscation analysis) ≈ 7 s |
 
+Re-measured 2026-10-20 on one malware sample (ermac, Ollama `qwen2.5:7b-instruct`), total ≈ 19–26 s:
+the **LLM assessment step (`timeline.step8`, ≈ 12–13 s)** is about half the run. Step 1 is ≈ 4–5 s.
+The LLM time is model generation, so it moves only with the model or generation settings.
+Note that `timeline` numbering follows `STEP_NAMES` in `analysis/pipeline.py`, not the file names.
+
 ## Duplicate-parse fix (step1 → step2)
 
 Step 1 (`step1_apk_extraction.py`) already parses every DEX with AndroGuard and
