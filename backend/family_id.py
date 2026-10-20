@@ -1531,6 +1531,16 @@ def _extract_permissions(result: Dict[str, Any]) -> Set[str]:
     return perms
 
 
+def _string_pattern_matches(pattern: str, string_blob: str) -> bool:
+    """True when the pattern occurs as a whole token in the lowercase blob.
+
+    A bare substring test let short generic patterns ("tea") match inside ordinary
+    words ("steady"). Dots, slashes and quotes still delimit tokens, so
+    "com.kmin.x" still matches "kmin".
+    """
+    return re.search(r"(?<![a-z0-9])" + re.escape(pattern.lower()) + r"(?![a-z0-9])", string_blob) is not None
+
+
 def _extract_string_blob(result: Dict[str, Any]) -> str:
     """Extract all string values into one lowercase blob.
     
@@ -1708,7 +1718,7 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
         # 1. String patterns
         string_matched = False
         for pattern in sig.string_patterns:
-            if pattern.lower() in string_blob:
+            if _string_pattern_matches(pattern, string_blob):
                 matched_signals += 1
                 signal_details.append(f"string:\"{pattern}\"")
                 string_matched = True
