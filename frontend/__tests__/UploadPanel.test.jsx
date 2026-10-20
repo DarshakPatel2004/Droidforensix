@@ -2,11 +2,6 @@ import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import UploadPanel from '../src/components/UploadPanel'
 
-function createFile(name = 'test.apk', size = 100000, type = 'application/vnd.android.package-archive') {
-  const file = new File(['x'.repeat(size)], name, { type })
-  return file
-}
-
 function renderUploadPanel(props = {}) {
   return render(
     <UploadPanel

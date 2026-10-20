@@ -28,7 +28,6 @@ export default function FamilySignalsCard({ sampleId, apiUrl }) {
     if (!sampleId || !apiUrl) return
     let cancelled = false
 
-    setLoading(true)
     Promise.all([
       fetchWithCache(`${apiUrl}/api/sample/${sampleId}/attribution`).catch(() => null),
       fetchWithCache(`${apiUrl}/api/sample/${sampleId}/threat-intel`).catch(() => null),

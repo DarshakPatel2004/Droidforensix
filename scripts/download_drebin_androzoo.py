@@ -2,7 +2,7 @@
 Download Drebin malware samples from AndroZoo using sha256_family.csv.
 
 Usage (Windows):
-    .\venv\Scripts\Activate.ps1
+    .\\venv\\Scripts\\Activate.ps1
     python scripts/download_drebin_androzoo.py <hash_csv> [count]
 
 Example:

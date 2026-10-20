@@ -12,10 +12,9 @@ export default function ComponentsTab({ sampleId, apiUrl }) {
 
   useEffect(() => {
     if (!sampleId) return
-    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection/components`)
       .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
-      .then(d => { setData(d.components); setLoading(false) })
+      .then(d => { setFetchError(null); setData(d.components); setLoading(false) })
       .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 

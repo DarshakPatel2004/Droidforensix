@@ -1611,7 +1611,6 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict:
 
 
 @app.post("/api/analyze/{upload_id}")
-@app.post("/api/analyze/{upload_id}")
 async def api_analyze_upload(upload_id: str) -> dict:
     """Trigger analysis for a previously uploaded APK."""
     upload = upload_registry.get(upload_id)

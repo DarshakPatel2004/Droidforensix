@@ -8,10 +8,9 @@ export default function DEXTab({ sampleId, apiUrl }) {
 
   useEffect(() => {
     if (!sampleId) return
-    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection/dex`)
       .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
-      .then(d => { setData(d.dex_stats); setLoading(false) })
+      .then(d => { setFetchError(null); setData(d.dex_stats); setLoading(false) })
       .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 
