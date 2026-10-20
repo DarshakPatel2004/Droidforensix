@@ -187,18 +187,18 @@ def decode_blob_text(blob: str) -> Tuple[Optional[bytes], Optional[str]]:
     if HEX_SHAPE_RE.match(clean):
         try:
             return binascii.unhexlify(clean), "hex"
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in decode_blob_text: %s", exc)
     try:
         return base64.b64decode(clean, validate=True), "base64"
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in decode_blob_text: %s", exc)
     try:
         padding = 4 - len(clean) % 4
         padded = clean + ("=" * padding if padding != 4 else "")
         return base64.urlsafe_b64decode(padded), "base64"
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in decode_blob_text: %s", exc)
     try:
         return binascii.unhexlify(clean), "hex"
     except Exception:
@@ -259,7 +259,8 @@ def key_candidates(
         elif HEX_SHAPE_RE.match(literal):
             try:
                 decoded = binascii.unhexlify(literal)
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in key_candidates: %s", exc)
                 continue
             if len(decoded) in accepted:
                 out.append((decoded, literal, line))
@@ -306,8 +307,8 @@ def blob_candidates(
                 decoded_len = len(binascii.unhexlify(literal))
                 if decoded_len in (16, 24, 32):  # common AES key lengths
                     continue
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("Suppressed error in blob_candidates: %s", exc)
         out.append((literal, blob_bytes, blob_enc or "base64", line))
         if len(out) >= MAX_BLOBS_PER_FILE:
             break
@@ -396,14 +397,16 @@ def _b64decode_loose(value: bytes) -> Optional[bytes]:
     except Exception:
         try:
             return base64.b64decode(value + b"=" * ((-len(value)) % 4))
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in _b64decode_loose: %s", exc)
             return None
 
 
 def _unhexlify_loose(value: bytes) -> Optional[bytes]:
     try:
         return binascii.unhexlify(value.decode("ascii", errors="strict").strip())
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in _unhexlify_loose: %s", exc)
         return None
 
 
@@ -679,7 +682,8 @@ def try_decrypt(
             # CTR mode and NoPadding: return raw decrypted bytes (stream cipher)
             return plain if plain else None
         return pkcs7_unpad(plain, block)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in try_decrypt: %s", exc)
         return None
 
 

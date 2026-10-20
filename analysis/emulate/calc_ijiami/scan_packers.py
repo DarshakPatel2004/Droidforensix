@@ -1,4 +1,7 @@
+import logging
 import pathlib, zipfile, sys
+
+logger = logging.getLogger(__name__)
 sys.stdout.reconfigure(line_buffering=True)
 
 roots = [pathlib.Path(r"PENDRIVE DATA\PENDRIVE DATA\apk fraud"),
@@ -14,7 +17,8 @@ for root in roots:
             zf = zipfile.ZipFile(apk)
             names = set(i.filename for i in zf.infolist()
                         if i.filename.endswith(".so"))
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in <module>: %s", exc)
             continue
         markers = [
             "ijm_lib", "IJMDal.Data", "ijiami",

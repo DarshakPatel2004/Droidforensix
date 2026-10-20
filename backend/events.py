@@ -3,9 +3,9 @@ Backend event definitions and serialization for WebSocket streaming.
 """
 
 import json
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
-from typing import Any, Dict, Optional
+from typing import Any, Dict
 
 
 @dataclass

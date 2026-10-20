@@ -624,7 +624,7 @@ class APKDissector:
                         cls_raw = cls.get_name()
                         if cls_raw in targets:
                             output = [
-                                f"// Disassembled DEX Class via Androguard",
+                                "// Disassembled DEX Class via Androguard",
                                 f"class {class_name} {{",
                                 ""
                             ]

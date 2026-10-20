@@ -17,7 +17,7 @@ try:
     from elftools.elf.elffile import ELFFile
     from elftools.elf.constants import SH_FLAGS
     from elftools.elf.dynamic import DynamicSection
-    from elftools.elf.sections import Section, SymbolTableSection
+    from elftools.elf.sections import Section, SymbolTableSection  # noqa: F401  availability probe
     HAS_PYELFFLTOOLS = True
 except ImportError:
     HAS_PYELFFLTOOLS = False
@@ -314,7 +314,8 @@ class ELFBreaker:
                         if tag.entry.d_tag in ('DT_FINI_ARRAYSZ',):
                             init_data.append(('fini_array_size', str(tag.entry.d_val)))
             return init_data if init_data else None
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in _extract_init_array: %s", exc)
             return None
 
     def _extract_relocations(self) -> Optional[List[Dict[str, Any]]]:
@@ -328,8 +329,8 @@ class ELFBreaker:
                             'type': rel['r_info_type'],
                             'symbol': rel.symbol.name if rel.symbol else '',
                         })
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in _extract_relocations: %s", exc)
         return relocs if relocs else None
 
     def _detect_packing(self) -> Dict[str, Any]:
@@ -353,8 +354,8 @@ class ELFBreaker:
             if high_entropy_sections:
                 score += 1
 
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in _detect_packing: %s", exc)
 
         for sig_bytes, sig_name, sig_desc in PACKER_SIGNATURES:
             pos = 0
@@ -374,8 +375,8 @@ class ELFBreaker:
         try:
             total_secs = self.elffile.header.e_shnum
             stripped = self.elffile.header.e_shstrndx == 0
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in _detect_packing: %s", exc)
 
         if stripped and total_secs > 3:
             indicators.append('Section headers stripped (packed/stripped binary)')
@@ -452,7 +453,8 @@ class ELFBreaker:
         for s in raw_strings:
             try:
                 decoded = s.decode('ascii', errors='ignore').strip()
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in _scan_strings: %s", exc)
                 continue
 
             if any(x in decoded for x in [
@@ -648,8 +650,8 @@ class ELFBreaker:
                                 else:
                                     base = 0
                                 candidates.append((int(base) + i, chunk))
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("Suppressed error in _find_obfuscated_arrays: %s", exc)
 
         for win_size in (24, 32, 48):
             step = max(win_size * 2, 128)
@@ -873,8 +875,8 @@ class ELFBreaker:
                         k = m.group()
                         if k.lower() not in (b'secret', b'key', b'xor', b'enc') and len(k) >= 2:
                             keys.append(k)
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("Suppressed error in _extract_xor_keys: %s", exc)
 
         seen = set()
         unique = []
@@ -926,8 +928,8 @@ class ELFBreaker:
                     for tag in sec.iter_tags():
                         if tag.entry.d_tag == 'DT_NEEDED':
                             libs.add(tag.needed)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in _summarize_imports: %s", exc)
 
         imports = self._extract_symbols().get('imports', [])
         for name in imports:

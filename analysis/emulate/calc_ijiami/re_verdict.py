@@ -39,7 +39,7 @@ for path, arch in CASES:
     sym = next((s for s in b.exported_functions if s.name == "JNI_OnLoad"), None)
     va = sym.value if sym else 0
     dec, total, insn = decode_density(img, va, 0x400, arch)
-    print("=== %s (%s) size %d JNI_OnLoad %x" % (pathick if False else path.split("/")[-1], arch, n, va))
+    print("=== %s (%s) size %d JNI_OnLoad %x" % (path.split("/")[-1], arch, n, va))
     print("  decode density @JNI_OnLoad+0x400: %d/%d (%.1f%%)" % (dec, total, 100.0 * dec / (total or 1)))
     if insn:
         print("  first 6:", "; ".join("%s %s" % (i.mnemonic, i.op_str) for i in insn[:6]))

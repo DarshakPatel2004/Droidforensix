@@ -54,7 +54,6 @@ def test_dex_entropy_from_apk_not_found(tmp_path):
 
 
 def test_obfuscation_level_thresholds():
-    from analysis.step8_obfuscation_analysis import analyze_obfuscation
 
     # Direct score/level mapping via a minimal manual check
     indicators_low = {

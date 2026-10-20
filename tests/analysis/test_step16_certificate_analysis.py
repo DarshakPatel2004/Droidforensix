@@ -1,5 +1,4 @@
 import json
-import pytest
 from analysis.step16_certificate_analysis import (
     analyze_certificate,
     parse_certificate_from_apk,
@@ -9,7 +8,6 @@ from analysis.step16_certificate_analysis import (
     get_known_bad_certs,
     add_known_bad_cert,
     DEFAULT_CERT_DB_PATH,
-    _cert_cache,
 )
 
 
@@ -139,7 +137,6 @@ class TestGetKnownBadCerts:
     def test_get_auto_loads(self, tmp_path):
         global _cert_cache
         _cert_cache = None
-        orig_path = DEFAULT_CERT_DB_PATH
         f = tmp_path / "auto.json"
         data = {"certificates": [{"sha256_fingerprint": "11:22:33:44", "family": "auto_test"}]}
         f.write_text(json.dumps(data))

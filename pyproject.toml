@@ -15,6 +15,14 @@ Source = "https://github.com/DarshakPatel2004/project-zero"
 [project.scripts]
 droidforensix = "droidforensix.cli:main"
 
+[tool.ruff]
+# Research and one-off tooling is excluded: its star imports and dead code are known.
+extend-exclude = ["analysis/emulate", "kali result"]
+
+[tool.ruff.lint]
+# pyflakes rules only: undefined names, unused imports and variables, f-strings without placeholders.
+select = ["F"]
+
 [tool.setuptools]
 packages = ["analysis", "backend", "backend.core", "droidforensix"]
 py-modules = [

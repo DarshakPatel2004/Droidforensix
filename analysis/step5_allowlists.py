@@ -4,6 +4,10 @@ Populated from FP analysis (evaluation/c2_analysis/fp_domains.csv) + known OAuth
 See analysis/step5_c2_extraction.py for usage.
 """
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 # OAuth / SaaS identity providers - legitimate API endpoints often embedded in apps
 OAUTH_DOMAINS = {
     # Google / Firebase
@@ -103,6 +107,6 @@ def is_tier3(domain: str) -> bool:
         for i in range(len(parts)):
             if ".".join(parts[i:]) in BENIGN_DOMAINS:
                 return True
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("BENIGN_DOMAINS unavailable, using Tier 3 allowlist only: %s", exc)
     return False

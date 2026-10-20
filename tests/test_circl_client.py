@@ -3,7 +3,6 @@ Tests for the CIRCL enrichment client.
 """
 
 import json
-import os
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -13,7 +12,6 @@ from backend.circl_client import (
     CIRCLAuthError,
     CIRCLClient,
     CIRCLClientError,
-    CIRCLTimeoutError,
     enrich_c2s,
 )
 

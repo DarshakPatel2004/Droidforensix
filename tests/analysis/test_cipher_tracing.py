@@ -2,7 +2,6 @@
 
 import base64
 
-import pytest
 
 from analysis.cipher_tracing import (
     derived_key_candidates,

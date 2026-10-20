@@ -229,7 +229,7 @@ def main() -> None:
     with open(OUT_PATH, "w", encoding="utf-8") as f:
         json.dump(output, f, indent=2, ensure_ascii=False)
 
-    print(f"\nSummary:")
+    print("\nSummary:")
     print(f"  families with discriminator: {summary['families_with_discriminator']} / {summary['total_outcompeted_families']}")
     print(f"  families without:            {summary['families_without_discriminator']}")
     print(f"\nWritten to {OUT_PATH}")

@@ -3,6 +3,7 @@
 Batch run step8 obfuscation analysis on all 359 samples.
 Outputs to analysis/obfuscation_cache.json (consolidated).
 """
+import logging
 import json
 import os
 import sys
@@ -14,6 +15,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from analysis.step8_obfuscation_analysis import analyze_obfuscation
+
+logger = logging.getLogger(__name__)
 
 GROUND_TRUTH = Path("D:/DroidForensix/ground_truth_all.csv")
 OUTPUT = Path("D:/DroidForensix/analysis/obfuscation_cache.json")
@@ -43,8 +46,8 @@ def run_step8(sha256, apk_path, work_dir):
         try:
             with open(output_file) as f:
                 return json.load(f)
-        except Exception:
-            pass
+        except Exception as exc:
+            logger.warning("Suppressed error in run_step8: %s", exc)
 
     if not apk_path or not os.path.exists(apk_path):
         return {"error": f"APK not found: {apk_path}", "obfuscation_score": 0.0}

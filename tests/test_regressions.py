@@ -6,7 +6,6 @@ paths were silent-failure sites (a failed scan reported as a clean result), so
 the tests assert the *error* is surfaced, not just that the call succeeds.
 """
 import io
-import struct
 import zipfile
 
 import pytest

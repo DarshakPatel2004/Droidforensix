@@ -20,9 +20,7 @@ import re
 import time
 import urllib.parse
 import socket
-from pathlib import Path
 from typing import Dict, Any, Optional
-from collections import Counter
 
 import requests
 
@@ -212,7 +210,6 @@ def validate_assessment(assessment: dict) -> bool:
 def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfuscation_result: Optional[dict] = None, secrets_result: Optional[dict] = None) -> dict:
     """Cross-reference LLM severity against detected indicators, including obfuscation/permissions/secrets."""
     c2_count = c2_result.get("total_c2s", 0)
-    chain_count = chains_result.get("total_chains", 0)
     severity = assessment.get("severity", "low")
     risk_score = assessment.get("risk_score", 0)
     obf_score = (obfuscation_result or {}).get("obfuscation_score", 0)
@@ -746,7 +743,6 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
         {"role": "user", "content": f"THREAT CHAINS:\n{context}\n\nASSESSMENT:"},
     ]
 
-    last_error = ""
     for attempt in range(max_retries):
         try:
             response = client.chat.completions.create(
@@ -758,19 +754,16 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
             return response.choices[0].message.content
         except (requests.exceptions.Timeout, APITimeoutError):
             # openai SDK (httpx) raises APITimeoutError, not requests.exceptions.Timeout
-            last_error = "NVIDIA NIM request timed out. Check network connectivity and NIM endpoint."
             sleep_time = 5 + attempt * 3
             print(f"  [!] NIM timeout, retrying in {sleep_time}s...")
             time.sleep(sleep_time)
-        except requests.exceptions.ConnectionError as e:
-            last_error = f"NVIDIA NIM unreachable: {e}"
-            print(f"  [!] NIM connection error (check NVIDIA_NIM_BASE_URL and API key)")
+        except requests.exceptions.ConnectionError:
+            print("  [!] NIM connection error (check NVIDIA_NIM_BASE_URL and API key)")
             time.sleep(2)
         except requests.exceptions.HTTPError as e:
             status = e.response.status_code if e.response is not None else 0
-            last_error = f"NVIDIA NIM HTTP {status}"
             if status == 401:
-                print(f"  [!] NIM auth failed — check NVIDIA_NIM_API_KEY")
+                print("  [!] NIM auth failed — check NVIDIA_NIM_API_KEY")
             elif status == 429:
                 sleep_time = 15 + attempt * 5
                 print(f"  [!] NIM rate limited (429). Sleeping {sleep_time}s...")
@@ -787,13 +780,12 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
             err_name = type(e).__name__
             status = getattr(e, 'status_code', 0) or (e.response.status_code if hasattr(e, 'response') and e.response else 0)
             if status == 404:
-                print(f"  [!] Model not found (404) — check model name or provider endpoint")
+                print("  [!] Model not found (404) — check model name or provider endpoint")
                 return None
             elif status == 429:
-                print(f"  [!] Rate limited (429). Sleeping 15s...")
+                print("  [!] Rate limited (429). Sleeping 15s...")
                 time.sleep(15)
             else:
-                last_error = str(e)
                 print(f"  [!] LLM API error: {err_name}")
                 time.sleep(2)
 
@@ -942,7 +934,7 @@ def assess_with_llm(chains_result: dict, c2_result: dict, obfuscation_result: Op
         if family_match:
             print(f"  [Option 2] Benign signal BUT family match ({family_match}) -> forcing LLM")
         else:
-            print(f"  [Option 2] Benign signal detected -> skipping LLM, using heuristic verdict")
+            print("  [Option 2] Benign signal detected -> skipping LLM, using heuristic verdict")
             assessment = benign_verdict_heuristic(chains_result, c2_result, obfuscation_result)
             assessment["raw_llm_output"] = "(skipped: heuristic benign verdict)"
             assessment["needs_manual_review"] = _needs_manual_review(chains_result, c2_result, obfuscation_result, assessment)
@@ -1305,7 +1297,7 @@ def _condense_dissection(dissection: dict, class_objects: list | None = None) ->
 
     # Components
     comps = dissection.get("components", {})
-    parts.append(f"\n=== COMPONENTS ===")
+    parts.append("\n=== COMPONENTS ===")
     for ctype in ["activities", "services", "receivers", "providers"]:
         items = comps.get(ctype, [])
         exported = [i for i in items if i.get("exported")]
@@ -1318,7 +1310,7 @@ def _condense_dissection(dissection: dict, class_objects: list | None = None) ->
 
     # DEX stats
     dex = dissection.get("dex_stats", {})
-    parts.append(f"\n=== DEX STATISTICS ===")
+    parts.append("\n=== DEX STATISTICS ===")
     parts.append(f"DEX files: {dex.get('dex_count', '?')}")
     parts.append(f"Total classes: {dex.get('total_classes', '?')}")
     parts.append(f"Total methods: {dex.get('total_methods', '?')}")
@@ -1338,7 +1330,7 @@ def _condense_dissection(dissection: dict, class_objects: list | None = None) ->
     fs = dissection.get("file_structure", {})
     top_dirs = fs.get("top_level_directories", [])
     if top_dirs:
-        parts.append(f"\n=== FILE STRUCTURE ===")
+        parts.append("\n=== FILE STRUCTURE ===")
         parts.append(f"Top-level directories: {', '.join(top_dirs[:15])}")
         parts.append(f"Total files: {fs.get('total_files', '?')}")
 
@@ -1354,7 +1346,7 @@ def _condense_dissection(dissection: dict, class_objects: list | None = None) ->
             key=lambda c: len(c.get("permissions_used", [])),
             reverse=True,
         )
-        parts.append(f"\n=== TOP SUSPICIOUS CLASSES (by network calls) ===")
+        parts.append("\n=== TOP SUSPICIOUS CLASSES (by network calls) ===")
         for c in by_net[:10]:
             nc = len(c.get("network_calls", []))
             mc = len(c.get("methods", []))
@@ -1362,7 +1354,7 @@ def _condense_dissection(dissection: dict, class_objects: list | None = None) ->
             parts.append(f"  {c['name']}: {nc} network calls, {mc} methods [{methods_preview}]")
 
         if by_perm:
-            parts.append(f"\n=== TOP SUSPICIOUS CLASSES (by permission usage) ===")
+            parts.append("\n=== TOP SUSPICIOUS CLASSES (by permission usage) ===")
             for c in by_perm[:5]:
                 used = c.get("permissions_used", [])
                 parts.append(f"  {c['name']}: {len(used)} permission refs")

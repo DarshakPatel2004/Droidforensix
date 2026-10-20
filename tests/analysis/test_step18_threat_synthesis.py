@@ -1,4 +1,3 @@
-import pytest
 from analysis.step18_threat_synthesis import (
     synthesize_threat_profile,
     score_zero_day_risk,

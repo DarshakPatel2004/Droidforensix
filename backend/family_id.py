@@ -18,7 +18,7 @@ import os
 import re
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Tuple
+from typing import Any, Dict, List, Optional, Set
 from enum import Enum
 from dataclasses import dataclass
 
@@ -1455,8 +1455,8 @@ def _extract_native_symbols(apk_path: str) -> dict[str, set[str]]:
                                         symbols.add(sym.name)
                         if symbols:
                             result[lib_name] = symbols
-                except Exception:
-                    pass
+                except Exception as exc:
+                    logger.warning("Suppressed error in _extract_native_symbols: %s", exc)
                 finally:
                     try:
                         os.unlink(tmp_path)
@@ -2538,13 +2538,6 @@ def identify_family(sample_id: str, result: Dict[str, Any],
             # Prevents unknown clean_static from being named Adrd/TeaBot on 2 generic perms.
             kb_score = kb_match.get("candidates", [{}])[0].get("kb_score", kb_match.get("confidence", 0))
             kb_tokens = len(kb_match.get("candidates", [{}])[0].get("reasoning", "").split(";"))
-            # Re-check anchor strictness from hit tokens
-            has_strict_anchor = False
-            try:
-                # Re-evaluate anchor from matcher internals - fallback to conf check
-                has_strict_anchor = kb_match.get("confidence", 0) >= 0.75 or kb_score >= _KB_MIN_SCORE_STRICT
-            except Exception:
-                has_strict_anchor = True
             if kb_match.get("confidence", 0) < 0.75 and (kb_score < _KB_MIN_SCORE_STRICT or kb_tokens < _KB_MIN_TOKENS_STRICT):
                 logger.debug("KB gate: abstaining %s score %.2f tokens %d (strict %s/%.2f/%d) -> unknown",
                              kb_match.get("family"), kb_score, kb_tokens, _KB_ANCHOR_FP_STRICT, _KB_MIN_SCORE_STRICT, _KB_MIN_TOKENS_STRICT)

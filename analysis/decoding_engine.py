@@ -8,14 +8,16 @@ Enhancements for DroidForensix:
   4. C2 indicator extraction (URLs, IPs, domains, commands, packages)
 """
 
+import logging
 import base64
 import binascii
-import json
 import math
 import re
 from typing import Dict, List, Any, Optional, Tuple
 
 from analysis.ip_validation import calculate_ip_legitimacy_score, is_reserved_ip
+
+logger = logging.getLogger(__name__)
 
 
 # ---------------------------------------------------------------------------
@@ -117,7 +119,8 @@ def printable_ratio(data: bytes) -> float:
 def decode_base64(s: str) -> Optional[bytes]:
     try:
         return base64.b64decode(s, validate=True)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in decode_base64: %s", exc)
         return None
 
 
@@ -127,21 +130,24 @@ def decode_base64_urlsafe(s: str) -> Optional[bytes]:
         if padding != 4:
             s += '=' * padding
         return base64.urlsafe_b64decode(s)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in decode_base64_urlsafe: %s", exc)
         return None
 
 
 def decode_hex(s: str) -> Optional[bytes]:
     try:
         return binascii.unhexlify(s)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in decode_hex: %s", exc)
         return None
 
 
 def decode_xor(data: bytes, key: int) -> Optional[bytes]:
     try:
         return bytes(b ^ key for b in data)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Suppressed error in decode_xor: %s", exc)
         return None
 
 
@@ -161,8 +167,8 @@ def xor_bruteforce(data: bytes, min_printable: float = 0.70) -> List[Tuple[int, 
             try:
                 if reg["detect"](cleaned):
                     return True
-            except Exception:
-                pass
+            except Exception as exc:
+                logger.warning("Suppressed error in reencodable: %s", exc)
         return False
 
     candidates = []

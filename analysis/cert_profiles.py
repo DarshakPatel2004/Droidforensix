@@ -17,6 +17,8 @@ import sys
 from collections import Counter, defaultdict
 from pathlib import Path
 
+logger = logging.getLogger(__name__)
+
 logging.disable(logging.DEBUG)
 logging.getLogger("androguard").setLevel(logging.ERROR)
 
@@ -45,8 +47,8 @@ def extract_cert_issuer(apk_path: str) -> str | None:
         certs = a.get_certificates()
         if certs:
             return certs[0].issuer.human_friendly
-    except Exception:
-        pass
+    except Exception as exc:
+        logger.warning("Suppressed error in extract_cert_issuer: %s", exc)
     return None
 
 

@@ -64,6 +64,6 @@ def test_no_stale_thesis_numbers():
                 offenders.append(f"{path.relative_to(ROOT)}: {pattern}")
     assert not offenders, (
         "Retired thesis numbers found (see tests/evaluation/"
-        f"test_no_stale_numbers.py docstring for provenance):\n  "
+        "test_no_stale_numbers.py docstring for provenance):\n  "
         + "\n  ".join(offenders)
     )

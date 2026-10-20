@@ -5,12 +5,12 @@ Decodes detected encodings, extracts artifacts (URLs, IPs, domains, emails,
 phone numbers), detects binary payloads via magic bytes, and post-processes.
 """
 
+import logging
 import base64
 import binascii
 import json
 import re
 import socket
-from pathlib import Path
 from typing import Dict, List, Any, Optional
 from urllib.parse import urlparse
 
@@ -19,6 +19,8 @@ import phonenumbers
 from analysis.decoding_engine import multi_layer_decode, repair_surrogates
 from analysis.ip_validation import calculate_ip_legitimacy_score
 from backend.config import settings
+
+logger = logging.getLogger(__name__)
 
 
 class DecodingError(Exception):
@@ -55,7 +57,8 @@ def decode_base64(s: str) -> Optional[bytes]:
     """Decode standard Base64."""
     try:
         return base64.b64decode(s, validate=True)
-    except Exception:
+    except Exception as exc:
+        logger.debug("Suppressed error in decode_base64: %s", exc)
         return None
 
 
@@ -66,7 +69,8 @@ def decode_urlsafe_base64(s: str) -> Optional[bytes]:
         if padding != 4:
             s += '=' * padding
         return base64.urlsafe_b64decode(s)
-    except Exception:
+    except Exception as exc:
+        logger.debug("Suppressed error in decode_urlsafe_base64: %s", exc)
         return None
 
 
@@ -74,7 +78,8 @@ def decode_hex(s: str) -> Optional[bytes]:
     """Decode hex string."""
     try:
         return binascii.unhexlify(s)
-    except Exception:
+    except Exception as exc:
+        logger.debug("Suppressed error in decode_hex: %s", exc)
         return None
 
 
@@ -83,7 +88,8 @@ def decode_xor(s: str, key: int) -> Optional[bytes]:
     try:
         data = s.encode("utf-8", errors="ignore")
         return bytes(b ^ key for b in data)
-    except Exception:
+    except Exception as exc:
+        logger.debug("Suppressed error in decode_xor: %s", exc)
         return None
 
 
@@ -133,7 +139,8 @@ def extract_phones(text: str) -> List[str]:
             parsed = phonenumbers.parse(candidate, None)
             if phonenumbers.is_valid_number(parsed):
                 valid.append(phonenumbers.format_number(parsed, phonenumbers.PhoneNumberFormat.E164))
-        except Exception:
+        except Exception as exc:
+            logger.debug("Suppressed error in extract_phones: %s", exc)
             continue
     return list(set(valid))
 
@@ -163,7 +170,8 @@ def decode_cipher_payload(encoding: dict) -> Optional[bytes]:
         return None
     try:
         key_bytes = base64.b64decode(encoding.get("cipher_key_b64", ""))
-    except Exception:
+    except Exception as exc:
+        logger.debug("Suppressed error in decode_cipher_payload: %s", exc)
         return None
     iv_b64 = encoding.get("cipher_iv_b64")
     try:

@@ -4,8 +4,6 @@ import pytest
 from fastapi.testclient import TestClient
 
 from backend.main import app
-from backend.transformers import load_result
-from tests.test_code_analysis import SIMPLE_CLASS_SOURCE
 
 
 # Sample result used for mocking load_result.
@@ -311,7 +309,6 @@ class TestAttribution:
         data = response.json()
         assert len(data["supporting_signals"]) > 0
         # Should mention permissions match
-        signals_text = " ".join(data["supporting_signals"]).lower()
         assert any("permission" in signals_text for signals_text in data["supporting_signals"])
 
     def test_attribution_404(self, client):

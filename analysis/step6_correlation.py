@@ -6,8 +6,6 @@ C2 infrastructure. Calculates composite confidence scores and severity indicator
 """
 
 import json
-from pathlib import Path
-from typing import Dict, List, Any, Optional
 
 from backend.config import settings
 

@@ -12,7 +12,6 @@ import re
 from pathlib import Path
 from typing import Dict, List, Any
 
-from backend.config import settings
 from analysis.cross_sample_index import load_index, add_to_index
 
 logger = logging.getLogger(__name__)
@@ -68,7 +67,8 @@ def extract_methods_from_source(extracted_path: str) -> List[Dict[str, Any]]:
                             "method": sig.split("(")[0] if "(" in sig else sig.split()[0] if sig.split() else sig,
                             "descriptor": sig,
                         })
-            except Exception:
+            except Exception as exc:
+                logger.warning("Suppressed error in extract_methods_from_source: %s", exc)
                 continue
 
     return methods

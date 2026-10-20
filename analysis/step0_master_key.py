@@ -34,7 +34,6 @@ See: docs/accuracy-improvement-plan.md Phase 0, docs/MASTER_KEY_STRATEGY.md,
 """
 
 import hashlib
-import json
 import logging
 import pathlib
 import sys

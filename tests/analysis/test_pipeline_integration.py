@@ -9,9 +9,7 @@ Tests pipeline orchestration with mocked steps to verify:
 - Event emission fires correctly
 """
 
-import json
 import time
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest

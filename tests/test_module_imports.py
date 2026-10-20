@@ -1,7 +1,6 @@
 """Smoke tests: verify all backend and analysis modules import cleanly."""
 
 import importlib
-import pkgutil
 from pathlib import Path
 
 
@@ -63,9 +62,6 @@ class TestBackendImports:
 
     def test_threat_intel(self):
         self._import("backend.threat_intel", Path("backend/threat_intel.py"))
-
-    def test_threat_intelligence(self):
-        self._import("backend.threat_intelligence", Path("backend/threat_intelligence.py"))
 
     def test_main(self):
         self._import("backend.main", Path("backend/main.py"))

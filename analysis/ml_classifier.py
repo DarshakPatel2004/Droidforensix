@@ -34,9 +34,9 @@ try:
     from sklearn.feature_extraction.text import TfidfVectorizer
     from sklearn.preprocessing import MultiLabelBinarizer
     from sklearn.model_selection import StratifiedKFold, cross_val_score
-    from sklearn.metrics import accuracy_score
+    from sklearn.metrics import accuracy_score  # noqa: F401  availability probe
     import lightgbm as lgb
-    import numpy as np
+    import numpy as np  # noqa: F401  availability probe
     from scipy.sparse import hstack, csr_matrix
     HAS_DEPS = True
 except ImportError as e:

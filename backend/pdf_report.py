@@ -11,16 +11,16 @@ Produces a forensic analysis report covering:
 
 import io
 from datetime import datetime, timezone
-from typing import Any, Optional
+from typing import Optional
 
 from reportlab.lib import colors
 from reportlab.lib.pagesizes import A4
-from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.styles import ParagraphStyle
 from reportlab.lib.units import mm
-from reportlab.lib.enums import TA_LEFT, TA_CENTER, TA_RIGHT
+from reportlab.lib.enums import TA_CENTER
 from reportlab.platypus import (
     SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle,
-    HRFlowable, PageBreak, KeepTogether, CondPageBreak
+    HRFlowable, KeepTogether, CondPageBreak
 )
 
 # -- Colour palette -----------------------------------------------------------
@@ -113,7 +113,6 @@ def _kv_table(data, col_widths=None):
 
 def _section_cover(story, st, result, threat_data, sample_id):
     meta     = result.get('metadata', {})
-    manifest = result.get('manifest', {})
     pkg      = meta.get('package_name') or meta.get('package') or 'Unknown Package'
     severity = result.get('llm_assessment', {}).get('severity', 'unknown')
     sev_col  = SEVERITY_COLORS.get(severity.lower(), C_MUTED)

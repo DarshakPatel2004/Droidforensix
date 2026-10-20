@@ -10,7 +10,6 @@ import logging
 import os
 import shutil
 import sys
-import time
 
 from contextlib import asynccontextmanager
 from datetime import datetime, timezone
@@ -25,15 +24,15 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, PlainTextResponse, Response
 from pydantic import BaseModel
 import hashlib
-import subprocess
 import uuid
 
 from analysis.pipeline import run_pipeline
-from analysis.step7_llm_assessment import explain_method, explain_threat_chain, summarize_dissection, _ollama_available, _normalize_ollama_host
+from analysis.step7_llm_assessment import explain_method, explain_threat_chain, summarize_dissection
 from droidforensix_llm import LLMVerifier, get_verifier, set_verifier
 from backend.pdf_report import generate_report
 from backend.config import settings
 from backend.events import WebSocketEvent, VALID_EVENT_TYPES
+from analysis.custody import read_entries, verify as verify_custody
 from backend.validators import validate_event, validate_sample_id
 from backend.transformers import (
     load_result,
@@ -277,6 +276,19 @@ async def api_get_timeline(sample_id: str) -> dict:
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")
     return transform_timeline(result)
+
+
+@app.get("/api/sample/{sample_id}/custody")
+async def api_get_custody(sample_id: str) -> dict:
+    """Chain-of-custody log for a sample, re-verified on every request."""
+    try:
+        validate_sample_id(sample_id)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid sample_id")
+    sample_dir = settings.WORK_DIR / sample_id
+    if not sample_dir.is_dir():
+        raise HTTPException(status_code=404, detail="Sample not found")
+    return {"verification": verify_custody(sample_dir), "entries": read_entries(sample_dir)}
 
 
 # ---------------------------------------------------------------------------
@@ -1439,6 +1451,19 @@ async def api_export_threat_intel_yara(sample_id: str):
         yara_text,
         media_type="text/plain",
         headers={"Content-Disposition": f'attachment; filename="droidforensix_{sample_id[:16]}.yar"'},
+    )
+
+
+@app.get("/api/sample/{sample_id}/threat-intel/export/suricata")
+async def api_export_threat_intel_suricata(sample_id: str):
+    """Export Suricata rules that alert on this sample's C2 domains and addresses."""
+    result = load_result(sample_id)
+    if result is None:
+        raise HTTPException(status_code=404, detail="Sample not found")
+    return PlainTextResponse(
+        ti.to_suricata(result, sample_id),
+        media_type="text/plain",
+        headers={"Content-Disposition": f'attachment; filename="droidforensix_{sample_id[:16]}.rules"'},
     )
 
 

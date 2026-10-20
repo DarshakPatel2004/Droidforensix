@@ -6,7 +6,6 @@ import pytest
 from analysis.step10_binary_packing import (
     MARKERS_PATH,
     detect_binary_packing,
-    match_packer_brands,
 )
 
 
