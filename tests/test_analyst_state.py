@@ -78,3 +78,13 @@ def test_state_survives_pipeline_output_rewrite(client, sample_dirs):
     result_path.write_text(json.dumps({"run": 2}), encoding="utf-8")  # re-analysis
 
     assert client.get(f"/api/sample/{SID}/analyst-state").json()["notes"] == "keep me"
+
+
+def test_browser_preflight_allows_put_from_frontend_origin(client):
+    origin = settings.FRONTEND_URL
+    response = client.options(
+        f"/api/sample/{SID}/analyst-state",
+        headers={"Origin": origin, "Access-Control-Request-Method": "PUT"},
+    )
+    assert response.status_code == 200
+    assert "PUT" in response.headers.get("access-control-allow-methods", "")
