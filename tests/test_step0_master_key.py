@@ -241,7 +241,7 @@ def test_enrich_merges_recovered_kit_strings(packed_triage, tmp_path, monkeypatc
 
 def test_non_zip_payload_is_kept_without_enrichment(packed_triage, tmp_path, monkeypatch):
     monkeypatch.setattr(step0, "BREAKER_EVIDENCE_DIR", tmp_path / "evidence")
-    dex = b"dex\n035\x00" + bytes(range(256)) * 3
+    dex = b"dex\n035\x00" + b"epsilonMarkerFive" + bytes(range(256)) * 3
     ciphertext, padded = _encrypt_like_myg0n(dex)
     apk = tmp_path / "dex.apk"
     _write_apk(apk, ciphertext)
@@ -255,8 +255,7 @@ def test_non_zip_payload_is_kept_without_enrichment(packed_triage, tmp_path, mon
     strings_result = step0.enrich_strings_with_recovered(
         {"categories": {}, "total_strings": 0}, master_key
     )
-    # Parity with the unpack path: only ZIP artifacts are mined for strings.
-    assert strings_result == {"categories": {}, "total_strings": 0}
+    assert "epsilonMarkerFive" in _literal_values(strings_result)
 
 
 def test_two_non_zip_recoveries_do_not_collide(packed_triage, tmp_path, monkeypatch):
@@ -401,3 +400,51 @@ def test_dispatcher_missing_artifact_warns_and_skips(packed_triage, tmp_path, mo
     assert master_key["verdict"] == "RECOVERED"
     assert "recovered_evidence" not in master_key
     assert any("vanished.zip" in r.getMessage() for r in caplog.records)
+
+
+def _kit_with_string(path, marker: bytes):
+    buffer = io.BytesIO()
+    with zipfile.ZipFile(buffer, "w") as archive:
+        archive.writestr("classes.dex", b"dex\n035\x00" + marker + b"\x00" * 64)
+    path.write_bytes(buffer.getvalue())
+    return str(path)
+
+
+def _literal_values(strings_result):
+    literals = strings_result["categories"]["string_literals"]
+    return [item["value"] if isinstance(item, dict) else item for item in literals]
+
+
+def test_enrich_mines_every_recovered_zip(tmp_path):
+    first = _kit_with_string(tmp_path / "first.zip", b"alphaMarkerOne")
+    second = _kit_with_string(tmp_path / "second.zip", b"bravoMarkerTwo")
+    master_key = {"should_enrich_strings": True, "artifacts": [{"file": first}, {"file": second}]}
+
+    values = _literal_values(step0.enrich_strings_with_recovered(
+        {"categories": {}, "total_strings": 0}, master_key))
+
+    assert "alphaMarkerOne" in values and "bravoMarkerTwo" in values
+
+
+def test_enrich_mines_a_bare_dex_payload(tmp_path):
+    dex = tmp_path / "_recovered.dex"
+    dex.write_bytes(b"dex\n035\x00" + b"charlieMarkerThree" + b"\x00" * 64)
+    master_key = {"should_enrich_strings": True, "artifacts": [{"file": str(dex)}]}
+
+    values = _literal_values(step0.enrich_strings_with_recovered(
+        {"categories": {}, "total_strings": 0}, master_key))
+
+    assert "charlieMarkerThree" in values
+
+
+def test_enrich_missing_payload_warns_and_keeps_the_rest(tmp_path, caplog):
+    good = _kit_with_string(tmp_path / "good.zip", b"deltaMarkerFour")
+    master_key = {"should_enrich_strings": True,
+                  "artifacts": [{"file": str(tmp_path / "gone.zip")}, {"file": good}]}
+
+    with caplog.at_level("WARNING"):
+        values = _literal_values(step0.enrich_strings_with_recovered(
+            {"categories": {}, "total_strings": 0}, master_key))
+
+    assert "deltaMarkerFour" in values
+    assert any("gone.zip" in r.getMessage() for r in caplog.records)

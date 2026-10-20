@@ -404,6 +404,16 @@ def run_master_key_preprocess(
     return report
 
 
+def _payload_blob(path: pathlib.Path) -> bytes:
+    """Bytes whose strings are mined: a bare DEX as-is, a ZIP through its .dex/.apk members."""
+    import io
+    data = path.read_bytes()
+    if data[:4] == b"dex\n":
+        return data
+    with zipfile.ZipFile(io.BytesIO(data)) as zf:
+        return b"".join(zf.read(n) for n in zf.namelist() if n.endswith(".dex") or n.endswith(".apk"))[:20_000_000]
+
+
 def enrich_strings_with_recovered(strings_result: Dict[str, Any], master_key: Dict[str, Any]) -> Dict[str, Any]:
     """
     If Master Key recovered a kit.zip/installer.dex, extract its strings and
@@ -414,35 +424,32 @@ def enrich_strings_with_recovered(strings_result: Dict[str, Any], master_key: Di
     """
     if not master_key.get("should_enrich_strings"):
         return strings_result
-    artifacts = master_key.get("artifacts") or []
-    kit_path = None
-    for art in artifacts:
-        f = art.get("file", "")
-        if f.endswith(".zip") or "kit.zip" in f:
-            kit_path = pathlib.Path(f)
-            break
-    if not kit_path or not kit_path.exists():
+    import re
+    blobs = []
+    for art in master_key.get("artifacts") or []:
+        path = pathlib.Path(art.get("file", ""))
+        try:
+            blobs.append(_payload_blob(path))
+        except Exception as e:  # one unreadable payload must not drop the others
+            logger.warning("MasterKey enrich skipped %s: %s", path, e)
+    if not blobs:
         return strings_result
     try:
-        import io
-        with zipfile.ZipFile(kit_path) as zf:
-            blob = b"".join(zf.read(n) for n in zf.namelist() if n.endswith(".dex") or n.endswith(".apk"))[:20_000_000]
-            # Extract printable strings 4-120 chars, same TOKEN_RE as mine_family_knowledge.py:43
-            import re
-            raw_strings = re.findall(rb"[A-Za-z0-9_./: @\[\]\(\)\-#&%]{4,120}", blob)
-            decoded = [s.decode(errors="ignore").strip() for s in raw_strings if len(s) >= 4]
-            # Merge into categories["string_literals"] for downstream
-            cats = strings_result.get("categories", {})
-            if "string_literals" not in cats:
-                cats["string_literals"] = []
-            # Keep as dict format pipeline expects: {"value": str}
-            existing = { (v.get("value") if isinstance(v, dict) else v) for v in cats["string_literals"] }
-            for s in decoded[:5000]:  # cap to avoid blowup
-                if s.lower() not in {e.lower() for e in existing}:
-                    cats["string_literals"].append({"value": s})
-                    existing.add(s)
-            strings_result["total_strings"] = len(cats["string_literals"])
-            logger.info("MasterKey enrich: +%d strings from %s (now %d)", len(decoded), kit_path.name, strings_result["total_strings"])
+        # Extract printable strings 4-120 chars, same TOKEN_RE as mine_family_knowledge.py:43
+        raw_strings = [s for blob in blobs for s in re.findall(rb"[A-Za-z0-9_./: @\[\]\(\)\-#&%]{4,120}", blob)]
+        decoded = [s.decode(errors="ignore").strip() for s in raw_strings if len(s) >= 4]
+        # Merge into categories["string_literals"] for downstream
+        cats = strings_result.get("categories", {})
+        if "string_literals" not in cats:
+            cats["string_literals"] = []
+        # Keep as dict format pipeline expects: {"value": str}
+        existing = { (v.get("value") if isinstance(v, dict) else v) for v in cats["string_literals"] }
+        for s in decoded[:5000]:  # cap to avoid blowup
+            if s.lower() not in {e.lower() for e in existing}:
+                cats["string_literals"].append({"value": s})
+                existing.add(s)
+        strings_result["total_strings"] = len(cats["string_literals"])
+        logger.info("MasterKey enrich: +%d strings from %d payload(s) (now %d)", len(decoded), len(blobs), strings_result["total_strings"])
     except Exception as e:
-        logger.warning("MasterKey enrich failed for %s: %s", kit_path, e)
+        logger.warning("MasterKey enrich failed: %s", e)
     return strings_result
