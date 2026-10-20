@@ -831,7 +831,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         try:
             result = post_process_result(result)
         except Exception:
-            pass
+            logger.warning("post_process_result failed; saving unprocessed result", exc_info=True)
         duration = round(time.time() - global_start, 3)
         timeline["total"] = duration
         result["timeline"] = timeline

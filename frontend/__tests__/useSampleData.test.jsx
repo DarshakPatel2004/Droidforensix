@@ -10,7 +10,7 @@ vi.mock('../src/api/client', () => ({
   }),
 }))
 
-import { apiFetch, apiFetchCached } from '../src/api/client'
+import { apiFetchCached } from '../src/api/client'
 
 beforeEach(() => vi.clearAllMocks())
 

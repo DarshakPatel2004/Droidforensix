@@ -434,7 +434,7 @@ def classify_c2(c2: Dict[str, Any]) -> Tuple[str, str]:
         if is_tier3(domain):
             return 'benign', 'Tier 3 legitimate infrastructure'
     except Exception:
-        pass
+        logger.warning("Tier 3 allowlist unavailable; skipping tier-3 benign check", exc_info=True)
 
     # 2. Check BENIGN_SDK_DOMAINS (legacy whitelist)
     if any(domain == d or domain.endswith('.' + d) for d in BENIGN_SDK_DOMAINS):

@@ -4,16 +4,12 @@ import ObfuscationView from './ObfuscationView'
 import ManifestView from './ManifestView'
 import FamilySignalsCard from './FamilySignalsCard'
 import ThreatSynthesisPanel from './ThreatSynthesisPanel'
+import { riskLevelBadgeClass } from '../utils/riskLevel'
 
 /**
  * Format seconds into human-readable duration.
  * e.g., 65 -> "1m 5s", 3661 -> "1h 1m 1s"
  */
-export function riskLevelBadgeClass(level) {
-  const map = { critical: 'rose', high: 'rose', medium: 'amber', low: 'emerald', none: 'slate', unknown: 'slate' }
-  return `badge-${map[level] || 'slate'}`
-}
-
 function formatDuration(seconds) {
   if (seconds === null || seconds === undefined) return '—'
   if (seconds === 0) return '0s'
@@ -354,7 +350,7 @@ const OverviewTab = memo(({ result, sampleId, apiUrl }) => (
       </ul>
     </div>
 
-    <FamilySignalsCard sampleId={sampleId} apiUrl={apiUrl} />
+    <FamilySignalsCard key={sampleId} sampleId={sampleId} apiUrl={apiUrl} />
 
     <div className="metrics-grid">
       <div className="card">
@@ -738,7 +734,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
   const [xorKey, setXorKey] = useState('')
   const [customFn, setCustomFn] = useState('// return decoded string\nreturn input.split("").reverse().join("")')
   const [decodedOutput, setDecodedOutput] = useState('')
-  const [decodeError, setDecodeError] = useState('')
+  const [, setDecodeError] = useState('')
   const sevMeta = SEVERITY_META[chain.severity] || SEVERITY_META.medium
 
   // Fetch LLM explanation when first expanded

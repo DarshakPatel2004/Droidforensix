@@ -10,7 +10,7 @@ Checks:
 - Every file is a valid ZIP/APK
 
 Usage (Windows):
-    .\venv\Scripts\Activate.ps1
+    .\\venv\\Scripts\\Activate.ps1
     python scripts/check_samples.py
 """
 

@@ -71,10 +71,9 @@ export default function StringsTab({ sampleId, apiUrl }) {
 
   useEffect(() => {
     if (!sampleId) return
-    setFetchError(null)
     fetch(`${apiUrl}/api/sample/${sampleId}/dissection/strings`)
       .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
-      .then(d => { setData(d); setLoading(false) })
+      .then(d => { setFetchError(null); setData(d); setLoading(false) })
       .catch(e => { setFetchError(e || true); setLoading(false) })
   }, [sampleId, apiUrl])
 

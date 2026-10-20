@@ -9,13 +9,6 @@ const MOCK_CLASSES = {
   ],
 }
 
-const MOCK_METHODS = {
-  methods: [
-    { name: 'encrypt', body: 'Cipher cipher = Cipher.getInstance("AES");' },
-    { name: 'decrypt', body: 'return cipher.doFinal(data);' },
-  ],
-}
-
 beforeEach(() => {
   vi.clearAllMocks()
 })
