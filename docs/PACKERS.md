@@ -145,6 +145,22 @@ remain the historical 22-Sep outcomes. Roster ran 8 times / 7 unique
 (duplicate corpus copy + within-batch dedupe miss in the throwaway runner
 script).
 
+### Hardened Ijiami: decision (2026-10-20)
+
+The master-key breaker was pointed at the Ijiami Calculator samples. Its full
+search (`scripts/breaker.py --attempts-cap 3000000`, `Calculator.apk`) ends in
+`E-KDF-EXHAUSTED` with `truncated: none` on all seven high-entropy encrypted
+members (`assets/IJMDal.Data`, `assets/af.bin`, `assets/ijiami.dat`,
+`assets/ijiami.ajm`, `assets/signed.bin`, `assets/dexopt/baseline.prof{,m}`),
+about 121k probes per member. None of the breaker's known key recipes decrypts
+them. The earlier `E-KDF-BUDGET` misses were the attempt cap, not a proof.
+
+Decision: hardened Ijiami stays `E-HARDENED-VM`. Its key is derived inside the
+native bytecode interpreter (`PHASE1_GATE.md`), which a key-recipe search cannot
+reach. A static break would mean reversing that VM, which is a multi-week,
+uncertain project and is out of scope here. Effort moves to soft packers, where
+`JNI_OnLoad` is readable code.
+
 ---
 
 ## Adding a new packer (no code change)
