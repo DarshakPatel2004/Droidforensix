@@ -44,10 +44,6 @@ _background_tasks: set = set()
 # Pydantic models
 # ---------------------------------------------------------------------------
 
-class AnalyzeRequest(BaseModel):
-    apk_path: str
-
-
 class SampleInfo(BaseModel):
     id: str
     name: str
@@ -271,42 +267,6 @@ async def api_analyze_upload(upload_id: str) -> dict:
 
     return {
         "upload_id": upload_id,
-        "status": "queued",
-        "message": "Analysis started. Poll GET /api/sample/{sample_id}/status or listen on /ws for progress.",
-    }
-
-
-@router.post("/analyze")
-async def analyze(request: AnalyzeRequest) -> dict:
-    """Trigger analysis of an APK by local path (REST fallback / backward compatibility)."""
-    apk_path = request.apk_path
-    if not Path(apk_path).exists():
-        raise HTTPException(status_code=400, detail=f"APK not found: {apk_path}")
-
-    loop = asyncio.get_event_loop()
-    job_id = str(uuid.uuid4())
-
-    def run_analysis():
-        emitter = make_event_emitter(loop)
-        try:
-            sample_status[job_id] = {"status": "analyzing", "sample_id": None, "error": None, "started_at": datetime.now(timezone.utc).isoformat()}
-            result = run_pipeline(apk_path, event_emitter=emitter)
-            sample_id = result.get("sample_id")
-            sample_status[job_id] = {"status": "completed", "sample_id": sample_id, "error": None, "started_at": sample_status[job_id].get("started_at")}
-            return result
-        except Exception as e:
-            sample_status[job_id] = {"status": "failed", "sample_id": None, "error": str(e)}
-            raise
-
-    async def run_analysis_async():
-        return await loop.run_in_executor(None, run_analysis)
-
-    t = asyncio.create_task(run_analysis_async())
-    _background_tasks.add(t)
-    t.add_done_callback(_background_tasks.discard)
-
-    return {
-        "job_id": job_id,
         "status": "queued",
         "message": "Analysis started. Poll GET /api/sample/{sample_id}/status or listen on /ws for progress.",
     }
