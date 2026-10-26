@@ -134,7 +134,8 @@ async def api_get_attribution(sample_id: str) -> dict:
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
                 cached = json.load(f)
-            if cached.get("schema_version") == 2:
+            # v3: C2 signal text now reports baseline overlap; older caches hold the old wording.
+            if cached.get("schema_version") == 3:
                 return cached
         except Exception:
             logger.warning("Failed to read attribution cache for %s, recomputing", sample_id)
@@ -150,7 +151,7 @@ async def api_get_attribution(sample_id: str) -> dict:
     supporting_signals = _build_supporting_signals(result, family_data, breakdown)
 
     payload = {
-        "schema_version": 2,
+        "schema_version": 3,
         "family": family,
         "confidence": round(confidence, 2),
         "confidence_breakdown": breakdown,
@@ -257,7 +258,15 @@ def _build_supporting_signals(result: dict, family_data: dict, breakdown: dict) 
 
     c2_domains = {c.get("domain") for c in c2_list if c.get("domain")}
     if c2_domains:
-        signals.append(f"C2 indicators overlap with {len(c2_domains)} known indicators")
+        # Same overlap the c2_overlap score uses in _compute_confidence_breakdown.
+        family_c2s = _family_c2_baseline(family_data.get("family", "unknown"))
+        if family_c2s:
+            c2_match_count = len(c2_domains & family_c2s)
+            signals.append(
+                f"{c2_match_count} of {len(c2_domains)} C2 indicators match the family baseline"
+            )
+        else:
+            signals.append("no family baseline to compare against")
 
     obf_level = obfuscation.get("obfuscation_level", "low")
     if obf_level != "low":
@@ -513,16 +522,3 @@ async def api_get_community_intel(sample_id: str) -> dict:
         raise HTTPException(status_code=500, detail=f"Community intel search failed: {e}") from e
 
     return payload
-
-
-# Legacy endpoints (kept for backward compatibility)
-@router.get("/samples")
-async def list_samples() -> dict:
-    """List all processed samples (legacy)."""
-    return await api_list_samples()
-
-
-@router.get("/samples/{sample_id}")
-async def get_sample(sample_id: str) -> dict:
-    """Get analysis result for a sample (legacy)."""
-    return await api_get_sample(sample_id)
