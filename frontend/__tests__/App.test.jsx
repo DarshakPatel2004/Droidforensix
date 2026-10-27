@@ -81,6 +81,17 @@ describe('App', () => {
     expect(screen.queryByRole('tab', { name: 'Checks' })).toBeNull()
   })
 
+  test('sidebar lists saved samples from the API', async () => {
+    global.fetch = vi.fn((url) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(String(url).includes('/api/samples')
+        ? { samples: [{ id: 'abc', sha256: 'abc', name: 'evil.apk', severity: 'high', risk_score: 80, family: 'KungFu' }] }
+        : {}),
+    }))
+    renderApp()
+    expect(await screen.findByRole('button', { name: /evil\.apk/ })).toBeTruthy()
+  })
+
   test('upload tab shows UploadPanel', () => {
     renderApp()
     expect(screen.getByTestId('upload-panel')).toBeTruthy()
