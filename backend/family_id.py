@@ -1081,6 +1081,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     # ------------------------------------------------------------------
 
     # Ermac — Banking trojan (12 KB samples). Strong fp=0 permissions.
+    # FIXED: require_c2=True. Generic strings and a permission cluster alone fired 48x on a 373-sample run, 0 correct (Ermac has 0 GT samples).
     FamilySignature(
         family_name="Ermac",
         string_patterns=["ermac", "accessibility", "overlay"],
@@ -1094,7 +1095,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=2000,
         has_native_libs=False,
         min_matches=3, confidence=0.85,
-        require_c2=False,
+        require_c2=True,
     ),
 
     # FluBot — Banking/SMS trojan (8 KB samples). Strong fp=0 C2.
@@ -1138,6 +1139,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # Hydra — Banking trojan (11 KB samples).
+    # FIXED: require_c2=True. Generic strings and a permission cluster alone fired 12x on a 373-sample run, 0 correct (Hydra has 0 GT samples).
     FamilySignature(
         family_name="Hydra",
         string_patterns=["hydra", "bankbot", "overlay"],
@@ -1152,7 +1154,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=2000,
         has_native_libs=False,
         min_matches=3, confidence=0.8,
-        require_c2=False,
+        require_c2=True,
     ),
 
     # TeaBot — Banking trojan (13 KB samples). fp=0 permission.
@@ -1214,6 +1216,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # Bradesco — Brazilian banking trojan (4 KB samples). fp=0 unique strings.
+    # FIXED: require_c2=True. Generic strings and a permission cluster alone fired 17x on a 373-sample run, 0 correct (Bradesco has 0 GT samples).
     FamilySignature(
         family_name="Bradesco",
         string_patterns=["eehugaithaikuu9u", "lixhokfsmav", "bradesco"],
@@ -1227,7 +1230,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=50, class_count_max=500,
         has_native_libs=False,
         min_matches=3, confidence=0.8,
-        require_c2=False,
+        require_c2=True,
     ),
 
     # Exobot — Banking trojan (3 KB samples). fp=0 strings and perms.
@@ -1249,6 +1252,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # FakeTikTok — Social media impersonator (3 KB samples). fp=0 strings.
+    # FIXED: require_c2=True. Generic strings and a permission cluster alone fired 4x on a 373-sample run, 0 correct (FakeTikTok has 0 GT samples).
     FamilySignature(
         family_name="FakeTikTok",
         string_patterns=["updatecheck", "restricted_permissions_all", "setinstallscenario", "setapplicationenabledsettingpersistent", "llzllli", "tiktok"],
@@ -1264,7 +1268,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=100, class_count_max=2000,
         has_native_libs=False,
         min_matches=3, confidence=0.75,
-        require_c2=False,
+        require_c2=True,
     ),
 
     # ICICI — Banking trojan (2 KB samples). fp=0 strings and domains.
@@ -1286,6 +1290,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
     ),
 
     # Indusind — Banking trojan (3 KB samples).
+    # FIXED: require_c2=True. Generic strings and a permission cluster alone fired 4x on a 373-sample run, 0 correct (Indusind has 0 GT samples).
     FamilySignature(
         family_name="Indusind",
         string_patterns=["indusind"],
@@ -1299,7 +1304,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         class_count_min=50, class_count_max=500,
         has_native_libs=False,
         min_matches=2, confidence=0.7,
-        require_c2=False,
+        require_c2=True,
     ),
 
     # Konfety — Gaming/ad fraud (2 KB samples). fp=0 strings (Compose UI).

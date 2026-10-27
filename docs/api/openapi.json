@@ -83,19 +83,6 @@
         "title": "AnalystStateUpdate",
         "type": "object"
       },
-      "AnalyzeRequest": {
-        "properties": {
-          "apk_path": {
-            "title": "Apk Path",
-            "type": "string"
-          }
-        },
-        "required": [
-          "apk_path"
-        ],
-        "title": "AnalyzeRequest",
-        "type": "object"
-      },
       "Body_api_androguard_analysis_api_analysis_androguard_only_post": {
         "properties": {
           "file": {
@@ -356,47 +343,6 @@
           }
         },
         "summary": "Health Check"
-      }
-    },
-    "/analyze": {
-      "post": {
-        "description": "Trigger analysis of an APK by local path (REST fallback / backward compatibility).",
-        "operationId": "analyze_analyze_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AnalyzeRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Analyze Analyze Post",
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Analyze"
       }
     },
     "/api/analysis/androguard-only": {
@@ -2245,69 +2191,6 @@
           }
         },
         "summary": "Api Upload File"
-      }
-    },
-    "/samples": {
-      "get": {
-        "description": "List all processed samples (legacy).",
-        "operationId": "list_samples_samples_get",
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "title": "Response List Samples Samples Get",
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Successful Response"
-          }
-        },
-        "summary": "List Samples"
-      }
-    },
-    "/samples/{sample_id}": {
-      "get": {
-        "description": "Get analysis result for a sample (legacy).",
-        "operationId": "get_sample_samples__sample_id__get",
-        "parameters": [
-          {
-            "in": "path",
-            "name": "sample_id",
-            "required": true,
-            "schema": {
-              "title": "Sample Id",
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "additionalProperties": true,
-                  "title": "Response Get Sample Samples  Sample Id  Get",
-                  "type": "object"
-                }
-              }
-            },
-            "description": "Successful Response"
-          },
-          "422": {
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            },
-            "description": "Validation Error"
-          }
-        },
-        "summary": "Get Sample"
       }
     }
   }

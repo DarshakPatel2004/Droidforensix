@@ -116,11 +116,6 @@ def test_api_sample_not_found(client):
     assert response.status_code == 404
 
 
-def test_analyze_missing_apk(client):
-    response = client.post("/analyze", json={"apk_path": "D:/does/not/exist.apk"})
-    assert response.status_code == 400
-
-
 def test_websocket_connection(client):
     with client.websocket_connect("/ws") as websocket:
         websocket.send_text('{"action": "ping"}')
