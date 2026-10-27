@@ -9,6 +9,8 @@ import SampleSearch from './components/SampleSearch'
 import LoadingSpinner from './components/LoadingSpinner'
 import ThreatBadge from './components/ThreatBadge'
 import { useSampleData } from './hooks/useSampleData'
+import { useSampleStatus } from './hooks/useSampleStatus'
+import SampleNotReady from './components/SampleNotReady'
 
 const DissectionPage = lazy(() => import('./components/DissectionPage'))
 const RawCodeView = lazy(() => import('./components/RawCodeView'))
@@ -222,6 +224,8 @@ function AppInner() {
   const [activeTab, setActiveTab] = useState('upload')
   const [samples, setSamples] = useState([])
   const [selectedSample, setSelectedSample] = useState(null)
+  const sampleStatus = useSampleStatus(selectedSample?.uploadId || selectedSample?.sha256 || selectedSample?.sampleId)
+  const sampleReady = sampleStatus.status === 'completed'
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Connection states (Phase 6)
@@ -703,7 +707,7 @@ function AppInner() {
                   setActiveTab(item.id)
                   setSidebarOpen(false)
                 }}
-                disabled={item.id !== 'upload' && !selectedSample}
+                disabled={item.id !== 'upload' && (!selectedSample || (item.id !== 'analysis' && !sampleReady))}
                 aria-label={item.label}
                 aria-current={activeTab === item.id ? 'page' : undefined}
                 onKeyDown={e => { if (e.key === 'Escape') setSidebarOpen(false) }}
@@ -766,6 +770,12 @@ function AppInner() {
             </div>
           )}
 
+          {activeTab !== 'upload' && activeTab !== 'analysis' && selectedSample && !sampleReady && (
+            <div className="view-wrapper">
+              <SampleNotReady status={sampleStatus.status} error={sampleStatus.error} />
+            </div>
+          )}
+
           {activeTab === 'analysis' && selectedSample && (
             <div className="view-wrapper">
               <ErrorBoundary>
@@ -781,7 +791,7 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'attribution' && selectedSample && (
+          {activeTab === 'attribution' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSpinner message="Loading attribution..." />}>
@@ -795,7 +805,7 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'dissection' && selectedSample && (
+          {activeTab === 'dissection' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSpinner message="Loading dissection..." />}>
@@ -808,7 +818,7 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'raw-code' && selectedSample && (
+          {activeTab === 'raw-code' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSpinner message="Loading code viewer..." />}>
@@ -821,7 +831,7 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'threat-intel' && selectedSample && (
+          {activeTab === 'threat-intel' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <Suspense fallback={<LoadingSpinner message="Loading threat intelligence..." />}>
                 <ThreatIntelView
