@@ -188,10 +188,11 @@ Checked in headless Chrome against the running backend and dev server. Screensho
 Decided and recorded in this doc: scope, goals, phased delivery (backend first), stack, first screen, and done criteria. The items below still need an answer.
 
 1. **Remove the six unreferenced routes?** Recommendation: decide route by route. Keep them until the new UI is decided.
-2. **Show all nine steps in the sample view?** Recommendation: yes, with one card pattern. Key names are verified (section 12, item 3); the display choice is still open.
-3. **Which C2 count does the UI show?** The threat summary shows 12 (list length, with duplicates). The attribution uses 9 unique domains. Recommendation: unique domains everywhere.
-4. **Is the obfuscation colour intended?** The label says LOW while the score is 16/100.
-5. **Is `backend/core/apk_processor.py` live?** `backend/routers/jobs.py` imports it. I haven't confirmed whether the upload path reaches it.
+2. **Show all nine steps in the sample view?** Decided: yes, one card pattern, under the heading "Deep analysis". The UI never says "step"; each card is named by its check (for example "Binary packing").
+3. **Which C2 count does the UI show?** Decided: unique domains everywhere. Note: KungFu's 9 "unique" domains include the junk value `{0}`; the real count is 8 (section 13, item 0).
+4. **Is the obfuscation colour intended?** Decided: no. The colour follows the score.
+5. **Is `backend/core/apk_processor.py` live?** Answered: only `POST /api/analysis/full` uses it (one of the six unreferenced routes). The upload path (`/api/upload` → `/api/analyze/{id}`) runs `analysis/pipeline.py` and never reaches it.
+6. **Navigation model.** Decided: mock D ("Combined") in the design canvas `https://claude.ai/artifact/GZnvTWK4KRQKHLT3X4L9WM` (private). Sample list on the left, tab bar per sample, no second shell.
 
 ## 10. Other issues (backlog, not part of the rewrite decision)
 
@@ -251,6 +252,42 @@ Data recorded for later, not changed in this phase:
 - The threat summary reports 12 C2 indicators for KungFu. That's the list length with duplicates. The attribution uses 9 unique domains (section 9, item 3).
 - The C2 and permission baselines come from signatures in `backend/family_id.py`. The KungFu baseline has 3 C2 domains and 3 permissions.
 
-### Phase 2: frontend (outline only; scoped after Phase 1 merges)
+### Phase 2: frontend
 
-Expected items: one navigation model; status gate on every analysis page (section 4.4); all nine steps rendered with one card component; the obfuscation colour fix; Vitest coverage for each new component.
+Scope is in section 13. Status: proposed, not yet approved.
+
+## 13. Phase 2 scope (proposed)
+
+Target screen: mock D in the design canvas (section 9, item 6). Layout: sample list on the left; for the selected sample, a header (package, family, status, analyst status, export), a tab bar, and the tab body.
+
+Tabs and what each mounts (existing components are reused, not rewritten):
+
+| Tab | Content |
+|---|---|
+| Overview | New: KPI tiles (LLM risk, unique C2 domains, obfuscation, zero-day risk), "Needs your attention", attribution summary, "Deep analysis" (nine check cards), "All checks" list. |
+| Attribution | `AttributionEvidence`, `RelatedSamples` |
+| Checks | `AnalysisView` (Secrets, LLM summary, obfuscation, threat chains, ...), unchanged at first |
+| Investigation | `DissectionTabs` |
+| Raw code | `RawCodeView` |
+| Threat intel | `ThreatIntelView` |
+| Notes | Analyst status, tags and notes (existing analyst-state API) |
+
+Data: `GET /api/sample/{id}` already returns the full `pipeline_result.json`, including all nine deep-analysis keys. No new endpoint is needed.
+
+Work items, in order. Each one is a separate, reviewable change with CI green:
+
+0. **Backend: unique C2 domain count.** Drop non-domain values such as `{0}` when counting unique C2 domains (attribution signal and threat summary). KungFu then reads "0 of 8". Viewer-side count only; `analysis/` is unchanged.
+1. **Status gate.** A `useSampleStatus(id)` hook over `GET /api/sample/{id}/status`. Tabs render only on `completed`; before that the sample shows progress. List rows for running analyses show progress and are not selectable. Fixes the upload race (section 4.4).
+2. **Check cards.** One `CheckCard` component and a "Deep analysis" section that renders the nine checks from the sample result. Each card: check name, Finding/Clear tag, one-line result. No step numbers in the UI.
+3. **One shell.** Routes `/` (upload + list) and `/sample/:id/:tab`. The sample list sits beside every sample page. Remove the per-sample pages from the old sidebar (`AppInner`) and the separate `/sample/:id` tab bar (`SampleDetail`). Upload and WebSocket progress keep working.
+4. **Overview tab.** KPI tiles (obfuscation colour follows the score via `riskLevelBadgeClass`), attribution summary, "All checks" list.
+5. **Needs your attention.** A short list built from what the checks already found: C2 domains vs family baseline, threat chains of medium severity or higher, checks tagged Finding. Presentation only; no new detection logic.
+6. **Notes tab.** Analyst status, tags and notes on the existing analyst-state API.
+
+Out of scope: rewriting `AnalysisView` internals; TypeScript; the six unreferenced routes; any change under `analysis/`. The LLM-vs-secrets contradiction found on KungFu (the LLM claims hardcoded AWS credentials, but the secrets step found none) and step 14 reporting 0 endpoints are logged here, not fixed in Phase 2.
+
+Done criteria: section 7 (Phase 2), plus the headless browser pass with no 404 during analysis.
+
+Open for approval:
+- Visual style: decided 2026-10-27 to keep the dark theme (the app's existing tokens). Mock D's light palette is not adopted.
+- "Checks" tab: mount `AnalysisView` unchanged first (smaller), or split it into the new layout now?
