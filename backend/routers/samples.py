@@ -15,6 +15,7 @@ from backend.community_intel import get_cached_community_intel
 from backend.config import settings
 from backend.family_id import identify_family
 from backend.obfuscation_view import build_obfuscation_view
+from backend.threat_intel import _is_junk_domain
 from backend.transformers import (
     load_all_results,
     load_result,
@@ -134,8 +135,8 @@ async def api_get_attribution(sample_id: str) -> dict:
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
                 cached = json.load(f)
-            # v3: C2 signal text now reports baseline overlap; older caches hold the old wording.
-            if cached.get("schema_version") == 3:
+            # v4: C2 count drops junk domains; v3 caches hold the old count.
+            if cached.get("schema_version") == 4:
                 return cached
         except Exception:
             logger.warning("Failed to read attribution cache for %s, recomputing", sample_id)
@@ -151,7 +152,7 @@ async def api_get_attribution(sample_id: str) -> dict:
     supporting_signals = _build_supporting_signals(result, family_data, breakdown)
 
     payload = {
-        "schema_version": 3,
+        "schema_version": 4,
         "family": family,
         "confidence": round(confidence, 2),
         "confidence_breakdown": breakdown,
@@ -168,6 +169,19 @@ async def api_get_attribution(sample_id: str) -> dict:
         logger.warning("Failed to write attribution cache for %s", sample_id)
 
     return payload
+
+
+def _unique_c2_indicators(c2_list: list) -> Set[str]:
+    """Unique C2 domains (junk values such as "{0}" dropped) plus IPs for entries with no domain."""
+    indicators = set()
+    for c in c2_list:
+        domain = c.get("domain")
+        if domain:
+            if not _is_junk_domain(domain):
+                indicators.add(domain)
+        elif c.get("ip"):
+            indicators.add(c["ip"])
+    return indicators
 
 
 def _compute_confidence_breakdown(result: dict, family: str) -> dict:
@@ -256,14 +270,14 @@ def _build_supporting_signals(result: dict, family_data: dict, breakdown: dict) 
     if perm_match_pct > 0:
         signals.append(f"{perm_match_pct}% permissions match family baseline")
 
-    c2_domains = {c.get("domain") for c in c2_list if c.get("domain")}
-    if c2_domains:
+    c2_indicators = _unique_c2_indicators(c2_list)
+    if c2_indicators:
         # Same overlap the c2_overlap score uses in _compute_confidence_breakdown.
         family_c2s = _family_c2_baseline(family_data.get("family", "unknown"))
         if family_c2s:
-            c2_match_count = len(c2_domains & family_c2s)
+            c2_match_count = len(c2_indicators & family_c2s)
             signals.append(
-                f"{c2_match_count} of {len(c2_domains)} C2 indicators match the family baseline"
+                f"{c2_match_count} of {len(c2_indicators)} C2 indicators match the family baseline"
             )
         else:
             signals.append("no family baseline to compare against")
@@ -478,7 +492,7 @@ async def api_get_threat_summary(sample_id: str) -> dict:
         "family": family_name,
         "confidence": round(family_conf, 2),
         "similar_samples_count": similar_count,
-        "c2_count": len(c2_list),
+        "c2_count": len(_unique_c2_indicators(c2_list)),
         "obfuscation_score": obfuscation.get("obfuscation_score", 0),
     }
 
