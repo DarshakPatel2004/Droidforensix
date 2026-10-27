@@ -27,4 +27,17 @@ describe('SampleTabs', () => {
     expect(screen.getByRole('tab', { name: 'Overview' }).disabled).toBe(true)
     expect(screen.getByRole('tab', { name: 'Checks' }).disabled).toBe(false)
   })
+
+  test('arrow keys move to the next enabled tab', () => {
+    const onSelect = vi.fn()
+    render(<SampleTabs tabs={TABS} activeTab="overview" lockedIds={['analysis']} onSelect={onSelect} />)
+    fireEvent.keyDown(screen.getByRole('tab', { name: 'Overview' }), { key: 'ArrowRight' })
+    expect(onSelect).toHaveBeenCalledWith('notes')
+  })
+
+  test('only the selected tab is in the tab order', () => {
+    render(<SampleTabs tabs={TABS} activeTab="notes" onSelect={() => {}} />)
+    expect(screen.getByRole('tab', { name: 'Notes' }).tabIndex).toBe(0)
+    expect(screen.getByRole('tab', { name: 'Overview' }).tabIndex).toBe(-1)
+  })
 })

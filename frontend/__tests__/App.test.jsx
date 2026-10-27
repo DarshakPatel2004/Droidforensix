@@ -92,6 +92,11 @@ describe('App', () => {
     expect(await screen.findByRole('button', { name: /evil\.apk/ })).toBeTruthy()
   })
 
+  test('opens the tab named in the URL', () => {
+    renderApp('/sample/abc123/analysis')
+    expect(screen.getByRole('tab', { name: 'Checks' }).getAttribute('aria-selected')).toBe('true')
+  })
+
   test('upload tab shows UploadPanel', () => {
     renderApp()
     expect(screen.getByTestId('upload-panel')).toBeTruthy()
