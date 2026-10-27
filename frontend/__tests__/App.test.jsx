@@ -41,10 +41,6 @@ vi.mock('../src/components/RawCodeView', () => ({
   default: () => <div>RawCodeView</div>,
 }))
 
-vi.mock('../src/pages/SampleDetail', () => ({
-  default: () => <div>SampleDetail</div>,
-}))
-
 vi.mock('../src/components/ThreatIntelView', () => ({
   default: () => <div>ThreatIntelView</div>,
 }))
@@ -75,17 +71,14 @@ beforeEach(() => {
 })
 
 describe('App', () => {
-  test('renders sidebar with navigation items', () => {
+  test('sidebar has the upload entry', () => {
     renderApp()
     expect(screen.getAllByText(/UPLOAD/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText(/ANALYSIS/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText(/DISSECTION/i).length).toBeGreaterThanOrEqual(1)
   })
 
-  test('sidebar nav items are disabled without selected sample', () => {
+  test('sample tabs are not shown without a selected sample', () => {
     renderApp()
-    const analysisBtn = screen.getByText('Analysis Results').closest('button')
-    expect(analysisBtn?.disabled).toBe(true)
+    expect(screen.queryByRole('tab', { name: 'Checks' })).toBeNull()
   })
 
   test('upload tab shows UploadPanel', () => {
