@@ -44,3 +44,26 @@ class TestKungFuGongfuC2:
         )
         assert match is not None
         assert match["family"] == "KungFu"
+
+
+class TestGenericBankerEvidenceNeedsC2:
+    PERMS = [
+        "android.permission.BIND_ACCESSIBILITY_SERVICE",
+        "android.permission.SYSTEM_ALERT_WINDOW",
+    ]
+
+    def test_generic_strings_and_permissions_alone_do_not_name_ermac(self):
+        # "accessibility" and "overlay" appear in countless benign apps; with no
+        # family-specific C2 this evidence fired 48x on a 373-sample run, 0 correct.
+        match = _match_family_signatures(
+            _result(strings=["accessibility", "overlay"], perms=self.PERMS, classes=500, native=[])
+        )
+        assert match is None or match["family"] != "Ermac"
+
+    def test_ermac_c2_domain_still_names_ermac(self):
+        match = _match_family_signatures(
+            _result(strings=["accessibility", "overlay"], domains=["panel.ermac-c2.net"],
+                    perms=self.PERMS, classes=500, native=[])
+        )
+        assert match is not None
+        assert match["family"] == "Ermac"

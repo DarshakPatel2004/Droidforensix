@@ -4,6 +4,12 @@ import pytest
 from fastapi.testclient import TestClient
 
 from backend.main import app
+from backend.routers.samples import (
+    _build_supporting_signals,
+    _compute_confidence_breakdown,
+    _family_c2_baseline,
+    _unique_c2_indicators,
+)
 
 # Sample result used for mocking load_result.
 # Keys mirror a real pipeline_result.json: permissions live under
@@ -343,6 +349,49 @@ class TestAttribution:
         assert "evil-c2.com" in values
         assert "SMSApp.apk" in values
         assert all("value" in s and "entropy" in s and "category" in s for s in refs["notable_strings"])
+
+
+class TestC2SupportingSignalText:
+    """The C2 signal reports overlap with the family baseline, not the raw domain count."""
+
+    NINE_UNRELATED_DOMAINS = [f"unrelated{i}.example" for i in range(9)]
+
+    def _signals_for(self, family: str, domains: list) -> list:
+        result = {"c2_infrastructure": [{"domain": d} for d in domains]}
+        breakdown = _compute_confidence_breakdown(result, family)
+        return _build_supporting_signals(result, {"family": family}, breakdown)
+
+    def test_kungfu_baseline_no_overlap(self):
+        assert _family_c2_baseline("KungFu") == {"adwo.com", "gongfu-android.com", "waps.cn"}
+        signals = self._signals_for("KungFu", self.NINE_UNRELATED_DOMAINS)
+        assert "0 of 9 C2 indicators match the family baseline" in signals
+
+    def test_kungfu_baseline_partial_overlap(self):
+        signals = self._signals_for("KungFu", ["adwo.com", "waps.cn", "other.example"])
+        assert "2 of 3 C2 indicators match the family baseline" in signals
+
+    def test_no_family_baseline(self):
+        signals = self._signals_for("unknown", self.NINE_UNRELATED_DOMAINS)
+        assert "no family baseline to compare against" in signals
+        assert not any("match the family baseline" in s for s in signals)
+        assert not any("overlap with" in s for s in signals)
+
+    def test_junk_domain_not_counted(self):
+        # "{0}" is an extraction artefact, not a C2 domain (KungFu carries one).
+        signals = self._signals_for("KungFu", self.NINE_UNRELATED_DOMAINS[:8] + ["{0}"])
+        assert "0 of 8 C2 indicators match the family baseline" in signals
+
+
+class TestUniqueC2Indicators:
+
+    def test_drops_junk_and_duplicates_keeps_ip_only_entries(self):
+        c2_list = [
+            {"domain": "r2.adwo.com"},
+            {"domain": "r2.adwo.com"},
+            {"domain": "{0}"},
+            {"domain": None, "ip": "10.0.0.1"},
+        ]
+        assert _unique_c2_indicators(c2_list) == {"r2.adwo.com", "10.0.0.1"}
 
 
 class TestCommunityIntel:
