@@ -8,6 +8,7 @@ from backend.routers.samples import (
     _build_supporting_signals,
     _compute_confidence_breakdown,
     _family_c2_baseline,
+    _unique_c2_indicators,
 )
 
 # Sample result used for mocking load_result.
@@ -374,6 +375,23 @@ class TestC2SupportingSignalText:
         assert "no family baseline to compare against" in signals
         assert not any("match the family baseline" in s for s in signals)
         assert not any("overlap with" in s for s in signals)
+
+    def test_junk_domain_not_counted(self):
+        # "{0}" is an extraction artefact, not a C2 domain (KungFu carries one).
+        signals = self._signals_for("KungFu", self.NINE_UNRELATED_DOMAINS[:8] + ["{0}"])
+        assert "0 of 8 C2 indicators match the family baseline" in signals
+
+
+class TestUniqueC2Indicators:
+
+    def test_drops_junk_and_duplicates_keeps_ip_only_entries(self):
+        c2_list = [
+            {"domain": "r2.adwo.com"},
+            {"domain": "r2.adwo.com"},
+            {"domain": "{0}"},
+            {"domain": None, "ip": "10.0.0.1"},
+        ]
+        assert _unique_c2_indicators(c2_list) == {"r2.adwo.com", "10.0.0.1"}
 
 
 class TestCommunityIntel:
