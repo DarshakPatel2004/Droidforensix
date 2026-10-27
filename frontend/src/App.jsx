@@ -8,13 +8,16 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import SampleSearch from './components/SampleSearch'
 import LoadingSpinner from './components/LoadingSpinner'
 import ThreatBadge from './components/ThreatBadge'
-import { useSampleData } from './hooks/useSampleData'
 import { useSampleStatus } from './hooks/useSampleStatus'
 import SampleNotReady from './components/SampleNotReady'
+import SampleTabs from './components/SampleTabs'
+import OverviewTab from './components/tabs/OverviewTab'
+import NotesTab from './components/tabs/NotesTab'
+import AttributionEvidence from './components/AttributionEvidence'
+import RelatedSamples from './components/RelatedSamples'
 
 const DissectionPage = lazy(() => import('./components/DissectionPage'))
 const RawCodeView = lazy(() => import('./components/RawCodeView'))
-const SampleDetail = lazy(() => import('./pages/SampleDetail'))
 const ThreatIntelView = lazy(() => import('./components/ThreatIntelView'))
 
 /* eslint-disable react-hooks/set-state-in-effect */
@@ -28,12 +31,19 @@ const RETRY_BASE_DELAY_MS = 2000
 
 const NAV_ITEMS = [
   { id: 'upload', label: 'Upload & Analyze', icon: '⬆' },
-  { id: 'analysis', label: 'Analysis Results', icon: '🔍' },
-  { id: 'attribution', label: 'Attribution', icon: '🎯' },
-  { id: 'dissection', label: 'Code Dissection', icon: '🔬' },
-  { id: 'raw-code', label: 'Raw Code', icon: '📄' },
-  { id: 'threat-intel', label: 'Threat Intelligence', icon: '🌐' },
 ]
+
+// Tabs for the selected sample. Only 'analysis' (Checks) is open during analysis, since it shows progress.
+const SAMPLE_TABS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'attribution', label: 'Attribution' },
+  { id: 'analysis', label: 'Checks' },
+  { id: 'dissection', label: 'Investigation' },
+  { id: 'raw-code', label: 'Raw code' },
+  { id: 'threat-intel', label: 'Threat intel' },
+  { id: 'notes', label: 'Notes' },
+]
+const OPEN_DURING_ANALYSIS = new Set(['analysis'])
 
 /**
  * HTTP status codes that should NOT be retried (client errors).
@@ -192,21 +202,10 @@ const RETRY_STATE = {
   EXHAUSTED: 'exhausted',
 }
 
+// /sample/:id opens the same shell as /, with that sample already selected.
 function SampleRoutePage() {
   const { id } = useParams()
-  const { data } = useSampleData(id, `${API_URL}/api/sample/${id}`, { cached: false })
-
-  if (!data) return <LoadingSpinner message="Loading sample..." />
-
-  return (
-    <ToastProvider>
-      <SampleDetail
-        sample={{ sampleId: id, sha256: id, fileName: id?.substring(0, 16), ...data }}
-        apiUrl={API_URL}
-        onSelectSample={(s) => window.location.href = `/sample/${s?.sample_id || s?.sha256 || s}`}
-      />
-    </ToastProvider>
-  )
+  return <ToastProvider><AppInner routeSampleId={id} /></ToastProvider>
 }
 
 function App() {
@@ -218,7 +217,7 @@ function App() {
   )
 }
 
-function AppInner() {
+function AppInner({ routeSampleId }) {
   const navigate = useNavigate()
   const { addToast } = useToast()
   const [activeTab, setActiveTab] = useState('upload')
@@ -226,6 +225,13 @@ function AppInner() {
   const [selectedSample, setSelectedSample] = useState(null)
   const sampleStatus = useSampleStatus(selectedSample?.uploadId || selectedSample?.sha256 || selectedSample?.sampleId)
   const sampleReady = sampleStatus.status === 'completed'
+  const lockedTabIds = sampleReady ? [] : SAMPLE_TABS.map((t) => t.id).filter((id) => !OPEN_DURING_ANALYSIS.has(id))
+
+  useEffect(() => {
+    if (!routeSampleId) return
+    setSelectedSample({ sampleId: routeSampleId, sha256: routeSampleId, fileName: routeSampleId.substring(0, 16) })
+    setActiveTab('overview')
+  }, [routeSampleId])
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Connection states (Phase 6)
@@ -662,7 +668,8 @@ function AppInner() {
   const handleSelectSample = (sample) => {
     const sid = sample?.sampleId || sample?.sha256 || sample?.uploadId || sample
     setSelectedSample(typeof sample === 'string' ? { sampleId: sample, sha256: sample } : sample)
-    setActiveTab('analysis')
+    const isAlreadyAnalyzed = sample?.status === 'analyzed' || sample?.status === 'completed'
+    setActiveTab(isAlreadyAnalyzed ? 'overview' : 'analysis')
     setSidebarOpen(false)
     if (sid) navigate(`/sample/${sid}`, { replace: true })
 
@@ -685,7 +692,7 @@ function AppInner() {
     }
   }
 
-  const activeLabel = NAV_ITEMS.find(n => n.id === activeTab)?.label || ''
+  const activeLabel = [...NAV_ITEMS, ...SAMPLE_TABS].find(n => n.id === activeTab)?.label || ''
   const severity = selectedSample?.severity || analysisState?.verdictData?.verdict
   const riskScore = selectedSample?.risk_score || analysisState?.verdictData?.riskScore
 
@@ -707,7 +714,6 @@ function AppInner() {
                   setActiveTab(item.id)
                   setSidebarOpen(false)
                 }}
-                disabled={item.id !== 'upload' && (!selectedSample || (item.id !== 'analysis' && !sampleReady))}
                 aria-label={item.label}
                 aria-current={activeTab === item.id ? 'page' : undefined}
                 onKeyDown={e => { if (e.key === 'Escape') setSidebarOpen(false) }}
@@ -743,6 +749,9 @@ function AppInner() {
         </header>
 
         <section className="content" id="main-content" role="main" aria-label={`${activeLabel} view`}>
+          {selectedSample && activeTab !== 'upload' && (
+            <SampleTabs tabs={SAMPLE_TABS} activeTab={activeTab} lockedIds={lockedTabIds} onSelect={setActiveTab} />
+          )}
           {activeTab === 'upload' && (
             <div className="view-wrapper">
               <div className="workspace-grid">
@@ -791,16 +800,31 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'attribution' && selectedSample && sampleReady && (
+          {activeTab === 'overview' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
-                <Suspense fallback={<LoadingSpinner message="Loading attribution..." />}>
-                  <SampleDetail
-                    sample={selectedSample}
-                    apiUrl={API_URL}
-                    onSelectSample={handleSelectSample}
-                  />
-                </Suspense>
+                <OverviewTab sampleId={selectedSample.sha256 || selectedSample.sampleId} />
+              </ErrorBoundary>
+            </div>
+          )}
+
+          {activeTab === 'attribution' && selectedSample && sampleReady && (
+            <div className="view-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <ErrorBoundary>
+                <AttributionEvidence sampleId={selectedSample.sha256 || selectedSample.sampleId} apiUrl={API_URL} />
+                <RelatedSamples
+                  sampleId={selectedSample.sha256 || selectedSample.sampleId}
+                  apiUrl={API_URL}
+                  onSelect={handleSelectSample}
+                />
+              </ErrorBoundary>
+            </div>
+          )}
+
+          {activeTab === 'notes' && selectedSample && sampleReady && (
+            <div className="view-wrapper">
+              <ErrorBoundary>
+                <NotesTab sampleId={selectedSample.sha256 || selectedSample.sampleId} />
               </ErrorBoundary>
             </div>
           )}
