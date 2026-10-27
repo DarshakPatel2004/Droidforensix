@@ -1,20 +1,19 @@
 import { useSampleData } from '../../hooks/useSampleData'
 import { summarizeChecks, needsAttention } from '../../utils/checkSummaries'
-import { riskLevelBadgeClass } from '../../utils/riskLevel'
 import DeepAnalysis from '../DeepAnalysis'
 import LoadingSpinner from '../LoadingSpinner'
 
-const toneStyle = { medium: '#8a3b00', high: '#8a3b00', critical: '#8a3b00', low: '#11633a' }
+const toneStyle = { medium: 'var(--accent-amber)', high: 'var(--accent-rose)', critical: 'var(--accent-rose)', low: 'var(--accent-emerald)' }
 
 function KpiTile({ label, value, unit = '', note, tone }) {
   return (
-    <div style={{ background: 'var(--surface, #fff)', border: '1px solid var(--border, #e1e4ea)', borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <div style={{ fontSize: 12, color: 'var(--text-muted, #555b66)' }}>{label}</div>
+    <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{label}</div>
       <div style={{ fontSize: 28, fontWeight: 700 }}>
         {value}
-        {unit && <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-muted, #555b66)' }}>{unit}</span>}
+        {unit && <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-muted)' }}>{unit}</span>}
       </div>
-      <div style={{ fontSize: 12, fontWeight: 600, color: tone || 'var(--text-muted, #555b66)' }}>{note}</div>
+      <div style={{ fontSize: 12, fontWeight: 600, color: tone || 'var(--text-muted)' }}>{note}</div>
     </div>
   )
 }
@@ -23,6 +22,8 @@ function KpiTile({ label, value, unit = '', note, tone }) {
 export default function OverviewTab({ sampleId }) {
   const result = useSampleData(sampleId, `/api/sample/${encodeURIComponent(sampleId)}`, { cached: false })
   const summary = useSampleData(sampleId, `/api/sample/${encodeURIComponent(sampleId)}/threat-summary`)
+  // Family and confidence come from the attribution endpoint, the same source the Attribution tab shows.
+  const attribution = useSampleData(sampleId, `/api/sample/${encodeURIComponent(sampleId)}/attribution`)
 
   if (result.error) return <div className="empty-state" role="alert">Could not load this sample: {result.error.message}</div>
   if (!result.data) return <LoadingSpinner message="Loading overview..." />
@@ -34,7 +35,7 @@ export default function OverviewTab({ sampleId }) {
   const c2Count = summary.data?.c2_count ?? 0
   const attention = needsAttention(data, c2Count)
   const findings = summarizeChecks(data).filter((c) => c.tag === 'Finding').length
-  const family = data.family_identification || {}
+  const family = attribution.data || {}
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
@@ -45,27 +46,27 @@ export default function OverviewTab({ sampleId }) {
         <KpiTile label="Zero-day risk" value={zeroDay} unit=" /100" note={zeroDay > 0 ? 'Review' : 'No signals'} />
       </section>
 
-      <section aria-labelledby="attention-heading" style={{ background: 'var(--surface, #fff)', border: '1px solid var(--border, #e1e4ea)', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
+      <section aria-labelledby="attention-heading" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
         <h2 id="attention-heading" style={{ margin: 0, fontSize: 16 }}>Needs your attention</h2>
         {attention.length === 0 ? (
-          <p style={{ margin: 0, fontSize: 14 }}>Nothing flagged for review.</p>
+          <p style={{ margin: 0, fontSize: 14, color: 'var(--text-secondary)' }}>Nothing flagged for review.</p>
         ) : (
           <ul style={{ margin: 0, padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 10 }}>
             {attention.map((item, i) => (
               <li key={i} style={{ display: 'flex', gap: 12, alignItems: 'baseline' }}>
-                <span className={riskLevelBadgeClass(item.level === 'warn' ? 'medium' : 'low')} style={{ fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 4, minWidth: 52, textAlign: 'center', flex: 'none' }}>
+                <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 8px', borderRadius: 4, minWidth: 52, textAlign: 'center', flex: 'none', ...(item.level === 'warn' ? { background: 'var(--accent-amber-soft)', color: 'var(--accent-amber)' } : { background: 'var(--accent-cyan-soft)', color: 'var(--accent-cyan)' }) }}>
                   {item.tag}
                 </span>
-                <span style={{ fontSize: 14 }}>{item.text}</span>
+                <span style={{ fontSize: 14, color: 'var(--text-secondary)' }}>{item.text}</span>
               </li>
             ))}
           </ul>
         )}
       </section>
 
-      <section aria-labelledby="attribution-heading" style={{ background: 'var(--surface, #fff)', border: '1px solid var(--border, #e1e4ea)', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
+      <section aria-labelledby="attribution-heading" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 6 }}>
         <h2 id="attribution-heading" style={{ margin: 0, fontSize: 16 }}>Attribution</h2>
-        <p style={{ margin: 0, fontSize: 14 }}>
+        <p style={{ margin: 0, fontSize: 14, color: 'var(--text-secondary)' }}>
           {family.family && family.family !== 'unknown'
             ? `Matched to ${family.family} (${Math.round((family.confidence || 0) * 100)}% confidence). ${findings} of 9 checks found something.`
             : `No family match. ${findings} of 9 checks found something.`}

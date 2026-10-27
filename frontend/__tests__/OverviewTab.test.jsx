@@ -17,9 +17,10 @@ const RESULT = {
   binary_packing: { packing_detected: false },
 }
 
-function mockData({ result = RESULT, summary = { c2_count: 8 }, resultError = null } = {}) {
+function mockData({ result = RESULT, summary = { c2_count: 8 }, attribution = { family: 'KungFu', confidence: 0.95 }, resultError = null } = {}) {
   useSampleData.mockImplementation((id, endpoint) => {
     if (endpoint.endsWith('/threat-summary')) return { data: summary, error: null }
+    if (endpoint.endsWith('/attribution')) return { data: attribution, error: null }
     return { data: resultError ? null : result, error: resultError }
   })
 }
@@ -45,7 +46,7 @@ describe('OverviewTab', () => {
   test('states the family match with its confidence', () => {
     mockData()
     render(<OverviewTab sampleId="abc" />)
-    expect(screen.getByText(/Matched to KungFu \(90% confidence\)/)).toBeTruthy()
+    expect(screen.getByText(/Matched to KungFu \(95% confidence\)/)).toBeTruthy()
   })
 
   test('lists what needs attention', async () => {

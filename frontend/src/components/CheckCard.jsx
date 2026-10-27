@@ -1,7 +1,7 @@
 const TAG_STYLES = {
-  Finding: { background: '#fde7d3', color: '#8a3b00' },
-  Clear: { background: '#eceef2', color: '#3d424c' },
-  Unavailable: { background: '#f4f4f4', color: '#6b7280' },
+  Finding: { background: 'var(--accent-amber-soft)', color: 'var(--accent-amber)' },
+  Clear: { background: 'var(--bg-elevated)', color: 'var(--text-secondary)' },
+  Unavailable: { background: 'var(--bg-surface)', color: 'var(--text-subtle)' },
 }
 
 // One deep-analysis check: its name, a Finding/Clear tag, and a one-line result.
@@ -10,8 +10,8 @@ export default function CheckCard({ title, tag, line }) {
     <article
       aria-label={`${title}: ${tag}`}
       style={{
-        background: 'var(--surface, #fff)',
-        border: '1px solid var(--border, #e1e4ea)',
+        background: 'var(--bg-card)',
+        border: '1px solid var(--border-color)',
         borderRadius: 12,
         padding: 16,
         display: 'flex',
@@ -25,7 +25,7 @@ export default function CheckCard({ title, tag, line }) {
           {tag}
         </span>
       </div>
-      <p style={{ margin: 0, fontSize: 13 }}>{line}</p>
+      <p style={{ margin: 0, fontSize: 13, color: 'var(--text-secondary)' }}>{line}</p>
     </article>
   )
 }

@@ -15,6 +15,16 @@ export default function SampleNotReady({ status, error }) {
     )
   }
 
+  // No status and an error: the sample could not be found, so there is nothing to wait for.
+  if (!status && error) {
+    return (
+      <div className="empty-state" role="alert">
+        <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Cannot load this sample</div>
+        <div style={{ fontSize: 13 }}>{error}</div>
+      </div>
+    )
+  }
+
   return (
     <div className="empty-state" role="status">
       <div style={{ fontSize: 16, fontWeight: 600, marginBottom: 8 }}>Analysis in progress</div>

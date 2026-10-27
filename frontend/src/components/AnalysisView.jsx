@@ -135,6 +135,8 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [activeResultTab, setActiveResultTab] = useState('overview')
+  // Unique C2 count from the threat summary, so this card matches the Overview tab.
+  const [c2UniqueCount, setC2UniqueCount] = useState(null)
 
   const sampleId = analysisState.sampleId
 
@@ -142,6 +144,18 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
   // Prefer SHA-256 from the sample prop (backend key) over analysisState.sampleId
   // for robustness against any ID type inconsistency.
   const effectiveSampleId = sample?.sha256 || sampleId
+
+  useEffect(() => {
+    if (!effectiveSampleId) return
+    let cancelled = false
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setC2UniqueCount(null)
+    fetch(`${apiUrl}/api/sample/${effectiveSampleId}/threat-summary`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((body) => { if (!cancelled && body) setC2UniqueCount(body.c2_count) })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [effectiveSampleId, apiUrl])
 
   useEffect(() => {
     if (!effectiveSampleId) return
@@ -301,7 +315,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
       {/* Tab Content */}
       <div className="tab-content">
         {activeResultTab === 'overview' && (
-          <OverviewTab result={fullResult} sampleId={effectiveSampleId} apiUrl={apiUrl} />
+          <OverviewTab result={fullResult} sampleId={effectiveSampleId} apiUrl={apiUrl} c2Count={c2UniqueCount} />
         )}
         {activeResultTab === 'secrets' && (
           <SecretsTab result={fullResult} />
@@ -334,7 +348,7 @@ ResultView.displayName = 'ResultView'
 /**
  * Overview Tab Content
  */
-const OverviewTab = memo(({ result, sampleId, apiUrl }) => (
+const OverviewTab = memo(({ result, sampleId, apiUrl, c2Count }) => (
   <div className="tab-panel">
     <div className="card">
       <h3 className="heading-sm">Assessment Summary</h3>
@@ -363,7 +377,7 @@ const OverviewTab = memo(({ result, sampleId, apiUrl }) => (
       </div>
       <div className="card">
         <h4 className="heading-sm">C2 Endpoints</h4>
-        <p className="metric-value">{(result?.c2_infrastructure || []).length}</p>
+        <p className="metric-value">{c2Count ?? '—'}</p>
       </div>
       <div className="card">
         <h4 className="heading-sm">Threat Chains</h4>

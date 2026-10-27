@@ -57,25 +57,25 @@ export default function NotesTab({ sampleId }) {
     <form onSubmit={save} aria-label="Analyst notes" style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 680 }}>
       <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
         Status
-        <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ minHeight: 44, padding: '8px 10px' }}>
+        <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ minHeight: 44, padding: '8px 10px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', font: 'inherit' }}>
           {STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
         </select>
       </label>
       <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
         Tags (comma separated)
-        <input value={tagsText} onChange={(e) => setTagsText(e.target.value)} style={{ minHeight: 44, padding: '8px 10px' }} />
+        <input value={tagsText} onChange={(e) => setTagsText(e.target.value)} style={{ minHeight: 44, padding: '8px 10px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', font: 'inherit' }} />
       </label>
       <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
         Notes
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={8} style={{ padding: 10 }} />
+        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={8} style={{ padding: 10, background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', font: 'inherit' }} />
       </label>
       <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <button type="submit" disabled={saving} style={{ minHeight: 44, padding: '10px 16px' }}>
+        <button type="submit" disabled={saving} style={{ minHeight: 44, padding: '10px 16px', background: 'var(--accent-cyan-soft)', color: 'var(--accent-cyan)', border: '1px solid var(--accent-cyan)', borderRadius: 'var(--radius-sm)', font: 'inherit', fontWeight: 600, cursor: saving ? 'default' : 'pointer' }}>
           {saving ? 'Saving…' : 'Save notes'}
         </button>
         {saveMessage && <span role="status" style={{ fontSize: 13 }}>{saveMessage}</span>}
       </div>
-      {state.updated_utc && <div style={{ fontSize: 12, color: 'var(--text-muted, #555b66)' }}>Last saved {state.updated_utc}</div>}
+      {state.updated_utc && <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Last saved {state.updated_utc}</div>}
     </form>
   )
 }
