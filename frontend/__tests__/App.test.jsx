@@ -41,10 +41,6 @@ vi.mock('../src/components/RawCodeView', () => ({
   default: () => <div>RawCodeView</div>,
 }))
 
-vi.mock('../src/pages/SampleDetail', () => ({
-  default: () => <div>SampleDetail</div>,
-}))
-
 vi.mock('../src/components/ThreatIntelView', () => ({
   default: () => <div>ThreatIntelView</div>,
 }))
@@ -75,17 +71,30 @@ beforeEach(() => {
 })
 
 describe('App', () => {
-  test('renders sidebar with navigation items', () => {
+  test('sidebar has the upload entry', () => {
     renderApp()
     expect(screen.getAllByText(/UPLOAD/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText(/ANALYSIS/i).length).toBeGreaterThanOrEqual(1)
-    expect(screen.getAllByText(/DISSECTION/i).length).toBeGreaterThanOrEqual(1)
   })
 
-  test('sidebar nav items are disabled without selected sample', () => {
+  test('sample tabs are not shown without a selected sample', () => {
     renderApp()
-    const analysisBtn = screen.getByText('Analysis Results').closest('button')
-    expect(analysisBtn?.disabled).toBe(true)
+    expect(screen.queryByRole('tab', { name: 'Checks' })).toBeNull()
+  })
+
+  test('sidebar lists saved samples from the API', async () => {
+    global.fetch = vi.fn((url) => Promise.resolve({
+      ok: true,
+      json: () => Promise.resolve(String(url).includes('/api/samples')
+        ? { samples: [{ id: 'abc', sha256: 'abc', name: 'evil.apk', severity: 'high', risk_score: 80, family: 'KungFu' }] }
+        : {}),
+    }))
+    renderApp()
+    expect(await screen.findByRole('button', { name: /evil\.apk/ })).toBeTruthy()
+  })
+
+  test('opens the tab named in the URL', () => {
+    renderApp('/sample/abc123/analysis')
+    expect(screen.getByRole('tab', { name: 'Checks' }).getAttribute('aria-selected')).toBe('true')
   })
 
   test('upload tab shows UploadPanel', () => {

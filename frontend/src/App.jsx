@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useReducer, lazy, Suspense } from 'react'
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
+import { Routes, Route, useNavigate, useMatch } from 'react-router-dom'
 import './App.css'
 import { ToastProvider, useToast } from './components/Toast'
 import UploadPanel from './components/UploadPanel'
@@ -9,10 +9,17 @@ import SampleSearch from './components/SampleSearch'
 import LoadingSpinner from './components/LoadingSpinner'
 import ThreatBadge from './components/ThreatBadge'
 import { useSampleData } from './hooks/useSampleData'
+import { apiFetch } from './api/client'
+import { useSampleStatus } from './hooks/useSampleStatus'
+import SampleNotReady from './components/SampleNotReady'
+import SampleTabs from './components/SampleTabs'
+import OverviewTab from './components/tabs/OverviewTab'
+import NotesTab from './components/tabs/NotesTab'
+import AttributionEvidence from './components/AttributionEvidence'
+import RelatedSamples from './components/RelatedSamples'
 
 const DissectionPage = lazy(() => import('./components/DissectionPage'))
 const RawCodeView = lazy(() => import('./components/RawCodeView'))
-const SampleDetail = lazy(() => import('./pages/SampleDetail'))
 const ThreatIntelView = lazy(() => import('./components/ThreatIntelView'))
 
 /* eslint-disable react-hooks/set-state-in-effect */
@@ -26,12 +33,20 @@ const RETRY_BASE_DELAY_MS = 2000
 
 const NAV_ITEMS = [
   { id: 'upload', label: 'Upload & Analyze', icon: '⬆' },
-  { id: 'analysis', label: 'Analysis Results', icon: '🔍' },
-  { id: 'attribution', label: 'Attribution', icon: '🎯' },
-  { id: 'dissection', label: 'Code Dissection', icon: '🔬' },
-  { id: 'raw-code', label: 'Raw Code', icon: '📄' },
-  { id: 'threat-intel', label: 'Threat Intelligence', icon: '🌐' },
 ]
+
+// Tabs for the selected sample. Only 'analysis' (Checks) is open during analysis, since it shows progress.
+const SAMPLE_TABS = [
+  { id: 'overview', label: 'Overview' },
+  { id: 'attribution', label: 'Attribution' },
+  { id: 'analysis', label: 'Checks' },
+  { id: 'dissection', label: 'Investigation' },
+  { id: 'raw-code', label: 'Raw code' },
+  { id: 'threat-intel', label: 'Threat intel' },
+  { id: 'notes', label: 'Notes' },
+]
+const SAMPLE_TAB_IDS = SAMPLE_TABS.map((t) => t.id)
+const OPEN_DURING_ANALYSIS = new Set(['analysis'])
 
 /**
  * HTTP status codes that should NOT be retried (client errors).
@@ -190,27 +205,10 @@ const RETRY_STATE = {
   EXHAUSTED: 'exhausted',
 }
 
-function SampleRoutePage() {
-  const { id } = useParams()
-  const { data } = useSampleData(id, `${API_URL}/api/sample/${id}`, { cached: false })
-
-  if (!data) return <LoadingSpinner message="Loading sample..." />
-
-  return (
-    <ToastProvider>
-      <SampleDetail
-        sample={{ sampleId: id, sha256: id, fileName: id?.substring(0, 16), ...data }}
-        apiUrl={API_URL}
-        onSelectSample={(s) => window.location.href = `/sample/${s?.sample_id || s?.sha256 || s}`}
-      />
-    </ToastProvider>
-  )
-}
-
+// /sample/:id opens the same shell as /, with that sample already selected.
 function App() {
   return (
     <Routes>
-      <Route path="/sample/:id" element={<SampleRoutePage />} />
       <Route path="*" element={<ToastProvider><AppInner /></ToastProvider>} />
     </Routes>
   )
@@ -218,10 +216,25 @@ function App() {
 
 function AppInner() {
   const navigate = useNavigate()
+  // One element for every path, so moving between / and /sample/:id never remounts the app.
+  const sampleTabMatch = useMatch('/sample/:id/:tab')
+  const sampleMatch = useMatch('/sample/:id')
+  const routeSampleId = sampleTabMatch?.params.id || sampleMatch?.params.id
+  const routeTab = sampleTabMatch?.params.tab
   const { addToast } = useToast()
   const [activeTab, setActiveTab] = useState('upload')
   const [samples, setSamples] = useState([])
   const [selectedSample, setSelectedSample] = useState(null)
+  const sampleStatus = useSampleStatus(selectedSample?.uploadId || selectedSample?.sha256 || selectedSample?.sampleId)
+  const sampleReady = sampleStatus.status === 'completed'
+  const lockedTabIds = sampleReady ? [] : SAMPLE_TABS.map((t) => t.id).filter((id) => !OPEN_DURING_ANALYSIS.has(id))
+
+  // Opening /sample/:id directly selects that sample. Later selections come from handleSelectSample.
+  useEffect(() => {
+    if (!routeSampleId || selectedSample) return
+    setSelectedSample({ sampleId: routeSampleId, sha256: routeSampleId, fileName: routeSampleId.substring(0, 16) })
+    setActiveTab(SAMPLE_TAB_IDS.includes(routeTab) ? routeTab : 'overview')
+  }, [routeSampleId, routeTab, selectedSample])
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Connection states (Phase 6)
@@ -257,6 +270,44 @@ function AppInner() {
     error: null,
     errorType: null,
   })
+
+  // A sample opened by URL has no list entry to seed the analysis state, so once it is complete,
+  // load its result and seed the state with the real verdict.
+  useEffect(() => {
+    let cancelled = false
+    apiFetch('/api/samples?limit=50')
+      .then((body) => {
+        if (cancelled) return
+        const saved = (body.samples || []).map((s) => ({
+          sampleId: s.sha256 || s.id,
+          sha256: s.sha256 || s.id,
+          fileName: s.name,
+          severity: s.severity,
+          risk_score: s.risk_score,
+          family: s.family,
+          status: 'analyzed',
+        }))
+        setSamples((prev) => [...prev, ...saved.filter((s) => !prev.some((p) => p.sha256 === s.sha256))])
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
+
+  const routeResult = useSampleData(routeSampleId || null, routeSampleId ? `/api/sample/${routeSampleId}` : null, { cached: false })
+  useEffect(() => {
+    if (!routeSampleId || !sampleReady || !routeResult.data || analysisState?.status === 'complete') return
+    const llm = routeResult.data.llm_assessment || {}
+    dispatch({
+      type: 'ANALYSIS_COMPLETE',
+      payload: {
+        sample_id: routeSampleId,
+        total_duration_seconds: null,
+        step_timings: {},
+        final_verdict: llm.severity || 'unknown',
+        risk_score: llm.risk_score || 0,
+      },
+    })
+  }, [routeSampleId, sampleReady, routeResult.data, analysisState?.status])
 
   // --- Backend health check + polling (Phase 5) ---
   const checkBackendHealth = useCallback(async () => {
@@ -658,7 +709,8 @@ function AppInner() {
   const handleSelectSample = (sample) => {
     const sid = sample?.sampleId || sample?.sha256 || sample?.uploadId || sample
     setSelectedSample(typeof sample === 'string' ? { sampleId: sample, sha256: sample } : sample)
-    setActiveTab('analysis')
+    const isAlreadyAnalyzed = sample?.status === 'analyzed' || sample?.status === 'completed'
+    setActiveTab(isAlreadyAnalyzed ? 'overview' : 'analysis')
     setSidebarOpen(false)
     if (sid) navigate(`/sample/${sid}`, { replace: true })
 
@@ -681,7 +733,13 @@ function AppInner() {
     }
   }
 
-  const activeLabel = NAV_ITEMS.find(n => n.id === activeTab)?.label || ''
+  const selectSampleTab = (tab) => {
+    setActiveTab(tab)
+    const id = selectedSample?.sha256 || selectedSample?.sampleId
+    if (id) navigate(`/sample/${id}/${tab}`, { replace: true })
+  }
+
+  const activeLabel = [...NAV_ITEMS, ...SAMPLE_TABS].find(n => n.id === activeTab)?.label || ''
   const severity = selectedSample?.severity || analysisState?.verdictData?.verdict
   const riskScore = selectedSample?.risk_score || analysisState?.verdictData?.riskScore
 
@@ -703,7 +761,6 @@ function AppInner() {
                   setActiveTab(item.id)
                   setSidebarOpen(false)
                 }}
-                disabled={item.id !== 'upload' && !selectedSample}
                 aria-label={item.label}
                 aria-current={activeTab === item.id ? 'page' : undefined}
                 onKeyDown={e => { if (e.key === 'Escape') setSidebarOpen(false) }}
@@ -711,6 +768,26 @@ function AppInner() {
               <b>{item.icon}</b>{item.label}
             </button>
           ))}
+          {samples.length > 0 && (
+            <>
+              <div className="nav-caption">SAMPLES</div>
+              <ul aria-label="Samples" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {samples.map((s) => (
+                  <li key={s.sha256 || s.sampleId}>
+                    <button
+                      className={`nav-item ${selectedSample?.sha256 === s.sha256 ? 'active' : ''}`}
+                      onClick={() => handleSelectSample(s)}
+                      aria-current={selectedSample?.sha256 === s.sha256 ? 'true' : undefined}
+                      title={s.fileName || s.sha256}
+                      style={{ width: '100%', textAlign: 'left' }}
+                    >
+                      <b aria-hidden="true">•</b>{s.fileName || s.sha256?.substring(0, 12)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
         <div className="sidebar-bottom">
           <div className="case-card">
@@ -739,6 +816,9 @@ function AppInner() {
         </header>
 
         <section className="content" id="main-content" role="main" aria-label={`${activeLabel} view`}>
+          {selectedSample && activeTab !== 'upload' && (
+            <SampleTabs tabs={SAMPLE_TABS} activeTab={activeTab} lockedIds={lockedTabIds} onSelect={selectSampleTab} />
+          )}
           {activeTab === 'upload' && (
             <div className="view-wrapper">
               <div className="workspace-grid">
@@ -766,6 +846,12 @@ function AppInner() {
             </div>
           )}
 
+          {activeTab !== 'upload' && activeTab !== 'analysis' && selectedSample && !sampleReady && (
+            <div className="view-wrapper">
+              <SampleNotReady status={sampleStatus.status} error={sampleStatus.error} />
+            </div>
+          )}
+
           {activeTab === 'analysis' && selectedSample && (
             <div className="view-wrapper">
               <ErrorBoundary>
@@ -781,21 +867,36 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'attribution' && selectedSample && (
+          {activeTab === 'overview' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
-                <Suspense fallback={<LoadingSpinner message="Loading attribution..." />}>
-                  <SampleDetail
-                    sample={selectedSample}
-                    apiUrl={API_URL}
-                    onSelectSample={handleSelectSample}
-                  />
-                </Suspense>
+                <OverviewTab sampleId={selectedSample.sha256 || selectedSample.sampleId} />
               </ErrorBoundary>
             </div>
           )}
 
-          {activeTab === 'dissection' && selectedSample && (
+          {activeTab === 'attribution' && selectedSample && sampleReady && (
+            <div className="view-wrapper" style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+              <ErrorBoundary>
+                <AttributionEvidence sampleId={selectedSample.sha256 || selectedSample.sampleId} apiUrl={API_URL} />
+                <RelatedSamples
+                  sampleId={selectedSample.sha256 || selectedSample.sampleId}
+                  apiUrl={API_URL}
+                  onSelect={handleSelectSample}
+                />
+              </ErrorBoundary>
+            </div>
+          )}
+
+          {activeTab === 'notes' && selectedSample && sampleReady && (
+            <div className="view-wrapper">
+              <ErrorBoundary>
+                <NotesTab sampleId={selectedSample.sha256 || selectedSample.sampleId} />
+              </ErrorBoundary>
+            </div>
+          )}
+
+          {activeTab === 'dissection' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSpinner message="Loading dissection..." />}>
@@ -808,7 +909,7 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'raw-code' && selectedSample && (
+          {activeTab === 'raw-code' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
                 <Suspense fallback={<LoadingSpinner message="Loading code viewer..." />}>
@@ -821,7 +922,7 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'threat-intel' && selectedSample && (
+          {activeTab === 'threat-intel' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <Suspense fallback={<LoadingSpinner message="Loading threat intelligence..." />}>
                 <ThreatIntelView
