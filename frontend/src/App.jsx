@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef, useReducer, lazy, Suspense } from 'react'
-import { Routes, Route, useNavigate, useParams } from 'react-router-dom'
+import { Routes, Route, useNavigate, useMatch } from 'react-router-dom'
 import './App.css'
 import { ToastProvider, useToast } from './components/Toast'
 import UploadPanel from './components/UploadPanel'
@@ -45,6 +45,7 @@ const SAMPLE_TABS = [
   { id: 'threat-intel', label: 'Threat intel' },
   { id: 'notes', label: 'Notes' },
 ]
+const SAMPLE_TAB_IDS = SAMPLE_TABS.map((t) => t.id)
 const OPEN_DURING_ANALYSIS = new Set(['analysis'])
 
 /**
@@ -205,22 +206,21 @@ const RETRY_STATE = {
 }
 
 // /sample/:id opens the same shell as /, with that sample already selected.
-function SampleRoutePage() {
-  const { id } = useParams()
-  return <ToastProvider><AppInner routeSampleId={id} /></ToastProvider>
-}
-
 function App() {
   return (
     <Routes>
-      <Route path="/sample/:id" element={<SampleRoutePage />} />
       <Route path="*" element={<ToastProvider><AppInner /></ToastProvider>} />
     </Routes>
   )
 }
 
-function AppInner({ routeSampleId }) {
+function AppInner() {
   const navigate = useNavigate()
+  // One element for every path, so moving between / and /sample/:id never remounts the app.
+  const sampleTabMatch = useMatch('/sample/:id/:tab')
+  const sampleMatch = useMatch('/sample/:id')
+  const routeSampleId = sampleTabMatch?.params.id || sampleMatch?.params.id
+  const routeTab = sampleTabMatch?.params.tab
   const { addToast } = useToast()
   const [activeTab, setActiveTab] = useState('upload')
   const [samples, setSamples] = useState([])
@@ -229,11 +229,12 @@ function AppInner({ routeSampleId }) {
   const sampleReady = sampleStatus.status === 'completed'
   const lockedTabIds = sampleReady ? [] : SAMPLE_TABS.map((t) => t.id).filter((id) => !OPEN_DURING_ANALYSIS.has(id))
 
+  // Opening /sample/:id directly selects that sample. Later selections come from handleSelectSample.
   useEffect(() => {
-    if (!routeSampleId) return
+    if (!routeSampleId || selectedSample) return
     setSelectedSample({ sampleId: routeSampleId, sha256: routeSampleId, fileName: routeSampleId.substring(0, 16) })
-    setActiveTab('overview')
-  }, [routeSampleId])
+    setActiveTab(SAMPLE_TAB_IDS.includes(routeTab) ? routeTab : 'overview')
+  }, [routeSampleId, routeTab, selectedSample])
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Connection states (Phase 6)
@@ -732,6 +733,12 @@ function AppInner({ routeSampleId }) {
     }
   }
 
+  const selectSampleTab = (tab) => {
+    setActiveTab(tab)
+    const id = selectedSample?.sha256 || selectedSample?.sampleId
+    if (id) navigate(`/sample/${id}/${tab}`, { replace: true })
+  }
+
   const activeLabel = [...NAV_ITEMS, ...SAMPLE_TABS].find(n => n.id === activeTab)?.label || ''
   const severity = selectedSample?.severity || analysisState?.verdictData?.verdict
   const riskScore = selectedSample?.risk_score || analysisState?.verdictData?.riskScore
@@ -810,7 +817,7 @@ function AppInner({ routeSampleId }) {
 
         <section className="content" id="main-content" role="main" aria-label={`${activeLabel} view`}>
           {selectedSample && activeTab !== 'upload' && (
-            <SampleTabs tabs={SAMPLE_TABS} activeTab={activeTab} lockedIds={lockedTabIds} onSelect={setActiveTab} />
+            <SampleTabs tabs={SAMPLE_TABS} activeTab={activeTab} lockedIds={lockedTabIds} onSelect={selectSampleTab} />
           )}
           {activeTab === 'upload' && (
             <div className="view-wrapper">
