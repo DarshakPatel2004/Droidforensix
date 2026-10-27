@@ -9,6 +9,7 @@ import SampleSearch from './components/SampleSearch'
 import LoadingSpinner from './components/LoadingSpinner'
 import ThreatBadge from './components/ThreatBadge'
 import { useSampleData } from './hooks/useSampleData'
+import { apiFetch } from './api/client'
 import { useSampleStatus } from './hooks/useSampleStatus'
 import SampleNotReady from './components/SampleNotReady'
 import SampleTabs from './components/SampleTabs'
@@ -271,6 +272,26 @@ function AppInner({ routeSampleId }) {
 
   // A sample opened by URL has no list entry to seed the analysis state, so once it is complete,
   // load its result and seed the state with the real verdict.
+  useEffect(() => {
+    let cancelled = false
+    apiFetch('/api/samples?limit=50')
+      .then((body) => {
+        if (cancelled) return
+        const saved = (body.samples || []).map((s) => ({
+          sampleId: s.sha256 || s.id,
+          sha256: s.sha256 || s.id,
+          fileName: s.name,
+          severity: s.severity,
+          risk_score: s.risk_score,
+          family: s.family,
+          status: 'analyzed',
+        }))
+        setSamples((prev) => [...prev, ...saved.filter((s) => !prev.some((p) => p.sha256 === s.sha256))])
+      })
+      .catch(() => {})
+    return () => { cancelled = true }
+  }, [])
+
   const routeResult = useSampleData(routeSampleId || null, routeSampleId ? `/api/sample/${routeSampleId}` : null, { cached: false })
   useEffect(() => {
     if (!routeSampleId || !sampleReady || !routeResult.data || analysisState?.status === 'complete') return
@@ -740,6 +761,26 @@ function AppInner({ routeSampleId }) {
               <b>{item.icon}</b>{item.label}
             </button>
           ))}
+          {samples.length > 0 && (
+            <>
+              <div className="nav-caption">SAMPLES</div>
+              <ul aria-label="Samples" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                {samples.map((s) => (
+                  <li key={s.sha256 || s.sampleId}>
+                    <button
+                      className={`nav-item ${selectedSample?.sha256 === s.sha256 ? 'active' : ''}`}
+                      onClick={() => handleSelectSample(s)}
+                      aria-current={selectedSample?.sha256 === s.sha256 ? 'true' : undefined}
+                      title={s.fileName || s.sha256}
+                      style={{ width: '100%', textAlign: 'left' }}
+                    >
+                      <b aria-hidden="true">•</b>{s.fileName || s.sha256?.substring(0, 12)}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
         <div className="sidebar-bottom">
           <div className="case-card">
