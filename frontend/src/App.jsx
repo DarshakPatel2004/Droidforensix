@@ -8,6 +8,7 @@ import { ErrorBoundary } from './components/ErrorBoundary'
 import SampleSearch from './components/SampleSearch'
 import LoadingSpinner from './components/LoadingSpinner'
 import ThreatBadge from './components/ThreatBadge'
+import { useSampleData } from './hooks/useSampleData'
 import { useSampleStatus } from './hooks/useSampleStatus'
 import SampleNotReady from './components/SampleNotReady'
 import SampleTabs from './components/SampleTabs'
@@ -267,6 +268,24 @@ function AppInner({ routeSampleId }) {
     error: null,
     errorType: null,
   })
+
+  // A sample opened by URL has no list entry to seed the analysis state, so once it is complete,
+  // load its result and seed the state with the real verdict.
+  const routeResult = useSampleData(routeSampleId || null, routeSampleId ? `/api/sample/${routeSampleId}` : null, { cached: false })
+  useEffect(() => {
+    if (!routeSampleId || !sampleReady || !routeResult.data || analysisState?.status === 'complete') return
+    const llm = routeResult.data.llm_assessment || {}
+    dispatch({
+      type: 'ANALYSIS_COMPLETE',
+      payload: {
+        sample_id: routeSampleId,
+        total_duration_seconds: null,
+        step_timings: {},
+        final_verdict: llm.severity || 'unknown',
+        risk_score: llm.risk_score || 0,
+      },
+    })
+  }, [routeSampleId, sampleReady, routeResult.data, analysisState?.status])
 
   // --- Backend health check + polling (Phase 5) ---
   const checkBackendHealth = useCallback(async () => {

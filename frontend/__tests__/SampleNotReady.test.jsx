@@ -23,4 +23,11 @@ describe('SampleNotReady', () => {
     expect(screen.getByRole('alert')).toBeTruthy()
     expect(screen.getByText('Step 8 timed out')).toBeTruthy()
   })
+
+  test('explains a sample that cannot be found instead of waiting', () => {
+    render(<SampleNotReady status={null} error="Sample not found" />)
+    expect(screen.getByRole('alert').textContent).toContain('Cannot load this sample')
+    expect(screen.getByText('Sample not found')).toBeTruthy()
+    expect(screen.queryByText('Checking analysis status…')).toBeNull()
+  })
 })

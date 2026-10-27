@@ -10,7 +10,7 @@ export default function DeepAnalysis({ result }) {
     <section aria-labelledby="deep-analysis-heading" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 8 }}>
         <h2 id="deep-analysis-heading" style={{ margin: 0, fontSize: 16 }}>Deep analysis</h2>
-        <span style={{ fontSize: 13, color: 'var(--text-muted, #555b66)' }}>
+        <span style={{ fontSize: 13, color: 'var(--text-muted)' }}>
           {findings} of {checks.length} found something
         </span>
       </div>
