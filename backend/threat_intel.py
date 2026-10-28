@@ -33,8 +33,8 @@ from backend.family_id import identify_family
 logger = logging.getLogger(__name__)
 
 try:
-    import geoip2.database
-    _GEO_READER = geoip2.database.Reader(str(settings.GEOIP_PATH)) if settings.GEOIP_PATH.exists() else None
+    import maxminddb
+    _GEO_READER = maxminddb.open_database(str(settings.GEOIP_PATH)) if settings.GEOIP_PATH.exists() else None
 except Exception:
     _GEO_READER = None
 
@@ -115,14 +115,18 @@ def _geo_lookup(ip: str) -> Optional[Dict[str, Any]]:
     if not ip or _GEO_READER is None:
         return None
     try:
-        response = _GEO_READER.city(ip)
+        record = _GEO_READER.get(ip)
+        if not record:
+            return None
+        subdivisions = record.get('subdivisions') or []
+        location = record.get('location') or {}
         return {
-            'country': response.country.name or 'Unknown',
-            'region': response.subdivisions.most_specific.name if response.subdivisions else '',
-            'city': response.city.name or '',
-            'lat': response.location.latitude,
-            'lon': response.location.longitude,
-            'isp': response.traits.isp or '',
+            'country': (record.get('country') or {}).get('names', {}).get('en') or 'Unknown',
+            'region': subdivisions[-1].get('names', {}).get('en', '') if subdivisions else '',
+            'city': (record.get('city') or {}).get('names', {}).get('en') or '',
+            'lat': location.get('latitude'),
+            'lon': location.get('longitude'),
+            'isp': (record.get('traits') or {}).get('isp') or '',
         }
     except Exception as exc:
         logger.warning("Suppressed error in _geo_lookup: %s", exc)
