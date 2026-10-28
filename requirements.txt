@@ -31,6 +31,9 @@ yara-python
 unicorn
 lief
 
+# ELF section parsing (backend/elf_analyzer.py)
+pyelftools
+
 # Testing
 pytest
 pytest-asyncio
@@ -42,8 +45,8 @@ reportlab
 # Utilities
 python-dotenv
 
-# GeoIP (offline MaxMind GeoLite2)
-geoip2
+# GeoIP (offline MaxMind GeoLite2, read directly with maxminddb)
+maxminddb
 
 # Encrypted / AES-ZIP extraction (MalwareBazaar passworded samples)
 pyzipper
