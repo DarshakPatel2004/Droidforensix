@@ -1,0 +1,5191 @@
+{
+  "opda": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "the host is",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "regex match on /proc/version only returned",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "quickaction2_scroller",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mmd5",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "missing activities info in terminate",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "missing location info in launch",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "last_gps_change_time",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "umeng_common_action_continue",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "quickaction2_grow_from_top",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "scaning apk end",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "detail_url",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "file patch error",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "umeng_common_title",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "io exception when getting kernel version for device info screen",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "quickaction2_grow_from_topleft_to_bottomright",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "service report: urls is null",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "use gzipinputstream get data....",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ro.cid",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sent message to",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "startdownload([mcomponentname:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "product_brand",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "clearoverduetasks(259200) remove all tasks before",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "app_install_item_icon_imageview",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/ggmarket/",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "map is null or empty in onevent",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "oc.umeng.co",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "oc.umeng.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "api.kfkx.net",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "static.opda.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 4030754,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 688435,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5407052,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8455278,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 12289137,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2262293,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4556101,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4031877,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4556233,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8750537,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13141786,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3960339,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6324592,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11567473,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6324594,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 756850,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 749657,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1216587,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2691638,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 463429,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3609157,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5510163,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2692136,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 792098,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4921952,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "hmad": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "startpoint2",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mverfile",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "_sid",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "pressdpadright",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "resourceidmatches",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "pressback",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "scrolltoend",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "swipedeadzonepercentage",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "childselector",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "scrollforward",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "[log] create log file success:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "notify %s",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cocos2dx_crash",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sendingtype",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "flingtobeginning",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "presshome",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "start get packagename",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "pluginkeys",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "network changed %s %s",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "--------------------------------------------------------------",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "[session] launch app 1 times (app new start)",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "enablenativecrashmonitor",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "_pid",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/system/lib/libdvm.so",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "h5_crash",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [
+      {
+        "token": "MODIFY_AUDIO_SETTINGS",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "opcodes": [
+      {
+        "token": 10354970,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 12283422,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3867674,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5522718,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4015707,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1902393,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 984916,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5839395,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5524506,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3755377,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1969783,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7409415,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4001585,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7409494,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3739497,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1456417,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1708346,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3822359,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2052887,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7361314,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3494988,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7362074,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3498552,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3626547,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2053718,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "ramnit": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "fileextension",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "getparameterlist",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "seqnum",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "painter",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "contributor",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "secondary_category",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "recipient_status",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "unloadping",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "result_type",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "external_participant_id",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "lodging",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mparameter",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "could not parse the mediation config: missing required ad_html or ad_url field.",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "streetaddress",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sublocality_level_5",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "walletfragmentstyle_maskedwalletdetailsheadertextappearance",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "car_rental",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "in_a_relationship",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "unregistercomponentcallbacks",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "originalfilename",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "game_hi_res_image_uri",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "postalcode",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "villllllllllllzll",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "lastplayedservertimestamp",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "hasthumbnail",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 552965,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 996180,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7341320,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7604052,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5901828,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1446432,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1708828,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11541104,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 531738,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 925192,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3284850,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3678977,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 272474,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 668891,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3297875,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1200848,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5395222,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3691361,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2905144,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1727315,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 942132,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2636115,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1335913,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7365238,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1907314,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "updtkiller": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "0086",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "error on writefiltosd.",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "create the file:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/sdcard",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "hasicccard",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "yyyymmddhhmmsss",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "create the path:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "miscalculated data length (wrote",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "instead of",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 14857838,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7421282,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14443027,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14319921,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13818497,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14342785,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13818586,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14319985,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 711778,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14541494,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3698717,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5832986,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3409682,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 12029550,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9835316,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14194195,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2234941,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7281266,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1864048,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3416370,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7350089,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4728849,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1452107,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14166420,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7459546,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "gmobi": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": ".info",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "pathconnect",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "pushchannel",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "max_command_delay",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/com/gmobi/trade/internal/close.png",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cfgfile",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "track_id",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "param_toolbar_buttons",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "tbb_message",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "force_google_wallet",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "tbb_online_service",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "close push socket",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "reset imsi :",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "loadingtitle",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "tbb_user_center",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "param_app_id",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sso/connect",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "charge",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "notif_id",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "payment",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "param_screenshot_filename",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "local_uri",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "page url base :",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "param_sms_number",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setvisibleindownloadsui",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "billing{mcc}.generalmobi.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "charge.fotapro.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "as{mcc}.generalmobi.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "generalmobi.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "test.generalmobi.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "api.fotapro.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "developer.yahooapis.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "dm-gmobiwearable.redbend.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "127.0.0.1*",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "campaigns.fotapro.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sso.generalmobi.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "update-package-location",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "nominatim.openstreetmap.org",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mtk-mobile.query.yahooapis.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "onlnsv.generalmobi.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [
+      {
+        "token": "ACCESS_DOWNLOAD_MANAGER",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "READ_SYNC_SETTINGS",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "EVENT_INTENT",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "READ_CALENDAR",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "MANAGE_USERS",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "WRITE_SYNC_SETTINGS",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "opcodes": [
+      {
+        "token": 786740,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2621784,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5636440,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3408227,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9961838,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13894146,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3409763,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3409778,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1706010,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7473763,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7212149,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3411542,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5901938,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7212690,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5377864,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3411864,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1184083,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4461127,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 922376,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5641012,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5641014,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3281762,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 791559,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5510172,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1447614,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "frgc": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "n01111133",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n0113111",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01110",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01133",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n011112",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n110310",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01133133",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n111111110",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n011333330",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01112212323233",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n1113111131",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n011311110",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n1113330",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01123",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n111331330",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n011331111",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n111331110",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01111111",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01113330",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n01112",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n011333",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n111111111110",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n111311331",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n1113130",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "n11131130",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [
+      {
+        "token": "LOCAL_MAC_ADDRESS",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ACCESS_COARSE_UPDATES",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "SEND_DOWNLOAD_COMPLETED_INTENTS",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "REQUEST_INSTALL_PACKAGES",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "opcodes": [
+      {
+        "token": 2584873,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3492319,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7303529,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3281736,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14650960,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4841358,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "nativead": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "onpause called before onresume",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "report_interval",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "httpstream.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "http2xstream.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cleanutils.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "baseactivity.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "eeee",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "canceled call",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "http1xstream.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "framedconnection.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "vzziill",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "(zzii",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "vzziil",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "android.intent.action.reboot",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "lilzz",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "framedstream.java",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "failed to process response package",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "[js] useragent",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "[asynctaskhandler] close async handler.",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "appendlogtonative",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setprimarycolor",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "[user] set userid : %s",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "android.speech.tts.tts_queue_processing_completed",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "startnativemonitor",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "trackingnetworkmanager.java",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "clientapi.clinkad.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "alogus.umeng.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 5511681,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1583112,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1193015,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5520857,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 804180,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7492757,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7363858,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 786997,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8553076,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14585198,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7485781,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5946408,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 69380,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5837188,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5848409,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11621437,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6906447,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2588951,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1147944,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8494376,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5488318,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 856625,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6380116,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14014578,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1442105,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "faketoken": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "attributewithvaluenot",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "firebasemessaging",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "originalposition",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setprojectid",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "zznea",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "doctypename",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "preserverelativelinks",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "currentwindowindex",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "string input must not be null",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "zzlfj",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "editedsamplecount",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "samplesinpacket",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sampleinfosize",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "intablescope",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "leadingzeros",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setheadelement",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "seenformattingelement",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "zzlfy",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "zznfp",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "webvttdata",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "entities-full.properties",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "google_storage_bucket",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "lcom/google/android/gms/internal/zzdid",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sampledurationspresent",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "resetallocator",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "toppapp.info",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 5441649,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 547095,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 547096,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10160133,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10290437,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3539292,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3277274,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10160210,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5374484,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 655898,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10224150,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1180195,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5374534,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5861723,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1180274,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3277443,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 656081,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 656082,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9568979,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 656088,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5374681,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5636829,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2753280,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10290564,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1704967,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "shuame": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "xmls",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "vfat",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "_getfenv",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "su_scan_count",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "null appcontext",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "invalid file header. cannot set file attributes",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "salt_len",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "write checkentity to sharedpreferences:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "error_rom_not_match",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setchecktimeinterval:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setinstallchannel",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "lua_gcstep",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "openpackage",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "network fail.",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "...chown",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "unexpected data length",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "emid_krsdk_prepare_end_count",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "_pushinteger",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "obtain_root",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "data/sutmp/",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "write checkentity to settings.system:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "emid_krsdk_submit_request_count",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cloudcmdconfig is null.",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/kernel_update",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "step_reboot_timer_count",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "api1.shuame.org",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "api2.rootjl.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "upaicdn.xinmei365.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "www.romzj.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "www.tencent.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "api1.rootjl.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "client.shuame.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mta.oa.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "api.shuame.org",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "m.shuame.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cdn2.xinmei365.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cfg.rootjl.%s",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "api1.rootjl.%s",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "com.dolphin.browser.cn",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "loopj.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [
+      {
+        "token": "ACCESS_MTK_MMHW",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "DIAGNOSTIC",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ACCESS_CACHE_FILESYSTEM",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "CHANGE_WIFI_MULTICAST_STATE",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "opcodes": [
+      {
+        "token": 5374212,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3932446,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 786789,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3801448,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3670391,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1180071,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5898712,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3670535,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14380657,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7210033,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7210096,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3829872,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 807959,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3671885,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1705826,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1705944,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1181661,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 808037,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 12348946,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 12322900,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7211953,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7212240,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1051928,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3411525,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3411527,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "chuli": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "cmdtime",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sdavailablesize:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "syst",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "fa1s",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "network_type_1xrtt",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": ".txd",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/infodb_",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/android/data/email",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "dont be in a hurry",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "lac :",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "com.keechat.client",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "limae",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "fa4s",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "org.apache.commons.net.ftp.systemtype.default",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/data/data/com.loudtalks/databases",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "yyyymmddhhmmsssss",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/didi",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "tomatchresult",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "com.loudtalks",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "stou",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "fa4p",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/data/data/org.telegram.messenger/databases",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "parser key cannot be null",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "fmdtime",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "keechatmedia",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "whois.internic.net",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "iframe.ip138.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "39b1db84605226.us.to",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [
+      {
+        "token": "ACCESS_CHECKIN_PROPERTTES",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "WRITE_MEDIA_STORAGE",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "USES_POLICY_FORCE_LOCK",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "opcodes": [
+      {
+        "token": 10317422,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7215005,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3283507,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7477829,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7477830,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6429400,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 794706,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10318091,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5837423,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1716841,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5388627,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3291488,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1721714,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5523022,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1723705,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4607502,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3824142,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3303790,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7237333,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 814818,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1732392,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4616730,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5060974,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4492834,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3710504,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "vktihs": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "adblocker.java",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mainurl",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "isadhost",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ad_hosts",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "createemptyresource",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ad_hosts_file",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ads.txt",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "loadfromassets",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 10179697,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5001904,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4741395,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13130003,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14015762,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11879534,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9196233,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6304514,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10055946,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5001944,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5861647,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 12114032,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7450800,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 256,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1442050,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1442053,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 131350,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 262418,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1310994,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1179934,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2621718,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2621726,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2621728,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 524584,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 524585,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "ggtrack": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "togglewifionscreenunlock",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "not checking data traffic",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "togglewifionscreenunlockcheckboxpreference",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "togglewifionpowerconnectcheckboxpreference",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "auto turn on wi-fi",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "trackinstall()",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "timeintervallistpreference",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "notificationonbatterylowtextview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "checknetworktraffic",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "auto turn on wi-fi on power connect",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "keepwifioncheckboxpreference",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "auto turn on wi-fi on screen unlock",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "togglewifionpowerconnect",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "http://www.amaz0n-cloud.com/droid/droid.php",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "togglewifionscreenunlocktextview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "notification on low battery",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "getdataactivity",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adjustscreenbrightness",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "powersaver_id",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "track.txt",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "togglewifitoupdatepushdatatextview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "togglewifitoupdatepushdata",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "auto turn on wi-fi after every",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "checktraffictextview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "battery saver activated.",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "www.amaz0n-cloud.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ggtrack.org",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 7342106,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 547654,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13795591,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7866375,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1706002,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 920846,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7501832,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7209000,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13984275,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4776078,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 811221,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 811222,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1204437,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1269973,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 811229,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 549086,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 811230,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1269981,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1269982,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2580701,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2580702,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2711774,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 4743390,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1114440,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 65915,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "anzhu": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "crash_report",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "changetopapplication",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "prepareinitcrashreport",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "failed to reflect prepareinit method of class crashreport.",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "newapp",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "getnewappinstance",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "issamefile",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "qhdialog.java",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "failed to reflect init method of class crashreport.",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 2839641,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7405842,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3735868,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3866941,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11534653,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1179990,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2163028,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14287220,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8089089,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8520071,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 98817,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6324754,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14778901,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 98861,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 98862,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 98869,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 98871,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3637815,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5407318,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9077337,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1213024,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11567714,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14189154,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1213061,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3703463,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "penguin": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "setonloadcompletelistener",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "actioncode",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "deviceid:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "glsurfaceview",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "ostype",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "maccelerometer",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "createmediaplayer",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "proc",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "getdeviceos",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "destfilename",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "event1",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "cocos2dx",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mscreenheight",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "framelayout",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 7342874,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14747758,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 811551,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 922164,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 8979734,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9136142,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7301410,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1016430,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1442067,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3277083,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3539227,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 655651,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3670330,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3670399,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3408273,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 469019,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3670490,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3670494,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7602706,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 262689,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2579222,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1180258,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7340689,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 10160247,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 262843,
+        "coverage": 0.333,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "jiead": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "update ret url is:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "housead:0",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adview.setappsec",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "http://ad.jiemai-tech.com:7500/ad/getadinit_new.php",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "implementation-version",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "current apn",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "wifi is available",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "_b_sdk.log",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": ".php",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adutil.save",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "http://ad.jiemai-tech.com:7500/ad/gethousead_new.php",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "__pasys_remote_banner",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "log.debug",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "zzlll",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "baidu:success to receivead",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "mobads proxy",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adparamline",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adutil.deleteext",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "com.baidu.mobads.adservice",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": ".tmp.jar",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "rename success",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adutil.get",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "http://ad.jiemai-tech.com:7500/ad/",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/extra/",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "housead",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [
+      {
+        "token": "ad.jiemai-tech.com",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "www.jiemai-tech.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "update.jiemai-tech.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "jiemai-tech.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adbc.renren.com",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 5374216,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 917779,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11600187,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5374345,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5374384,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13305938,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 986403,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7213596,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5050979,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2626561,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5510785,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 13762900,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1186850,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1842462,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 467554,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6433046,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7417661,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1225019,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 80897,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11619185,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2322543,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5427713,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3691111,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 938644,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3429074,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "dasu": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "widget_appcompat_base_actionbar_solid",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "loader_wn",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "searchviewtextfield",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "theme_base_appcompat",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "textappearance_appcompat_light_base_widget_popupmenu_large",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "widget_appcompat_light_base_actionbutton",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "find service class name:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "compattextview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setproxyactivity",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "spinner_popuppromptview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "widget_appcompat_light_base_actionbar_tabbar_inverse",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "actionbarwindow",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setsplitactionbar",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setserviceproxy",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "widget_appcompat_base_activitychooserview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "abc_action_bar_subtitle_bottom_margin",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "widget_appcompat_light_base_actionbar_tabview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "textappearance_appcompat_base_widget_popupmenu_large",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "textappearance_appcompat_widget_base_actionmode_subtitle_inverse",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "removeallviews() is not supported in adapterview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "textappearance_appcompat_base_widget_popupmenu_small",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "getcustomnavigationview",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "searchvieweditquery",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "theme_appcompat_base_compactmenu",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "find spot activity:",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [
+      {
+        "token": "ACCESS_LOCATION_EXTRA_COMMANDS",
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "opcodes": [
+      {
+        "token": 1245458,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 655761,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2818449,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2818525,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 11600497,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 807950,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3935777,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1969723,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7671512,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1642610,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3346779,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 70187,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3478340,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2298704,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7345234,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 791752,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 6034632,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3282195,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3937555,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3282217,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5903982,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5380401,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3677218,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1187131,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1449327,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  },
+  "dowgin": {
+    "samples": 3,
+    "strings": [
+      {
+        "token": "/showcount",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/getcoverscreenadlist",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "save_imei",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "extrawidth:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "fail_show_ad",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/adfeiwo/c-cache/image",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "error result:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "fail_no_ad",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "dpswitchdelay",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "wxurl",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "broadcast.route.control.close",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/installcount",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "setshowatscreenon",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "screenonshowrate",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adsdkversion",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "/adfeiwo/c-cache/apk",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "request failed:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "save to file failed:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "coverscreen",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "proxyhost:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "isshowatscreenon",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "installcount",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "sdktype",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "adcomponent queueimageloader init null",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": "get url response code:",
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ],
+    "domains": [],
+    "permissions": [],
+    "opcodes": [
+      {
+        "token": 5181806,
+        "coverage": 1.0,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2163001,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 66011,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 786907,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 7406853,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14680321,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3999514,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3411672,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2626615,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1710802,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14295849,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2304354,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 928878,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 9253434,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 1323783,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14693336,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5387868,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3618658,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5388251,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5257432,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 14694616,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 80163,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 3291667,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 5979220,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      },
+      {
+        "token": 2047250,
+        "coverage": 0.667,
+        "fp": 0.0,
+        "precision": 1.0
+      }
+    ]
+  }
+}

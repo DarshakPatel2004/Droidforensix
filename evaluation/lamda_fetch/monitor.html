@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>LAMDA download monitor</title>
+<style>
+  :root { --bg:#fff; --fg:#1d1d1f; --muted:#6e6e73; --ok:#1a7f37; --bad:#c62828; --bar:#e5e5ea; }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --bg:#1c1c1e; --fg:#f5f5f7; --muted:#a1a1a6; --ok:#34c759; --bad:#ff453a; --bar:#3a3a3c; } }
+  :root[data-theme="dark"] { --bg:#1c1c1e; --fg:#f5f5f7; --muted:#a1a1a6; --ok:#34c759; --bad:#ff453a; --bar:#3a3a3c; }
+  body { background: var(--bg); color: var(--fg); font: 15px/1.5 system-ui, sans-serif; margin: 0; padding: 16px; }
+  h1 { font-size: 20px; margin: 0 0 4px; }
+  .muted { color: var(--muted); font-size: 13px; }
+  .bar { height: 12px; background: var(--bar); border-radius: 6px; overflow: hidden; margin: 8px 0; }
+  .bar > div { height: 100%; background: var(--ok); width: 0; transition: width .4s; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; margin: 12px 0; }
+  .card { border: 1px solid var(--bar); border-radius: 8px; padding: 10px; }
+  .num { font-size: 22px; font-weight: 600; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td, th { text-align: left; padding: 4px 6px; border-bottom: 1px solid var(--bar); }
+  .ok { color: var(--ok); } .bad { color: var(--bad); }
+</style>
+</head>
+<body>
+<h1>LAMDA download monitor</h1>
+<div class="muted" id="updated">loading...</div>
+<div class="bar"><div id="progress"></div></div>
+<div class="grid">
+  <div class="card"><div class="muted">Done</div><div class="num" id="done">-</div></div>
+  <div class="card"><div class="muted">Selected total</div><div class="num" id="total">-</div></div>
+  <div class="card"><div class="muted">Knowledge-base group</div><div class="num" id="kb">-</div></div>
+  <div class="card"><div class="muted">Evaluation group</div><div class="num" id="eval">-</div></div>
+  <div class="card"><div class="muted">Errors / mismatches</div><div class="num" id="bad">-</div></div>
+</div>
+<h3>Recent</h3>
+<table><thead><tr><th>Family</th><th>SHA-256</th><th>Status</th></tr></thead><tbody id="recent"></tbody></table>
+<script>
+const POLL_MS = 5000;
+const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+async function readJsonl(path) {
+  const text = await (await fetch(path, { cache: 'no-store' })).text();
+  return text.split('\n').filter(l => l.trim()).map(l => JSON.parse(l));
+}
+
+async function refresh() {
+  try {
+    const selection = await (await fetch('selection.json', { cache: 'no-store' })).json();
+    const logNames = (new URLSearchParams(location.search).get('logs') || 'fetch_log.jsonl').split(',');
+    const log = (await Promise.all(logNames.map(readJsonl))).flat();
+    const okSha = new Set(log.filter(r => r.status === 'ok').map(r => r.sha256));
+    const bySha = new Map(log.map(r => [r.sha256, r]));
+    const selected = selection.filter(r => bySha.has(r.sha256));
+    const done = selection.filter(r => okSha.has(r.sha256));
+    const bad = log.filter(r => r.status !== 'ok');
+    const pct = selection.length ? Math.round(100 * done.length / selection.length) : 0;
+
+    document.getElementById('done').textContent = done.length;
+    document.getElementById('total').textContent = selection.length;
+    document.getElementById('kb').textContent = `${done.filter(r => r.group === 'kb').length} / ${selection.filter(r => r.group === 'kb').length}`;
+    document.getElementById('eval').textContent = `${done.filter(r => r.group === 'eval').length} / ${selection.filter(r => r.group === 'eval').length}`;
+    document.getElementById('bad').textContent = bad.length;
+    document.getElementById('progress').style.width = pct + '%';
+    document.getElementById('updated').textContent = `${pct}% · updated ${new Date().toLocaleTimeString()} · refreshes every ${POLL_MS / 1000}s`;
+
+    const recent = log.slice(-12).reverse().map(r => `<tr><td>${esc(r.family)}</td><td>${esc(r.sha256.slice(0, 16))}…</td><td class="${r.status === 'ok' ? 'ok' : 'bad'}">${esc(r.status)}</td></tr>`);
+    document.getElementById('recent').innerHTML = recent.join('');
+  } catch (e) {
+    document.getElementById('updated').textContent = 'read failed, retrying: ' + e.message;
+  }
+}
+refresh();
+setInterval(refresh, POLL_MS);
+</script>
+</body>
+</html>

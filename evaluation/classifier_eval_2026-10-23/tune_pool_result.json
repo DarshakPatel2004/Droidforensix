@@ -1,0 +1,71 @@
+{
+  "best_by_pool_cv": {
+    "n": 300,
+    "depth": null,
+    "leaf": 1,
+    "max_features": "sqrt",
+    "threshold": 0.34,
+    "oof_malware_det": 0.972,
+    "oof_benign_acc": 0.9029
+  },
+  "top5": [
+    {
+      "n": 300,
+      "depth": null,
+      "leaf": 1,
+      "max_features": "sqrt",
+      "threshold": 0.34,
+      "oof_malware_det": 0.972,
+      "oof_benign_acc": 0.9029
+    },
+    {
+      "n": 300,
+      "depth": 12,
+      "leaf": 1,
+      "max_features": "sqrt",
+      "threshold": 0.34,
+      "oof_malware_det": 0.972,
+      "oof_benign_acc": 0.9003
+    },
+    {
+      "n": 300,
+      "depth": 24,
+      "leaf": 1,
+      "max_features": "sqrt",
+      "threshold": 0.34,
+      "oof_malware_det": 0.972,
+      "oof_benign_acc": 0.9029
+    },
+    {
+      "n": 600,
+      "depth": null,
+      "leaf": 1,
+      "max_features": "sqrt",
+      "threshold": 0.34,
+      "oof_malware_det": 0.972,
+      "oof_benign_acc": 0.9003
+    },
+    {
+      "n": 600,
+      "depth": 12,
+      "leaf": 1,
+      "max_features": "sqrt",
+      "threshold": 0.34,
+      "oof_malware_det": 0.972,
+      "oof_benign_acc": 0.9003
+    }
+  ],
+  "configs": 36
+}
+{
+  "final_config": {
+    "n": 300,
+    "depth": null,
+    "leaf": 1,
+    "max_features": "sqrt",
+    "threshold": 0.34,
+    "oof_malware_det": 0.972,
+    "oof_benign_acc": 0.9029
+  },
+  "lamda_detection_once": 0.8922
+}

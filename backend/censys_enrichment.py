@@ -20,7 +20,7 @@ import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-import aiohttp
+import httpx
 from dotenv import load_dotenv
 
 _load_dotenv_path = Path(__file__).resolve().parent.parent / ".env"
@@ -181,7 +181,7 @@ def enrich_ip(ip: str) -> Optional[Dict[str, Any]]:
     return result
 
 
-async def _query_one(session: aiohttp.ClientSession, sem: asyncio.Semaphore,
+async def _query_one(client: httpx.AsyncClient, sem: asyncio.Semaphore,
                      ip: str, cache: dict) -> dict:
     if ip in cache:
         return cache[ip]
@@ -191,28 +191,27 @@ async def _query_one(session: aiohttp.ClientSession, sem: asyncio.Semaphore,
         last_exc = None
         for attempt in range(4):
             try:
-                async with session.get(url, headers=_headers(),
-                                       timeout=aiohttp.ClientTimeout(total=REQUEST_TIMEOUT)) as resp:
-                    if resp.status == 404:
-                        result = _error_result(ip, "not_found")
-                        cache[ip] = result
-                        return result
-                    if _is_retryable(resp.status) and attempt < 3:
-                        wait = 2.0 ** attempt
-                        logger.info("Retryable %d on %s, retry %d in %.1fs", resp.status, ip, attempt + 1, wait)
-                        await asyncio.sleep(wait)
-                        continue
-                    resp.raise_for_status()
-                    data = await resp.json()
-                    result = _extract(ip, data)
+                resp = await client.get(url, headers=_headers(), timeout=REQUEST_TIMEOUT)
+                if resp.status_code == 404:
+                    result = _error_result(ip, "not_found")
                     cache[ip] = result
                     return result
+                if _is_retryable(resp.status_code) and attempt < 3:
+                    wait = 2.0 ** attempt
+                    logger.info("Retryable %d on %s, retry %d in %.1fs", resp.status_code, ip, attempt + 1, wait)
+                    await asyncio.sleep(wait)
+                    continue
+                resp.raise_for_status()
+                data = resp.json()
+                result = _extract(ip, data)
+                cache[ip] = result
+                return result
             except asyncio.CancelledError:
                 raise
             except Exception as exc:
                 last_exc = exc
-                resp_obj = getattr(exc, 'status', None) or getattr(exc, 'code', None)
-                is_retry = _is_retryable(resp_obj) if resp_obj else attempt < 3
+                status = exc.response.status_code if isinstance(exc, httpx.HTTPStatusError) else None
+                is_retry = _is_retryable(status) if status else attempt < 3
                 if is_retry and attempt < 3:
                     wait = 2.0 ** attempt
                     await asyncio.sleep(wait)
@@ -228,13 +227,13 @@ async def _query_one(session: aiohttp.ClientSession, sem: asyncio.Semaphore,
 async def _batch(ips: List[str]) -> Dict[str, Any]:
     cache = _load_cache()
     sem = asyncio.Semaphore(MAX_CONCURRENT)
-    connector = aiohttp.TCPConnector(limit=MAX_CONCURRENT + 5)
+    limits = httpx.Limits(max_connections=MAX_CONCURRENT + 5)
 
     async def _rate_limited_query(ip: str) -> dict:
         await asyncio.sleep(RATE_LIMIT_DELAY)
-        return await _query_one(session, sem, ip, cache)
+        return await _query_one(client, sem, ip, cache)
 
-    async with aiohttp.ClientSession(connector=connector) as session:
+    async with httpx.AsyncClient(limits=limits) as client:
         tasks = [_rate_limited_query(ip) for ip in ips]
         results = await asyncio.gather(*tasks)
     _save_cache(cache)

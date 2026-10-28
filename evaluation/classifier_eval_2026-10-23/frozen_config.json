@@ -1,0 +1,9 @@
+{
+  "chosen_arm": "extra_only",
+  "fp_ceiling": 0.16,
+  "threshold": 0.25,
+  "cv_auc": 0.9804,
+  "lamda_detection": 0.9412,
+  "benign_fp_source": "100 Play apps, out-of-fold (also in training; no independent benign check yet)",
+  "script": "evaluation/classifier_eval_2026-10-23/extra_score.py"
+}

@@ -1,0 +1,139 @@
+{
+ "summary": {
+  "sklearn_version_loaded": "1.9.0",
+  "benign_total": 0,
+  "benign_flagged": 0,
+  "false_positive_rate": null,
+  "malware_total": 18,
+  "malware_detected": 14,
+  "detection_rate": 0.7778
+ },
+ "results": [
+  {
+   "sha256": "0e81a0fd09c711561aa98284e6ed4acff136594f40afa5023ca5fb7ca401f01c",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.8782,
+   "flagged": true
+  },
+  {
+   "sha256": "0ed420c4f23c50d2eeba330b01cdd72f05bd6f5658b42db1bfb55184a1d02d52",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.2823,
+   "flagged": false
+  },
+  {
+   "sha256": "f2bff0866024bdf1aab366a4f2c2aa0538aeef2c48f20c3c57be6f57e5dae079",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.4575,
+   "flagged": false
+  },
+  {
+   "sha256": "fcd233be7c75771ec3e3b3eed880516ebf6415669d7447c79670697dd2bfe456",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.92,
+   "flagged": true
+  },
+  {
+   "sha256": "ef77467adb3b19acfa0a2daa02bd342ebe6a15725490094b3f396c7e30e962b1",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.5081,
+   "flagged": true
+  },
+  {
+   "sha256": "d0ad24efcc30a35bbd83334a93222252f8337f17311dbba91f904b09e16f3afe",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.7878,
+   "flagged": true
+  },
+  {
+   "sha256": "ace39affd2db7e066f03b0c3564fd8698da0f823110007e8d14ddf75f5ff587e",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.7922,
+   "flagged": true
+  },
+  {
+   "sha256": "7ccd3d58dcb1fd3ad4ac04282e3f71d9d1c8d697dea146e12d31814c74e34e55",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.8164,
+   "flagged": true
+  },
+  {
+   "sha256": "008a3e0a9587f231077eac079d4b4d79726f86e89257f7b39145b51b488ac383",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.2499,
+   "flagged": false
+  },
+  {
+   "sha256": "49b59c87f864a078100f2348508f82020da771d4d180addde821a4cde385e781",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.6829,
+   "flagged": true
+  },
+  {
+   "sha256": "dec4d9a9d5ec6aff2444b9414caff75db2bdd08fe50dbbbfe458c1ca2587d68b",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.7021,
+   "flagged": true
+  },
+  {
+   "sha256": "f5ac462d03c4805d2e10ffcf81d9d9c2fbd87f86da00fd1507cfcbd2e820d1b8",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.8855,
+   "flagged": true
+  },
+  {
+   "sha256": "1869b4b8f7e80ee6150174910af5af488ce0e056e8f3a078f019ce2cb6963223",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.8886,
+   "flagged": true
+  },
+  {
+   "sha256": "9fb84221b89705785440ee555a80a15a0c52eff1f47d0c2e7840a03689a1c161",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.7623,
+   "flagged": true
+  },
+  {
+   "sha256": "8455cb3aa8db4f9bacc5f991b3709efc87b449c5326d91dbf46418de27fb078c",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.7581,
+   "flagged": true
+  },
+  {
+   "sha256": "a7872756d87d237a221b8a8e0eb176e0d203184cbf3375804fee5a28c4365741",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.4799,
+   "flagged": false
+  },
+  {
+   "sha256": "ff9c46fcf64ae0ad50ed7b64478bf951f9d70dc32d3413ebbe64ed9f84353b1a",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.5547,
+   "flagged": true
+  },
+  {
+   "sha256": "84ca02a9ef02d9bd23e8ad93df454b417c4f656d86f21a7fe59c255599f20c1c",
+   "source": "evaluation\\holdout_malware_run",
+   "label": 1,
+   "p_malware": 0.8109,
+   "flagged": true
+  }
+ ]
+}

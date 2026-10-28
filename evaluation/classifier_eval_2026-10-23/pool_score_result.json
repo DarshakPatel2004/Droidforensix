@@ -1,0 +1,36 @@
+{
+  "pool_rows": 703,
+  "benign": 381,
+  "malware": 322,
+  "cv_auc": 0.987,
+  "by_source_benign_fp_at_0_5": {
+    "train_play": 0.03,
+    "new_benign": 0.0427
+  },
+  "ceilings": {
+    "5pct": {
+      "threshold": 0.45,
+      "benign_fp_oof": 0.0472,
+      "benign_accuracy_oof": 0.9528,
+      "pool_malware_detected_oof": 0.9503,
+      "lamda_detection": 0.8235,
+      "balanced_accuracy_lamda_and_pool_benign": 0.8881
+    },
+    "10pct": {
+      "threshold": 0.34,
+      "benign_fp_oof": 0.0971,
+      "benign_accuracy_oof": 0.9029,
+      "pool_malware_detected_oof": 0.972,
+      "lamda_detection": 0.8922,
+      "balanced_accuracy_lamda_and_pool_benign": 0.8975
+    },
+    "16pct": {
+      "threshold": 0.25,
+      "benign_fp_oof": 0.1575,
+      "benign_accuracy_oof": 0.8425,
+      "pool_malware_detected_oof": 0.9783,
+      "lamda_detection": 0.9216,
+      "balanced_accuracy_lamda_and_pool_benign": 0.882
+    }
+  }
+}
