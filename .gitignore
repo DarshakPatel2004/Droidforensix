@@ -83,6 +83,7 @@ Thumbs.db
 _*.py
 !droidforensix/__init__.py
 !droidforensix/__main__.py
+!packers/__init__.py
 
 # Debug / experimental scripts
 debug_*.py
