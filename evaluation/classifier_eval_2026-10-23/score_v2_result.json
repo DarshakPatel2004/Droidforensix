@@ -1,0 +1,16 @@
+{
+  "current": {
+    "threshold": 0.34,
+    "pool_benign_acc_oof": 0.9029,
+    "pool_malware_det_oof": 0.972,
+    "lamda_detection": 0.8922,
+    "balanced_lamda_and_pool_benign": 0.8975
+  },
+  "current_plus_cert_api": {
+    "threshold": 0.33,
+    "pool_benign_acc_oof": 0.9029,
+    "pool_malware_det_oof": 0.9783,
+    "lamda_detection": 0.8824,
+    "balanced_lamda_and_pool_benign": 0.8926
+  }
+}

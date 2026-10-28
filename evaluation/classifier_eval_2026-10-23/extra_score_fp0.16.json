@@ -1,0 +1,22 @@
+{
+  "rows": 222,
+  "extra_feature_count": 50,
+  "old_15": {
+    "cv_auc": 0.9627,
+    "threshold_16pct_fp": 0.35,
+    "cv_malware_detected": 0.9508,
+    "lamda_detection": 0.8627
+  },
+  "old_15_plus_extra": {
+    "cv_auc": 0.9777,
+    "threshold_16pct_fp": 0.32,
+    "cv_malware_detected": 0.9672,
+    "lamda_detection": 0.8824
+  },
+  "extra_only": {
+    "cv_auc": 0.9804,
+    "threshold_16pct_fp": 0.25,
+    "cv_malware_detected": 0.9672,
+    "lamda_detection": 0.9412
+  }
+}

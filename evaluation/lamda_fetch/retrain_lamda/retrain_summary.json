@@ -1,0 +1,10 @@
+{
+  "play_apps_scored_out_of_fold": 100,
+  "play_false_positives": 6,
+  "false_positive_rate": 0.06,
+  "holdout_malware": 102,
+  "holdout_detected_at_0_5": 80,
+  "holdout_detection_rate_at_0_5": 0.7843,
+  "holdout_detection_rate_at_0_7": 0.6863,
+  "holdout_mean_p_malware": 0.7471
+}

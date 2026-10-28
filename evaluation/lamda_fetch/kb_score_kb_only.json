@@ -1,0 +1,318 @@
+{
+  "summary": {
+    "kb": "kb_only",
+    "eval_n": 51,
+    "predicted": 40,
+    "correct": 0,
+    "recall": 0.0,
+    "precision": 0.0
+  },
+  "rows": [
+    {
+      "sha256": "00718ab320f688527d8901000593844cfa9f16664f17dc873f1cf10d0c1b7f2f",
+      "truth": "cootek",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "00f13dc566b5c469d1e2e49cff2bba11f955aa8a8c92a074a97ab832d7d8170d",
+      "truth": "cootek",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "035761335809cef4d86999efa860b9061a3a92076cff3a9f24a372dfbd4fc922",
+      "truth": "cootek",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "064e31868539641c9b89e144f6de53737a15c5375425ab13e6637e6057b23332",
+      "truth": "ubsod",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "15dd207e14a957f5d07dfbe5182a865540ecfca881057631ac0481978d439be5",
+      "truth": "ubsod",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "2681c64976786c65d14bf52592b6315af12ecf5fe78e7a6293407db6fcf1c478",
+      "truth": "ubsod",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "1f8413e3612618b17bad055ef4dcc26cd82f5b826e1b6f98d9ce34c540fe6ade",
+      "truth": "sacti",
+      "predicted": "gmobi",
+      "correct": false
+    },
+    {
+      "sha256": "53f89c4038df0ca669b6d4d2e87ab28ceea2de99dcd1e581f29ba531604139ad",
+      "truth": "sacti",
+      "predicted": "gmobi",
+      "correct": false
+    },
+    {
+      "sha256": "bc2263eb8a790e5d430b736eccacb677e156235828947e208e794cfa0030699b",
+      "truth": "sacti",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "2b481eb2c3cf170c05b4bc74f55e2ec6aea57428821288312198045a498dddc3",
+      "truth": "35wave",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "41071e3681dcce9127ec56379aedd49c6490f924c7db35f238f8be2183c151bd",
+      "truth": "35wave",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "57a8e6e98f9309c7ac5bd3c3fb2b1118e14318d57879efc5e6dac9801a921249",
+      "truth": "35wave",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "001b8e4e501464b2855a3fac76be94ac40569d1cdb09b6abeada7873d8f51e01",
+      "truth": "jsmshider",
+      "predicted": "ggtrack",
+      "correct": false
+    },
+    {
+      "sha256": "017f103a7e6fd3b7a5d2ec7282b76564486697ad28dddc2fdd75a37222f1f4bb",
+      "truth": "jsmshider",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "018dd0fdd2ffad17a6d0aff1849fa258865d14e1d921330ed978f2dcf0d4ca0f",
+      "truth": "jsmshider",
+      "predicted": "jiead",
+      "correct": false
+    },
+    {
+      "sha256": "50f546e079da98624d33ccd8c55b1aac7ab4d3d3dd7d6a77d3827a1854cf89f4",
+      "truth": "cashreward",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "79823b850ca1327d605a6a6cda8067cea96d1c674e5f51a96359c08e19a0c049",
+      "truth": "cashreward",
+      "predicted": "faketoken",
+      "correct": false
+    },
+    {
+      "sha256": "d638c8a0aa9e927614c36a3a71c3d7b748e94906a12d5da008e83b533a716498",
+      "truth": "cashreward",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "06ec5474757cf80e21a531e9b0add395924ef8a6c680ad58153f03965a04c60d",
+      "truth": "tispy",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "08af4ea440072a57ad6b5ac4da9d9c8a0fac492066f154fde2f41a19b4930602",
+      "truth": "tispy",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "099133359b85843b90fac8834e8df087d9d5189a5afecfff57d5d349d4652dbe",
+      "truth": "tispy",
+      "predicted": "gmobi",
+      "correct": false
+    },
+    {
+      "sha256": "0034ef6602baf259a7a89ca1c9ea1e1dcc568d9a136eec1d3bf40fbef82abe13",
+      "truth": "xiny",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "004128efc8293a821486d55fda862e5117c80efe59d834a552eef756e124b35b",
+      "truth": "xiny",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "00597ecae9e67a28a8787b1a36521384979136445c04c5209f10646dc01426c4",
+      "truth": "xiny",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "000425e04b84356cd6d7527ec7e731eae390bbec5f2517e3b18d93a65ac74132",
+      "truth": "domob",
+      "predicted": "jiead",
+      "correct": false
+    },
+    {
+      "sha256": "00055ef66ed72721b5e939ceb598b09a5ad7c8eaa58da066300adc8e42ddfb69",
+      "truth": "domob",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "000635eef5b02e5d32c3d067f386b8a136401779666cfc6c5b229a715cf80fc0",
+      "truth": "domob",
+      "predicted": "opda",
+      "correct": false
+    },
+    {
+      "sha256": "001dddeb3446effd335f31cd7d8cbd57057192aade458a312ca875bcba27e1bc",
+      "truth": "goldentouch",
+      "predicted": "updtkiller",
+      "correct": false
+    },
+    {
+      "sha256": "00a664bc6b4cd6c0e906515a804f3affadff151e96afd88e5dfd4e78d4e34ce2",
+      "truth": "goldentouch",
+      "predicted": "opda",
+      "correct": false
+    },
+    {
+      "sha256": "00de93f94f948ee0319431843c9c60abf895c7f9fe6342efc754a3304ac3368e",
+      "truth": "goldentouch",
+      "predicted": "updtkiller",
+      "correct": false
+    },
+    {
+      "sha256": "000a0b1022ec485473dfaaca433f9548911bc7089b6a3c7b47f9ec5541005ca1",
+      "truth": "madad",
+      "predicted": "jiead",
+      "correct": false
+    },
+    {
+      "sha256": "00ffaf54ead06734a4028d98c0881b6916158c7f033e1bf5b1a888f4170f4600",
+      "truth": "madad",
+      "predicted": "hmad",
+      "correct": false
+    },
+    {
+      "sha256": "013ef65c30a032d01980cff0dde7bbd2f927edc7b25c52722d911dab84cb7f78",
+      "truth": "madad",
+      "predicted": "jiead",
+      "correct": false
+    },
+    {
+      "sha256": "0018925b0f91e9ef9c04dc0bfa56997f420b453efc4ad874d8af38265e4e3290",
+      "truth": "yuchanglou",
+      "predicted": "anzhu",
+      "correct": false
+    },
+    {
+      "sha256": "03602d5b4299d556a9b7f04faa652aca358ca196767443de8f740c49325b1d57",
+      "truth": "yuchanglou",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "0c8091baf7a4455865c9a92df2ba6e225a1f5c11810d8a9a49d1f242995bd049",
+      "truth": "yuchanglou",
+      "predicted": "faketoken",
+      "correct": false
+    },
+    {
+      "sha256": "00b07fa4ef2ef36eed946fa841e817f2751dc5a768789ba0b1f879b462e9ae6f",
+      "truth": "gudex",
+      "predicted": "ggtrack",
+      "correct": false
+    },
+    {
+      "sha256": "0125e90b3bacaf95d9d240a9b282c99c51428069aa0f6117627eb1ac591a1b49",
+      "truth": "gudex",
+      "predicted": "ggtrack",
+      "correct": false
+    },
+    {
+      "sha256": "05ed2c2a8de6329d6c9cc5335926a16a406e259a9c025dafba301543b8803b56",
+      "truth": "gudex",
+      "predicted": "ggtrack",
+      "correct": false
+    },
+    {
+      "sha256": "0b4e001b665f3f243e9da3897f648c1340bd58a29c3cef93e014eaeeace15f9d",
+      "truth": "dingwe",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "0b8ba0c6cebe5695639bf1b282b52f126dba733f3c204e37615a3ba5f7dd6fe8",
+      "truth": "dingwe",
+      "predicted": "ggtrack",
+      "correct": false
+    },
+    {
+      "sha256": "18112529f6a1402ffff1d1cf970f4f1bc02eed0916da0dc0e749f3f1c5e7c7de",
+      "truth": "dingwe",
+      "predicted": "dasu",
+      "correct": false
+    },
+    {
+      "sha256": "003669599b94d90a338be543bd0bf18625906238656e0f7acab227773416b456",
+      "truth": "frla",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "003847e6166a9e68b786a67b7d4cfe57aa1fb2b9d5091d59ee4159b4a4440487",
+      "truth": "frla",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "007e64d15039c6fa7658fce7ee9a33ae02dc4e9d7b4b44b6c74f1f2938a10562",
+      "truth": "frla",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "0e33f825d3d21d52cc12521d06fb1b6cd3fa832fe62b07ce9738a5fd21bb9dbf",
+      "truth": "smaps",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "15815ba6f09e5e5fd6d5e2aac2d99286bff754b227d196f33e18d99c5bc85852",
+      "truth": "smaps",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "2979ad8ed1380a79fdd57c5f7efc00d0f64cd0e09b5e2044237457c156802d70",
+      "truth": "smaps",
+      "predicted": null,
+      "correct": false
+    },
+    {
+      "sha256": "192a252ae1f5e5ab5e23c74da6eeb3a0cb745b8e7ba450ea6454e8b8ceb5d226",
+      "truth": "yiwan",
+      "predicted": "ramnit",
+      "correct": false
+    },
+    {
+      "sha256": "1a060535c1cc89275680f671aa32d11ffb7ca3d1752a1798f8f83e4dd642d7b7",
+      "truth": "yiwan",
+      "predicted": "nativead",
+      "correct": false
+    },
+    {
+      "sha256": "1f1d7df1f4f86468570371de2b9ac71e257930725634fb106a5189a7fd953285",
+      "truth": "yiwan",
+      "predicted": "nativead",
+      "correct": false
+    }
+  ]
+}

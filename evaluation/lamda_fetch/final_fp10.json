@@ -1,0 +1,8 @@
+{
+  "fp_limit": 0.1,
+  "threshold_chosen_on_benign_only": 0.42,
+  "play_oof_fp_rate": 0.09,
+  "holdout_malware": 102,
+  "holdout_detection_rate": 0.8039,
+  "holdout_detection_rate_at_0_5": 0.7843
+}

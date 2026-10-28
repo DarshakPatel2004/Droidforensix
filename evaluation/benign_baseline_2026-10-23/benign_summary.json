@@ -1,0 +1,8 @@
+{
+  "benign_apks": 100,
+  "scored": 100,
+  "errors": 0,
+  "flagged_malware": 70,
+  "false_positive_rate": 0.7,
+  "benign_accuracy": 0.3
+}
