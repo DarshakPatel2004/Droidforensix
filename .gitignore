@@ -281,3 +281,5 @@ evaluation/lamda_fetch/eval_features.json
 evaluation/archives/malware_baseline_pipeline_results.zip
 evaluation/lamda_fetch/kb_features.json
 evaluation/archives/holdout_malware_pipeline_results.zip
+evaluation/validation_359_repro_2026-10-31/
+evaluation/validation_359_rerun_errors_2026-10-31/
