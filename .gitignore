@@ -82,6 +82,7 @@ Thumbs.db
 # Root research / investigation scripts
 _*.py
 !droidforensix/__init__.py
+!packers/__init__.py
 !droidforensix/__main__.py
 
 # Debug / experimental scripts
