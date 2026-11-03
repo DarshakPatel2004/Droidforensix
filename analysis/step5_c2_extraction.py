@@ -1186,8 +1186,10 @@ def enrich_with_circl(c2_records: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
     except CIRCLClientError:
         return c2_records
 
-    # Merge CIRCL data back into original records
-    for original, circl_data in zip(c2_records, enriched, strict=True):
+    # The client stops early at its record cap or time budget, returning the first N items in order
+    if len(enriched) < len(c2_records):
+        logger.info("CIRCL enrichment covered %d of %d C2 records", len(enriched), len(c2_records))
+    for original, circl_data in zip(c2_records, enriched, strict=False):
         original["circl"] = circl_data.get("circl", {})
 
     return c2_records
