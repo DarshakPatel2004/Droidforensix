@@ -67,3 +67,21 @@ class TestGenericBankerEvidenceNeedsC2:
         )
         assert match is not None
         assert match["family"] == "Ermac"
+
+
+class TestKonfety:
+    PERMS = ["android.permission.INTERNET", "android.permission.ACCESS_NETWORK_STATE"]
+
+    def test_generic_compose_strings_do_not_name_konfety(self):
+        # Compose/R8 markers ship in many ordinary apps; they named Konfety 36 times on 228 dev samples, 0 correct.
+        match = _match_family_signatures(
+            _result(strings=["androidx.compose.ui.uicomposable", "r8-map-id"], perms=self.PERMS, classes=100, native=[])
+        )
+        assert match is None or match["family"] != "Konfety"
+
+    def test_konfety_name_still_names_konfety(self):
+        match = _match_family_signatures(
+            _result(strings=["konfety", "androidx.compose.ui.uicomposable"], perms=self.PERMS, classes=100, native=[])
+        )
+        assert match is not None
+        assert match["family"] == "Konfety"
