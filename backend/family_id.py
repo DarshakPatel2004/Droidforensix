@@ -125,6 +125,7 @@ class FamilySignature:
     min_matches: int
     confidence: float
     require_c2: bool = False
+    require_string: bool = False
 
 
 # How many of a signature's permissions must be present before a permission
@@ -1307,10 +1308,10 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         require_c2=True,
     ),
 
-    # Konfety — Gaming/ad fraud (2 KB samples). fp=0 strings (Compose UI).
+    # Konfety — Gaming/ad fraud (2 KB samples). Compose/R8 strings are too common to name it, so only the family name counts.
     FamilySignature(
         family_name="Konfety",
-        string_patterns=["androidx.compose.ui.uicomposable", "r8-map-id", "konfety"],
+        string_patterns=["konfety"],
         c2_patterns=[],
         permission_sigs=[
             PermissionSig("INTERNET", 1.0),
@@ -1320,6 +1321,7 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         has_native_libs=False,
         min_matches=2, confidence=0.7,
         require_c2=False,
+        require_string=True,
     ),
 
     # MobileTx — Chinese payment trojan (3 KB samples). fp=0 strings and domains.
@@ -1742,6 +1744,8 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
             break
 
         if sig.require_c2 and not c2_matched:
+            continue
+        if sig.require_string and not string_matched:
             continue
 
         # 3. Permission patterns (weighted sum)
