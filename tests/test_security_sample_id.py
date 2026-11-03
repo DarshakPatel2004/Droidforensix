@@ -173,9 +173,7 @@ def test_dissection_delete_guard_is_load_bearing(client, work_dir):
     victim.write_text("KEEP", encoding="utf-8")
 
     with pytest.raises(HTTPException) as exc:
-        asyncio.get_event_loop().run_until_complete(
-            _get_or_create_dissection("..\\outside", refresh=True)
-        )
+        asyncio.run(_get_or_create_dissection("..\\outside", refresh=True))
 
     assert exc.value.status_code == 400
     assert victim.exists() and victim.read_text(encoding="utf-8") == "KEEP", (

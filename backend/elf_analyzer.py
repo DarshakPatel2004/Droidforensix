@@ -323,11 +323,17 @@ class ELFBreaker:
         try:
             for sec in self.elffile.iter_sections():
                 if hasattr(sec, 'iter_relocations'):
+                    # pyelftools 0.33 Relocation has no .symbol; resolve via the linked symbol table
+                    symtab = self.elffile.get_section(sec['sh_link'])
                     for rel in sec.iter_relocations():
+                        sym_index = rel['r_info_sym']
+                        name = ''
+                        if sym_index and isinstance(symtab, SymbolTableSection):
+                            name = symtab.get_symbol(sym_index).name
                         relocs.append({
                             'offset': hex(rel['r_offset']),
                             'type': rel['r_info_type'],
-                            'symbol': rel.symbol.name if rel.symbol else '',
+                            'symbol': name,
                         })
         except Exception as exc:
             logger.warning("Suppressed error in _extract_relocations: %s", exc)
