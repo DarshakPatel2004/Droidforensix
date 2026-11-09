@@ -3,121 +3,314 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>DroidForensix: Malware vs. Benign Classifier Results</title>
+<title>DroidForensix · Holdout Results</title>
 <meta name="description" content="Static malware vs. benign classifier: 97.3% accuracy on a 300-APK holdout.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+  /* Light: warm evidence-file paper. Dark: lab bench. */
   :root {
-    --bg: #f7f8fa; --panel: #ffffff; --text: #14181f; --muted: #5b6472;
-    --line: #dde2ea; --accent: #1d6fd6; --ok: #1a7f4b; --bad: #b42318;
+    --paper: #f4efe6;
+    --sheet: #fbf8f2;
+    --ink: #1c1a17;
+    --ink-soft: #5d574d;
+    --rule: #d9d0bf;
+    --hit: #2f6f4e;      /* correct */
+    --hit-bg: #dcebe0;
+    --miss: #a2402c;     /* wrong */
+    --miss-bg: #f3dcd5;
+    --stamp: #b5542b;
+    --shadow: 0 1px 0 rgba(28,26,23,.06), 0 12px 30px -18px rgba(28,26,23,.35);
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
-      --bg: #0d1117; --panel: #161b22; --text: #e6edf3; --muted: #8b949e;
-      --line: #30363d; --accent: #58a6ff; --ok: #3fb950; --bad: #f85149;
+      --paper: #0f1412;
+      --sheet: #161d1a;
+      --ink: #e9e6dc;
+      --ink-soft: #9aa39c;
+      --rule: #2b3631;
+      --hit: #7fd1a0;
+      --hit-bg: #1e3327;
+      --miss: #f08a78;
+      --miss-bg: #3a211c;
+      --stamp: #e6a06f;
+      --shadow: 0 1px 0 rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.8);
     }
   }
   :root[data-theme="dark"] {
-    --bg: #0d1117; --panel: #161b22; --text: #e6edf3; --muted: #8b949e;
-    --line: #30363d; --accent: #58a6ff; --ok: #3fb950; --bad: #f85149;
+    --paper: #0f1412; --sheet: #161d1a; --ink: #e9e6dc; --ink-soft: #9aa39c;
+    --rule: #2b3631; --hit: #7fd1a0; --hit-bg: #1e3327; --miss: #f08a78;
+    --miss-bg: #3a211c; --stamp: #e6a06f;
+    --shadow: 0 1px 0 rgba(0,0,0,.4), 0 16px 40px -20px rgba(0,0,0,.8);
   }
+
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--bg); color: var(--text);
-    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
-  h1 { font-size: 26px; margin: 0 0 6px; }
-  h2 { font-size: 18px; margin: 36px 0 10px; }
-  p { margin: 8px 0; }
-  .muted { color: var(--muted); }
-  code { font: 13px ui-monospace, SFMono-Regular, Consolas, monospace; }
-  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 20px; }
-  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
-  .card .label { color: var(--muted); font-size: 13px; }
-  .card .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
-  .card .sub { color: var(--muted); font-size: 13px; }
-  table { width: 100%; border-collapse: collapse; background: var(--panel);
-    border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
-  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 14px; }
-  th { color: var(--muted); font-weight: 600; background: var(--bg); }
-  td.hash { font: 12px ui-monospace, Consolas, monospace; word-break: break-all; }
-  .ok { color: var(--ok); font-weight: 600; }
-  .bad { color: var(--bad); font-weight: 600; }
-  .matrix { display: grid; grid-template-columns: auto 1fr 1fr; gap: 6px; max-width: 420px; text-align: center; }
-  .matrix div { padding: 10px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); }
-  .matrix .head { background: none; border: none; color: var(--muted); font-size: 13px; }
-  .filters { margin: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
-  button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
-    border-radius: 6px; padding: 6px 12px; cursor: pointer; }
-  button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
-  a { color: var(--accent); }
-  ul { padding-left: 20px; margin: 8px 0; }
-  .scroll { overflow-x: auto; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0; color: var(--ink); background: var(--paper);
+    font: 16px/1.6 "IBM Plex Sans", system-ui, sans-serif;
+    background-image:
+      radial-gradient(1200px 500px at 90% -10%, color-mix(in srgb, var(--stamp) 12%, transparent), transparent 60%),
+      radial-gradient(circle at 1px 1px, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 0);
+    background-size: auto, 22px 22px;
+  }
+  main { max-width: 1040px; margin: 0 auto; padding: 0 20px 80px; }
+  .mono { font-family: "IBM Plex Mono", ui-monospace, monospace; }
+  .eyebrow {
+    font: 500 12px/1 "IBM Plex Mono", monospace; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--stamp);
+  }
+
+  /* Hero */
+  .hero { padding: 56px 0 36px; display: grid; gap: 28px; grid-template-columns: 1.1fr .9fr; align-items: end; }
+  .hero h1 {
+    font: 800 clamp(34px, 5vw, 58px)/1.02 Fraunces, Georgia, serif;
+    letter-spacing: -.02em; margin: 14px 0 16px;
+  }
+  .hero .lede { color: var(--ink-soft); max-width: 46ch; margin: 0; font-size: 17px; }
+  .verdict {
+    background: var(--sheet); border: 1px solid var(--rule); border-radius: 18px;
+    padding: 26px 26px 22px; box-shadow: var(--shadow); position: relative; overflow: hidden;
+  }
+  .verdict .big {
+    font: 800 clamp(64px, 10vw, 96px)/0.9 Fraunces, Georgia, serif;
+    color: var(--ink); letter-spacing: -.04em;
+  }
+  .verdict .big sup { font-size: .38em; vertical-align: top; margin-left: 4px; color: var(--stamp); }
+  .verdict .cap { color: var(--ink-soft); font-size: 14px; margin-top: 10px; }
+  .bar { display: flex; height: 12px; border-radius: 99px; overflow: hidden; margin: 20px 0 10px; background: var(--miss-bg); }
+  .bar span { background: var(--hit); height: 100%; width: 0; transition: width 1.2s cubic-bezier(.2,.7,.2,1) .3s; }
+  .bar-legend { display: flex; justify-content: space-between; font: 13px "IBM Plex Mono", monospace; color: var(--ink-soft); }
+  .stamp {
+    position: absolute; top: 18px; right: 18px; transform: rotate(8deg);
+    border: 2px solid var(--stamp); color: var(--stamp); border-radius: 6px;
+    padding: 4px 10px; font: 500 11px/1 "IBM Plex Mono", monospace; letter-spacing: .16em; text-transform: uppercase;
+    opacity: .85;
+  }
+
+  /* Metric strip */
+  .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 8px; }
+  .metric {
+    background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 18px 18px 16px;
+  }
+  .metric .k { font: 13px "IBM Plex Sans", sans-serif; color: var(--ink-soft); }
+  .metric .v { font: 700 34px/1.1 Fraunces, Georgia, serif; margin: 6px 0 4px; }
+  .metric .s { font: 12.5px "IBM Plex Mono", monospace; color: var(--ink-soft); }
+
+  section.block { margin-top: 56px; }
+  h2 { font: 700 26px/1.2 Fraunces, Georgia, serif; margin: 6px 0 14px; letter-spacing: -.01em; }
+
+  /* Confusion matrix */
+  .matrix-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; align-items: center; }
+  .matrix {
+    display: grid; grid-template-columns: 96px 1fr 1fr; grid-template-rows: auto 1fr 1fr; gap: 8px;
+    font: 13px "IBM Plex Sans", sans-serif;
+  }
+  .matrix .axis { color: var(--ink-soft); align-self: center; text-align: center; font-size: 12.5px; }
+  .matrix .colhead { text-align: center; color: var(--ink-soft); font-size: 12.5px; padding-bottom: 4px; }
+  .cell {
+    border-radius: 14px; padding: 18px; min-height: 110px; display: flex; flex-direction: column; justify-content: space-between;
+    border: 1px solid var(--rule); background: var(--sheet);
+  }
+  .cell .code { font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .08em; color: var(--ink-soft); }
+  .cell .n { font: 800 44px/1 Fraunces, Georgia, serif; }
+  .cell.hit { background: var(--hit-bg); border-color: transparent; }
+  .cell.hit .n { color: var(--hit); }
+  .cell.miss { background: var(--miss-bg); border-color: transparent; }
+  .cell.miss .n { color: var(--miss); }
+  .matrix-note { color: var(--ink-soft); }
+  .matrix-note p { margin: 0 0 12px; }
+  .matrix-note strong { color: var(--ink); }
+
+  /* Checks */
+  .checks { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; counter-reset: c; }
+  .checks li {
+    counter-increment: c; display: grid; grid-template-columns: 44px 1fr; gap: 14px;
+    background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 16px 18px;
+  }
+  .checks li::before {
+    content: counter(c, decimal-leading-zero); font: 500 15px "IBM Plex Mono", monospace; color: var(--stamp); padding-top: 2px;
+  }
+  .checks b { display: block; margin-bottom: 2px; font-weight: 600; }
+  .checks span { color: var(--ink-soft); font-size: 15px; }
+
+  /* Pilot + caveats */
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .note {
+    background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; padding: 20px 22px;
+  }
+  .note h3 { font: 700 18px Fraunces, Georgia, serif; margin: 0 0 8px; }
+  .note p, .note li { color: var(--ink-soft); margin: 0; font-size: 15px; }
+  .note ul { padding-left: 18px; margin: 0; display: grid; gap: 8px; }
+  .pilot-score { font: 800 40px/1 Fraunces, Georgia, serif; color: var(--ink); margin-bottom: 8px; }
+
+  /* Table */
+  .toolbar { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 12px; }
+  .chip {
+    font: 500 13px "IBM Plex Sans", sans-serif; color: var(--ink); background: var(--sheet);
+    border: 1px solid var(--rule); border-radius: 999px; padding: 7px 14px; cursor: pointer;
+    transition: transform .15s ease, border-color .15s ease;
+  }
+  .chip:hover { transform: translateY(-1px); border-color: var(--ink-soft); }
+  .chip:focus-visible { outline: 2px solid var(--stamp); outline-offset: 2px; }
+  .chip[aria-pressed="true"] { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  #rowcount { margin-left: auto; color: var(--ink-soft); font: 13px "IBM Plex Mono", monospace; }
+  .tablewrap {
+    background: var(--sheet); border: 1px solid var(--rule); border-radius: 14px; overflow: auto; max-height: 560px; box-shadow: var(--shadow);
+  }
+  table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 14px; }
+  thead th {
+    position: sticky; top: 0; z-index: 1; background: var(--sheet);
+    text-align: left; padding: 12px 14px; font: 500 12px "IBM Plex Mono", monospace; letter-spacing: .06em; text-transform: uppercase;
+    color: var(--ink-soft); border-bottom: 1px solid var(--rule);
+  }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--rule); vertical-align: middle; }
+  tbody tr:last-child td { border-bottom: 0; }
+  tbody tr:hover td { background: color-mix(in srgb, var(--ink) 4%, transparent); }
+  td.idx { color: var(--ink-soft); font: 12px "IBM Plex Mono", monospace; }
+  td.hash { font: 12px "IBM Plex Mono", monospace; word-break: break-all; min-width: 260px; }
+  .tag {
+    display: inline-block; font: 500 12px "IBM Plex Mono", monospace; padding: 3px 9px; border-radius: 999px; letter-spacing: .02em;
+  }
+  .tag.malware { background: color-mix(in srgb, var(--miss) 14%, transparent); color: var(--miss); }
+  .tag.benign { background: color-mix(in srgb, var(--hit) 14%, transparent); color: var(--hit); }
+  .res { font-weight: 600; }
+  .res.ok { color: var(--hit); }
+  .res.bad { color: var(--miss); }
+  td.num { font: 13px "IBM Plex Mono", monospace; color: var(--ink-soft); }
+  .rawlink { margin-top: 14px; color: var(--ink-soft); font-size: 14px; }
+  a { color: var(--ink); text-decoration-color: var(--stamp); text-underline-offset: 3px; }
+  a:hover { color: var(--stamp); }
+
+  /* Entrance */
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+  .rise { opacity: 0; animation: rise .7s cubic-bezier(.2,.7,.2,1) forwards; }
+  .d1 { animation-delay: .05s } .d2 { animation-delay: .15s } .d3 { animation-delay: .25s } .d4 { animation-delay: .35s }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation: none !important; transition: none !important; }
+    .rise { opacity: 1; }
+    .bar span { width: 97.3%; }
+  }
+
+  /* Mobile */
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; padding-top: 36px; }
+    .matrix-wrap, .two { grid-template-columns: 1fr; }
+    .metrics { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 640px) {
+    main { padding: 0 16px 60px; }
+    body { font-size: 15px; }
+    .matrix { grid-template-columns: 64px 1fr 1fr; gap: 6px; }
+    .cell { min-height: 92px; padding: 12px; }
+    .cell .n { font-size: 34px; }
+    .cell .code { font-size: 11px; }
+    td.hash { min-width: 200px; font-size: 11px; }
+    #rowcount { margin-left: 0; width: 100%; }
+    thead th, tbody td { padding: 9px 10px; }
+  }
 </style>
 </head>
 <body>
 <main>
-  <h1>Malware vs. benign classifier: holdout results</h1>
-  <p class="muted">Static features only (pipeline steps 1–6, no LLM, no network enrichment). Threshold 0.7. Evaluated on a 300-APK holdout (150 malware, 150 benign).</p>
 
-  <section class="grid" aria-label="Headline results">
-    <div class="card"><div class="label">Accuracy</div><div class="value">97.3%</div><div class="sub">292 / 300 · 95% CI 94.8–98.6%</div></div>
-    <div class="card"><div class="label">Malware recall</div><div class="value">97.3%</div><div class="sub">146 / 150 · 95% CI 93.3–99.0%</div></div>
-    <div class="card"><div class="label">Benign specificity</div><div class="value">97.3%</div><div class="sub">146 / 150 · 95% CI 93.3–99.0%</div></div>
+  <header class="hero">
+    <div class="rise d1">
+      <div class="eyebrow">Evidence file · Static classifier · Holdout</div>
+      <h1>Malware or benign, from the bytecode alone.</h1>
+      <p class="lede">A 15-feature random forest scores each APK using static features only: no LLM, no network lookups, no execution. Scored on 300 APKs it held out from training and tuning.</p>
+    </div>
+
+    <aside class="verdict rise d2" aria-label="Headline result">
+      <span class="stamp">Holdout · n=300</span>
+      <div class="big">97.3<sup>%</sup></div>
+      <div class="cap">Accuracy · 292 of 300 correct · 95% CI 94.8–98.6%</div>
+      <div class="bar" role="img" aria-label="292 correct, 8 wrong"><span id="barfill"></span></div>
+      <div class="bar-legend"><span>292 correct</span><span>8 wrong</span></div>
+    </aside>
+  </header>
+
+  <section class="metrics" aria-label="Metrics">
+    <div class="metric rise d2"><div class="k">Malware recall</div><div class="v">97.3%</div><div class="s">146 / 150 · CI 93.3–99.0%</div></div>
+    <div class="metric rise d3"><div class="k">Benign specificity</div><div class="v">97.3%</div><div class="s">146 / 150 · CI 93.3–99.0%</div></div>
+    <div class="metric rise d4"><div class="k">Decision threshold</div><div class="v">0.70</div><div class="s">chosen on validation, not holdout</div></div>
   </section>
 
-  <h2>Confusion matrix</h2>
-  <div class="matrix" role="table" aria-label="Confusion matrix">
-    <div class="head"></div><div class="head">Predicted malware</div><div class="head">Predicted benign</div>
-    <div class="head">Actual malware</div><div>TP 146</div><div>FN 4</div>
-    <div class="head">Actual benign</div><div>FP 4</div><div>TN 146</div>
-  </div>
+  <section class="block">
+    <div class="eyebrow">Where it errs</div>
+    <h2>Confusion matrix</h2>
+    <div class="matrix-wrap">
+      <div class="matrix" role="table" aria-label="Confusion matrix">
+        <div></div>
+        <div class="colhead">Predicted malware</div>
+        <div class="colhead">Predicted benign</div>
+        <div class="axis">Actual<br>malware</div>
+        <div class="cell hit"><span class="code">TRUE POSITIVE</span><span class="n">146</span></div>
+        <div class="cell miss"><span class="code">FALSE NEGATIVE</span><span class="n">4</span></div>
+        <div class="axis">Actual<br>benign</div>
+        <div class="cell miss"><span class="code">FALSE POSITIVE</span><span class="n">4</span></div>
+        <div class="cell hit"><span class="code">TRUE NEGATIVE</span><span class="n">146</span></div>
+      </div>
+      <div class="matrix-note">
+        <p><strong>8 misses out of 300.</strong> 4 malware samples scored as benign, and 4 benign samples scored as malware.</p>
+        <p>Every wrong prediction is listed in the table below, so each miss can be inspected.</p>
+      </div>
+    </div>
+  </section>
 
-  <h2>How the holdout was kept clean</h2>
-  <ul>
-    <li><strong>No overlap:</strong> none of the 300 holdout hashes appear in the 509 original training APKs, the 100 added training APKs, or the 100-APK validation split.</li>
-    <li><strong>Threshold chosen on validation, not holdout:</strong> 0.7 gave 98% accuracy with 0 benign files flagged on the validation split.</li>
-    <li><strong>Retrain:</strong> adding 100 APKs raised validation AUC from 0.9816 to 0.9944.</li>
-  </ul>
+  <section class="block">
+    <div class="eyebrow">Method</div>
+    <h2>How the holdout was kept clean</h2>
+    <ol class="checks">
+      <li><div><b>No overlap</b><span>None of the 300 holdout hashes appear in the 509 original training APKs, the 100 added training APKs, or the 100-APK validation split.</span></div></li>
+      <li><div><b>Threshold chosen on validation</b><span>0.7 gave 98% accuracy with 0 benign files flagged on the validation split. The holdout was not used for this choice.</span></div></li>
+      <li><div><b>Retrain with more data</b><span>Adding 100 APKs raised validation AUC from 0.9816 to 0.9944.</span></div></li>
+    </ol>
+  </section>
 
-  <h2>Earlier pilot</h2>
-  <p>Before the retrain, a 20-APK pilot (10 benign, 10 malware) scored 55% (11/20). It is kept on record in <code>evaluation/FRESH_CORPUS_RESULT.md</code>. It was too small for a stable estimate.</p>
+  <section class="block">
+    <article class="note">
+      <div class="eyebrow">Read this carefully</div>
+      <h3>Caveats</h3>
+      <ul>
+        <li>One 300-APK holdout gives a wide confidence interval.</li>
+        <li>Treat 97% as a result for this corpus, not a general accuracy claim.</li>
+      </ul>
+    </article>
+  </section>
 
-  <h2>Caveats</h2>
-  <ul>
-    <li>One 300-APK holdout gives a wide confidence interval. Treat 97% as a result for this corpus, not a general accuracy claim.</li>
-    <li>The 8 errors are listed below, so each miss can be inspected.</li>
-  </ul>
+  <section class="block">
+    <div class="eyebrow">Raw data</div>
+    <h2>All 300 holdout samples</h2>
+    <div class="toolbar" role="group" aria-label="Filter rows">
+      <button type="button" class="chip" data-filter="all" aria-pressed="true">All · 300</button>
+      <button type="button" class="chip" data-filter="errors" aria-pressed="false">Errors · 8</button>
+      <button type="button" class="chip" data-filter="malware" aria-pressed="false">Malware · 150</button>
+      <button type="button" class="chip" data-filter="benign" aria-pressed="false">Benign · 150</button>
+      <span id="rowcount"></span>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>SHA-256</th><th>Label</th><th>Source</th><th>Predicted</th><th>Confidence</th><th>Result</th></tr></thead>
+        <tbody id="rows"><tr><td colspan="7">Loading predictions…</td></tr></tbody>
+      </table>
+    </div>
+    <p class="rawlink">Full data: <a href="predictions.csv">predictions.csv</a></p>
+  </section>
 
-  <h2>All 300 holdout samples</h2>
-  <div class="filters" role="group" aria-label="Filter rows">
-    <button type="button" data-filter="all" aria-pressed="true">All (300)</button>
-    <button type="button" data-filter="errors" aria-pressed="false">Errors only (8)</button>
-    <button type="button" data-filter="malware" aria-pressed="false">Malware (150)</button>
-    <button type="button" data-filter="benign" aria-pressed="false">Benign (150)</button>
-    <span class="muted" id="rowcount"></span>
-  </div>
-  <div class="scroll">
-    <table>
-      <thead><tr><th>#</th><th>SHA-256</th><th>Label</th><th>Source</th><th>Predicted</th><th>Confidence</th><th>Result</th></tr></thead>
-      <tbody id="rows"><tr><td colspan="7" class="muted">Loading predictions…</td></tr></tbody>
-    </table>
-  </div>
-  <p class="muted">Raw data: <a href="predictions.csv">predictions.csv</a>.</p>
-
-  <h2>Run metadata</h2>
-  <ul class="muted">
-    <li>Code commit: <code>1479d1b</code></li>
-    <li>Model: <code>malben_rf_retrained.pkl</code> (SHA-256 <code>86a98b01…</code>)</li>
-    <li>Manifest SHA-256: <code>92887e96…</code></li>
-    <li>Python 3.13.14, scikit-learn 1.9.0</li>
-  </ul>
 </main>
 <script>
   (function () {
     var tbody = document.getElementById('rows');
     var count = document.getElementById('rowcount');
     var buttons = document.querySelectorAll('[data-filter]');
+    var bar = document.getElementById('barfill');
     var data = [];
     var filter = 'all';
+
+    // Animate the 292/300 bar once the page is painted.
+    requestAnimationFrame(function () { bar.style.width = '97.3%'; });
 
     function parseCSV(text) {
       var lines = text.trim().split(/\r?\n/);
@@ -143,16 +336,18 @@
         if (filter === 'benign') return r.label === 'benign';
         return true;
       });
-      count.textContent = 'Showing ' + shown.length + ' of ' + data.length;
-      tbody.innerHTML = shown.map(function (r, i) {
+      count.textContent = 'showing ' + shown.length + ' of ' + data.length;
+      tbody.innerHTML = shown.map(function (r) {
         var ok = r.correct === 'True';
-        return '<tr><td>' + (data.indexOf(r) + 1) + '</td>' +
+        var predicted = r.predicted_malware === 'True' ? 'malware' : 'benign';
+        var conf = r.confidence ? esc(r.confidence) + '%' : '';
+        return '<tr><td class="idx">' + (data.indexOf(r) + 1) + '</td>' +
           '<td class="hash">' + esc(r.sha256) + '</td>' +
-          '<td>' + esc(r.label) + '</td>' +
-          '<td>' + esc(r.source) + '</td>' +
-          '<td>' + (r.predicted_malware === 'True' ? 'malware' : 'benign') + '</td>' +
-          '<td>' + esc(r.confidence) + '</td>' +
-          '<td class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'correct' : 'wrong') + '</td></tr>';
+          '<td><span class="tag ' + esc(r.label) + '">' + esc(r.label) + '</span></td>' +
+          '<td class="num">' + esc(r.source) + '</td>' +
+          '<td>' + predicted + '</td>' +
+          '<td class="num">' + conf + '</td>' +
+          '<td class="res ' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'correct' : 'wrong') + '</td></tr>';
       }).join('');
     }
 
@@ -168,7 +363,7 @@
       .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
       .then(function (t) { data = parseCSV(t); render(); })
       .catch(function (e) {
-        tbody.innerHTML = '<tr><td colspan="7" class="bad">Could not load predictions.csv (' + esc(e.message) + ').</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="7" class="res bad">Could not load predictions.csv (' + esc(e.message) + ').</td></tr>';
       });
   })();
 </script>
