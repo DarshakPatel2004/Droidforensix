@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DroidForensix: Malware vs. Benign Classifier Results</title>
+<meta name="description" content="Static malware vs. benign classifier: 97.3% accuracy on a 300-APK holdout.">
+<style>
+  :root {
+    --bg: #f7f8fa; --panel: #ffffff; --text: #14181f; --muted: #5b6472;
+    --line: #dde2ea; --accent: #1d6fd6; --ok: #1a7f4b; --bad: #b42318;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0d1117; --panel: #161b22; --text: #e6edf3; --muted: #8b949e;
+      --line: #30363d; --accent: #58a6ff; --ok: #3fb950; --bad: #f85149;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0d1117; --panel: #161b22; --text: #e6edf3; --muted: #8b949e;
+    --line: #30363d; --accent: #58a6ff; --ok: #3fb950; --bad: #f85149;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text);
+    font: 15px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+  main { max-width: 960px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 6px; }
+  h2 { font-size: 18px; margin: 36px 0 10px; }
+  p { margin: 8px 0; }
+  .muted { color: var(--muted); }
+  code { font: 13px ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 12px; margin-top: 20px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px; }
+  .card .label { color: var(--muted); font-size: 13px; }
+  .card .value { font-size: 26px; font-weight: 700; margin-top: 4px; }
+  .card .sub { color: var(--muted); font-size: 13px; }
+  table { width: 100%; border-collapse: collapse; background: var(--panel);
+    border: 1px solid var(--line); border-radius: 10px; overflow: hidden; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); font-size: 14px; }
+  th { color: var(--muted); font-weight: 600; background: var(--bg); }
+  td.hash { font: 12px ui-monospace, Consolas, monospace; word-break: break-all; }
+  .ok { color: var(--ok); font-weight: 600; }
+  .bad { color: var(--bad); font-weight: 600; }
+  .matrix { display: grid; grid-template-columns: auto 1fr 1fr; gap: 6px; max-width: 420px; text-align: center; }
+  .matrix div { padding: 10px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); }
+  .matrix .head { background: none; border: none; color: var(--muted); font-size: 13px; }
+  .filters { margin: 12px 0; display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+  button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  a { color: var(--accent); }
+  ul { padding-left: 20px; margin: 8px 0; }
+  .scroll { overflow-x: auto; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Malware vs. benign classifier: holdout results</h1>
+  <p class="muted">Static features only (pipeline steps 1–6, no LLM, no network enrichment). Threshold 0.7. Evaluated on a 300-APK holdout (150 malware, 150 benign).</p>
+
+  <section class="grid" aria-label="Headline results">
+    <div class="card"><div class="label">Accuracy</div><div class="value">97.3%</div><div class="sub">292 / 300 · 95% CI 94.8–98.6%</div></div>
+    <div class="card"><div class="label">Malware recall</div><div class="value">97.3%</div><div class="sub">146 / 150 · 95% CI 93.3–99.0%</div></div>
+    <div class="card"><div class="label">Benign specificity</div><div class="value">97.3%</div><div class="sub">146 / 150 · 95% CI 93.3–99.0%</div></div>
+  </section>
+
+  <h2>Confusion matrix</h2>
+  <div class="matrix" role="table" aria-label="Confusion matrix">
+    <div class="head"></div><div class="head">Predicted malware</div><div class="head">Predicted benign</div>
+    <div class="head">Actual malware</div><div>TP 146</div><div>FN 4</div>
+    <div class="head">Actual benign</div><div>FP 4</div><div>TN 146</div>
+  </div>
+
+  <h2>How the holdout was kept clean</h2>
+  <ul>
+    <li><strong>No overlap:</strong> none of the 300 holdout hashes appear in the 509 original training APKs, the 100 added training APKs, or the 100-APK validation split.</li>
+    <li><strong>Threshold chosen on validation, not holdout:</strong> 0.7 gave 98% accuracy with 0 benign files flagged on the validation split.</li>
+    <li><strong>Retrain:</strong> adding 100 APKs raised validation AUC from 0.9816 to 0.9944.</li>
+  </ul>
+
+  <h2>Earlier pilot</h2>
+  <p>Before the retrain, a 20-APK pilot (10 benign, 10 malware) scored 55% (11/20). It is kept on record in <code>evaluation/FRESH_CORPUS_RESULT.md</code>. It was too small for a stable estimate.</p>
+
+  <h2>Caveats</h2>
+  <ul>
+    <li>One 300-APK holdout gives a wide confidence interval. Treat 97% as a result for this corpus, not a general accuracy claim.</li>
+    <li>The 8 errors are listed below, so each miss can be inspected.</li>
+  </ul>
+
+  <h2>All 300 holdout samples</h2>
+  <div class="filters" role="group" aria-label="Filter rows">
+    <button type="button" data-filter="all" aria-pressed="true">All (300)</button>
+    <button type="button" data-filter="errors" aria-pressed="false">Errors only (8)</button>
+    <button type="button" data-filter="malware" aria-pressed="false">Malware (150)</button>
+    <button type="button" data-filter="benign" aria-pressed="false">Benign (150)</button>
+    <span class="muted" id="rowcount"></span>
+  </div>
+  <div class="scroll">
+    <table>
+      <thead><tr><th>#</th><th>SHA-256</th><th>Label</th><th>Source</th><th>Predicted</th><th>Confidence</th><th>Result</th></tr></thead>
+      <tbody id="rows"><tr><td colspan="7" class="muted">Loading predictions…</td></tr></tbody>
+    </table>
+  </div>
+  <p class="muted">Raw data: <a href="predictions.csv">predictions.csv</a>.</p>
+
+  <h2>Run metadata</h2>
+  <ul class="muted">
+    <li>Code commit: <code>1479d1b</code></li>
+    <li>Model: <code>malben_rf_retrained.pkl</code> (SHA-256 <code>86a98b01…</code>)</li>
+    <li>Manifest SHA-256: <code>92887e96…</code></li>
+    <li>Python 3.13.14, scikit-learn 1.9.0</li>
+  </ul>
+</main>
+<script>
+  (function () {
+    var tbody = document.getElementById('rows');
+    var count = document.getElementById('rowcount');
+    var buttons = document.querySelectorAll('[data-filter]');
+    var data = [];
+    var filter = 'all';
+
+    function parseCSV(text) {
+      var lines = text.trim().split(/\r?\n/);
+      var head = lines.shift().split(',');
+      return lines.map(function (line) {
+        var cells = line.split(',');
+        var row = {};
+        head.forEach(function (h, i) { row[h] = cells[i]; });
+        return row;
+      });
+    }
+
+    function esc(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    function render() {
+      var shown = data.filter(function (r) {
+        if (filter === 'errors') return r.correct !== 'True';
+        if (filter === 'malware') return r.label === 'malware';
+        if (filter === 'benign') return r.label === 'benign';
+        return true;
+      });
+      count.textContent = 'Showing ' + shown.length + ' of ' + data.length;
+      tbody.innerHTML = shown.map(function (r, i) {
+        var ok = r.correct === 'True';
+        return '<tr><td>' + (data.indexOf(r) + 1) + '</td>' +
+          '<td class="hash">' + esc(r.sha256) + '</td>' +
+          '<td>' + esc(r.label) + '</td>' +
+          '<td>' + esc(r.source) + '</td>' +
+          '<td>' + (r.predicted_malware === 'True' ? 'malware' : 'benign') + '</td>' +
+          '<td>' + esc(r.confidence) + '</td>' +
+          '<td class="' + (ok ? 'ok' : 'bad') + '">' + (ok ? 'correct' : 'wrong') + '</td></tr>';
+      }).join('');
+    }
+
+    buttons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        filter = b.getAttribute('data-filter');
+        buttons.forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        render();
+      });
+    });
+
+    fetch('predictions.csv')
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.text(); })
+      .then(function (t) { data = parseCSV(t); render(); })
+      .catch(function (e) {
+        tbody.innerHTML = '<tr><td colspan="7" class="bad">Could not load predictions.csv (' + esc(e.message) + ').</td></tr>';
+      });
+  })();
+</script>
+</body>
+</html>
