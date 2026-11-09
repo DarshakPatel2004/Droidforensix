@@ -1,435 +1,229 @@
 # DroidForensix
 
-**Automated Android malware static-analysis pipeline** — extract C2 infrastructure from bytecode without execution.
+Static analysis for Android malware. It pulls command-and-control (C2) infrastructure and attributes malware families from an APK's bytecode, without running the app.
 
-[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)](https://python.org)
-[![React](https://img.shields.io/badge/React-18-blue?logo=react)](https://react.dev)
-[![License](https://img.shields.io/badge/License-MIT-green)](LICENSE)
-[![Tests](https://github.com/DarshakPatel2004/project-zero/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/project-zero/actions/workflows/test.yml)
+[![CI](https://github.com/DarshakPatel2004/Droidforensix/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/DarshakPatel2004/Droidforensix/actions/workflows/test.yml)
+![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
+![React](https://img.shields.io/badge/React-18-blue?logo=react)
 
-> **63x speedup** over manual analysis (277-sample article run). **1,711 C2 indicators** extracted from **277 malware samples** across 12 countries. **75% concentrated** in Chinese cloud providers. Dataset since grown to 405 APKs.
->
-> **Read this before citing headline numbers:** validation shows exact-match family identification at **64.2%** (68.6% on specific families) and only **2.4% of raw extracted indicators confirmed as genuine C2** — see [Evaluation & Validation](#evaluation). Raw counts above reflect extraction coverage, not verified accuracy.
+- **Live site:** https://droidforensix.vercel.app
+- **Author:** [Darshak Patel](https://github.com/DarshakPatel2004) (MSc Digital Forensics, NFSU Delhi)
 
 ---
 
-## Table of Contents
+## Honest numbers first
 
-- [What It Does](#what-it-does)
-- [Key Results](#key-results)
-- [Architecture](#architecture)
-- [Quick Start](#quick-start)
-- [Dashboard](#dashboard)
-- [API Reference](#api-reference)
-- [Evaluation](#evaluation)
-- [Testing](#testing)
-- [Project Structure](#project-structure)
-- [Environment Variables](#environment-variables)
-- [Known Limitations](#known-limitations)
-- [Future Work](#future-work)
+Read these before quoting any headline figure.
+
+| Measure | Result | Notes |
+|---|---|---|
+| Malware vs. benign, fresh 300-APK holdout | **97.3%** accuracy (292/300; 95% CI 94.8–98.6%) | Static only, no LLM, threshold 0.7. Malware recall 146/150, benign specificity 146/150 |
+| Family identification, exact match | **64.2%** (226/352) | 68.6% on specific (non-catch-all) families |
+| Indicators confirmed as genuine C2 | **2.4%** (9/380) | 68% were clearly benign (Firebase, Google OAuth, CDNs) |
+
+Raw indicator counts measure extraction coverage, not verified accuracy. Most extracted indicators are benign. Treat family output as advisory.
+
+The family and indicator evaluation uses 352 samples with corrected ground truth (`ground_truth_all_corrected.csv`), checked against VirusTotal and MalwareBazaar. The raw review data is in `evaluation_results/`.
+
+### Malware vs. benign classifier
+
+A 15-feature random forest (`evaluation/malben_eval/malben_rf_retrained.pkl`) scores each APK from static features only. It runs through `classify_malware_fast` (pipeline steps 1–6, no LLM, no network enrichment).
+
+- **Training:** 509 original APKs, plus 100 added in the retrain.
+- **Threshold:** 0.7, chosen on a separate 100-APK validation split (98% accuracy, 0 benign flagged). The retrain raised validation AUC from 0.9816 to 0.9944.
+- **Holdout:** 300 APKs (150 malware, 150 benign). No hash overlaps with the training or validation data, and the holdout was not used for tuning.
+- **Result:** 292/300 correct. 4 malware missed, 4 benign flagged. Full report: `evaluation/malben_eval/run_fresh_t070/report.json`.
+- **Earlier pilot:** a 20-APK pilot scored 55% (11/20) before the retrain. Details are in [evaluation/FRESH_CORPUS_RESULT.md](evaluation/FRESH_CORPUS_RESULT.md).
+
+300 holdout APKs give a wide confidence interval. Treat 97% as a result for this corpus, not a general accuracy claim.
 
 ---
 
-## What It Does
-
-DroidForensix analyzes Android APKs **without execution** — no emulator, no sandbox. It decompiles bytecode to Java, traces method calls, extracts hardcoded indicators, correlates them against threat feeds, geolocates C2 servers, and produces a structured report.
-
-**The problem it solves:** Manual APK analysis takes ~1 hour per sample. This pipeline does it in ~1 minute (~90 s on the LLM path, ~24 s with heuristic skip).
+## What it does
 
 ```
-APK → Decompile (JADX) → Trace Suspicious APIs → Extract Indicators
-      → Correlate (VT, OTX, Shodan, Censys) → Geolocate → Score → Report
+APK → JADX (bytecode → Java) → API tracer → indicator extraction
+    → threat intel (VT, OTX, Shodan, Censys) → geolocation → scoring → report
 ```
 
-### Pipeline
+The analysis is an 18-step pipeline in `analysis/step1_*.py` … `step18_*.py`. It covers manifest and permission extraction, string decoding, C2 extraction, LLM threat assessment, packer detection, native library analysis, certificate analysis, family clustering, and report synthesis. The output is a single `pipeline_result.json` per sample.
 
-The 18-step pipeline (`analysis/step1_*.py` … `step18_*.py`):
+Family attribution runs in three layers:
 
-1. **Extract** APK (AndroGuard: manifest, permissions, components)
-2. **Enumerate** Dalvik bytecode strings via JADX
-3. **Detect** encodings (base64, hex, XOR, ciphers)
-4. **Decode** obfuscated strings
-5. **Extract** C2 indicators (domains, IPs, hardcoded URLs, API endpoints)
-6. **Correlate** across VT, OTX, Shodan, Censys (parallel threat feeds)
-7. **Assess** findings via LLM (Ollama/NVIDIA NIM/OpenRouter)
-8. **Analyze** obfuscation (packing, reflection, custom encryption)
-9. **Post-process** dedup, scoring, report assembly
-10. **Detect** binary packing
-11. **Cluster** strings for decryption correlation
-12. **Trace** reflective method calls
-13. **Analyze** native ELF libraries
-14. **Analyze** network protocols
-15. **Correlate** reflective permissions
-16. **Analyze** signing certificates
-17. **Cluster** samples by family
-18. **Synthesize** threat intelligence report
+1. **Hand-written signatures** (`signature_v3`). Precise, but cover only some families.
+2. **Knowledge-base matcher** mined from corrected ground truth, with false-positive control on anchor tokens.
+3. **LLM verdict** over the signals that actually matched. It picks from candidate families and does not free-generate one.
 
-Output: structured JSON + PDF with per-phase timing.
+A packer module handles entropy and DEX-structure heuristics, plus unpacking for supported packers. It is static, with no emulator.
 
 ---
 
-## Key Results
+## Quick start
 
-> This table documents the published 277-sample run (see [Publication](#publication)). The dataset has since grown to **405 APKs** (305 malware + 100 benign).
-
-| Metric | Value |
-|--------|-------|
-| Samples analyzed | 277 (204 timed) |
-| C2 indicators extracted | **1,711** |
-| Unique IPs | 203 (191 geolocated, 94%) |
-| Geographic clusters | 26 across 12 countries |
-| Chinese cloud concentration | **75%** (Alibaba, Tencent, CHINANET) |
-| Pipeline speed (LLM path) | ~1.5 min/sample |
-| Pipeline speed (heuristic skip) | ~0.4 min/sample (~40% of samples) |
-| Total runtime (204 samples) | 3.2 hours sequential |
-| Speedup vs. manual | **63x** |
-| Recall (after heuristic fix) | **95%** (recovered from 80%) |
-| Family-ID accuracy (exact match, 352 GT) | **64.2%** (226/352); **68.6%** on specific families |
-| Indicator precision (validated, 380 indicators) | **2.4%** confirmed malicious; **68%** clearly benign |
-
-### What I Got Wrong (And Fixed)
-
-This section is intentional — research is iterative, and documenting mistakes is as important as documenting wins.
-
-- **LLM bottleneck:** Initial pipeline called Ollama per-sample synchronously. Fixed with a heuristic pre-filter that skips the LLM layer for ~40% of benign-looking samples (~2x speedup).
-- **Heuristic over-optimization:** An aggressive string-entropy filter was dropping valid C2 domains. Disabled after validation (3% recall drop → 95% recall recovered).
-- **Threat intel layer design:** Initial design queried feeds sequentially. Rewrote to parallel async requests (5s → 800ms per sample).
-
----
-
-## Architecture
-
-```mermaid
-flowchart LR
-    A[APK Input] --> B[AndroGuard<br/>Manifest, Permissions]
-    A --> C[JADX<br/>Bytecode → Java]
-    C --> D[Suspicious API Tracer]
-    B --> D
-    D --> E[Indicator Extraction<br/>Domains, IPs, Strings]
-    E --> F[Threat Intel<br/>VT, OTX, Shodan, Censys]
-    F --> G[Geolocation<br/>MaxMind GeoLite2]
-    G --> H[Confidence Scoring]
-    H --> I[Report<br/>JSON + PDF]
-
-    style A fill:#0f172a,stroke:#06b6d4
-    style D fill:#111827,stroke:#f59e0b
-    style F fill:#111827,stroke:#8b5cf6
-    style I fill:#0f172a,stroke:#10b981
-```
-
----
-
-## Quick Start
-
-### Prerequisites
-
-- **Python 3.10+**
-- **Git**
-- **Ollama** (for LLM threat assessment) — [Download](https://ollama.com)
-- **API keys** for threat intel feeds (optional, see `.env.example`)
-
-The repo ships portable copies of JADX, APKTool, JDK, and Node.js under `tools\`.
-
-### Setup
+**Prerequisites:** Python 3.10+, Node.js (for the dashboard), Git. Optional: [Ollama](https://ollama.com) for local LLM assessment, and API keys for threat-intel feeds.
 
 ```bash
-git clone https://github.com/DarshakPatel2004/project-zero.git
-cd project-zero
+git clone https://github.com/DarshakPatel2004/Droidforensix.git
+cd Droidforensix
 
-python -m venv venv
-source venv/bin/activate      # Linux/macOS
-# or: venv\Scripts\Activate.ps1  (Windows)
+python -m venv .venv
+.venv\Scripts\activate          # Windows
+# source .venv/bin/activate     # Linux/macOS
 
-pip install -r requirements-lock.txt   # pinned, reproducible
-cp .env.example .env
+pip install -r requirements-lock.txt   # pinned versions
+cp .env.example .env                   # add API keys as needed
 ```
 
-### Run
-
-Open three terminals:
+Run the full pipeline headless:
 
 ```bash
-# Terminal 1: Ollama (LLM backend)
-ollama serve
-
-# Terminal 2: Backend
-python -m backend.main       # serves on http://localhost:8000
-
-# Terminal 3: Frontend (optional)
-cd frontend
-npm install
-npm run dev                 # serves on http://localhost:5173
+python -m analysis.pipeline path/to/sample.apk
+# → analysis/work/<sha256>/pipeline_result.json
 ```
 
-Submit an APK via the dashboard (drag-and-drop) or CLI:
+Run the web app:
 
 ```bash
-curl -X POST http://localhost:8000/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"apk_path": "samples/malware/example.apk"}'
+python -m backend.main           # API on http://localhost:8000
+cd frontend && npm install && npm run dev   # dashboard on http://localhost:5173
 ```
 
-Or run headless:
+Other entry points: `python -m droidforensix analyze|classify|serve|unpack <apk>`. Setup details, including the external tools in `tools/`, are in [docs/SETUP.md](docs/SETUP.md).
 
-```bash
-python -m analysis.pipeline samples/malware/example.apk
+### Sample output
+
+Trimmed from a real `pipeline_result.json`:
+
+```json
+{
+  "sample_id": "0156094f7785b899b15150f449f7f2874c2c9b642ff0651176143077b11af99a",
+  "metadata": { "file_size_bytes": 6042879 },
+  "secret_risk": {
+    "severity": "high",
+    "total_secrets": 3,
+    "by_severity": { "medium": 2, "high": 1 },
+    "risk_score": 9
+  },
+  "hardcoded_secrets": [
+    { "secret_type": "google_oauth_client_id", "severity": "medium", "source": "dex" },
+    { "secret_type": "firebase_url", "severity": "medium", "source": "res/values/strings.xml:firebase_database_url" },
+    { "secret_type": "google_api_key", "severity": "high", "source": "res/values/strings.xml:google_api_key" }
+  ],
+  "c2_infrastructure_count": 5
+}
 ```
-
-Output is written to `analysis/work/<sha256>/pipeline_result.json`.
 
 ---
 
 ## Dashboard
 
-The React dashboard provides layered analysis views:
+![DroidForensix dashboard](docs/images/dashboard.png)
 
-| View | Description |
-|------|-------------|
-| **Glance** | Threat summary with score, family, red-flag indicators |
-| **Family Attribution** | Collapsible card with primary match, confidence bars, related samples |
-| **Dissection** | Tabs for Manifest, Permissions, Components, Code (syntax-highlighted), Strings, DEX (entropy chart), Native Libs |
-| **Threat Chains** | Interactive chain viewer with built-in decoders (Base64, hex, URL, XOR, custom JS) |
-| **Threat Intel** | MITRE ATT&CK mapping, VT/OTX hit counts, Shodan host profiles |
+| View | What it shows |
+|---|---|
+| Glance | Threat summary: score, family, red-flag indicators |
+| Family attribution | Primary match, confidence bars, related samples |
+| Dissection | Manifest, permissions, components, code, strings, DEX entropy, native libraries |
+| Threat chains | Interactive viewer with decoders (Base64, hex, URL, XOR) |
+| Threat intel | MITRE ATT&CK mapping, VT/OTX hit counts, Shodan host profiles |
 
-### Frontend Setup
-
-```bash
-cd frontend
-npm install
-npm run dev
-```
-
-### Component Hierarchy
-
-```mermaid
-graph TD
-    App[App.jsx] --> UP[UploadPanel]
-    App --> SS[SampleSearch]
-    App --> LS[LoadingSpinner]
-    App --> TB[ThreatBadge]
-    App --> SD[SampleDetail]
-    App --> AV[AnalysisView]
-
-    SD --> TSum[ThreatSummary]
-    SD --> AE[AttributionEvidence]
-    SD --> DT[DissectionTabs]
-
-    DT --> MT[ManifestTab]
-    DT --> PT[PermissionsTab]
-    DT --> CT[ComponentsTab]
-    DT --> CodeT[CodeTab]
-    DT --> ST[StringsTab]
-    DT --> DX[DEXTab]
-    DT --> NL[NativeLibsTab]
-
-    AV --> OV[ObfuscationView]
-    AV --> MV[ManifestView]
-    AV --> FS[FamilySignalsCard]
-    AV --> TS[ThreatSynthesisPanel]
-
-    style App fill:#0f172a,stroke:#06b6d4
-    style SD fill:#111827,stroke:#f59e0b
-    style DT fill:#111827,stroke:#8b5cf6
-```
-
----
-
-## API Reference
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/` | Health check |
-| GET | `/api/samples` | List analyzed samples |
-| GET | `/api/sample/{sample_id}` | Full analysis report |
-| GET | `/api/sample/{sample_id}/attribution` | MAFIA attribution evidence |
-| GET | `/api/sample/{sample_id}/threat-summary` | Threat summary (glance) |
-| GET | `/api/sample/{sample_id}/dissection` | Full dissection data |
-| GET | `/api/sample/{sample_id}/dissection/{manifest\|permissions\|components\|dex\|classes\|strings}` | Per-tab dissection data |
-| GET | `/api/sample/{sample_id}/code-analysis/{class}` | Method-level code analysis |
-| GET | `/api/graph/{sample_id}` | 3D graph data |
-| GET | `/api/clusters` | Clustering data |
-| GET | `/api/timeline/{sample_id}` | Attack-chain timeline |
-| POST | `/api/upload` | Upload APK for analysis |
-| POST | `/analyze` | Trigger APK analysis |
-| WS | `/ws` | Real-time analysis events |
-
----
-
-## Evaluation
-
-- **405 Android APKs** across 6 sources: AndroZoo-Drebin (149), MalwareBazaar (97), modern_eval (9), AndroZoo (26), abusech (24), F-Droid (100 benign)
-- **Top malware families (corrected GT):** FakeInstaller (25), Opfake (21), Plankton (17), DroidKungFu (16), GinMaster (15), NGate (15), TeaBot (13), Ermac (12), Hydra (11), FakeTikTok (11), BaseBridge (10), FluBot (8)
-- Full metadata in `sample_metadata.csv`
-
-### Indicator False-Positive Validation (Aug 2026)
-
-Every indicator the pipeline auto-extracted from 22 malware samples (380 total) was manually reviewed:
-
-| Classification | Count | Share |
-|----------------|-------|-------|
-| Confirmed malicious (C2 / exfiltration endpoint) | 9 | 2.4% |
-| Suspicious but unverified | 111 | 29% |
-| Clearly benign (Firebase, Google OAuth, CDNs, Mono runtime paths) | 260 | **68%** |
-
-An automated pass over 21 samples (439 indicators) produced the same split: **299 benign (68%), 129 suspicious, 11 malicious**. A domain-legitimacy check of 285 domains landed **68 junk / 134 benign / 75 suspicious / 8 malicious**.
-
-**What this means:** indicator extraction is high-recall, low-precision. The headline "1,711 C2 indicators" is an *extraction* count — only a low single-digit percent survives manual review as genuine C2. Most false positives come from:
-- Legitimate Google infrastructure (Firebase analytics, OAuth client IDs, `*.googleusercontent.com`)
-- CDN/content domains (`i.ytimg.com`, `www.srgb.com`, assoc-amazon)
-- Mono/.NET runtime paths (`*.cc` files) flagged by the "unusual protocol" heuristic
-- `.top`/`.xyz` TLD heuristics hitting parked or sinkholed domains
-
-Raw review data is committed in `evaluation_results/`: `fp_final_report.json`, `fp_validation_auto.json`, `legitimacy_check.json`, `indicators_extracted.json`, `fp_validation_results.json`.
-
-### Family-Identification Accuracy (352-sample validation, Aug 2026)
-
-Exact-match family accuracy against corrected ground truth is **64.2% (226/352)** overall and **68.6% (216/315)** when only specific (non-catch-all) families are counted.
-
-**Why this number is trustworthy:** the ground truth was independently re-verified against VirusTotal (291) and MalwareBazaar (168) — all 459 samples `confirmed_external` — then corrected with an authoritative resolution order (filename prefix → MalwareBazaar signature → GT specific → VT recheck → verified pipeline C2 evidence → MB tags). This replaced the old GT where **48.5%** of labels were catch-alls (AndroidOS, GenericKD, Agent, Banker, Gen, ...) that inflated naive scoring. The old 32.0% figure was measured on that inflated label set; after correction the same engine scored 17.3%, and the upgraded engine below recovered to 64.2%.
-
-**How the engine improved:** three layers work together:
-1. **signature_v3** (hand-written families) — fires on 70 samples at 92.9% precision (65/70; all 5 misses are Plankton false positives).
-2. **knowledge-base matcher** (new) — discriminators mined from the corrected GT (`analysis/family_knowledge_base.json`, 38 families; ≥2 matched tokens + an anchor token at ≤5% corpus FP). Offline mining precision ~95%; 76.3% precision on the re-eval (151/198 fires).
-3. **LLM with candidate guidance** (new prompt) — the context now lists candidate families with their actually-matched signals plus observable evidence strings, turning open recall into a multiple-choice decision. The old prompt showed only string *counts* and refused 63.8% of samples (229/359); with the new prompt the LLM produces a verdict on 84/352 samples while the knowledge base handles the rest.
-
-### Reproducibility (352-sample family validation)
-
-The validation metrics are committed and reproducible with the tooling in the repo:
-
-```bash
-# Re-mine the family knowledge base from corrected GT
-python analysis/mine_family_knowledge.py
-
-# Re-run family identification on cached pipeline results (needs Ollama running)
-python evaluation/reeval_families.py --output-dir evaluation/metrics_v2
-
-# Compute metrics against the corrected ground truth
-python evaluation/metrics_recompute.py \
-    --gt ground_truth_all_corrected.csv \
-    --predictions evaluation/metrics_v2/predictions.json \
-    --output-dir evaluation/metrics_v2
-```
-
-Headline metrics (exact-match family accuracy, corrected ground truth):
-
-| Metric | Value |
-|--------|-------|
-| Overall | 64.2% (226/352) |
-| Specific families only (non-catch-all) | 68.6% (216/315) |
-| High-confidence specific labels | 70.0% (189/270) |
-| Unknown-refusal (GT = `unknown`) | 30.3% (10/33) |
-
-Per source (accuracy on specific families): AndroZoo-Drebin 68.5% (149 specific), MalwareBazaar 77.0% (87), modern_eval 63.8% (47), AndroZoo 83.3% (12), abusech 35.0% (20).
-
-Remaining misses are honest: Opfake/FakeInstaller/FakeChrome leave no observable static signal (opaque obfuscation), and toolkit-shared families (TeaBot↔Hydra↔Ermac↔FluBot) are hard even for human analysts.
-
-### Validation Status
-
-| Criterion | Status |
-|-----------|--------|
-| Methodology documented | ✅ |
-| Threat feeds integrated | ✅ |
-| Code open-source | ✅ |
-| Sample APKs collected | ✅ |
-| Recall on balanced set | ✅ 95% |
-| Speedup verified | ✅ 63x (204 timed samples) |
-| Family-ID accuracy vs ground truth | ✅ measured: 64.2% exact-match (352 samples, corrected GT) |
-| FP rate validation | ✅ measured: 68% of indicators clearly benign, 2.4% confirmed malicious (380 indicators, 22 samples) |
-| Comparative aggregator validation | ⏳ Future work |
-
-## Known Limitations
-
-- **Indicator precision is low**: 68% of auto-extracted indicators are clearly benign strings; only 2.4% were confirmed as genuine C2 in manual review (see [validation](#evaluation)). Heuristics favor recall over precision by design.
-- **Family identification is imperfect**: 64.2% exact-match accuracy on 352-sample corrected ground truth — opaque-obfuscation families (Opfake, FakeChrome) and toolkit-shared families (TeaBot↔Hydra↔Ermac↔FluBot) remain hard; treat family output as advisory.
-- Encrypted native libraries flagged for manual inspection
-- Reflection-heavy obfuscation handled by heuristics (not perfect)
-- C2-blind malware (zero static artifacts) — documented limitation
-
-## Future Work
-
-- **Threat Synthesis Engine:** Multi-sample attribution clustering (Q1 2027)
-- **Dynamic Validation:** Frida-based runtime confirmation of static C2 candidates (Q2 2027)
-- **String decryption correlation:** Cipher.doFinal tracing — expected +5-10% recall
+Full guide: [docs/dashboard-guide.md](docs/dashboard-guide.md).
 
 ---
 
 ## Testing
 
-### Backend (Python)
-
 ```bash
-pytest tests/ -v
+# Backend (CI runs Python 3.10)
+pytest tests/ -q
+pytest tests/ -q -m "not slow"     # skip tests that need JADX or other external tools
+
+# Frontend
+cd frontend && npm test && npm run lint && npm run build
 ```
 
-### Frontend (React)
-
-```bash
-cd frontend
-npm test     # 253 tests across 39 test files, all passing
-```
-
-CI runs both suites on every push and PR.
+CI runs pytest, `ruff check`, and the frontend build on every push and pull request. The Python suite has 966 tests in 72 files. The frontend has 45 test files.
 
 ---
 
-## Project Structure
+## Layout
 
 ```
-backend/          — FastAPI server, threat intel integration, pipeline logic
-frontend/         — React dashboard (Leaflet C2 maps, FamilySignalsCard, threat chains)
-analysis/         — 18-step pipeline (extraction → decoding → correlation → synthesis → report)
-scripts/          — Batch analysis, data collection utilities
-data/             — GeoIP databases, YARA rules
-evaluation_results/ — Committed validation results (FP review, family-ID metrics)
-tests/            — Python backend tests (pytest)
-docs/             — Dashboard guide, codebase reference, superpower plans
+analysis/   18-step pipeline (the source of truth)
+backend/    FastAPI app that reads pipeline output; family attribution
+frontend/   React + Vite dashboard
+droidforensix/  command-line entry points
+scripts/    unpacking, dissection, batch utilities
+evaluation/ evaluation harness and validation scripts
+evaluation_results/ committed validation results
+data/      GeoIP databases, YARA rules, packer markers
+docs/       usage, API, architecture, packers, performance
+tests/      pytest suite
 ```
 
-### Documentation
-
-- **[Usage guide](docs/USAGE.md)** — install, run the dashboard/API/offline pipeline, tests, troubleshooting
-- **[API reference](docs/API.md)** — every REST + WebSocket endpoint, request bodies, exports
-- **[Architecture](docs/ARCHITECTURE.md)** — layers, module map, pipeline, ML artifacts, packer handling
-- **[Packers](docs/PACKERS.md)** — packer matrix, E-code taxonomy, adding new packers
-- **[Performance](docs/PERFORMANCE.md)** — measured baseline, hotspot hunt, pipeline levers
-- **[Dashboard guide](docs/dashboard-guide.md)** — frontend views
-- **[Codebase reference](docs/codebase-reference.md)** — module-by-module tour
+The backend and dashboard only read the pipeline output. Detection logic lives in `analysis/`. Root-level `.py` files such as `batch_classify.py` are one-off research tools, not the product path.
 
 ---
 
-## Environment Variables
+## Documentation
 
-Copy `.env.example` to `.env`:
+- [Usage](docs/USAGE.md): install, run, troubleshoot
+- [API reference](docs/API.md): REST and WebSocket endpoints
+- [Architecture](docs/ARCHITECTURE.md): layers, modules, ML artifacts
+- [Packers](docs/PACKERS.md): packer matrix and how to add one
+- [Performance](docs/PERFORMANCE.md): baseline and hotspots
+- [Codebase reference](docs/codebase-reference.md): module-by-module tour
+
+---
+
+## Configuration
+
+Copy `.env.example` to `.env`. Keys are optional unless you use the matching feature.
+
+| Variable | Purpose |
+|---|---|
+| `NVIDIA_NIM_API_KEY` | NVIDIA NIM LLM backend |
+| `OLLAMA_HOST` | Local Ollama endpoint |
+| `OPENROUTER_API_KEY` | OpenRouter LLM backend |
+| `VT_KEY`, `OTX_KEY`, `SHODAN_KEY`, `CENSYS_TOKEN` | Threat-intel feeds |
+
+Never commit `.env` or paste its values into code or issues.
+
+---
+
+## Responsible use
+
+The pipeline is built to analyze malware safely. It never runs the sample. Still, treat the samples as hostile:
+
+- Work on an isolated machine or VM, and keep APKs out of shared folders.
+- Keep `.env` and the API keys in it out of version control and out of screenshots.
+- Use the outputs for defense, research, and education. Do not use them to build or tune malware.
+
+## Limitations
+
+- **Indicator precision is low.** Heuristics favor recall. Expect most extracted indicators to be benign.
+- **Family attribution is imperfect.** Opaque-obfuscation families (Opfake, FakeChrome) leave few static signals. Toolkit-shared families (TeaBot, Hydra, Ermac, FluBot) are hard to tell apart.
+- **Reflection-heavy and encrypted native code** is handled by heuristics and often needs manual inspection.
+- **C2-blind samples** (no static artifacts) cannot be analyzed statically. This is a known gap.
+
+## Roadmap
+
+- Multi-sample attribution clustering (Threat Synthesis Engine), planned Q1 2027
+- Frida-based runtime confirmation of static C2 candidates, planned Q2 2027
+- Cipher.doFinal tracing for string-decryption correlation
+
+---
+
+## Contributing
+
+Issues and pull requests are welcome. Before opening a PR, run the same checks as CI:
 
 ```bash
-cp .env.example .env
+ruff check analysis backend droidforensix tests
+pytest tests/ -q
+cd frontend && npm test && npm run build
 ```
-
-Key variables:
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `NVIDIA_NIM_API_KEY` | Optional | NVIDIA NIM (preferred LLM backend) |
-| `OLLAMA_HOST` | Optional | Local Ollama endpoint |
-| `OPENROUTER_API_KEY` | Optional | Cloud LLM (Qwen, Gemma) |
-| `VT_KEY` | Optional | VirusTotal API |
-| `OTX_KEY` | Optional | AlienVault OTX |
-| `SHODAN_KEY` | Optional | Shodan host search |
-| `CENSYS_TOKEN` | Optional | Censys Platform API |
-
-### Publication
-
-Read the full article: **"Static Analysis Beats Sandboxing. Here's How I Analyzed 277 Malware Samples in 3.2 Hours."**
-
-Key article sections:
-- The hypothesis: Static analysis extracts infrastructure faster than sandboxing
-- Real findings: Coverage, accuracy, performance metrics (all reproducible)
-- What I got wrong: Mistakes discovered and fixed (LLM bottleneck, heuristic over-optimization)
-- Limitations: Encrypted libraries, reflection obfuscation, C2-blind malware
-- Next: Threat Synthesis Engine (multi-sample attribution, Q1 2027)
-
----
 
 ## License
 
-MIT
+No license has been chosen yet, so there is no LICENSE file in the repository.
