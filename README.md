@@ -6,7 +6,7 @@ Static analysis for Android malware. It pulls command-and-control (C2) infrastru
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python)
 ![React](https://img.shields.io/badge/React-18-blue?logo=react)
 
-- **Live site:** https://droidforensix.vercel.app
+- **Live site:** https://droidforensix.vercel.app (the static dashboard only; analysis needs the backend running locally, see [Quick start](#quick-start))
 - **Author:** [Darshak Patel](https://github.com/DarshakPatel2004) (MSc Digital Forensics, NFSU Delhi)
 
 ---
