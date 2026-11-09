@@ -117,11 +117,16 @@ def shannon_entropy(data: bytes) -> float:
     return entropy
 
 
+# 256-entry lookup: 1 for printable ASCII (plus tab/LF/CR), 0 otherwise.
+# bytes.translate and bytes.count run in C, which keeps XOR brute force fast on large blobs.
+_PRINTABLE_MARK = bytes(1 if (32 <= b <= 126 or b in (9, 10, 13)) else 0 for b in range(256))
+
+
 def is_printable_ratio(data: bytes) -> float:
     """Return ratio of printable ASCII bytes."""
     if not data:
         return 0.0
-    printable = sum(1 for b in data if 32 <= b <= 126 or b in (9, 10, 13))
+    printable = data.translate(_PRINTABLE_MARK).count(b"\x01")
     return printable / len(data)
 
 
@@ -305,6 +310,10 @@ def _has_strong_meaningful_content(text: str) -> bool:
     return False
 
 
+# _XOR_TABLES[key][b] == b ^ key, precomputed once for the 255 keys.
+_XOR_TABLES = [bytes(b ^ key for b in range(256)) for key in range(256)]
+
+
 def xor_brute_force(data: bytes) -> List[Tuple[int, str, float]]:
     """Brute-force XOR keys 1-255, return top candidates with printable ratio.
 
@@ -313,7 +322,7 @@ def xor_brute_force(data: bytes) -> List[Tuple[int, str, float]]:
     """
     candidates = []
     for key in range(1, 256):
-        decrypted = bytes(b ^ key for b in data)
+        decrypted = data.translate(_XOR_TABLES[key])
         ratio = is_printable_ratio(decrypted)
         if ratio >= XOR_PRINTABLE_THRESHOLD:
             try:

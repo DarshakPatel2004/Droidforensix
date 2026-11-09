@@ -51,6 +51,8 @@ class Settings(BaseSettings):
     # On Windows: uses bundled .bat wrappers and .exe binaries.
     # On Linux: apktool via java -jar; die/7z from PATH.
     APKTOOL_PATH: str = str(_APKTOOL_BAT if _IS_WINDOWS else _APKTOOL_JAR)
+    # Seconds per apktool run. 120 s was too short with 4 samples in parallel (93-157 s seen).
+    APKTOOL_TIMEOUT: int = 600
     DIE_PATH: str = str(_DIE_BIN)
     GEOIP_PATH: Path = ROOT_DIR / "data" / "GeoLite2-City.mmdb"
     YARA_RULES_PATH: str = str(ROOT_DIR / "analysis" / "yara_rules.yar")
