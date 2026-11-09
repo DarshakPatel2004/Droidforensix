@@ -63,7 +63,7 @@ def run_apktool(apk_path: str, output_dir: str) -> dict:
         # shell=True routes the list through cmd.exe, where a space-free path
         # containing & | ^ ! would execute as a separate command.
         proc = subprocess.run(
-            cmd, capture_output=True, text=True, timeout=120
+            cmd, capture_output=True, text=True, timeout=settings.APKTOOL_TIMEOUT
         )
         if proc.returncode == 0:
             result["success"] = True
@@ -78,7 +78,7 @@ def run_apktool(apk_path: str, output_dir: str) -> dict:
             )
     except subprocess.TimeoutExpired:
         result["error"] = (
-            f"apktool timed out after 120s on {apk_path}.\n\n"
+            f"apktool timed out after {settings.APKTOOL_TIMEOUT}s on {apk_path}.\n\n"
             f"Options:\n"
             f"  1. Increase APKTOOL_TIMEOUT in config.py (default 120s)\n"
             f"  2. APK is very large or obfuscated — try running apktool manually:\n"
