@@ -5,7 +5,7 @@ import json
 import logging
 from typing import Dict, List, Optional, Set
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Query
 from pydantic import BaseModel
 
 from analysis.custody import read_entries
@@ -15,10 +15,11 @@ from backend.community_intel import get_cached_community_intel
 from backend.config import settings
 from backend.family_id import identify_family
 from backend.obfuscation_view import build_obfuscation_view
-from backend.threat_intel import _is_junk_domain
+from backend.threat_intel import _is_junk_domain, live_lookups_enabled
 from backend.transformers import (
     load_all_results,
     load_result,
+    source_stamp,
     transform_clusters,
     transform_graph,
     transform_samples_list,
@@ -31,11 +32,21 @@ router = APIRouter()
 
 
 @router.get("/api/samples")
-async def api_list_samples() -> dict:
-    """List all analyzed samples with summary fields."""
-    results = load_all_results()
-    samples = transform_samples_list(results)
-    return {"samples": samples, "total": len(samples)}
+async def api_list_samples(
+    q: str = Query("", max_length=200),
+    limit: int = Query(200, ge=1, le=1000),
+) -> dict:
+    """List analyzed samples with summary fields. q matches the hash prefix, file name or family."""
+    samples = transform_samples_list(load_all_results())
+    needle = q.strip().lower()
+    if needle:
+        samples = [
+            s for s in samples
+            if (s.get("sha256") or "").lower().startswith(needle)
+            or needle in (s.get("name") or "").lower()
+            or needle in (s.get("family") or "").lower()
+        ]
+    return {"samples": samples[:limit], "total": len(samples)}
 
 
 @router.get("/api/sample/{sample_id}")
@@ -131,12 +142,14 @@ async def api_get_attribution(sample_id: str) -> dict:
         raise HTTPException(status_code=404, detail="Sample not found")
 
     cache_path = settings.WORK_DIR / sample_id / "attribution_cache.json"
+    # Invalidate when the pipeline result or the family knowledge base changes (audit B2-21).
+    stamp = source_stamp(sample_id)
     if cache_path.exists():
         try:
             with open(cache_path, "r", encoding="utf-8") as f:
                 cached = json.load(f)
             # v4: C2 count drops junk domains; v3 caches hold the old count.
-            if cached.get("schema_version") == 4:
+            if cached.get("schema_version") == 4 and cached.get("source_stamp") == stamp:
                 return cached
         except Exception:
             logger.warning("Failed to read attribution cache for %s, recomputing", sample_id)
@@ -159,6 +172,7 @@ async def api_get_attribution(sample_id: str) -> dict:
         "supporting_signals": supporting_signals,
         "related_samples": related,
         "code_references": _build_code_references(result),
+        "source_stamp": stamp,
     }
 
     try:
@@ -184,6 +198,15 @@ def _unique_c2_indicators(c2_list: list) -> Set[str]:
     return indicators
 
 
+def _matched_c2(domains, baseline):
+    """Domains that match a family baseline pattern.
+
+    Baseline entries are substring patterns (e.g. "adwo.com"), as in family_id, so a subdomain
+    such as "api.adwo.com" must match. Exact set intersection missed these (audit B2-20).
+    """
+    return {d for d in domains if any(pattern in d for pattern in baseline)}
+
+
 def _compute_confidence_breakdown(result: dict, family: str) -> dict:
     """Compute per-dimension confidence scores."""
     # Permissions match: compare the sample's declared permissions against the
@@ -205,7 +228,7 @@ def _compute_confidence_breakdown(result: dict, family: str) -> dict:
     c2_domains = {c.get("domain", "") for c in c2_list if c.get("domain")}
     family_c2s = _family_c2_baseline(family)
     if family_c2s and c2_domains:
-        overlap = len(c2_domains & family_c2s)
+        overlap = len(_matched_c2(c2_domains, family_c2s))
         c2_overlap = round(overlap / len(c2_domains), 2)
     else:
         c2_overlap = 0.0
@@ -275,7 +298,7 @@ def _build_supporting_signals(result: dict, family_data: dict, breakdown: dict) 
         # Same overlap the c2_overlap score uses in _compute_confidence_breakdown.
         family_c2s = _family_c2_baseline(family_data.get("family", "unknown"))
         if family_c2s:
-            c2_match_count = len(c2_indicators & family_c2s)
+            c2_match_count = len(_matched_c2(c2_indicators, family_c2s))
             signals.append(
                 f"{c2_match_count} of {len(c2_indicators)} C2 indicators match the family baseline"
             )
@@ -519,6 +542,9 @@ async def api_get_community_intel(sample_id: str) -> dict:
     Sources: Reddit, Hacker News, DuckDuckGo (all free, no API keys).
     Results are cached in memory for 10 minutes.
     """
+    if not live_lookups_enabled():
+        # Sends the package name and family to third-party search services (audit B1-19).
+        raise HTTPException(status_code=403, detail="Community intel is disabled: set DF_ALLOW_LIVE_LOOKUPS=1")
     result = load_result(sample_id)
     if result is None:
         raise HTTPException(status_code=404, detail="Sample not found")

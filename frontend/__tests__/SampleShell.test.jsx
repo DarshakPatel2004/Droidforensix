@@ -1,5 +1,6 @@
-import { describe, test, expect, vi } from 'vitest'
+import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { apiFetch } from '../src/api/client'
 import SampleList from '../src/components/SampleList'
 import SampleHeader from '../src/components/SampleHeader'
 
@@ -35,6 +36,7 @@ describe('SampleList', () => {
 })
 
 describe('SampleHeader', () => {
+  beforeEach(() => { vi.clearAllMocks() })
   test('shows verdict, family with confidence, analysis and analyst status', async () => {
     render(<SampleHeader sample={{ ...samples[0], severity: 'high', risk_score: 78 }} status="completed" ready apiUrl="http://x" />)
     expect(screen.getByText('completed')).toBeTruthy()
@@ -48,6 +50,7 @@ describe('SampleHeader', () => {
     render(<SampleHeader sample={samples[1]} status="running" ready={false} apiUrl="http://x" />)
     expect(screen.queryByLabelText('Exports')).toBeNull()
     expect(screen.getByText('Not yet scored')).toBeTruthy()
-    expect(screen.getByText('—')).toBeTruthy()
+    expect(screen.getAllByText('—').length).toBe(2)
+    expect(apiFetch).not.toHaveBeenCalled()
   })
 })
