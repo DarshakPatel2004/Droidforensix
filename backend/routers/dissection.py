@@ -407,7 +407,7 @@ async def api_get_string_references(sample_id: str, string_value: str) -> dict:
 
 # Static pattern map: keyword → analyst label
 _STATIC_PATTERN_LABELS: dict = {
-    "invoke": ("reflection", "Dynamic method invocation via reflection"),
+    "method;->invoke": ("reflection", "Reflective Method.invoke() call — target is resolved at runtime"),
     "classloader": ("dynamic_loading", "Runtime class loading — common in dropper/loader malware"),
     "dexclassloader": ("dynamic_loading", "Loads DEX/APK from disk at runtime — strong dropper indicator"),
     "cipher": ("crypto", "Cryptographic operation — check for data encryption/decryption"),
