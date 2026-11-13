@@ -32,6 +32,9 @@ def used_hashes() -> set[str]:
         ROOT / "evaluation" / "classifier_eval_2026-10-23" / "pilot_gt.csv",
         ROOT / "evaluation" / "new_benign_gt.csv",
         ROOT / "evaluation" / "new_malware_fetch.jsonl",
+        ROOT / "evaluation" / "malben_eval" / "manifest.csv",
+        ROOT / "evaluation" / "malben_eval" / "validation_split.csv",
+        ROOT / "evaluation" / "malben_eval" / "train_extra.csv",
     ]:
         if path.suffix == ".jsonl":
             used |= {json.loads(l)["sha256"].lower() for l in path.read_text(encoding="utf-8").splitlines() if l.strip()}

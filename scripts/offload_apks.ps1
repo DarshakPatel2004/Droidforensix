@@ -45,24 +45,32 @@ if ($DryRun) {
 
 New-Item -ItemType Directory -Force -Path $dest, $looseApkDst, $looseZipDst | Out-Null
 
-foreach ($m in $folderMoves) {
-  if (-not (Test-Path $m.src)) { Write-Warning "skip missing $($m.src)"; continue }
-  New-Item -ItemType Directory -Force -Path (Split-Path $m.dst) | Out-Null
-  Move-Item -LiteralPath $m.src -Destination $m.dst
-  Add-Row $m.src $m.dst
-  Write-Host "moved dir: $($m.src)"
-}
+# The manifest is written even if a move fails part-way, so moved files can always be located.
+try {
+  foreach ($m in $folderMoves) {
+    if (-not (Test-Path $m.src)) { Write-Warning "skip missing $($m.src)"; continue }
+    if (Test-Path $m.dst) { Write-Warning "skip, destination exists: $($m.dst)"; continue }
+    New-Item -ItemType Directory -Force -Path (Split-Path $m.dst) | Out-Null
+    Move-Item -LiteralPath $m.src -Destination $m.dst
+    Add-Row $m.src $m.dst
+    Write-Host "moved dir: $($m.src)"
+  }
 
-foreach ($f in (Get-ChildItem $srcMal -File -Filter *.apk)) {
-  Move-Item -LiteralPath $f.FullName -Destination (Join-Path $looseApkDst $f.Name)
-  Add-Row $f.FullName (Join-Path $looseApkDst $f.Name)
+  foreach ($f in (Get-ChildItem $srcMal -File -Filter *.apk)) {
+    $target = Join-Path $looseApkDst $f.Name
+    if (Test-Path $target) { Write-Warning "skip, destination exists: $target"; continue }
+    Move-Item -LiteralPath $f.FullName -Destination $target
+    Add-Row $f.FullName $target
+  }
+  foreach ($f in (Get-ChildItem $srcMal -File -Filter *.zip)) {
+    $target = Join-Path $looseZipDst $f.Name
+    if (Test-Path $target) { Write-Warning "skip, destination exists: $target"; continue }
+    Move-Item -LiteralPath $f.FullName -Destination $target
+    Add-Row $f.FullName $target
+  }
+} finally {
+  $rows | Export-Csv -NoTypeInformation -Path $manifest
 }
-foreach ($f in (Get-ChildItem $srcMal -File -Filter *.zip)) {
-  Move-Item -LiteralPath $f.FullName -Destination (Join-Path $looseZipDst $f.Name)
-  Add-Row $f.FullName (Join-Path $looseZipDst $f.Name)
-}
-
-$rows | Export-Csv -NoTypeInformation -Path $manifest
 Write-Host "manifest: $manifest ($($rows.Count) entries, $([math]::Round((($rows | Measure-Object Size -Sum).Sum)/1GB,2)) GB)"
 
 # Report post-state

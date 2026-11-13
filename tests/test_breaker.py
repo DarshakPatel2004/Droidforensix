@@ -792,7 +792,7 @@ class TestCli:
         proc = subprocess.run(
             [sys.executable, "scripts/breaker.py", "--input", str(tmp_path), "--out", str(out),
              "--attempts-cap", "50"],
-            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True,
+            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True, timeout=120,
         )
         assert proc.returncode == 0, proc.stderr
         summary = json.loads(proc.stdout)
@@ -814,7 +814,7 @@ class TestCli:
         out = tmp_path / "out"
         proc = subprocess.run(
             [sys.executable, "scripts/breaker.py", "--input", str(tmp_path), "--out", str(out)],
-            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True,
+            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True, timeout=120,
         )
         assert proc.returncode == 0, proc.stderr
         summary = json.loads(proc.stdout)
@@ -830,7 +830,7 @@ class TestCli:
         out = tmp_path / "out"
         proc = subprocess.run(
             [sys.executable, "scripts/breaker.py", "--input", str(apk), "--out", str(out)],
-            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True,
+            cwd=str(Path(__file__).resolve().parent.parent), capture_output=True, text=True, timeout=120,
         )
         assert proc.returncode == 0, proc.stderr
         summary = json.loads(proc.stdout)

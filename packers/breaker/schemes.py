@@ -110,7 +110,7 @@ def decrypt(scheme: Scheme, data: bytes) -> bytes:
         return _rc4(key, data)
     if scheme.cipher == "java-lcg":
         keystream = JavaRandom(int(scheme.seed)).keystream(len(data))
-        return bytes(a ^ b for a, b in zip(data, keystream))
+        return bytes(a ^ b for a, b in zip(data, keystream, strict=True))
     raise ValueError(f"unknown cipher {scheme.cipher!r}")
 
 

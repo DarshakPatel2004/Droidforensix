@@ -1,7 +1,7 @@
 """
 DroidForensix Analysis Pipeline Orchestrator
 
-Coordinates the 9-step analysis pipeline:
+Coordinates the 18-step analysis pipeline:
 1. APK Extraction
 2. String Enumeration
 3. Encoding Detection
@@ -15,6 +15,7 @@ Coordinates the 9-step analysis pipeline:
 Emits unified progress events for real-time frontend updates.
 """
 
+import contextvars
 import json
 import logging
 import threading
@@ -154,9 +155,14 @@ def _emit(emitter: EventEmitter, event_type: str, data: dict):
 CACHE_META_NAME = "pipeline_meta.json"
 
 
+# Bump when step logic changes, so cached results from older code are not served (audit A1-24).
+PIPELINE_VERSION = "2026-11-12.2"  # bumped: closure fixes (A1-32 exfiltration group, A2-M12 PKCS#7 certs, A2-L1/L2/L5/L12/L13, step11 cluster cap)
+
+
 def _cache_signature(apk_path: Path, apk_size: int, stop_after: int, skip_steps: frozenset) -> dict:
     """Snapshot key for a cached pipeline result (validates it is reusable)."""
     return {
+        "pipeline_version": PIPELINE_VERSION,
         "apk_size": apk_size,
         "apk_mtime_ns": apk_path.stat().st_mtime_ns,
         "stop_after": stop_after,
@@ -244,9 +250,14 @@ def _estimate_remaining_eta(apk_size: int, remaining_steps: int) -> float:
     return remaining_steps * avg_per_step
 
 
+# Absolute deadline of the running pipeline (time.time() value). Every step is capped by it,
+# so no step can run past pipeline_timeout (audit A1-17).
+_pipeline_deadline: contextvars.ContextVar = contextvars.ContextVar("pipeline_deadline", default=None)
+
+
 def _run_step(step_num: int, sample_id: str, apk_size: int,
               global_start: float, emitter: EventEmitter,
-              work_dir: str, func, *args, **kwargs):
+              work_dir: str, func, *args):
     """
     Run a pipeline step, emit step_started/step_completed, and return result.
     """
@@ -262,6 +273,12 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
 
     step_start = time.time()
     timeout = STEP_TIMEOUTS.get(step_num, 120)
+    deadline = _pipeline_deadline.get()
+    if deadline is not None:
+        remaining = deadline - step_start
+        if remaining <= 0:
+            raise PipelineError(f"Pipeline budget exhausted before step {step_num} ({step_name}).")
+        timeout = min(timeout, remaining)
     try:
         result = run_with_timeout(func, args, timeout, step_name)
     except TimeoutError as exc:
@@ -332,6 +349,51 @@ def _run_step(step_num: int, sample_id: str, apk_size: int,
     return result, round(step_duration, 3)
 
 
+def _base_result(
+    sample_id, extraction, strings_result, secrets_result, encodings_result,
+    payloads_result, c2_result, chains_result, timeline, master_key_result, apk_path,
+):
+    """Result fields shared by the classifier early exit and the full pipeline path."""
+    manifest = extraction.get("manifest_info", {}) or {}
+    return {
+        "sample_id": sample_id,
+        "metadata": {
+            "sample_name": extraction["sample_name"],
+            "file_size_bytes": extraction["file_size_bytes"],
+            "sha256": extraction["sha256"],
+            "md5": extraction["md5"],
+            "package_name": extraction["package_name"],
+            "package": extraction["package_name"],
+            "apk_path": str(apk_path),
+        },
+        "extraction": {
+            "apktool_success": extraction["apktool_success"],
+            "errors": extraction.get("errors", []),
+            "native_libs_found": extraction["native_libs_found"],
+            "decompiled_classes": extraction["decompiled_classes"],
+            "crypter_stub": extraction.get("crypter_stub", False),
+            "extraction_status": extraction.get("extraction_status", "ok"),
+            "total_strings_extracted": strings_result["total_strings"],
+        },
+        "manifest": {
+            "version_name": manifest.get("version_name"),
+            "version_code": manifest.get("version_code"),
+            "target_sdk_version": manifest.get("target_sdk_version"),
+            "min_sdk_version": manifest.get("min_sdk_version"),
+            "uses_permissions": manifest.get("uses_permissions", []),
+        },
+        "strings": strings_result["categories"],
+        "hardcoded_secrets": secrets_result["hardcoded_secrets"],
+        "secret_risk": secrets_result["secret_risk"],
+        "encodings": encodings_result["encodings"],
+        "payloads": payloads_result["payloads"],
+        "c2_infrastructure": c2_result["c2_infrastructure"],
+        "threat_chains": chains_result["threat_chains"],
+        "timeline": timeline,
+        "master_key": master_key_result,
+    }
+
+
 def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
                  event_emitter: EventEmitter = None,
                  pipeline_timeout: int = 600,
@@ -356,6 +418,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     """
     work_dir = str(work_dir) if work_dir else str(settings.WORK_DIR)
     global_start = time.time()
+    _pipeline_deadline.set(global_start + pipeline_timeout)
     timeline = {}
     apk_size = Path(apk_path).stat().st_size
 
@@ -379,7 +442,8 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
 
     step_start = time.time()
     try:
-        extraction = extract_apk(apk_path, work_dir)
+        # Bounded like every other step: Androguard has no internal timeout (audit A1-25).
+        extraction = run_with_timeout(extract_apk, (apk_path, work_dir), STEP_TIMEOUTS[1], STEP_NAMES[1])
     except Exception as e:
         _emit(event_emitter, "error", {
             "sample_id": None,
@@ -444,7 +508,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
             f"Options:\n"
             f"  1. Increase pipeline_timeout (default 600s) in run_pipeline() call\n"
             f"  2. Use stop_after=N to run only the first N steps\n"
-            f"  3. Use skip_steps=frozenset({...}) to skip slow optional steps"
+            f"  3. Use skip_steps=frozenset({{3}}) to skip slow optional steps"
         )
 
     _validate_step_input("Step 2 input", extraction, ["sample_id", "package_name", "apktool_output_dir"])
@@ -675,45 +739,11 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     if stop_after <= 6:
         duration = round(time.time() - global_start, 3)
         timeline["total"] = duration
-        manifest = extraction.get("manifest_info", {}) or {}
-        result = {
-            "sample_id": sample_id,
-            "metadata": {
-                "sample_name": extraction["sample_name"],
-                "file_size_bytes": extraction["file_size_bytes"],
-                "sha256": extraction["sha256"],
-                "md5": extraction["md5"],
-                "package_name": extraction["package_name"],
-                "package": extraction["package_name"],
-                "apk_path": str(apk_path),
-            },
-            "extraction": {
-                "apktool_success": extraction["apktool_success"],
-                "errors": extraction.get("errors", []),
-                "native_libs_found": extraction["native_libs_found"],
-                "decompiled_classes": extraction["decompiled_classes"],
-                "crypter_stub": extraction.get("crypter_stub", False),
-                "extraction_status": extraction.get("extraction_status", "ok"),
-                "total_strings_extracted": strings_result["total_strings"],
-            },
-            "manifest": {
-                "version_name": manifest.get("version_name"),
-                "version_code": manifest.get("version_code"),
-                "target_sdk_version": manifest.get("target_sdk_version"),
-                "min_sdk_version": manifest.get("min_sdk_version"),
-                "uses_permissions": manifest.get("uses_permissions", []),
-            },
-            "strings": strings_result["categories"],
-            "hardcoded_secrets": secrets_result["hardcoded_secrets"],
-            "secret_risk": secrets_result["secret_risk"],
-            "encodings": encodings_result["encodings"],
-            "payloads": payloads_result["payloads"],
-            "c2_infrastructure": c2_result["c2_infrastructure"],
-            "threat_chains": chains_result["threat_chains"],
-            "timeline": timeline,
-            "master_key": master_key_result,
-            "stop_after": stop_after,
-        }
+        result = _base_result(
+            sample_id, extraction, strings_result, secrets_result, encodings_result,
+            payloads_result, c2_result, chains_result, timeline, master_key_result, apk_path,
+        )
+        result["stop_after"] = stop_after
         from backend.transformers import _strip_surrogates
         result = _strip_surrogates(result)
         result_path = Path(work_dir) / sample_id / "pipeline_result.json"
@@ -797,6 +827,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
                 "confidence": 0.0,
             }
         except Exception as e:
+            logger.exception("LLM assessment crashed; returning an error verdict")
             return {
                 "severity": "low",
                 "risk_score": 0,
@@ -812,46 +843,12 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     )
 
     # Build result dict
-    manifest = extraction.get("manifest_info", {}) or {}
-    result = {
-        "sample_id": sample_id,
-        "metadata": {
-            "sample_name": extraction["sample_name"],
-            "file_size_bytes": extraction["file_size_bytes"],
-            "sha256": extraction["sha256"],
-            "md5": extraction["md5"],
-            "package_name": extraction["package_name"],
-            "package": extraction["package_name"],
-            "apk_path": str(apk_path),
-        },
-        "extraction": {
-            "apktool_success": extraction["apktool_success"],
-            "errors": extraction.get("errors", []),
-            "native_libs_found": extraction["native_libs_found"],
-            "decompiled_classes": extraction["decompiled_classes"],
-            "crypter_stub": extraction.get("crypter_stub", False),
-            "extraction_status": extraction.get("extraction_status", "ok"),
-            "total_strings_extracted": strings_result["total_strings"],
-        },
-        "manifest": {
-            "version_name": manifest.get("version_name"),
-            "version_code": manifest.get("version_code"),
-            "target_sdk_version": manifest.get("target_sdk_version"),
-            "min_sdk_version": manifest.get("min_sdk_version"),
-            "uses_permissions": manifest.get("uses_permissions", []),
-        },
-        "strings": strings_result["categories"],
-        "hardcoded_secrets": secrets_result["hardcoded_secrets"],
-        "secret_risk": secrets_result["secret_risk"],
-        "encodings": encodings_result["encodings"],
-        "payloads": payloads_result["payloads"],
-        "c2_infrastructure": c2_result["c2_infrastructure"],
-        "threat_chains": chains_result["threat_chains"],
-        "llm_assessment": llm_assessment,
-        "obfuscation_analysis": obfuscation_result,
-        "timeline": timeline,
-        "master_key": master_key_result,  # Phase 0: MASTER_KEY + KT triage/oracle (accuracy wire)
-    }
+    result = _base_result(
+        sample_id, extraction, strings_result, secrets_result, encodings_result,
+        payloads_result, c2_result, chains_result, timeline, master_key_result, apk_path,
+    )
+    result["llm_assessment"] = llm_assessment
+    result["obfuscation_analysis"] = obfuscation_result
 
     # Early exit for mal/ben only (stop_after <= 8): skip family + forensics
     if stop_after <= 8:
@@ -906,6 +903,7 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
                 }
             return identify_family(sample_id, result, use_llm=True, use_cache=True)
         except Exception as e:
+            logger.exception("Family identification crashed; returning method=error")
             return {
                 "family": "unknown",
                 "confidence": 0.0,
@@ -927,10 +925,11 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     )
 
     # Step 11: String Entropy & Clustering
+    # Step 2 stores each category as a list of {"category", "value", ...} dicts; steps 11 and 14 need plain strings.
     all_strings = []
     for cat in strings_result.get("categories", {}).values():
         if isinstance(cat, list):
-            all_strings.extend(cat)
+            all_strings.extend(s["value"] if isinstance(s, dict) else s for s in cat)
         elif isinstance(cat, dict):
             all_strings.extend(cat.get("values", cat.get("strings", [])))
     string_cluster_result, timeline["step11"] = _run_step(
@@ -957,8 +956,9 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
     )
 
     # Step 15: Reflective Permission Correlation
+    manifest = extraction.get("manifest_info", {}) or {}
     manifest_perms = manifest.get("uses_permissions", [])
-    reflective_calls_list = reflective_result.get("reflective_calls", [])
+    reflective_calls_list = reflective_result.get("sensitive_targets", [])  # carries resolved_class
     permission_result, timeline["step15"] = _run_step(
         15, sample_id, apk_size, global_start, event_emitter, work_dir,
         correlate_reflective_permission_usage, manifest_perms, reflective_calls_list

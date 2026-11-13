@@ -22,9 +22,8 @@ import csv
 import hashlib
 import json
 import re
-import sys
 import time
-from collections import Counter, OrderedDict
+from collections import Counter
 from pathlib import Path
 
 import requests
@@ -136,7 +135,7 @@ def save_cache(cache: dict):
 
 
 def mb_query(sha256: str) -> dict:
-    """Query MalwareBazaar. Returns family/tags/vt_score or {} if absent."""
+    """Query MalwareBazaar. Returns family/tags/vt_score, {} if absent, or {"error": ...} on failure."""
     if not MB_API_KEY:
         return {}
     try:
@@ -156,8 +155,13 @@ def mb_query(sha256: str) -> dict:
                     "vt_detections": info.get("vt_score", 0),
                     "tags": info.get("tags", []),
                 }
+            if data.get("query_status") in ("ok", "hash_not_found", "no_results"):
+                return {}
+            return {"error": str(data.get("query_status", "unknown"))}
+        return {"error": f"http {resp.status_code}"}
     except Exception as e:
         print(f"  [MB ERR] {sha256[:16]}: {e}")
+        return {"error": str(e)[:200]}
     return {}
 
 
@@ -176,7 +180,7 @@ def vt_query(sha256: str) -> dict:
         if resp.status_code == 429:
             print(f"  [VT] rate-limited on {sha256[:16]}, waiting 60s")
             time.sleep(60)
-            return {}
+            return {"error": "rate_limited"}
         resp.raise_for_status()
         attrs = resp.json().get("data", {}).get("attributes", {})
         stats = attrs.get("last_analysis_stats", {})
@@ -207,24 +211,33 @@ def vt_query(sha256: str) -> dict:
         }
     except Exception as e:
         print(f"  [VT ERR] {sha256[:16]}: {e}")
-    return {}
+        return {"error": str(e)[:200]}
 
 
 def recheck_sample(sha256: str, cache: dict) -> dict:
     """Recheck one sha256, using cache first. Returns the result dict."""
     if sha256 in cache:
         return cache[sha256]
+    # Failed lookups are returned but never cached, so the next run retries them.
+    failures = []
     result = mb_query(sha256)
-    if result:
+    if result.get("error"):
+        failures.append(f"mb: {result['error']}")
+    elif result:
         cache[sha256] = result
         save_cache(cache)
         return result
     time.sleep(MB_RATE_LIMIT_SEC)
+    time.sleep(VT_RATE_LIMIT_SEC)  # VT free tier is 4 requests per minute
     result = vt_query(sha256)
-    if result:
+    if result.get("error"):
+        failures.append(f"vt: {result['error']}")
+    elif result:
         cache[sha256] = result
         save_cache(cache)
         return result
+    if failures:
+        return {"engine": "none", "error": "; ".join(failures)}
     cache[sha256] = {"engine": "none", "not_found": True}
     save_cache(cache)
     return cache[sha256]
@@ -317,7 +330,9 @@ def apply_recheck(report: list, cache: dict, recheck_all: bool):
         row["recheck_engine"] = res.get("engine", "")
         row["recheck_family"] = res.get("family", "")
         row["recheck_vt_detections"] = res.get("vt_detections", "")
-        if res.get("not_found"):
+        if res.get("error"):
+            row["recheck_note"] = "lookup_failed"
+        elif res.get("not_found"):
             row["recheck_note"] = "not_found_in_threat_intel"
         elif res.get("engine"):
             row["recheck_note"] = "confirmed_external"

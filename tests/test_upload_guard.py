@@ -30,6 +30,13 @@ def test_traversal_filename_rejected_by_guard():
     assert exc_info.value.status_code == 400
 
 
+@pytest.mark.parametrize("filename", ["..\\escape.apk", "sub\\file.apk"])
+def test_backslash_filename_rejected_on_every_os(filename):
+    with pytest.raises(HTTPException) as exc_info:
+        _resolve_upload_path(filename)
+    assert exc_info.value.status_code == 400
+
+
 def test_upload_traversal_filename_writes_nothing_outside_uploads():
     uploads_root = settings.UPLOADS_DIR.resolve()
     # Unique body so the module-level SHA-256 dedup map cannot short-circuit the write.
@@ -45,3 +52,11 @@ def test_upload_traversal_filename_writes_nothing_outside_uploads():
     assert all(uploads_root in p.parents for p in written)
     upload_id = response.json()["upload_id"]
     assert (uploads_root / upload_id / "file.apk").read_bytes() == body
+
+
+@pytest.mark.parametrize("filename", ["victim-upload/file.apk", "a/b.apk"])
+def test_subdirectory_filename_rejected(filename):
+    # B2-06: "<upload_id>/file.apk" used to overwrite another upload's file.
+    with pytest.raises(HTTPException) as exc_info:
+        _resolve_upload_path(filename)
+    assert exc_info.value.status_code == 400

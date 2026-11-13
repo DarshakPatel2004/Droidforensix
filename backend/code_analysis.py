@@ -133,8 +133,41 @@ _CALL_PATTERN = re.compile(r"(?:this\.)?(\w+)\s*\(")
 _CONTROL_NAMES = {"if", "for", "while", "switch", "catch", "synchronized", "try", "finally", "return"}
 
 
+# Androguard disassembly (dissection._disassemble_class_from_androguard): a four-space-indented
+# header "    [flags ]name(descriptor)ret {", instruction lines, and a closing "    }".
+_DISASM_HEADER = re.compile(
+    r"^    (?:(?:public|private|protected|static|final|native|synchronized|abstract)\s+)*"
+    r"([\w$<>]+)\([^)]*\)\S*\s*\{\s*$"
+)
+
+
+def _parse_disassembly_methods(source: str) -> List[Dict[str, Any]]:
+    lines = source.split("\n")
+    methods = []
+    i = 0
+    while i < len(lines):
+        header = _DISASM_HEADER.match(lines[i])
+        if not header:
+            i += 1
+            continue
+        end = i + 1
+        while end < len(lines) and lines[end] != "    }":
+            end += 1
+        methods.append({
+            "name": header.group(1),
+            "body": "\n".join(lines[i + 1:end]),
+            "start_line": i + 1,
+            "end_line": end + 1,
+        })
+        i = end + 1
+    return methods
+
+
 def _parse_method_bodies(source: str) -> List[Dict[str, Any]]:
-    """Parse Java method declarations and bodies from source code."""
+    """Parse methods from androguard disassembly, or from Java source as a fallback."""
+    disasm = _parse_disassembly_methods(source)
+    if disasm:
+        return disasm
     methods = []
     for match in _METHOD_PATTERN.finditer(source):
         name = match.group(1)
@@ -308,7 +341,7 @@ class CodeAnalyzer:
         self.sample_id = sample_id
         self.work_dir = work_dir
         self.dissector = APKDissector(
-            apk_path, work_dir=work_dir, cache=cache or None,
+            apk_path, work_dir=work_dir, cache=cache or None, sample_id=sample_id,
         )
         self._all_classes: Optional[List[Dict[str, Any]]] = None
 

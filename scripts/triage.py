@@ -47,6 +47,7 @@ BIG_ASSET_MIN = 100 * 1024
 PAYLOAD_MIN = 1024 * 1024
 TEXT_BIG_MIN = 256 * 1024
 STUB_DEX_MAX = 300 * 1024
+MAX_MEMBER_BYTES = 128 * 1024 * 1024   # one archive member read into memory (audit P13)
 
 WEIGHTS = {"H1": 0.30, "H2": 0.15, "H3": 0.20, "H4": 0.15, "H6": 0.20}
 # Calibration (M0 locklist run 2026-08-26): max clean-side score = 0.30,
@@ -157,6 +158,9 @@ def _open_member(zf, name):
     time and the caller records them via ZIP_UNREADABLE_ERRORS.
     """
     info = zf.getinfo(name) if isinstance(name, str) else name
+    if info.file_size > MAX_MEMBER_BYTES:
+        # reported as unreadable (ZIP_UNREADABLE_ERRORS): never inflated into memory (audit P13)
+        raise zipfile.BadZipFile(f"{info.filename}: {info.file_size} bytes exceeds cap")
     if info.flag_bits & 0x1:
         info.flag_bits &= ~0x1
     return zf.open(info)

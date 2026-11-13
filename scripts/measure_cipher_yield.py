@@ -10,10 +10,16 @@ Usage: python scripts/measure_cipher_yield.py <apks.txt> <out.json>
 
 import json
 import logging
+import shutil
 import sys
+import tempfile
 import time
 import traceback
 from pathlib import Path
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 logging.disable(logging.CRITICAL)
 try:
@@ -23,13 +29,12 @@ try:
 except Exception:
     pass
 
+from analysis.cipher_tracing import trace_cipher_in_apk
 from analysis.step1_apk_extraction import extract_apk
 from analysis.step2_string_enumeration import enumerate_strings
 from analysis.step3_encoding_detection import detect_encoding
 from analysis.step4_decoding import decode_payloads
 from analysis.step5_c2_extraction import extract_c2_infrastructure
-from analysis.cipher_tracing import trace_cipher_in_apk
-from backend.config import settings
 
 
 def measure_one(apk_path: str, work_dir: str) -> dict:
@@ -38,7 +43,6 @@ def measure_one(apk_path: str, work_dir: str) -> dict:
     extraction = extract_apk(apk_path, work_dir)
     strings_result = enumerate_strings(extraction)
     encodings_result = detect_encoding(strings_result)
-    base_ids = {e["encoding_id"] for e in encodings_result.get("encodings", [])}
 
     # Baseline: steps 4-5 without cipher encodings.
     base_payloads = decode_payloads(encodings_result)
@@ -93,6 +97,7 @@ def main() -> None:
     results = []
     if out_file.exists():
         results = json.loads(out_file.read_text(encoding="utf-8"))
+    results = [r for r in results if "error" not in r]  # errored samples are retried
     done = {r["sample"] for r in results}
 
     for apk in apks:
@@ -100,14 +105,17 @@ def main() -> None:
         if name in done:
             print(f"SKIP {name}", flush=True)
             continue
+        work_dir = tempfile.mkdtemp(prefix="cipher_yield_")  # keep step1 output out of analysis/work
         try:
-            record = measure_one(apk, str(settings.WORK_DIR))
+            record = measure_one(apk, work_dir)
         except Exception as exc:
             record = {
                 "sample": name,
                 "error": f"{type(exc).__name__}: {exc}",
                 "trace": traceback.format_exc()[-500:],
             }
+        finally:
+            shutil.rmtree(work_dir, ignore_errors=True)
         results.append(record)
         out_file.write_text(json.dumps(results, indent=2), encoding="utf-8")
         print(

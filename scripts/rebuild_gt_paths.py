@@ -15,6 +15,7 @@ are dropper flag-lies, not encryption.
 """
 
 import csv
+import os
 import pathlib
 import zipfile
 
@@ -121,10 +122,12 @@ def main() -> int:
                 unresolved.append((sha[:12], row.get("apk_path", "")[:70]))
             kept.append(row)
 
-        with path.open("w", newline="", encoding="utf-8") as f:
+        tmp = path.with_suffix(path.suffix + ".tmp")  # atomic: a crash never truncates the GT file
+        with tmp.open("w", newline="", encoding="utf-8") as f:
             writer = csv.DictWriter(f, fieldnames=fieldnames, lineterminator="\r\n")
             writer.writeheader()
             writer.writerows(kept)
+        os.replace(tmp, path)
 
         n_enc = sum(1 for r in kept if r.get("source") == "modern_eval")
         print(

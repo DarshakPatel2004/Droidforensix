@@ -24,15 +24,17 @@ import sys
 import time
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Callable, Dict, List, Optional
+from typing import Any, Dict, List, Optional
 
 # Ensure project root is in path
-sys.path.insert(0, str(Path(__file__).parent))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
+from analysis.hardcoded_secrets import (
+    analyze_hardcoded_secrets,
+    format_for_report,
+)
 from backend.config import settings
-from droidforensix_llm import LLMVerifier, get_verifier, set_verifier
-from analysis.hardcoded_secrets import analyze_hardcoded_secrets, classify_risk, format_for_report
-
+from droidforensix_llm import LLMVerifier, get_verifier
 
 # ---------------------------------------------------------------------------
 # Constants
@@ -546,8 +548,8 @@ def _androguard_deep_analysis(apk_path: str):
         anti_analysis["emulator_detection"] = any(
             k in all_strings_lower for k in ["emulator", "qemu", "genymotion", "goldfish"]
         )
-        anti_analysis["root_detection"] = any(
-            k in all_strings_lower for k in ["su", "superuser", "magisk", "/system/xbin/su"]
+        anti_analysis["root_detection"] = bool(re.search(r"su", all_strings_lower)) or any(
+            k in all_strings_lower for k in ["superuser", "magisk"]
         )
         anti_analysis["debugger_detection"] = any(
             k in all_strings_lower for k in ["frida", "xposed", "substrate"]
@@ -877,9 +879,9 @@ def stage_3_dns_enrichment(
 def _circl_pdns_query(query: str) -> Dict[str, Any]:
     """Query CIRCL pDNS for historical DNS records."""
     try:
-        from backend.circl_client import CIRCLClient, CIRCLAuthError
+        from backend.circl_client import CIRCLClient
         client = CIRCLClient()
-        records = client.query_pdns(query)
+        records = client.pdns_query(query).get("records", [])
         return {
             "query": query,
             "record_count": len(records) if records else 0,
@@ -906,14 +908,16 @@ def _live_dns_enrichment(ip: str) -> Dict[str, Any]:
         "timestamp": datetime.now(timezone.utc).isoformat(),
     }
 
-    # Reverse DNS
+    # Live lookups are opt-in: they contact malware-derived IPs from the analyst's real address.
+    if os.environ.get("DF_ALLOW_PORT_SCAN") != "1":
+        return result
+
     try:
         hostname, _, _ = socket.gethostbyaddr(ip)
         result["reverse_dns"] = hostname
     except Exception:
         pass
 
-    # Port scanning (common C2 ports)
     for port in [80, 443, 8080, 8443]:
         try:
             sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -1038,7 +1042,7 @@ def stage_5_consolidation(
     # Aggregate all LLM verdicts
     verdicts = []
     for stage_data in [stage0, stage1, stage2, stage3, stage4]:
-        for key, val in stage_data.items():
+        for _key, val in stage_data.items():
             if isinstance(val, dict):
                 llm_v = val.get("llm_verification", {})
                 if llm_v.get("is_malicious") is not None:
@@ -1124,7 +1128,8 @@ def stage_5_consolidation(
     }
 
     # Save JSON report
-    report_dir = Path(work_dir) / "forensic_report"
+    apk_sha256 = hashlib.sha256(Path(apk_path).read_bytes()).hexdigest()
+    report_dir = Path(work_dir) / apk_sha256 / "forensic_report"
     report_dir.mkdir(parents=True, exist_ok=True)
 
     json_path = report_dir / "forensic_report.json"
@@ -1238,7 +1243,7 @@ def run_forensic_pipeline(
 
     pipeline_start = time.time()
     print("=" * 70)
-    print(f"  DroidForensix 6-Stage Forensic Pipeline")
+    print("  DroidForensix 6-Stage Forensic Pipeline")
     print(f"  APK: {apk_path}")
     print(f"  Work Dir: {work_dir}")
     print(f"  LLM: {'enabled' if llm.is_ready() else 'disabled'}")

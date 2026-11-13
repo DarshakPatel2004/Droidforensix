@@ -1,3 +1,5 @@
+from pathlib import Path
+
 from analysis.step12_reflective_tracing import (
     REFLECTION_PATTERNS,
     SENSITIVE_API_MAP,
@@ -26,7 +28,14 @@ class TestFindReflectiveCalls:
         )
         apk_info = {"extracted_path": str(tmp_path)}
         result = find_reflective_calls(apk_info)
-        assert "reflective_calls" in result
+        # Only the const-string + Class.forName pattern matches this fixture.
+        assert result["total_reflective_calls"] == 1
+        call = result["reflective_calls"][0]
+        assert call["target"] == "android.telephony.SmsManager"
+        assert call["file"] == str(Path("sources") / "Test.smali")
+        assert call["line"] == 1
+        assert result["total_sensitive"] == 1
+        assert result["sensitive_targets"][0]["resolved_class"] == "android.telephony.SmsManager"
 
     def test_missing_extracted_path(self):
         result = find_reflective_calls({"work_dir": ""})

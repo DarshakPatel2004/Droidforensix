@@ -51,8 +51,9 @@ def test_jwt_token_matches_and_decodes():
     findings = scan_strings([{"value": token, "source": "T.java:1"}])
     assert any(f["secret_type"] == "jwt_token" for f in findings)
     jwt_f = next(f for f in findings if f["secret_type"] == "jwt_token")
-    if "decoded" in jwt_f:
-        assert "John" in jwt_f["decoded"] or "Doe" in jwt_f["decoded"]
+    # Fails today: scan_strings truncates the match to 80 chars before decoding,
+    # so the 128-char token never decodes. See auto_decode_secret for the full token.
+    assert "John Doe" in jwt_f["decoded"]
 
 
 def test_bearer_token_matches():
@@ -211,10 +212,21 @@ def test_scan_source_files_skips_placeholders(tmp_path):
 def test_dedup_same_secret_multiple_locations():
     findings = scan_strings([
         {"value": "AKIA1111111111111111", "source": "A.java:1"},
-        {"value": "AKIA2222222222222222", "source": "B.java:2"},
+        {"value": "AKIA1111111111111111", "source": "B.java:2"},
     ])
     aws = [f for f in findings if f["secret_type"] == "aws_access_key"]
-    assert len(aws) == 2
+    assert len(aws) == 1
+
+
+def test_dedup_same_secret_keeps_every_location():
+    # Fails today: scan_strings skips a repeated literal before _dedup_and_enrich,
+    # so the second source never reaches the aggregated locations list.
+    findings = scan_strings([
+        {"value": "AKIA1111111111111111", "source": "A.java:1"},
+        {"value": "AKIA1111111111111111", "source": "B.java:2"},
+    ])
+    aws = next(f for f in findings if f["secret_type"] == "aws_access_key")
+    assert [loc["source"] for loc in aws["locations"]] == ["A.java:1", "B.java:2"]
 
 
 def test_dedup_different_secrets_separate():
@@ -223,7 +235,7 @@ def test_dedup_different_secrets_separate():
         {"value": "AKIA2222222222222222", "source": "B.java:2"},
     ])
     ak = [f for f in findings if f["secret_type"] == "aws_access_key"]
-    assert len(ak) == 2
+    assert {f["value"] for f in ak} == {"AKIA1111111111111111", "AKIA2222222222222222"}
 
 
 def test_high_entropy_strings():
@@ -271,7 +283,8 @@ def test_format_for_report_no_findings():
 def test_format_for_report_with_findings():
     findings = [{"secret_type": "aws_access_key", "severity": "high", "value": "AKIA1234567890123456", "source": "T.java"}]
     report = format_for_report(findings)
-    assert "AWS Access Key ID" in report or "aws_access_key" in report or "AKIA" in report
+    assert "- [aws_access_key] AKIA1234567890123456 (T.java)" in report
+    assert report.startswith("## Hardcoded Secrets (1 findings)")
 
 
 def test_auto_decode_jwt():
@@ -280,14 +293,12 @@ def test_auto_decode_jwt():
     sig = "SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
     token = f"{imports}.{payload}.{sig}"
     decoded = auto_decode_secret("jwt_token", token)
-    assert decoded is not None
+    assert '"name": "John Doe"' in decoded
 
 
 def test_auto_decode_base64():
-    raw = "aHR0cHM6Ly9leGFtcGxlLmNvbS9wYXRo"
-    decoded = auto_decode_secret("generic", raw)
-    if decoded:
-        assert "example.com" in decoded
+    raw = "VGhlIHF1aWNrIGJyb3duIGZveCBqdW1wcyBvdmVyIHRoZSBsYXp5IGRvZw=="
+    assert auto_decode_secret("generic", raw) == "The quick brown fox jumps over the lazy dog"
 
 
 def test_auto_decode_connection_string():
@@ -351,3 +362,10 @@ def test_github_old_token_entropy_filtered():
     low_entropy = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
     findings = scan_strings([{"value": low_entropy, "source": "T.java:1"}])
     assert all(f["secret_type"] != "github_old_token" for f in findings)
+
+
+def test_jwt_with_invalid_base64_segment_does_not_crash():
+    # Middle segment length % 4 == 1 is invalid base64; used to raise UnboundLocalError.
+    from analysis.hardcoded_secrets import _decode_jwt
+
+    assert _decode_jwt("eyJhbGciOiJIUzI1.eyJzdWIiOiIxM.abcdefghijklmn") is None

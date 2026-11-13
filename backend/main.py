@@ -4,6 +4,7 @@ DroidForensix FastAPI Backend
 Provides REST API and WebSocket endpoint for real-time analysis streaming.
 """
 
+import asyncio
 import json
 import logging
 import os
@@ -81,7 +82,7 @@ async def lifespan(app: FastAPI):
     settings.UPLOADS_DIR.mkdir(parents=True, exist_ok=True)
     
     # Ensure Ollama is running (required for LLM-based features)
-    ensure_ollama_running()
+    await asyncio.to_thread(ensure_ollama_running)  # blocking boot wait off the event loop (B2-33)
     
     logger.info("Backend ready")
     yield
@@ -125,6 +126,12 @@ async def health_check():
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    # CORS does not cover WebSockets: a page on another origin could read every pipeline event (B2-07).
+    # Browsers always send Origin; non-browser clients without it are not a browser-borne attack.
+    origin = websocket.headers.get("origin")
+    if origin is not None and origin not in settings.cors_origins + [settings.FRONTEND_URL]:
+        await websocket.close(code=1008)
+        return
     await manager.connect(websocket)
     try:
         while True:
@@ -132,6 +139,8 @@ async def websocket_endpoint(websocket: WebSocket):
             data = await websocket.receive_text()
             try:
                 message = json.loads(data)
+                if not isinstance(message, dict):
+                    continue  # non-object JSON is ignored, not a disconnect (B2-30)
                 action = message.get("action")
                 if action == "ping":
                     await websocket.send_text(json.dumps({"event_type": "pong", "timestamp": ""}))
@@ -157,4 +166,4 @@ for _router in (samples.router, dissection.router, intel.router, reports.router,
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run("backend.main:app", host="127.0.0.1", port=8000, reload=True)

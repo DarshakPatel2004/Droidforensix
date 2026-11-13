@@ -87,6 +87,8 @@ def is_correct(prediction: str, ground_truth: str) -> bool:
     """Scoring predicate: exact, vendor-alias, or lineage match."""
     pred = (prediction or "").strip()
     truth = (ground_truth or "").strip()
+    if not truth or not pred:  # A1-47: an empty truth or prediction scores nothing
+        return False
     if pred.casefold() == truth.casefold():
         return True
     if VENDOR_ALIASES.get(truth, "").casefold() == pred.casefold():

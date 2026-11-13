@@ -14,20 +14,27 @@ Usage:
 
 import argparse
 import hashlib
-import io
 import json
 import pathlib
 import re
 import struct
 import sys
-import tempfile
 import zipfile
 
 import lief
-from capstone import (Cs, CS_ARCH_ARM, CS_ARCH_ARM64, CS_ARCH_X86, CS_MODE_ARM,
-                      CS_MODE_32, CS_MODE_64, CS_MODE_THUMB, CS_MODE_LITTLE_ENDIAN)
+from capstone import (
+    CS_ARCH_ARM,
+    CS_ARCH_ARM64,
+    CS_ARCH_X86,
+    CS_MODE_32,
+    CS_MODE_64,
+    CS_MODE_LITTLE_ENDIAN,
+    CS_MODE_THUMB,
+    Cs,
+)
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
+MAX_LIB_BYTES = 256 * 1024 * 1024   # one .so from an APK; larger members are skipped (audit P13)
 
 # Crypto fingerprints per Appendix B (raw bytes, little-endian where applicable)
 CRYPTO_PATTERNS = {
@@ -48,14 +55,15 @@ MIN_SECTION_FOR_SCAN = 64
 # x86 is listed because the corpus contains armeabi/x86 and x86_64 libraries.
 _DISASM_BY_ARCH = {
     "AARCH64": (CS_ARCH_ARM64, CS_MODE_LITTLE_ENDIAN),
-    "ARM": (CS_ARCH_ARM, CS_MODE_ARM + CS_MODE_LITTLE_ENDIAN),
+    # Android armeabi libraries are Thumb-2 code, not ARM state (audit P21)
+    "ARM": (CS_ARCH_ARM, CS_MODE_THUMB + CS_MODE_LITTLE_ENDIAN),
     "X86_64": (CS_ARCH_X86, CS_MODE_64),
     "I386": (CS_ARCH_X86, CS_MODE_32),
 }
 
 # Mnemonics that end a basic block, per arch family (used by _obfuscation_metrics).
-_ARM_BRANCH_PREFIXES = ("b",)
-_ARM_BRANCH_EXACT = ("cbz", "cbnz", "tbz", "tbnz", "bl", "blx", "bx")
+_ARM_BRANCH_EXACT = ("cbz", "cbnz", "tbz", "tbnz", "bl", "blx", "bx", "bxj", "tbb", "tbh")
+_ARM_CONDITIONS = ("eq", "ne", "cs", "hs", "cc", "lo", "mi", "pl", "vs", "vc", "hi", "ls", "ge", "lt", "gt", "le", "al")
 _X86_BRANCH_PREFIXES = ("j", "loop")
 _X86_BRANCH_EXACT = ("call", "ret", "retn", "iret")
 
@@ -227,11 +235,13 @@ def _scan_crypto(binary) -> list:
             # RC4 identity-permutation loop: structural heuristic - look for
             # 256-byte permutation init (0..255 incrementing bytes)
             # Heuristic: search for 16-byte rising run as proxy
-            for i in range(len(content) - 32):
-                if content[i:i+4] == b"\x00\x01\x02\x03" and content[i+16:i+20] == b"\x10\x11\x12\x13":
+            i = content.find(b"\x00\x01\x02\x03")
+            while i != -1:
+                if content[i + 16:i + 20] == b"\x10\x11\x12\x13":
                     hints.append({"kind": "rc4_sbox_init", "section": sec.name,
                                   "offset": hex(i), "size": 32})
                     break
+                i = content.find(b"\x00\x01\x02\x03", i + 1)
     except Exception as exc:
         print("[warn] crypto scan: %s" % exc, file=sys.stderr)
     return hints
@@ -264,8 +274,10 @@ def _obfuscation_metrics(binary) -> dict:
             if is_x86:
                 is_branch = mnem.startswith(_X86_BRANCH_PREFIXES) or mnem in _X86_BRANCH_EXACT
             else:
-                is_branch = (mnem.startswith(_ARM_BRANCH_PREFIXES)
-                             or mnem in _ARM_BRANCH_EXACT)
+                # exact mnemonics: a bare "b" prefix also matched bic, bfi, bsl and bit (audit P21)
+                base = mnem.split(".")[0]
+                is_branch = (base in _ARM_BRANCH_EXACT or base == "b"
+                             or (base[:1] == "b" and base[1:] in _ARM_CONDITIONS))
             if is_branch:
                 branches += 1
                 # branch target is last operand if immediate
@@ -322,10 +334,12 @@ def dissect_apk(apk_path: pathlib.Path, workdir: pathlib.Path) -> dict:
     with zipfile.ZipFile(apk_path) as zf:
         for info in zf.infolist():
             if info.filename.endswith(".so"):
-                out = workdir / pathlib.Path(info.filename).name.replace("/", "_")
-                # disambiguate ABI: prefix with abi dir
+                if info.file_size > MAX_LIB_BYTES:
+                    continue
+                # ABI dir plus a path hash: same-named libs in different dirs must not collide (audit P22)
                 abi = pathlib.Path(info.filename).parent.name
-                out = workdir / ("%s_%s" % (abi, pathlib.Path(info.filename).name))
+                tag = hashlib.sha1(info.filename.encode("utf-8")).hexdigest()[:8]
+                out = workdir / ("%s_%s_%s" % (abi, tag, pathlib.Path(info.filename).name))
                 out.write_bytes(zf.read(info.filename))
                 native_libs.append(out)
     reports = [dissect_so(p) for p in sorted(native_libs)]
@@ -335,7 +349,7 @@ def dissect_apk(apk_path: pathlib.Path, workdir: pathlib.Path) -> dict:
     try:
         with zipfile.ZipFile(apk_path) as zf:
             dex_names = [n for n in zf.namelist() if re.search(r"classes\d*\.dex$", n)]
-            dex_blob = b"".join(zf.read(n)[: 64 * 1024] for n in dex_names[:2])
+            dex_blob = b"".join(zf.open(n).read(64 * 1024) for n in dex_names[:2])
             for rep in reports:
                 for m in rep.get("jni_methods", []):
                     export = m["name"]

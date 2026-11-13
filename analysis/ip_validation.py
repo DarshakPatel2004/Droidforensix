@@ -121,7 +121,7 @@ def contextual_score(ip_str: str, full_decoded_string: str, source_location: str
     ]
 
     for context in suspicious_contexts:
-        if context in source_lower:
+        if re.search(r"" + re.escape(context) + r"", source_lower):  # whole word: 'rat' not 'configuration'
             score += 10
             break
 
@@ -132,8 +132,8 @@ def contextual_score(ip_str: str, full_decoded_string: str, source_location: str
 
     # 5. In encryption/obfuscation code?
     crypto_patterns = [
-        r'encrypt', r'decrypt', r'cipher', r'aes', r'des', r'rsa',
-        r'hash', r'sha', r'md5', r'hmac', r'ssl', r'tls',
+        r'encrypt', r'decrypt', r'cipher', r'aes', r'des', r'rsa',
+        r'hash', r'sha(?:1|256|512)?', r'md5', r'hmac', r'ssl', r'tls',
     ]
 
     for pattern in crypto_patterns:
@@ -179,15 +179,15 @@ def behavioral_context_score(ip_str: str, full_decoded: str) -> int:
 
     # Malicious indicators (boost score)
     malicious_patterns = [
-        (r'backdoor|trojan|rat|botnet', 25),
+        (r'(?:backdoor|trojan|rat|botnet)', 25),  # whole words: 'rat' is not 'configuration'
         (r'command.*execute|execute.*command', 20),
         (r'exfiltrat|steal|upload.*data|log.*key', 20),
         (r'encrypt.*payload|obfuscat', 15),
-        (r'c2|cmd|control|beacon|heartbeat', 20),
+        (r'(?:c2|cmd|control|beacon|heartbeat)', 20),
         (r'reverse\s*shell|remote\s*access', 20),
         (r'privilege\s*escalat', 15),
         (r'persist|autostart|startup', 15),
-        (r'socks|proxy|tunnel', 10),
+        (r'(?:socks|proxy|tunnel)', 10),
     ]
 
     for pattern, points in malicious_patterns:
@@ -208,9 +208,18 @@ VERSION_IP_PATTERN = re.compile(
 )
 
 
+VERSION_OF_IP_PATTERN = re.compile(
+    r'(?:v|version|release)\s*\.?\s*(\d{1,3}(?:\.\d{1,3}){3})(?!\d)',
+    re.IGNORECASE,
+)
+
+
 def is_version_number(ip_str: str, full_context: str) -> bool:
-    """Check if IP-like pattern is actually a version number."""
-    return bool(VERSION_IP_PATTERN.search(full_context))
+    """True if ip_str itself is written as a version ("v1.2.3.4"), not merely present nearby.
+
+    A version string elsewhere in the context must not discount a real C2 address (audit M4).
+    """
+    return any(m.group(1) == ip_str for m in VERSION_OF_IP_PATTERN.finditer(full_context))
 
 
 # ---------------------------------------------------------------------------

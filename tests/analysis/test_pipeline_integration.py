@@ -316,11 +316,25 @@ class TestPipelineOrder:
         apk_path = str(apk_path)
 
         events = []
-        result = run_pipeline(
-            apk_path,
-            work_dir=str(tmp_path),
-            event_emitter=lambda t, d: events.append((t, d)),
-        )
+        order = MagicMock()
+        for name, step_mock in (
+            ("extract", mock_extract),
+            ("strings", mock_strings),
+            ("encoding", mock_encoding),
+            ("decode", mock_decode),
+        ):
+            order.attach_mock(step_mock, name)
+        with patch("analysis.pipeline.run_master_key_preprocess", return_value={}) as mock_master_key:
+            result = run_pipeline(
+                apk_path,
+                work_dir=str(tmp_path),
+                event_emitter=lambda t, d: events.append((t, d)),
+            )
+
+        assert mock_master_key.called
+        # Early steps must run in pipeline order; a reordering would fail here.
+        called = [c[0] for c in order.mock_calls]
+        assert called == ["extract", "strings", "encoding", "decode"], called
 
         assert mock_extract.called
         assert mock_strings.called

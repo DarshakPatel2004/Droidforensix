@@ -16,19 +16,16 @@ Output:
 
 import argparse
 import csv
-import hashlib
-import json
 import os
-import sys
 import time
 import zipfile
 from pathlib import Path
-from urllib.parse import urlparse
 
 import pyzipper
 import requests
 from dotenv import load_dotenv
-
+from download_common import sanitize_filename, sha256_file
+from sample_archive import ZIP_PASSWORD, place_sample
 
 # Load environment variables from project .env (API keys, etc.)
 load_dotenv(Path(__file__).parent.parent / ".env")
@@ -57,14 +54,6 @@ def get_api_key() -> str:
 
 def api_headers() -> dict:
     return {**HEADERS, "Auth-Key": get_api_key()}
-
-
-def sha256_file(path: Path) -> str:
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
 
 
 def load_metadata() -> list:
@@ -163,7 +152,7 @@ def tf_query_android_iocs(days: int = 7, limit: int = 500) -> list:
         ioc_type = ioc.get("ioc_type", "")
         threat_type = ioc.get("threat_type", "")
         # Focus on Android-related malware with network C2 indicators
-        is_android = any(k in malware_print or malware_alias for k in [
+        is_android = any(k in malware_print or k in malware_alias for k in [
             "android", "apk", "spyware", "banker", "trojan", "rat", "stealer",
         ])
         is_network_c2 = (
@@ -195,54 +184,30 @@ def tf_lookup_ioc_associated_samples(ioc: str, max_samples: int = 5) -> list:
     return samples[:max_samples]
 
 
+def _extract_mb_zip(archive: Path, staging: Path) -> None:
+    # MalwareBazaar uses AES-encrypted ZIPs; pyzipper handles these, zipfile the rest.
+    try:
+        with pyzipper.AESZipFile(archive, "r") as z:
+            z.extractall(path=str(staging), pwd=ZIP_PASSWORD)
+    except Exception:
+        with zipfile.ZipFile(archive, "r") as z:
+            z.extractall(path=staging, pwd=ZIP_PASSWORD)
+
+
 def mb_download(sha256_hash: str, dest_path: Path) -> bool:
-    """Download a sample from MalwareBazaar by SHA-256 (AES passworded ZIP)."""
+    """Download a sample from MalwareBazaar into dest_path (only that file is written)."""
     data = {"query": "get_file", "sha256_hash": sha256_hash}
     zip_path = dest_path.with_suffix(".zip")
     try:
         resp = requests.post(MB_API, data=data, headers=api_headers(), timeout=REQUEST_TIMEOUT)
         resp.raise_for_status()
-        with open(zip_path, "wb") as f:
-            f.write(resp.content)
-
-        # MalwareBazaar uses AES-encrypted ZIPs; pyzipper handles these.
-        extracted = False
-        try:
-            with pyzipper.AESZipFile(zip_path, "r") as z:
-                z.extractall(path=str(dest_path.parent), pwd=b"infected")
-            extracted = True
-        except Exception:
-            # Fallback to standard zipfile for non-AES archives
-            try:
-                with zipfile.ZipFile(zip_path, "r") as z:
-                    z.extractall(path=dest_path.parent, pwd=b"infected")
-                extracted = True
-            except Exception as e2:
-                print(f"[!] Extraction failed for {sha256_hash}: {e2}")
-
-        zip_path.unlink(missing_ok=True)
-        if not extracted:
-            return False
-
-        # Rename generic extracted file if needed
-        for item in dest_path.parent.iterdir():
-            if item.is_file() and item != dest_path:
-                with open(item, "rb") as f:
-                    magic = f.read(4)
-                if magic == b"PK\x03\x04":
-                    item.rename(dest_path)
-                    break
-        return dest_path.exists()
+        zip_path.write_bytes(resp.content)
+        return place_sample(zip_path, dest_path, sha256_hash, _extract_mb_zip)
     except Exception as e:
         print(f"[!] Download failed for {sha256_hash}: {e}")
         return False
     finally:
         zip_path.unlink(missing_ok=True)
-
-
-def sanitize_filename(name: str) -> str:
-    safe = "".join(c if c.isalnum() or c in "._-" else "_" for c in name)
-    return safe.strip("._") or "unknown"
 
 
 def fetch_mb_android_with_c2(limit: int = 20) -> int:
@@ -355,7 +320,7 @@ def fetch_tf_c2_samples(limit: int = 20) -> int:
         if mb_download(sha256_hash, dest):
             actual_sha = sha256_file(dest)
             if actual_sha.lower() != sha256_hash:
-                print(f"[!] Hash mismatch; deleting")
+                print("[!] Hash mismatch; deleting")
                 dest.unlink(missing_ok=True)
                 continue
 

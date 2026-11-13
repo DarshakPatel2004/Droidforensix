@@ -11,6 +11,7 @@ Usage: python3 scripts/isolate_for_windows.py [--batch /tmp/opencode/error_batch
 import argparse
 import csv
 import sys
+import tempfile
 from pathlib import Path
 
 ERROR_LABELS = {
@@ -22,7 +23,7 @@ ERROR_LABELS = {
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--batch", default="/tmp/opencode/error_batch.csv")
+    parser.add_argument("--batch", default=str(Path(tempfile.gettempdir()) / "opencode" / "error_batch.csv"))
     parser.add_argument("--out", default="kali result/windows_recheck.csv")
     args = parser.parse_args()
 
@@ -61,6 +62,7 @@ def main():
         })
 
     out_path = Path(args.out)
+    out_path.parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fields)
         writer.writeheader()

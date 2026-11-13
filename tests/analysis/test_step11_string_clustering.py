@@ -22,11 +22,19 @@ class TestClusterHighEntropyStrings:
             "open", "close", "save", "load",
         ]
         result = cluster_high_entropy_strings(samples)
-        assert result["total_clusters"] >= 0
-        assert "high_entropy_strings" in result
-        for s in result["high_entropy_strings"]:
-            assert s["entropy"] >= 0.0
-            assert s["entropy"] <= 8.0
+        # Short base64 and English words sit below the 5.5 threshold.
+        assert result["high_entropy_strings"] == []
+        assert result["total_clusters"] == 0
+
+    def test_flags_full_alphabet_string(self):
+        # All 64 base64 symbols once each: entropy is exactly log2(64) = 6.0.
+        alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/"
+        result = cluster_high_entropy_strings([alphabet, "open"])
+        assert result["total_high_entropy"] == 1
+        flagged = result["high_entropy_strings"][0]
+        assert flagged["entropy"] == 6.0
+        assert flagged["length"] == 64
+        assert flagged["value"] == alphabet
 
     def test_none_input(self):
         result = cluster_high_entropy_strings(None)

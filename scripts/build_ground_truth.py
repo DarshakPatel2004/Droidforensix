@@ -19,7 +19,6 @@ import gzip
 import hashlib
 import json
 import os
-import sys
 import time
 import zipfile
 from pathlib import Path
@@ -242,7 +241,7 @@ def mb_query_hash(sha256: str) -> Optional[Dict[str, Any]]:
     try:
         resp = requests.post(
             MB_API,
-            data={"query": "get_info", "sha256_hash": sha256},
+            data={"query": "get_info", "hash": sha256},
             headers={"Auth-Key": MB_API_KEY},
             timeout=30,
         )
@@ -335,7 +334,7 @@ def vt_query_file(sha256: str) -> Optional[Dict[str, Any]]:
     # Extract family from threat labels
     results = attrs.get("last_analysis_results", {})
     family_votes: Dict[str, int] = {}
-    for engine, res in results.items():
+    for _engine, res in results.items():
         label = (res.get("result") or "").strip()
         if label and label not in ("clean", "unrated"):
             parts = label.replace("Android.", "").replace(":", ".").split(".")
@@ -400,9 +399,8 @@ def batch_virustotal(hashes: List[str]) -> Dict[str, Dict[str, Any]]:
             fam = info.get("family", "") or ""
             print(f"mal={mal}, family={fam}")
         else:
+            # Failed lookups are not cached, so the next run retries them.
             print("failed")
-            results[sha] = {"not_found": True}
-            cache[sha] = {"not_found": True}
 
         # Save cache every 10 queries
         if (i + 1) % 10 == 0:
@@ -581,7 +579,7 @@ def build_ground_truth():
         print("\n--- Step 5: Query MalwareBazaar ---")
         mb_data = batch_malwarebazaar(hashes_needing_mb[:20])  # rate-limit: only do 20 first
         # If you have time, increase this limit or run again
-        print(f"  Consider re-running with more hashes if needed")
+        print("  Consider re-running with more hashes if needed")
     else:
         mb_data = {}
 
@@ -623,10 +621,12 @@ def build_ground_truth():
 
     # Write CSV
     fieldnames = ["sha256", "source", "family", "is_malware", "confidence", "vt_detections", "gt_reason", "apk_path"]
-    with open(OUTPUT_CSV, "w", newline="", encoding="utf-8") as f:
+    tmp_csv = OUTPUT_CSV.with_suffix(".csv.tmp")  # atomic: a crash never leaves a truncated GT file
+    with open(tmp_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         writer.writerows(rows)
+    os.replace(tmp_csv, OUTPUT_CSV)
 
     # Summary
     labeled = sum(1 for r in rows if r["confidence"] in ("high", "medium"))
@@ -635,7 +635,7 @@ def build_ground_truth():
     with_family = sum(1 for r in rows if r["family"] != "unknown")
 
     print(f"\n{'='*60}")
-    print(f"GROUND TRUTH COMPLETE")
+    print("GROUND TRUTH COMPLETE")
     print(f"{'='*60}")
     print(f"  Total samples:     {len(rows)}")
     print(f"  Labeled (high/med): {labeled}")

@@ -16,6 +16,10 @@ import traceback
 from pathlib import Path
 from typing import Optional
 
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 logging.disable(logging.CRITICAL)
 try:
     from loguru import logger as _loguru
@@ -67,7 +71,7 @@ def main() -> None:
 
     features = []
     started = time.time()
-    for index, (sha, _) in enumerate(gt.items()):
+    for _index, (sha, _) in enumerate(gt.items()):
         hit = cached.get(sha)
         if hit and hit.get("feature_version") == FEATURE_VERSION:
             features.append(hit)

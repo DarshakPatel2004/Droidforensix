@@ -16,7 +16,6 @@ Batch mode:
 
 import argparse
 import base64
-import csv
 import hashlib
 import json
 import os
@@ -24,11 +23,10 @@ import pathlib
 import re
 import struct
 import sys
-import tempfile
 import zipfile
 
 import lief
-from unicorn import UC_HOOK_INTR
+from unicorn import UC_HOOK_INTR, UC_HOOK_MEM_READ
 
 
 def _dbg(msg):
@@ -36,18 +34,48 @@ def _dbg(msg):
         print(msg, flush=True)
 
 
-from unicorn import (Uc, UC_ARCH_X86, UC_ARCH_ARM, UC_ARCH_ARM64,
-                     UC_MODE_32, UC_MODE_64, UC_MODE_ARM, UC_MODE_THUMB,
-                     UC_MODE_LITTLE_ENDIAN, UC_HOOK_CODE)
-from unicorn.x86_const import (UC_X86_REG_RSP, UC_X86_REG_RAX, UC_X86_REG_RDI,
-                               UC_X86_REG_RSI, UC_X86_REG_RDX, UC_X86_REG_RIP,
-                               UC_X86_REG_RCX)
-from unicorn.arm_const import (UC_ARM_REG_SP, UC_ARM_REG_R0, UC_ARM_REG_R1,
-                               UC_ARM_REG_R2, UC_ARM_REG_R3, UC_ARM_REG_PC,
-                               UC_ARM_REG_LR, UC_ARM_REG_R7)
-from unicorn.arm64_const import (UC_ARM64_REG_SP, UC_ARM64_REG_X0, UC_ARM64_REG_X1,
-                                 UC_ARM64_REG_X2, UC_ARM64_REG_X3,
-                                 UC_ARM64_REG_PC, UC_ARM64_REG_LR)
+from unicorn import (
+    UC_ARCH_ARM,
+    UC_ARCH_ARM64,
+    UC_ARCH_X86,
+    UC_HOOK_CODE,
+    UC_MODE_64,
+    UC_MODE_ARM,
+    UC_MODE_LITTLE_ENDIAN,
+    UC_MODE_THUMB,
+    Uc,
+    arm64_const,
+)
+from unicorn.arm64_const import (
+    UC_ARM64_REG_LR,
+    UC_ARM64_REG_PC,
+    UC_ARM64_REG_SP,
+    UC_ARM64_REG_X0,
+    UC_ARM64_REG_X1,
+    UC_ARM64_REG_X2,
+    UC_ARM64_REG_X3,
+)
+from unicorn.arm_const import (
+    UC_ARM_REG_LR,
+    UC_ARM_REG_PC,
+    UC_ARM_REG_R0,
+    UC_ARM_REG_R1,
+    UC_ARM_REG_R2,
+    UC_ARM_REG_R3,
+    UC_ARM_REG_R7,
+    UC_ARM_REG_SP,
+)
+from unicorn.x86_const import (
+    UC_X86_REG_R8,
+    UC_X86_REG_R9,
+    UC_X86_REG_RAX,
+    UC_X86_REG_RCX,
+    UC_X86_REG_RDI,
+    UC_X86_REG_RDX,
+    UC_X86_REG_RIP,
+    UC_X86_REG_RSI,
+    UC_X86_REG_RSP,
+)
 
 JNI_TABLE = ["reserved0","reserved1","reserved2","reserved3","GetVersion","DefineClass","FindClass",
 "FromReflectedMethod","FromReflectedField","ToReflectedMethod","GetSuperclass","IsAssignableFrom",
@@ -112,7 +140,21 @@ LIBC_NAMES = ["fopen","fopen64","fgets","feof","fclose","fread","fseek","ftell",
     "pthread_once","pthread_setspecific","pthread_key_delete","pthread_key_create",
     "getauxval","__system_property_get","strncmp","fprintf","fflush",
     "pthread_rwlock_wrlock","pthread_rwlock_unlock","dl_iterate_phdr",
-    "pthread_rwlock_rdlock","fwrite"]
+    "pthread_rwlock_rdlock","fwrite",
+    "calloc","inflateInit2_","inflateInit_","inflate","inflateEnd"]
+
+def _reloc_kind(rel):
+    """Classify a LIEF relocation by name. LIEF 1.x reports arch-tagged enums
+    (ARM_RELATIVE=402653207, AARCH64_RELATIVE=268436483), so raw ELF numbers never
+    match (audit P4). IRELATIVE needs a resolver call we do not model: skipped."""
+    t = str(rel.type)
+    if "IRELATIVE" in t:
+        return None
+    for kind in ("RELATIVE", "GLOB_DAT", "JUMP_SLOT", "ABS"):
+        if kind in t:
+            return kind
+    return None
+
 
 RET_ARM = bytes.fromhex("c0035fd6")
 RET_THUMB = bytes.fromhex("7047")
@@ -122,6 +164,11 @@ BASE_X64 = 0x400000
 BASE_ARM = 0x100000
 STACK_ADDR = 0x0FFF0000
 HEAP_ADDR = 0x0A000000
+# Host-side bounds on guest-controlled sizes (audit P7, P9).
+MAX_GUEST_COPY = 64 * 1024 * 1024
+MAX_CTORS = 64
+SWEEP_MAX_SECTION = 64 * 1024 * 1024   # section bytes read per sweep (audit P8)
+MAX_LIB_BYTES = 256 * 1024 * 1024     # one .so extracted from an APK (audit P13)
 FAKE_JENV = 0x0B000000
 JENV_TABLE = 0x0B100000
 RET_STUB = 0x0C000000
@@ -180,7 +227,14 @@ def is_hardened_vm(binary, sym="JNI_OnLoad", window=0x400, min_density=0.1):
 
     Returns (bool, dict) - (hardened, evidence for the report).
     """
-    from capstone import (Cs, CS_ARCH_ARM64, CS_ARCH_ARM, CS_ARCH_X86, CS_MODE_THUMB, CS_MODE_64)
+    from capstone import (
+        CS_ARCH_ARM,
+        CS_ARCH_ARM64,
+        CS_ARCH_X86,
+        CS_MODE_64,
+        CS_MODE_THUMB,
+        Cs,
+    )
 
     def _all_syms():
         yield from (binary.exported_functions or [])
@@ -307,6 +361,10 @@ class Emulator:
                 uc.mem_write(vaddr, content)
         self.apply_relocations()
 
+    def _log_null_read(self, uc, access, address, size, value, user_data):
+        if len(self.null_reads) < 32:
+            self.null_reads.append(hex(address))
+
     def apply_relocations(self):
         """Rebase internal pointers and wire remaining reloc types (arm32 .data
         function pointers otherwise point to unbased addrs -> header exec)."""
@@ -317,26 +375,19 @@ class Emulator:
         shim_by_name = {}
         for i, n in enumerate(LIBC_NAMES):
             shim_by_name[n] = SHIM_PAGE + i * 16
-        libc_syms = {s.name for s in (self.binary.dynamic_symbols or []) if s}
         for rel in self.binary.relocations:
-            try:
-                rtype = int(rel.type)
-            except Exception:
+            rtype = _reloc_kind(rel)
+            if rtype is None:
                 continue
             addr = base + rel.address
-            is_arm = self.arch_name in ("arm", "arm64")
-            R_RELATIVE = 23 if is_arm else 8      # R_ARM_RELATIVE / R_X86_64_RELATIVE
-            R_ABS = 2 if is_arm else 1            # R_ARM_ABS32 / R_X86_64_64
-            R_GLOB_DAT = 21 if is_arm else 9
-            R_JUMP = 22 if is_arm else 7
             sym = rel.symbol
-            if rtype == R_RELATIVE:
+            if rtype == "RELATIVE":
                 try:
                     old = struct.unpack(fmt, uc.mem_read(addr, psize))[0]
                     uc.mem_write(addr, struct.pack(fmt, (old + base) & ((1 << (psize * 8)) - 1)))
                 except Exception:
                     pass
-            elif rtype in (R_GLOB_DAT, R_JUMP):
+            elif rtype in ("GLOB_DAT", "JUMP_SLOT"):
                 if sym is not None and sym.name in shim_by_name:
                     ptr = shim_by_name[sym.name] | (1 if self.arch_name == "arm" else 0)
                     uc.mem_write(addr, struct.pack(fmt, ptr))
@@ -347,7 +398,7 @@ class Emulator:
                     # unknown external import -> generic ret-0 shim
                     uc.mem_write(addr, struct.pack(
                         fmt, self.fallback_slot | (1 if self.arch_name == "arm" else 0)))
-            elif rtype == R_ABS:
+            elif rtype == "ABS":
                 if sym is not None and sym.value:
                     uc.mem_write(addr, struct.pack(fmt, base + sym.value))
                 elif sym is None:
@@ -365,6 +416,8 @@ class Emulator:
         uc.mem_map(JENV_TABLE, 0x20000)
         uc.mem_map(RET_STUB, 0x1000)
         uc.mem_map(0x0, 0x100000)   # TLS page for arm64 tpidr_el0-style reads
+        self.null_reads = []        # reads of the mapped NULL page are logged, not silent (audit P4)
+        uc.hook_add(UC_HOOK_MEM_READ, self._log_null_read, begin=0, end=0xFFFFF)
         uc.mem_write(0x28, struct.pack("<Q", HEAP_ADDR))
         uc.mem_map(SHIM_PAGE, 0x40000)
         self.uc.mem_write(self.fallback_slot, self.ret_bytes + bytes(12))
@@ -465,7 +518,6 @@ class Emulator:
         uc, base = self.uc, self.base
         n = 0
         arm32 = self.arch_name == "arm"
-        psize = 4 if arm32 else 8
         fmt = "<I" if arm32 else "<Q"
         orig = None
         if arm32:
@@ -521,11 +573,15 @@ class Emulator:
             self.run(base + init_va, timeout_s=timeout_s)
             runs.append("DT_INIT")
         if init_arr_va and init_arr_sz:
-            n = init_arr_sz // psize
+            # Capped: the count comes from the (untrusted) ELF header (audit P9).
+            n = min(init_arr_sz // psize, MAX_CTORS)
             for i in range(n):
                 (fn,) = struct.unpack(fmt, uc.mem_read(base + init_arr_va + i * psize, psize))
                 if fn:
-                    self.run(base + fn, timeout_s=timeout_s)
+                    # Relocated slots already hold absolute addresses; adding base again ran ctors at
+                    # 2*base+off (audit P2). Plain offsets are still accepted.
+                    target = fn if fn >= base else base + fn
+                    self.run(target, timeout_s=timeout_s)
             runs.append(f"INIT_ARRAY={n} ctors")
         return runs
 
@@ -568,9 +624,11 @@ class Emulator:
                                           UC_ARM_REG_R2, UC_ARM_REG_R3)[n])
             self._set_ret = (lambda v: uc.reg_write(UC_ARM_REG_R0, v))
         else:
-            from unicorn.x86_const import (UC_X86_REG_RDI as A0, UC_X86_REG_RSI as A1,
-                                           UC_X86_REG_RDX as A2, UC_X86_REG_RCX as A3,
-                                           UC_X86_REG_RAX as RET)
+            from unicorn.x86_const import UC_X86_REG_RAX as RET
+            from unicorn.x86_const import UC_X86_REG_RCX as A3
+            from unicorn.x86_const import UC_X86_REG_RDI as A0
+            from unicorn.x86_const import UC_X86_REG_RDX as A2
+            from unicorn.x86_const import UC_X86_REG_RSI as A1
             read = lambda n: uc.reg_read((A0, A1, A2, A3)[n])
             self._set_ret = (lambda v: uc.reg_write(RET, v))
         return read
@@ -594,7 +652,7 @@ class Emulator:
         vm = self.build_vm_table()
         self.uc.hook_add(UC_HOOK_CODE, self.vm_hook,
                          begin=VM_STUB & ~1, end=VM_STUB + 16)
-        self.uc.hook_add(UC_HOOK_CODE, self.dispatch_hook)
+        self._ensure_dispatch_hook()
         self.capture_register_natives()
 
         ctors = self.run_ctors(ctor_timeout_s)
@@ -615,7 +673,7 @@ class Emulator:
             self.uc.reg_write(UC_ARM_REG_LR, RET_STUB)
             self.uc.reg_write(UC_ARM_REG_PC, entry | 1)
         else:
-            self.uc.mem_write(STACK_ADDR + 1024 * 1024 - 0x210,
+            self.uc.mem_write(STACK_ADDR + 1024 * 1024 - 0x200,
                               struct.pack("<Q", RET_STUB))
             self.uc.reg_write(UC_X86_REG_RDI, vm)
             self.uc.reg_write(UC_X86_REG_RSI, 0)
@@ -646,7 +704,7 @@ class Emulator:
                 regs = [UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2,
                         UC_ARM_REG_R3]
             else:
-                from unicorn.x86_const import (UC_X86_REG_RCX as RCX)
+                from unicorn.x86_const import UC_X86_REG_RCX as RCX
                 regs = [UC_X86_REG_RDI, UC_X86_REG_RSI, UC_X86_REG_RDX, RCX]
             return [uc.reg_read(r) for r in regs]
         def ret(v):
@@ -657,7 +715,23 @@ class Emulator:
             else:
                 uc.reg_write(UC_X86_REG_RAX, v & 0xFFFFFFFFFFFFFFFF)
         a = get_args()
-        env, x1, x2, x3 = a[0], a[1], a[2], a[3]
+        x1, x2, x3 = a[1], a[2], a[3]
+
+        def jni_arg(n):
+            """n-th (0-based) JNI argument; beyond the register set, read the stack."""
+            if self.arch_name == "arm64":
+                return uc.reg_read(getattr(arm64_const, f"UC_ARM64_REG_X{n}"))
+            if self.arch_name == "arm":
+                if n < 4:
+                    return uc.reg_read(UC_ARM_REG_R0 + n)
+                sp = uc.reg_read(UC_ARM_REG_SP)
+                return struct.unpack("<I", bytes(uc.mem_read(sp + 4 * (n - 4), 4)))[0]
+            regs = [UC_X86_REG_RDI, UC_X86_REG_RSI, UC_X86_REG_RDX, UC_X86_REG_RCX,
+                    UC_X86_REG_R8, UC_X86_REG_R9]
+            if n < 6:
+                return uc.reg_read(regs[n])
+            sp = uc.reg_read(UC_X86_REG_RSP)
+            return struct.unpack("<Q", bytes(uc.mem_read(sp + 8 * (n - 4), 8)))[0]
 
         # ---- object-semantics helpers (mini-JVM) ----
         def obj_str(h_ptr):
@@ -693,10 +767,11 @@ class Emulator:
             return o
 
         if name == "DefineClass":
+            # DefineClass(env, name, loader, const jbyte *buf, jsize len)
             nm = self.cstr(x1)
             try:
-                buf_len = x2
-                data = bytes(uc.mem_read(x2, min(buf_len, 4096))) if buf_len < 10 ** 7 else b""
+                buf, buf_len = jni_arg(3), jni_arg(4)
+                data = bytes(uc.mem_read(buf, min(buf_len, 65536))) if buf_len < 10 ** 7 else b""
                 self.defined_classes[nm] = data[:min(buf_len, 65536)]
                 self.jni_log.append(("DefineClass", nm, "len=%d" % buf_len))
             except Exception:
@@ -751,7 +826,6 @@ class Emulator:
             # receiver in x1, then args in x2..x5 registers (up to 3 captured).
             if name.endswith("A"):
                 jptr = x3
-                nslots = 4
                 params = []
                 # count params from sig: strip return type
                 body = mid_sig[1:mid_sig.rfind(")")] if ")" in mid_sig else ""
@@ -771,8 +845,7 @@ class Emulator:
                       if jptr and params else b""
                 slots = list(struct.unpack("<%dQ" % len(params), raw)) \
                         if params and len(raw) >= 8 * len(params) else []
-                call_args = [x1] + [s for s, p in zip(slots, params)] if False else \
-                            ([x1] + slots if False else ([x1] + slots))
+                call_args = [x1] + slots
                 # For virtual calls the object handle IS in the slot list when
                 # signature starts with an obj param of its own class; here the
                 # packer passes explicit receivers via Method.invoke, so treat
@@ -820,21 +893,25 @@ class Emulator:
                                            (len(self.objects[o][1]) == 0))
             ret(o)
         elif name == "SetByteArrayRegion":
+            # (env, array, jsize start, jsize len, const jbyte *buf)
+            start, length, buf = x2, x3, jni_arg(4)
             kind, val = self.objects.get(x1, ("?", None))
-            if kind == "bytes":
+            if kind == "bytes" and length <= 4 * 1024 * 1024 and start + length <= len(val):
                 try:
-                    data = bytes(uc.mem_read(x2, min(x3, 4 * 1024 * 1024)))
-                    _dbg(f"[SBR] len={x3} head={data[:24].hex()}")
-                    val[:x3] = bytearray(data)
+                    data = bytes(uc.mem_read(buf, length))
+                    _dbg(f"[SBR] start={start} len={length} head={data[:24].hex()}")
+                    val[start:start + length] = bytearray(data)
                 except Exception:
                     pass
             ret(0)
         elif name == "GetByteArrayRegion":
+            # (env, array, jsize start, jsize len, jbyte *buf)
+            start, length, buf = x2, min(x3, 4 * 1024 * 1024), jni_arg(4)
             kind, val = self.objects.get(x1, ("?", None))
-            data = bytes(val)[:x3] if kind == "bytes" else b"\x00" * min(x3, 4 * 1024 * 1024)
-            _dbg(f"[GBR] kind={kind} len={x3} head={data[:24].hex()}")
+            data = bytes(val)[start:start + length] if kind == "bytes" else b""
+            _dbg(f"[GBR] kind={kind} start={start} len={length} head={data[:24].hex()}")
             try:
-                uc.mem_write(x2, data.ljust(x3, b"\x00") if len(data) < x3 else data[:x3])
+                uc.mem_write(buf, data.ljust(length, b"\x00"))
             except Exception:
                 pass  # native gets stale bytes; better than crashing the oracle
             ret(0)
@@ -996,7 +1073,6 @@ class Emulator:
 
     def do_libc(self, name):
         uc = self.uc
-        is64 = self.arch_name in ("arm64", "x86_64")
         def get_args():
             if self.arch_name == "arm64":
                 return [uc.reg_read(r) for r in
@@ -1026,9 +1102,10 @@ class Emulator:
              (name or "").startswith("__cxa") or name == "__register_atfork":
             set_ret(0)
         elif name in ("memcpy", "memmove", "__memmove_chk"):
-            d = bytes(uc.mem_read(x1, x2)); uc.mem_write(x0, d); set_ret(x0)
+            # Guest-controlled length: a hostile lib could ask for GBs of host memory (audit P7).
+            d = bytes(uc.mem_read(x1, min(x2, MAX_GUEST_COPY))); uc.mem_write(x0, d); set_ret(x0)
         elif name == "memset":
-            uc.mem_write(x0, bytes([x1 & 0xFF]) * x2); set_ret(x0)
+            uc.mem_write(x0, bytes([x1 & 0xFF]) * min(x2, MAX_GUEST_COPY)); set_ret(x0)
         elif name == "posix_memalign":
             bb = self.bump(x2); uc.mem_write(x0, struct.pack("<Q", bb)); set_ret(0)
         elif name in ("strlen", "__strlen_chk"):
@@ -1093,16 +1170,11 @@ class Emulator:
             elif path.endswith(".so") or "libtarget" in path or ".so" in path or ".apk" in path or "base.apk" in path:
                 try:
                     if ".apk" in path:
-                        # serve the host APK (Calculator) for base.apk reads
-                        import zipfile as _zf
-                        # find a .apk path that matches the probe package
-                        cand = None
-                        for c in ["/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/apk fraud/21/Calculator.apk",
-                                  "/home/kali/DroidForensix/PENDRIVE DATA/PENDRIVE DATA/new apk files/Calculator.apk"]:
-                            import pathlib as _pl
-                            if _pl.Path(c).exists():
-                                cand = c; break
-                        data = pathlib.Path(cand).read_bytes() if cand else pathlib.Path(self.so_path).read_bytes()
+                        # Never serve another APK (audit P16): only this sample's own file, else fail the open.
+                        own_apk = getattr(self, "apk_path", None)
+                        if own_apk is None:
+                            raise FileNotFoundError("no sample APK available to serve")
+                        data = pathlib.Path(own_apk).read_bytes()
                     else:
                         data = pathlib.Path(self.so_path).read_bytes()
                 except Exception:
@@ -1143,7 +1215,11 @@ class Emulator:
         elif name == "fseek":
             f = getattr(self, "_fake_files", {}).get(x0)
             if f:
-                f["off"] = x1 if x2 == 0 else min(len(f["data"]), f["off"] + x1 if x2 == 1 else len(f["data"]) + x1)
+                # the offset register is unsigned: fseek(-16, SEEK_END) arrives as a huge value
+                width = 1 << (32 if self.arch_name == "arm" else 64)
+                off = x1 - width if x1 >= width // 2 else x1
+                base_off = {0: 0, 1: f["off"], 2: len(f["data"])}.get(x2, 0)
+                f["off"] = max(0, min(len(f["data"]), base_off + off))
                 set_ret(0)
             else:
                 set_ret(0)
@@ -1213,28 +1289,38 @@ class Emulator:
             self._zinfl = None
             set_ret(0)
         elif name == "inflate":
-            # z_stream: next_in@0 avail_in@4 next_out@12 avail_out@16 (32-bit)
+            # z_stream field offsets follow the target pointer size (audit P17); the
+            # arm64/x86_64 layout is 64-bit pointers with 8-byte total counters.
             import zlib as _zlib
             strm = x0
-            psize = 4
+            if self.arch_name == "arm":
+                psz, off = 4, {"next_in": 0, "avail_in": 4, "next_out": 12, "avail_out": 16, "total_out": 20}
+            else:
+                psz, off = 8, {"next_in": 0, "avail_in": 8, "next_out": 24, "avail_out": 32, "total_out": 40}
+            def rd(o, n):
+                return int.from_bytes(bytes(uc.mem_read(strm + o, n)), "little")
+            def wr(o, n, v):
+                uc.mem_write(strm + o, int(v).to_bytes(n, "little"))
             try:
-                next_in = struct.unpack("<I", bytes(uc.mem_read(strm, 4)))[0]
-                avail_in = struct.unpack("<I", bytes(uc.mem_read(strm + 4, 4)))[0]
-                next_out = struct.unpack("<I", bytes(uc.mem_read(strm + 12, 4)))[0]
-                avail_out = struct.unpack("<I", bytes(uc.mem_read(strm + 16, 4)))[0]
+                next_in = rd(off["next_in"], psz)
+                avail_in = rd(off["avail_in"], 4)
+                next_out = rd(off["next_out"], psz)
+                avail_out = rd(off["avail_out"], 4)
                 data = bytes(uc.mem_read(next_in, min(avail_in, 8 * 1024 * 1024)))
                 if getattr(self, "_zinfl", None) is None:
                     self._zinfl = _zlib.decompressobj(-15)
                 out = self._zinfl.decompress(data, avail_out)
                 if out:
                     uc.mem_write(next_out, out)
-                uc.mem_write(strm + 4, struct.pack("<I", max(avail_in - avail_in, 0)))
-                uc.mem_write(strm + 8, struct.pack("<I", avail_in))
-                uc.mem_write(strm + 12, struct.pack("<I", next_out + len(out)))
-                uc.mem_write(strm + 16, struct.pack("<I", avail_out - len(out)))
-                uc.mem_write(strm + 20, struct.pack("<I", len(out)))
+                # advance the input by what zlib consumed, not by an unchanged avail_in
+                consumed = len(data) - len(self._zinfl.unconsumed_tail)
+                wr(off["next_in"], psz, next_in + consumed)
+                wr(off["avail_in"], 4, avail_in - consumed)
+                wr(off["next_out"], psz, next_out + len(out))
+                wr(off["avail_out"], 4, avail_out - len(out))
+                wr(off["total_out"], psz, rd(off["total_out"], psz) + len(out))
                 self.libc_calls.append(f"inflate(in={avail_in} out={len(out)})")
-                set_ret(0 if out else 1)
+                set_ret(1 if self._zinfl.eof else 0)   # Z_STREAM_END / Z_OK
             except Exception as exc:
                 self.libc_calls.append(f"inflate-ERR {exc}")
                 set_ret(0)
@@ -1270,7 +1356,11 @@ class Emulator:
 
     def _svc_dispatch(self, uc_):
         if self.arch_name == "arm64":
-            from unicorn.arm64_const import UC_ARM64_REG_X0, UC_ARM64_REG_X8, UC_ARM64_REG_X1
+            from unicorn.arm64_const import (
+                UC_ARM64_REG_X0,
+                UC_ARM64_REG_X1,
+                UC_ARM64_REG_X8,
+            )
             nr = uc_.reg_read(UC_ARM64_REG_X8)
             a1 = uc_.reg_read(UC_ARM64_REG_X1)
             if nr == 222:
@@ -1278,9 +1368,14 @@ class Emulator:
             else:
                 uc_.reg_write(UC_ARM64_REG_X0, 0)
             return
-        from unicorn.arm_const import (UC_ARM_REG_R0, UC_ARM_REG_R1, UC_ARM_REG_R2,
-                                       UC_ARM_REG_R3, UC_ARM_REG_R4, UC_ARM_REG_R5,
-                                       UC_ARM_REG_R6, UC_ARM_REG_R7)
+        from unicorn.arm_const import (
+            UC_ARM_REG_R0,
+            UC_ARM_REG_R1,
+            UC_ARM_REG_R2,
+            UC_ARM_REG_R3,
+            UC_ARM_REG_R4,
+            UC_ARM_REG_R5,
+        )
         nr = uc_.reg_read(UC_ARM_REG_R7)
         a0 = uc_.reg_read(UC_ARM_REG_R0)
         a1 = uc_.reg_read(UC_ARM_REG_R1)
@@ -1302,7 +1397,7 @@ class Emulator:
             if a4 not in (0, 0xFFFFFFFF):  # file-backed: fd = fake-file handle
                 f = getattr(self, "_fake_files", {}).get(a4)
                 if f:
-                    off = (a5 << 12) & len(f["data"])
+                    off = min(a5 << 12, len(f["data"]))
                     uc_.mem_write(addr, f["data"][off:off + size])
             uc_.reg_write(UC_ARM_REG_R0, addr)
         elif nr == 322 or nr == 5:  # openat / open
@@ -1332,8 +1427,11 @@ class Emulator:
     def wire_svc_hook(self):
         """Raw svc #0 syscalls (arm32: nr in r7; arm64: nr in x8)."""
         uc = self.uc
-        from unicorn.arm_const import UC_ARM_REG_R0 as R0, UC_ARM_REG_R1, UC_ARM_REG_R7
-        from unicorn.arm64_const import UC_ARM64_REG_X0 as X0, UC_ARM64_REG_X8 as X8, UC_ARM64_REG_X1 as X1
+        from unicorn.arm64_const import UC_ARM64_REG_X0 as X0
+        from unicorn.arm64_const import UC_ARM64_REG_X1 as X1
+        from unicorn.arm64_const import UC_ARM64_REG_X8 as X8
+        from unicorn.arm_const import UC_ARM_REG_R0 as R0
+        from unicorn.arm_const import UC_ARM_REG_R1
 
         def svc_hook(uc_, intno, ud):
             try:
@@ -1421,10 +1519,15 @@ class Emulator:
         jni.sort(key=lambda x: (len(x[0]), x[0]))
         return self.base + jni[0][1], jni[0][0]
 
+    def _ensure_dispatch_hook(self):
+        """Register the dispatch hook once. Adding it per run() made every shim run N+1 times (audit P3)."""
+        if not getattr(self, "_dispatch_hooked", False):
+            self.uc.hook_add(UC_HOOK_CODE, self.dispatch_hook)
+            self._dispatch_hooked = True
+
     def run(self, entry_addr, timeout_s=180):
         uc = self.uc
-        uc.hook_add(UC_HOOK_CODE, self.dispatch_hook)
-        ret_target = RET_STUB
+        self._ensure_dispatch_hook()
         if self.arch_name == "arm64":
             uc.reg_write(UC_ARM64_REG_SP, STACK_ADDR + 1024 * 1024 - 0x200)
             uc.reg_write(UC_ARM64_REG_X0, FAKE_JENV)
@@ -1481,9 +1584,15 @@ class Emulator:
             size = sec.size
             if size < 64:
                 continue
-            mem = bytes(self.uc.mem_read(lo, size))
+            try:
+                mem = bytes(self.uc.mem_read(lo, min(size, SWEEP_MAX_SECTION)))
+            except Exception:   # section headers are untrusted; the range may be unmapped (audit P8)
+                continue
+            consumed = 0
             for match in re.finditer(rb"ZGV4", mem):
                 idx = match.start()
+                if idx < consumed:   # already inside a decoded blob: no quadratic rescans (audit P8)
+                    continue
                 b64chars = set(b"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=\n\r")
                 end = idx; gap = None
                 for i in range(idx, len(mem)):
@@ -1495,6 +1604,7 @@ class Emulator:
                             gap = i
                         if i - gap >= 8:
                             break
+                consumed = end
                 blob = mem[idx:end]
                 cleaned = re.sub(rb"[^A-Za-z0-9+/=]", b"", blob.replace(b"\n", b"").replace(b"\r", b""))
                 pad = cleaned + b"A" * (-len(cleaned) % 4)
@@ -1574,7 +1684,11 @@ def extract_so_from_apk(apk_path: pathlib.Path, out_dir: pathlib.Path) -> list:
             abi = next((p for p in parts if p in
                         ("arm64-v8a", "armeabi-v7a", "armeabi",
                          "x86", "x86_64", "mips", "mips64")), "unknown")
-            target = out_dir / ("%s_%s" % (abi, pathlib.Path(info.filename).name))
+            if info.file_size > MAX_LIB_BYTES:
+                continue
+            # the member path hash keeps two same-named libs from overwriting each other (audit P22)
+            tag = hashlib.sha1(info.filename.encode("utf-8")).hexdigest()[:8]
+            target = out_dir / ("%s_%s_%s" % (abi, tag, pathlib.Path(info.filename).name))
             target.write_bytes(zf.read(info.filename))
             sos.append(target)
     return sos
@@ -1601,6 +1715,8 @@ def emulate_apk_lib(apk_path: pathlib.Path, workdir: pathlib.Path,
             emu.wire_got_shims()
             emu.wire_jni_table()
             entry, entry_name = emu.find_entry(entry_sym)
+            if entry_name == "JNI_OnLoad":   # no Java_* export: needs the oneshot boot (audit P1)
+                raise RuntimeError("JNI_OnLoad-only library")
         except Exception as exc:
             # JNI_OnLoad-only packer: try the oneshot boot path.
             try:
@@ -1657,15 +1773,9 @@ def main(argv=None):
     parser.add_argument("--sym", help="entry symbol override")
     parser.add_argument("--prefer-arch", default="arm64",
                        help="arm64|armeabi-v7a|x86 priority (default arm64)")
-    parser.add_argument("--test-toy", action="store_true")
     parser.add_argument("--workdir", default="analysis/emulate")
     parser.add_argument("--out", help="explicit JSON report path")
     args = parser.parse_args(argv)
-
-    if args.test_toy:
-        from scripts_legacy import test_toy_x64  # noqa
-        print("legacy toy test moved; use M2-era script or rerun git history")
-        return 2
 
     if args.apk:
         apk_path = pathlib.Path(args.apk)
@@ -1688,9 +1798,12 @@ def main(argv=None):
         try:
             emu.load_elf(); emu.map_regions(); emu.wire_got_shims(); emu.wire_jni_table()
             entry, name = emu.find_entry(args.sym)
+            if name == "JNI_OnLoad":   # JNI_OnLoad-only: oneshot boot, not a direct run (audit P1)
+                raise RuntimeError("JNI_OnLoad-only library")
             status = emu.run(entry)
         except Exception:
-            # JNI_OnLoad path (Ijiami/Bangcle style)
+            # JNI_OnLoad path (Ijiami/Bangcle style); fresh Uc, the failed one has mapped regions (audit P20)
+            emu = Emulator(so_path)
             meta = emu.run_jni_oneshot()
             name, status = meta.get("entry"), meta.get("status")
             blobs = emu.sweep_blobs()

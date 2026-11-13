@@ -5,7 +5,7 @@ import sys
 import time
 from pathlib import Path
 
-PROJECT = Path("/home/kali/DroidForensix")
+PROJECT = Path(__file__).resolve().parents[1]  # repo root, not a fixed Linux path (audit R16)
 sys.path.insert(0, str(PROJECT))
 
 RESULTS = PROJECT / "reports" / "pendrive_forensic_results.json"

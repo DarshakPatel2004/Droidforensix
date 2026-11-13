@@ -113,12 +113,14 @@ def test_load_done_restores_types_and_skips_errors(tmp_path):
         path,
         [
             {"sha256": "a" * 64, "path": "p", "label": "benign", "source": "x", "status": "ok",
-             "predicted_malware": False, "confidence": 12.5, "correct": True, "error": ""},
+             "predicted_malware": False, "confidence": 12.5, "correct": True, "error": "",
+             "model_sha256": "m" * 8, "threshold": 0.5},
             {"sha256": "b" * 64, "path": "p", "label": "malware", "source": "x", "status": "error",
-             "predicted_malware": None, "confidence": None, "correct": False, "error": "boom"},
+             "predicted_malware": None, "confidence": None, "correct": False, "error": "boom",
+             "model_sha256": "m" * 8, "threshold": 0.5},
         ],
     )
-    done = em._load_done(path)
+    done = em._load_done(path, "m" * 8, 0.5)
     assert set(done) == {"a" * 64}
     assert done["a" * 64]["predicted_malware"] is False
     assert done["a" * 64]["confidence"] == 12.5

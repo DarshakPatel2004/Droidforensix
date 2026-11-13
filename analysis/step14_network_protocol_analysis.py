@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
 logger = logging.getLogger(__name__)
@@ -34,11 +34,14 @@ def extract_endpoints(strings: List[str]) -> List[str]:
     return list(set(endpoints))
 
 
-def classify_endpoint(endpoint: str) -> Dict[str, Any]:
+def classify_endpoint(endpoint: str) -> Optional[Dict[str, Any]]:
     if endpoint.startswith("http"):
-        parsed = urlparse(endpoint)
-        hostname = parsed.hostname or ""
-        port = parsed.port or (443 if parsed.scheme == "https" else 80)
+        try:
+            parsed = urlparse(endpoint)
+            hostname = parsed.hostname or ""
+            port = parsed.port or (443 if parsed.scheme == "https" else 80)
+        except ValueError:  # format strings ("%d", "${port}") or bad ports: not an endpoint
+            return None
         path = parsed.path or "/"
     else:
         hostname = endpoint.split(":")[0]
@@ -85,7 +88,7 @@ def classify_endpoint(endpoint: str) -> Dict[str, Any]:
 
 def analyze_network_protocols(strings: List[str]) -> Dict[str, Any]:
     endpoints = extract_endpoints(strings)
-    classified = [classify_endpoint(ep) for ep in endpoints]
+    classified = [c for c in (classify_endpoint(ep) for ep in endpoints) if c is not None]
     c2_endpoints = [c for c in classified if c["classification"] == "c2"]
     suspicious = [c for c in classified if c["classification"] == "suspicious"]
     benign = [c for c in classified if c["classification"] == "benign"]

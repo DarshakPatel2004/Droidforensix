@@ -87,7 +87,7 @@ class Settings(BaseSettings):
     # downstream steps. No external decompiler is required.
 
     # Web server
-    BACKEND_HOST: str = "0.0.0.0"
+    BACKEND_HOST: str = "127.0.0.1"  # no auth on this API: bind to loopback (audit item 4)
     BACKEND_PORT: int = 8000
     FRONTEND_URL: str = "http://localhost:5173"
     # Allow both localhost and 127.0.0.1: browsers treat them as distinct

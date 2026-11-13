@@ -27,6 +27,7 @@ E_KDF_EXHAUSTED = "E-KDF-EXHAUSTED"
 E_KDF_BUDGET = "E-KDF-BUDGET"
 SKIPPED_PLAINTEXT = "SKIPPED_PLAINTEXT"
 SKIPPED_ZIPCRYPTO = "SKIPPED_ZIPCRYPTO"
+SKIPPED_UNREADABLE = "SKIPPED_UNREADABLE"
 SKIPPED_FILTER = "SKIPPED_FILTER"
 SKIPPED_SIZE = "SKIPPED_SIZE"
 PENDING = "pending"
@@ -41,7 +42,8 @@ PLAINTEXT_MAGICS: tuple[tuple[bytes, str], ...] = (
     (b"\x1f\x8b", "gzip"),
     (b"\x00\x01\x00\x00", "ttf"),
 )
-PROBE_MAGICS: tuple[tuple[bytes, str], ...] = PLAINTEXT_MAGICS + ((b"{", "json"),)
+# Two bytes, not "{": a lone brace matches about 1 in 256 random candidates and burns budget.
+PROBE_MAGICS: tuple[tuple[bytes, str], ...] = PLAINTEXT_MAGICS + ((b'{"', "json"), (b"{\n", "json"))
 
 SKIP_DIRS: tuple[str, ...] = ("res/", "meta-inf/", "lib/", "dexopt/")
 SKIP_EXTENSIONS: frozenset[str] = frozenset({
@@ -53,6 +55,8 @@ SKIP_EXTENSIONS: frozenset[str] = frozenset({
     ".yml", ".yaml", ".csv", ".ini", ".md",
 })
 MIN_BLOB_SIZE = 512
+# Bounds every member read (plain and inflated) so a hostile declared size cannot exhaust memory.
+MAX_MEMBER_BYTES = 128 << 20
 ENTROPY_SAMPLE = 65_536
 DETAIL_LIMIT = 120
 
@@ -119,10 +123,16 @@ def collect_from_zip(data: bytes, *, depth: int, prefix: str = "") -> BlobCollec
                 continue
             name = prefix + info.filename
             content, kind, detail = _member_content(data, archive, info)
+            if content is not None:
+                outcome = PENDING
+            elif info.flag_bits & 0x1:
+                outcome = SKIPPED_ZIPCRYPTO
+            else:
+                outcome = SKIPPED_UNREADABLE
             record = MemberRecord(
                 name=name,
                 size=info.file_size,
-                outcome=SKIPPED_ZIPCRYPTO if content is None else PENDING,
+                outcome=outcome,
                 depth=depth,
                 entropy=0.0,
                 detail=detail,
@@ -149,6 +159,8 @@ def _is_in_scope(file_name: str, flag_bits: int) -> bool:
 def _member_content(
     raw: bytes, archive: zipfile.ZipFile, info: zipfile.ZipInfo
 ) -> tuple[bytes | None, str, str]:
+    if info.file_size > MAX_MEMBER_BYTES:
+        return None, "", "unreadable: declared size exceeds member cap"
     if info.flag_bits & 0x1:
         return _flagged_content(raw, info)
     try:
@@ -156,7 +168,12 @@ def _member_content(
         # a name, which would hand every duplicate the same bytes and fabricate a recovery.
         content = archive.read(info)
     except Exception as exc:  # zipfile raises a variety of types for broken members
-        return None, "", f"unreadable: {type(exc).__name__}: {exc}"[:DETAIL_LIMIT]
+        # zipfile rejects members Android still runs (e.g. an unknown method, read as STORED),
+        # so retry with the manual local-header read before calling the member unreadable.
+        content, kind, _detail = _flagged_content(raw, info)
+        if content is None:
+            return None, "", f"unreadable: {type(exc).__name__}: {exc}"[:DETAIL_LIMIT]
+        return content, kind, ""
     kind = "stored" if info.compress_type == zipfile.ZIP_STORED else "inflated"
     return content, kind, ""
 
@@ -164,6 +181,8 @@ def _member_content(
 def _flagged_content(raw: bytes, info: zipfile.ZipInfo) -> tuple[bytes | None, str, str]:
     """Read a member whose encrypted flag is set, deciding by content, not by the flag."""
     offset = info.header_offset
+    if len(raw) < offset + 30:
+        return None, "", "truncated local header"
     if raw[offset:offset + 4] != ZIP_LOCAL_SIG:
         return None, "", "no local-file header at the recorded offset"
     name_len, extra_len = struct.unpack("<HH", raw[offset + 26:offset + 30])
@@ -171,13 +190,16 @@ def _flagged_content(raw: bytes, info: zipfile.ZipInfo) -> tuple[bytes | None, s
     stored = raw[data_at:data_at + info.compress_size]
     if len(stored) != info.compress_size:
         return None, "", "member data runs past end of file"
-    if info.compress_type == zipfile.ZIP_STORED:
+    # Like Android, any method other than DEFLATE is read as STORED.
+    if info.compress_type != zipfile.ZIP_DEFLATED:
         candidate, kind = stored, "stored"
     else:
         try:
-            candidate = zlib.decompress(stored, -15)
+            candidate = zlib.decompressobj(-15).decompress(stored, MAX_MEMBER_BYTES + 1)
         except zlib.error as exc:
             return None, "", f"inflate failed: {exc}"[:DETAIL_LIMIT]
+        if len(candidate) > MAX_MEMBER_BYTES:
+            return None, "", "inflated size exceeds member cap"
         kind = "inflated"
     if zlib.crc32(candidate) != info.CRC:
         return None, "", "crc mismatch: content is not the member payload"

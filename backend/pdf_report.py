@@ -120,9 +120,9 @@ def _kv_table(data, col_widths=None):
 def _section_cover(story, st, result, threat_data, sample_id):
     meta     = result.get('metadata', {})
     pkg      = meta.get('package_name') or meta.get('package') or 'Unknown Package'
-    severity = result.get('llm_assessment', {}).get('severity', 'unknown')
+    severity = (result.get('llm_assessment') or {}).get('severity', 'unknown')
     sev_col  = SEVERITY_COLORS.get(severity.lower(), C_MUTED)
-    risk     = result.get('llm_assessment', {}).get('risk_score', 'N/A')
+    risk     = (result.get('llm_assessment') or {}).get('risk_score', 'N/A')
     generated = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
 
     story.append(Spacer(1, 10 * mm))
@@ -132,7 +132,7 @@ def _section_cover(story, st, result, threat_data, sample_id):
     story.append(Spacer(1, 4))
 
     sev_table = Table(
-        [[Paragraph(f'<b>Severity: {severity.upper()}</b>',
+        [[Paragraph(f'<b>Severity: {_safe(str(severity).upper())}</b>',
             ParagraphStyle('sev', fontName='Helvetica-Bold', fontSize=13, textColor=C_WHITE, alignment=TA_CENTER))]],
         colWidths=[PAGE_W - 2 * MARGIN]
     )
@@ -320,8 +320,8 @@ def _section_methods(story, st, annotated_methods):
         return
 
     # Separate high-value from benign
-    high_value = [m for m in annotated_methods if m.get('llm', {}).get('threat_type', 'unknown') not in ('benign',)]
-    benign     = [m for m in annotated_methods if m.get('llm', {}).get('threat_type', 'unknown') == 'benign']
+    high_value = [m for m in annotated_methods if (m.get('llm') or {}).get('threat_type', 'unknown') not in ('benign',)]
+    benign     = [m for m in annotated_methods if (m.get('llm') or {}).get('threat_type', 'unknown') == 'benign']
 
     story.append(Paragraph(
         f'{len(annotated_methods)} method(s) analysed. '
@@ -368,7 +368,7 @@ def _render_method_list(story, st, methods, compact=False):
         if flags:
             meta_parts.append(f'Flags: {", ".join(flags[:6])}')
         if threat_type and threat_type != 'unknown':
-            meta_parts.append(f'Type: {threat_type.replace("_", " ").title()}')
+            meta_parts.append(f'Type: {_safe(str(threat_type).replace("_", " ").title())}')
         if confidence is not None:
             meta_parts.append(f'Confidence: {int(confidence * 100)}%')
         if meta_parts:

@@ -19,7 +19,7 @@ import zipfile
 from collections import Counter
 from pathlib import Path
 
-PROJECT = Path("/home/kali/DroidForensix")
+PROJECT = Path(__file__).resolve().parents[1]  # repo root, not a fixed Linux path (audit R16)
 ROOT = PROJECT / "PENDRIVE DATA" / "PENDRIVE DATA"
 INVENTORY = PROJECT / "reports" / "pendrive_inventory.csv"
 OUTDIR = PROJECT / "reports" / "mafia_handoffs"

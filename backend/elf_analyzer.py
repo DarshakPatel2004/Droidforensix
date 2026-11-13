@@ -87,7 +87,6 @@ PACKER_SIGNATURES = [
     (b'!<arch>\n', 'ar_archive', 'AR archive'),
     (b'\x7fELF', 'embedded_elf', 'Embedded ELF binary'),
     (b'dex\n', 'embedded_dex', 'Embedded DEX file'),
-    (b'\x03\x00\x00\x00\x00\x00\x00\x00', 'embedded_dex_035', 'Embedded DEX 035'),
 ]
 
 ARCH_NAMES = {
@@ -364,7 +363,8 @@ class ELFBreaker:
             logger.warning("Suppressed error in _detect_packing: %s", exc)
 
         for sig_bytes, _sig_name, sig_desc in PACKER_SIGNATURES:
-            pos = 0
+            # The file's own ELF header at offset 0 is not an embedded ELF (audit B2-05).
+            pos = 1 if sig_bytes == b'\x7fELF' else 0
             count = 0
             while True:
                 idx = self.content.find(sig_bytes, pos)
@@ -412,7 +412,12 @@ class ELFBreaker:
 
         for pattern in ANTI_ANALYSIS_STRINGS:
             p_lower = pattern.lower()
-            if p_lower in content_str_lower:
+            # Short tokens ("su", "hook", "nox") match as substrings of almost any binary: whole words only.
+            if len(p_lower) <= 4:
+                hit = re.search(r"\b" + re.escape(p_lower) + r"\b", content_str_lower)
+            else:
+                hit = p_lower in content_str_lower
+            if hit:
                 if p_lower not in seen:
                     seen.add(p_lower)
                     findings.append({

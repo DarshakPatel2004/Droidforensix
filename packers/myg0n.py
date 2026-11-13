@@ -11,7 +11,6 @@ from __future__ import annotations
 
 import re
 import zipfile
-from pathlib import Path
 from typing import Optional, Tuple
 
 from .framework import (
@@ -20,6 +19,7 @@ from .framework import (
     PackerOracle,
     Verdict,
     derive_key,
+    shannon_entropy,
     verify_unpack,
 )
 
@@ -32,19 +32,32 @@ MYG0N_SCHEME = KDFScheme(
     seed_rule='seed = asset_stem + "2"',
 )
 
-# Assets that match this profile are the encrypted container.
+# Assets that match this profile are the encrypted container. The name alone also matches
+# ordinary files (assets/LICENSE), so the entropy and size gates below decide.
 _CONTAINER_RE = re.compile(r"^assets/([A-Za-z0-9]{4,16})$")
+MIN_CONTAINER_BYTES = 512
+MIN_CONTAINER_ENTROPY = 7.9
+
+
+def _container_assets(archive: zipfile.ZipFile) -> list[str]:
+    names = []
+    for info in archive.infolist():
+        if not _CONTAINER_RE.match(info.filename) or "." in info.filename.rsplit("/", 1)[-1]:
+            continue
+        if info.file_size < MIN_CONTAINER_BYTES:
+            continue
+        if shannon_entropy(archive.read(info.filename)) >= MIN_CONTAINER_ENTROPY:
+            names.append(info.filename)
+    return names
 
 
 def _container_asset(apk_path: str) -> Optional[str]:
     try:
         with zipfile.ZipFile(apk_path) as archive:
-            for name in archive.namelist():
-                if _CONTAINER_RE.match(name) and "." not in name.rsplit("/", 1)[-1]:
-                    return name
+            names = _container_assets(archive)
     except (zipfile.BadZipFile, OSError):
         return None
-    return None
+    return names[0] if names else None
 
 
 class MyG0NOracle(PackerOracle):
@@ -55,11 +68,9 @@ class MyG0NOracle(PackerOracle):
         try:
             with zipfile.ZipFile(apk_path) as archive:
                 names = archive.namelist()
+                has_container = bool(_container_assets(archive))
         except (zipfile.BadZipFile, OSError):
             return PackerFamily.UNKNOWN
-        has_container = any(
-            _CONTAINER_RE.match(n) and "." not in n.rsplit("/", 1)[-1] for n in names
-        )
         if has_container and not any(n.endswith(".dex") for n in names if n.startswith("assets/")):
             return self.family
         return PackerFamily.UNKNOWN
@@ -79,6 +90,7 @@ class MyG0NOracle(PackerOracle):
     def decrypt_asset(self, apk_path: str, seed: str, asset: Optional[str] = None) -> bytes:
         """Run layers 4+5 end to end on the encrypted container."""
         from Crypto.Cipher import AES  # project convention: pycryptodome
+        from Crypto.Util.Padding import unpad
 
         asset = asset or _container_asset(apk_path)
         if asset is None:
@@ -86,7 +98,10 @@ class MyG0NOracle(PackerOracle):
         key, iv = derive_key(seed, MYG0N_SCHEME)
         with zipfile.ZipFile(apk_path) as archive:
             ciphertext = archive.read(asset)
-        return AES.new(key, AES.MODE_CBC, iv).decrypt(ciphertext)
+        try:
+            return unpad(AES.new(key, AES.MODE_CBC, iv).decrypt(ciphertext), AES.block_size)
+        except ValueError as exc:  # wrong length or bad PKCS#5 padding: not a myg0N container
+            raise ValueError(f"asset {asset} is not an AES-CBC container: {exc}") from exc
 
     def unpack(self, apk_path: str) -> Tuple[bytes, Verdict]:
         seed = self.recover_seed(apk_path)

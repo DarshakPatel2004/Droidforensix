@@ -7,10 +7,8 @@ persists results, and generates FP summary reports.
 
 import argparse
 import json
-import os
 import re
 import sys
-import time
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -46,8 +44,6 @@ KNOWN_BENIGN_PATTERNS = [
     re.compile(r"(.*\.)?doubleclick\.net", re.IGNORECASE),
     re.compile(r"(.*\.)?facebook\.com", re.IGNORECASE),
     re.compile(r"(.*\.)?fbcdn\.net", re.IGNORECASE),
-    re.compile(r"(.*\.)?amazonaws\.com", re.IGNORECASE),
-    re.compile(r"(.*\.)?cloudfront\.net", re.IGNORECASE),
     re.compile(r"(.*\.)?azure\.com", re.IGNORECASE),
     re.compile(r"(.*\.)?windows\.net", re.IGNORECASE),
     re.compile(r"(.*\.)?trafficmanager\.net", re.IGNORECASE),
@@ -77,7 +73,6 @@ KNOWN_SDK_DOMAINS = [
     "googlecommerce.com",
     "2mdn.net",
     "app-measurement.com",
-    "firebaseio.com",
     "crashlytics.com",
     "fabric.io",
     "admob.com",
@@ -88,8 +83,6 @@ KNOWN_SDK_DOMAINS = [
     "messenger.com",
     "instagram.com",
     "whatsapp.com",
-    "amazonaws.com",
-    "cloudfront.net",
     "amazon.com",
     "amazon-adsystem.com",
     "akamai.net",
@@ -121,7 +114,6 @@ KNOWN_SDK_DOMAINS = [
     "aspnetcdn.com",
     "visualstudio.com",
     "github.com",
-    "githubusercontent.com",
     "bitbucket.org",
     "gitlab.com",
     "sourceforge.net",
@@ -227,7 +219,7 @@ def auto_classify(indicator, itype):
                 return "benign", known
 
         for pat in KNOWN_BENIGN_PATTERNS:
-            if pat.match(target) or pat.match(indicator):
+            if pat.fullmatch(target):
                 return "benign", pat.pattern
 
     return None, None
@@ -400,6 +392,13 @@ def prompt_classification():
         print("  Invalid choice. Enter M, B, U, S, or Q.")
 
 
+def _upsert(results, record):
+    """Replace any earlier record for the same (indicator, sample_id) so reruns do not duplicate it."""
+    key = (record["indicator"], record["sample_id"])
+    results[:] = [r for r in results if (r.get("indicator"), r.get("sample_id")) != key]
+    results.append(record)
+
+
 def interactive_classify(
     all_indicators, existing_map, results,
     auto_enabled=False, batch_mode=False, by_band=False,
@@ -471,7 +470,7 @@ def interactive_classify(
                         "matched_pattern": matched,
                         "timestamp": datetime.now(timezone.utc).isoformat(),
                     }
-                    results.append(record)
+                    _upsert(results, record)
                     save_results(RESULTS_PATH, results)
                     if not batch_mode:
                         print(
@@ -494,7 +493,7 @@ def interactive_classify(
                         "matched_pattern": None,
                         "timestamp": datetime.now(timezone.utc).isoformat(),
                     }
-                    results.append(record)
+                    _upsert(results, record)
                     save_results(RESULTS_PATH, results)
                     if overall_idx % 50 == 0:
                         print(
@@ -521,7 +520,7 @@ def interactive_classify(
                     "timestamp": datetime.now(timezone.utc).isoformat(),
                 }
                 if decision != "skip":
-                    results.append(record)
+                    _upsert(results, record)
                 save_results(RESULTS_PATH, results)
                 print(
                     f"  {color('Saved.', COLOR_CYAN)}"

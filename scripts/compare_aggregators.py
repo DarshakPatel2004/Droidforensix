@@ -23,7 +23,7 @@ Usage:
     python scripts/compare_aggregators.py --export-csv evaluation/aggregator_comparison.csv
     python scripts/compare_aggregators.py --limit 10
     python scripts/compare_aggregators.py --type ip
-    python scripts/compare_aggregators.py --vt-key XXX --otx-key YYY --shodan-key ZZZ
+    VT_API_KEY / OTX_API_KEY / SHODAN_API_KEY (env or .env) enable each source.
 """
 
 import argparse
@@ -32,7 +32,6 @@ import json
 import os
 import sys
 import time
-from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 from urllib.parse import urlparse
@@ -43,7 +42,6 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 from backend.config import settings
-
 
 CACHE_PATH = ROOT / "evaluation" / "aggregator_comparison_cache.json"
 RESULTS_PATH = ROOT / "evaluation" / "aggregator_comparison_results.json"
@@ -187,7 +185,7 @@ def load_indicators(work_dir: Path, limit: int | None = None, filter_type: str |
                     indicators[key]["families"].add(family)
 
     result = []
-    for key, ind in indicators.items():
+    for _key, ind in indicators.items():
         ind["samples"] = sorted(ind["samples"])
         ind["families"] = sorted(ind["families"])
         result.append(ind)
@@ -198,6 +196,11 @@ def load_indicators(work_dir: Path, limit: int | None = None, filter_type: str |
         result = result[:limit]
 
     return result
+
+
+def _is_definitive(result: dict) -> bool:
+    """Only 200 and 404 answers are cached; transient errors are retried on the next run."""
+    return result.get("error") in (None, "not_found")
 
 
 def make_cache_key(value: str, indicator_type: str, source: str) -> str:
@@ -354,12 +357,11 @@ def run_queries(
     session = requests.Session()
     session.headers.update({"User-Agent": "DroidForensix/1.0"})
 
-    vt_limiter = RateLimiter(4.0)
+    vt_limiter = RateLimiter(4 / 60)  # free tier: 4 requests per minute
     otx_limiter = RateLimiter(1.0)
     shodan_limiter = RateLimiter(1.0)
 
     results = []
-    ip_only = [ind for ind in indicators if ind["type"] == "ip"]
 
     for ind in indicators:
         val = ind["value"]
@@ -380,14 +382,15 @@ def run_queries(
         # VirusTotal
         if vt_key:
             ck = make_cache_key(val, typ, "vt")
-            if ck in cache and not cached_only:
+            if ck in cache and _is_definitive(cache[ck]) and not cached_only:
                 vt_result = cache[ck]
             elif cached_only:
                 vt_result = cache.get(ck, {"detected": False, "error": "cached_only"})
             else:
                 vt_limiter.wait()
                 vt_result = query_virustotal(val, typ, vt_key, session)
-                cache[ck] = vt_result
+                if _is_definitive(vt_result):
+                    cache[ck] = vt_result
             result_entry["vt"] = vt_result
             if vt_result.get("detected"):
                 result_entry["any_detected"] = True
@@ -395,14 +398,15 @@ def run_queries(
         # AlienVault OTX
         if otx_key:
             ck = make_cache_key(val, typ, "otx")
-            if ck in cache and not cached_only:
+            if ck in cache and _is_definitive(cache[ck]) and not cached_only:
                 otx_result = cache[ck]
             elif cached_only:
                 otx_result = cache.get(ck, {"found": False, "error": "cached_only"})
             else:
                 otx_limiter.wait()
                 otx_result = query_otx(val, typ, otx_key, session)
-                cache[ck] = otx_result
+                if _is_definitive(otx_result):
+                    cache[ck] = otx_result
             result_entry["otx"] = otx_result
             if otx_result.get("found") or otx_result.get("pulses_count", 0) > 0:
                 result_entry["any_detected"] = True
@@ -410,17 +414,16 @@ def run_queries(
         # Shodan (IPs only)
         if shodan_key and typ == "ip":
             ck = make_cache_key(val, "ip", "shodan")
-            if ck in cache and not cached_only:
+            if ck in cache and _is_definitive(cache[ck]) and not cached_only:
                 shodan_result = cache[ck]
             elif cached_only:
                 shodan_result = cache.get(ck, {"found": False, "error": "cached_only"})
             else:
                 shodan_limiter.wait()
                 shodan_result = query_shodan(val, shodan_key, session)
-                cache[ck] = shodan_result
+                if _is_definitive(shodan_result):
+                    cache[ck] = shodan_result
             result_entry["shodan"] = shodan_result
-            if shodan_result.get("found"):
-                result_entry["any_detected"] = True
 
         results.append(result_entry)
 
@@ -666,14 +669,11 @@ def main():
     parser.add_argument("--export-csv", type=str, help="Export results as CSV to path")
     parser.add_argument("--limit", type=int, default=None, help="Limit to first N indicators")
     parser.add_argument("--type", type=str, choices=["ip", "domain"], help="Filter by indicator type")
-    parser.add_argument("--vt-key", type=str, default=None, help="VirusTotal API key")
-    parser.add_argument("--otx-key", type=str, default=None, help="AlienVault OTX API key")
-    parser.add_argument("--shodan-key", type=str, default=None, help="Shodan API key")
     args = parser.parse_args()
 
-    vt_key = args.vt_key or os.environ.get("VT_API_KEY") or os.environ.get("VT_KEY") or ""
-    otx_key = args.otx_key or os.environ.get("OTX_API_KEY") or os.environ.get("OTX_KEY") or ""
-    shodan_key = args.shodan_key or os.environ.get("SHODAN_API_KEY") or os.environ.get("SHODAN_KEY") or ""
+    vt_key = os.environ.get("VT_API_KEY") or os.environ.get("VT_KEY") or ""
+    otx_key = os.environ.get("OTX_API_KEY") or os.environ.get("OTX_KEY") or ""
+    shodan_key = os.environ.get("SHODAN_API_KEY") or os.environ.get("SHODAN_KEY") or ""
 
     if not vt_key:
         vt_key = None

@@ -4,10 +4,14 @@ Usage: from analysis.classify_fast import classify_malware_fast
        is_mal, conf = classify_malware_fast("path/to.apk")
 """
 import pickle
+import shutil
 import tempfile
 from pathlib import Path
 
 MODEL_PATH = Path(__file__).resolve().parent.parent / "evaluation" / "classifier_data" / "malben_rf.pkl"
+# Threshold for the shipped model. The README's 0.7 result belongs to the retrained model
+# (evaluation/malben_eval/malben_rf_retrained.pkl), which is not tracked yet (audit E4).
+DEFAULT_THRESHOLD = 0.5
 
 # 15-feature deployment set: official 20 minus the S2 drops (num_c2,
 # num_c2_real, num_c2_fb_ip, num_chains, num_encodings, num_payloads - counts
@@ -27,14 +31,14 @@ DANGEROUS_PERMS = {
     'android.permission.BIND_DEVICE_ADMIN','android.permission.READ_CALENDAR','android.permission.WRITE_CALENDAR',
 }
 
-_model = None
+_models: dict = {}
 
-def _load_model():
-    global _model
-    if _model is None:
-        with open(MODEL_PATH, 'rb') as f:
-            _model = pickle.load(f)
-    return _model
+def _load_model(model_path: Path = MODEL_PATH):
+    """Load a pickled model bundle. pickle executes code on load: only trusted, local files (L18)."""
+    if model_path not in _models:
+        with open(model_path, 'rb') as f:
+            _models[model_path] = pickle.load(f)
+    return _models[model_path]
 
 _scorer = None
 
@@ -94,20 +98,29 @@ def extract_feature_vector(result: dict) -> list:
     return [float(feats[f]) for f in FEATURES]
 
 
-def classify_malware_fast(apk_path: str, pipeline_timeout: int = 600, work_dir: str | None = None) -> tuple:
+def classify_malware_fast(apk_path: str, pipeline_timeout: int = 600, work_dir: str | None = None,
+                          model_path: Path = MODEL_PATH, threshold: float = DEFAULT_THRESHOLD) -> tuple:
     """
     Returns (is_malicious: bool, confidence: float 0-100).
-    Runs steps 1-6 fresh (no cache), no LLM calls.
+    Runs steps 1-6 with no LLM calls. Malicious when P(malware) >= threshold.
+    With work_dir set, run_pipeline may return a cached result for the same APK and
+    stop_after, so a stale result can be classified (L19); leave work_dir unset for fresh runs.
     """
     from analysis.pipeline import run_pipeline
-    bundle = _load_model()
+    bundle = _load_model(model_path)
     clf, feats_order = bundle['model'], bundle['features']
-    assert feats_order == FEATURES, "feature order mismatch with trained model"
-    work = work_dir or tempfile.mkdtemp(prefix="fastcls_")
-    result = run_pipeline(apk_path, work, event_emitter=None,
-                          pipeline_timeout=pipeline_timeout, stop_after=6)
-    vec = extract_feature_vector(result)
-    proba = clf.predict_proba([vec])[0]
+    if feats_order != FEATURES:  # not an assert: asserts vanish under python -O
+        raise ValueError("feature order mismatch with trained model")
+    created_work = work_dir is None
+    work = tempfile.mkdtemp(prefix="fastcls_") if created_work else work_dir
+    try:
+        result = run_pipeline(apk_path, work, event_emitter=None,
+                              pipeline_timeout=pipeline_timeout, stop_after=6)
+        vec = extract_feature_vector(result)
+        proba = clf.predict_proba([vec])[0]
+    finally:
+        if created_work:  # a batch run would otherwise fill %TEMP% with work trees (audit M7)
+            shutil.rmtree(work, ignore_errors=True)
         # classes_ = [0, 1] -> proba[1] = P(malware)
     conf = round(float(proba[1]) * 100, 1)
-    return bool(proba[1] >= 0.5), conf
+    return bool(proba[1] >= threshold), conf

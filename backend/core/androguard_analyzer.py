@@ -27,6 +27,7 @@ import sys
 import zipfile
 from typing import Any, Dict, List, Optional
 
+from backend.dissection import ELF_ANALYSIS_MAX_BYTES
 from backend.elf_analyzer import ELFBreaker
 
 try:
@@ -246,6 +247,10 @@ class APKAnalyzer:
                         arch = parts[1] if len(parts) > 1 else 'unknown'
                         
                         try:
+                            # Cap before decompressing: a hostile entry can inflate to gigabytes (B2-02).
+                            if z.getinfo(name).file_size > ELF_ANALYSIS_MAX_BYTES:
+                                logger.warning("Skipping ELF analysis for oversized native lib %s", name)
+                                continue
                             with z.open(name) as f:
                                 content = f.read()
 
@@ -373,14 +378,6 @@ class APKAnalyzer:
                             'class': class_name,
                             'type': 'short_obfuscated'
                         })
-                    # Dictionary words (suspicious for obfuscation)
-                    elif len(simple_name) > 8 and re.match(r'^[a-zA-Z]+$', simple_name):
-                        vowels = sum(1 for c in simple_name.lower() if c in 'aeiou')
-                        if vowels >= 2:  # Real words have vowels
-                            self.results['obfuscated_classes'].append({
-                                'class': class_name,
-                                'type': 'dictionary_word'
-                            })
             
             logger.info(f"Found {len(self.results['obfuscated_classes'])} obfuscated classes")
         except Exception as e:

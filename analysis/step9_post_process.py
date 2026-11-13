@@ -70,7 +70,7 @@ def _chains_have_c2(threat_chains: List[Dict[str, Any]]) -> bool:
     """Return True if any chain links to a real C2 step."""
     for chain in threat_chains:
         for step in chain.get("steps", []):
-            if step.get("type") == "c2_match":
+            if step.get("type") == "c2_infrastructure":
                 return True
     return False
 
@@ -195,8 +195,9 @@ def _get_dex_method_count(result: Dict[str, Any]) -> int:
     indicators = obfuscation.get("indicators", {}) or {}
     total_methods = indicators.get("total_methods", 0)
     if not total_methods:
-        metadata = result.get("metadata", {}) or {}
-        total_methods = metadata.get("decompiled_classes", 0) or 0
+        # Pipeline stores decompiled_classes under "extraction" (metadata is not where it lives).
+        extraction = result.get("extraction", {}) or {}
+        total_methods = extraction.get("decompiled_classes", 0) or 0
     return total_methods
 
 
@@ -218,6 +219,8 @@ def correct_tiny_dex(result: Dict[str, Any]) -> Dict[str, Any]:
     obfuscation = result.get("obfuscation_analysis", {}) or {}
     indicators = obfuscation.get("indicators", {}) or {}
 
+    if obfuscation.get("timed_out"):
+        return result  # no obfuscation data, so 0 methods would be a false "tiny DEX"
     total_methods = _get_dex_method_count(result)
     dangerous_perms = indicators.get("dangerous_permissions", [])
     suspicious_apis = indicators.get("suspicious_apis", [])
@@ -226,9 +229,6 @@ def correct_tiny_dex(result: Dict[str, Any]) -> Dict[str, Any]:
     c2_list = result.get("c2_infrastructure", []) or []
     permission_count = len(dangerous_perms)
     code_signals = len(suspicious_apis) + len(reflection) + len(dynamic_loading)
-
-    if total_methods == 0:
-        total_methods = (result.get("metadata", {}) or {}).get("decompiled_classes", 0) or 0
 
     tiny_with_perms = (
         total_methods < 25

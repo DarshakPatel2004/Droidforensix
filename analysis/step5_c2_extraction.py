@@ -17,6 +17,7 @@ from typing import Any, Dict, List, Optional
 from urllib.parse import parse_qs, urlparse
 
 from analysis.ip_validation import calculate_ip_legitimacy_score
+from analysis.step5_allowlists import suffix_allowed
 from backend.config import settings
 
 try:
@@ -580,24 +581,17 @@ INVALID_TLDS = {
 }
 
 BENIGN_DOMAIN_PATTERNS = {
-    # Certificate / PKI infrastructure endpoints (OCSP, CRL, CRT, CA, PKI)
-    r"^crl\.",
-    r"^ocsp\.",
-    r"^pki\.",
-    r"^ca\.",
-    r"^crt\.",
-    r"^proxy\.",
-    r"^repo\.",
-    r"^rdc\.",
-    r"^service\.",
-    r"^postarca\.",
+    # Certificate revocation / OCSP endpoints, only under known CA parents. Bare prefixes
+    # (ca., service., proxy., r. ...) matched any attacker host (audit A1-03).
+    r"^(?:crl|ocsp)\.(?:[a-z0-9-]+\.)*(?:digicert\.com|letsencrypt\.org|geotrust\.com|globalsign\.(?:com|net)"
+    r"|sectigo\.com|comodoca\.com|verisign\.com|symcd\.com|thawte\.com|godaddy\.com|entrust\.net"
+    r"|identrust\.com|usertrust\.com|amazontrust\.com|pki\.goog|apple\.com|microsoft\.com|ssl\.com"
+    r"|certum\.pl|buypass\.no|quovadis\.bm|swisssign\.net|trustwave\.com)$",
     r"^qcrldp\d+\.",
     r"^erootca\d+-",
     r"^rootca\d+-",
     r"^tlsrootca\d+-",
     r"^etlsrootca\d+-",
-    r"^autorite\.",
-    r"^r\.",
     # Service / docs subdomains that are always legitimate in this dataset
     r"\.readthedocs\.io$",
     r"\.services\.mozilla\.com$",
@@ -757,13 +751,9 @@ def is_benign_url(url: str) -> bool:
         parsed = urlparse(url_clean)
         if parsed.hostname:
             hostname = parsed.hostname.lower().removeprefix("www.")
-            if hostname in BENIGN_DOMAINS:
+            # Exact or subdomain match, except tenants of shared hosting (A1-03)
+            if suffix_allowed(hostname, BENIGN_DOMAINS):
                 return True
-            # Also match any subdomain of a benign domain
-            parts = parsed.hostname.lower().split(".")
-            for i in range(len(parts)):
-                if ".".join(parts[i:]) in BENIGN_DOMAINS:
-                    return True
             # Pattern-based matching (e.g. crl.*, ocsp.*, *.readthedocs.io)
             host_lower = parsed.hostname.lower()
             for pattern in BENIGN_DOMAIN_PATTERNS:
@@ -777,19 +767,18 @@ def is_benign_url(url: str) -> bool:
     return False
 
 
+def _any_parent_in(domain_lower: str, names) -> bool:
+    """True if the domain or any of its parent domains is in `names` (no tenant rule)."""
+    parts = domain_lower.split(".")
+    return any(".".join(parts[i:]) in names for i in range(len(parts)))
+
+
 def is_ad_network(domain: str) -> bool:
     """Return True if domain belongs to a known ad/analytics network."""
     if not domain:
         return False
-    domain_lower = domain.lower().removeprefix("www.")
-    if domain_lower in AD_NETWORK_DOMAINS:
-        return True
-    # Match subdomains (e.g. api.airpush.com -> airpush.com)
-    parts = domain_lower.split(".")
-    for i in range(len(parts)):
-        if ".".join(parts[i:]) in AD_NETWORK_DOMAINS:
-            return True
-    return False
+    # Subdomains match too (e.g. api.airpush.com -> airpush.com)
+    return _any_parent_in(domain.lower().removeprefix("www."), AD_NETWORK_DOMAINS)
 
 
 def is_analytics_domain(domain: str) -> bool:
@@ -800,15 +789,8 @@ def is_analytics_domain(domain: str) -> bool:
     """
     if not domain:
         return False
-    domain_lower = domain.lower().removeprefix("www.")
-    if domain_lower in ANALYTICS_DOMAINS:
-        return True
-    # Match subdomains (e.g. api.mixpanel.com -> mixpanel.com)
-    parts = domain_lower.split(".")
-    for i in range(len(parts)):
-        if ".".join(parts[i:]) in ANALYTICS_DOMAINS:
-            return True
-    return False
+    # Subdomains match too (e.g. api.mixpanel.com -> mixpanel.com)
+    return _any_parent_in(domain.lower().removeprefix("www."), ANALYTICS_DOMAINS)
 
 
 def classify_ip(ip: str) -> str:
@@ -889,6 +871,9 @@ PSEUDO_TLDS = frozenset({
 # Known real TLDs to avoid over-filtering legitimate 2-part domains
 REAL_TLDS = frozenset({
     "com", "org", "net", "edu", "gov", "mil", "io", "co", "uk", "de", "jp",
+    # Abuse-prone TLDs seen in C2 infrastructure (audit A1-12). The junk-extension check still
+    # rejects file-like names such as osbridge.cc before this list is consulted.
+    "su", "tk", "ml", "ga", "cf", "gq", "pw", "ir", "icu", "ws", "cyou", "click",
     "fr", "au", "ca", "cn", "in", "ru", "br", "kr", "it", "es", "mx", "nl",
     "se", "no", "fi", "dk", "pl", "at", "ch", "be", "ie", "nz", "sg", "hk",
     "tw", "my", "ph", "th", "vn", "id", "za", "eg", "ng", "ke", "ar", "cl",
@@ -901,15 +886,13 @@ REAL_TLDS = frozenset({
 
 def _is_code_reference(domain: str) -> bool:
     """Return True if the domain looks like a code package/class reference, not a real domain."""
+    # A1-12: host names are case-insensitive ("EvilHost.com" is a real domain), so compare lowercased.
+    domain = domain.lower()
     if domain.startswith(CODE_PACKAGE_PREFIXES):
         return True
     parts = domain.split(".")
     if len(parts) < 2:
         return True
-    # If any part has an uppercase letter → Java class/method naming convention
-    for p in parts:
-        if any(c.isupper() for c in p):
-            return True
     # Likely a method reference like "foo.bar.Baz.method" (already caught by uppercase)
     # 2-part names like "builder.name", "response.body" — TLD is a pseudo-TLD
     if len(parts) == 2 and parts[-1] in PSEUDO_TLDS:
@@ -1011,14 +994,7 @@ def _is_likely_junk_domain(domain: str) -> bool:
 
 def _is_benign_domain(domain: str) -> bool:
     """Return True if domain is in the known benign list (including subdomain matching)."""
-    domain_lower = domain.lower().removeprefix("www.")
-    if domain_lower in BENIGN_DOMAINS:
-        return True
-    parts = domain_lower.split(".")
-    for i in range(len(parts)):
-        if ".".join(parts[i:]) in BENIGN_DOMAINS:
-            return True
-    return False
+    return suffix_allowed(domain.lower().removeprefix("www."), BENIGN_DOMAINS)
 
 
 def _is_private_ip(ip: str) -> bool:
@@ -1234,7 +1210,10 @@ def _urlhaus_reputation_hint(domain: str, cache_dir: Path) -> Optional[dict]:
         )
         with urllib.request.urlopen(req, timeout=C2_REPUTATION_URLHAUS_TIMEOUT) as resp:
             data = json.loads(resp.read().decode("utf-8"))
-    except (urllib.error.URLError, TimeoutError, OSError):
+    except (urllib.error.URLError, TimeoutError, OSError, ValueError):
+        # ValueError covers JSONDecodeError and UnicodeDecodeError; this path must never raise
+        return None
+    if not isinstance(data, dict):
         return None
 
     if data.get("query_status") == "no_results":
@@ -1302,7 +1281,9 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
         dict with C2 records.
     """
     sample_id = payloads_result["sample_id"]
-    work_dir = settings.WORK_DIR / sample_id
+    # Honour the pipeline work_dir carried from step 2 (audit A1-10); global default otherwise.
+    carried = payloads_result.get("work_dir")
+    work_dir = Path(carried) if carried else settings.WORK_DIR / sample_id
     work_dir.mkdir(parents=True, exist_ok=True)
 
     c2_records = []
@@ -1317,8 +1298,11 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
         source_location = payload.get("source_location", "unknown")
 
         for artifact in payload.get("artifacts", []):
-            if artifact["type"] == "url":
-                url = artifact["value"]
+            # Bare IPs and domains (step 4) go through the URL path as http://<value>,
+            # so the same allowlists and confidence rules apply.
+            if artifact["type"] in ("url", "ip", "domain"):
+                raw_value = artifact["value"]
+                url = raw_value if artifact["type"] == "url" else f"http://{raw_value}"
                 if url in seen_urls:
                     continue
                 seen_urls.add(url)
@@ -1346,7 +1330,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                 record = {
                     "c2_id": f"c2_{c2_id:03d}",
                     "payload_id": payload_id,
-                    "raw_url": url,
+                    "raw_url": raw_value,
                     "protocol": parsed["protocol"],
                     "domain": parsed["domain"],
                     "ip": parsed["ip"],
@@ -1524,6 +1508,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
 
     result = {
         "sample_id": sample_id,
+        "work_dir": str(work_dir),
         "total_c2s": len(c2_records),
         "c2_infrastructure": c2_records,
     }

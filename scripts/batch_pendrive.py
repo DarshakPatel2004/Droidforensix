@@ -8,7 +8,7 @@ import traceback
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from pathlib import Path
 
-PROJECT = Path("/home/kali/DroidForensix")
+PROJECT = Path(__file__).resolve().parents[1]  # repo root, not a fixed Linux path (audit R16)
 sys.path.insert(0, str(PROJECT))
 
 ROOT = PROJECT / "PENDRIVE DATA" / "PENDRIVE DATA"

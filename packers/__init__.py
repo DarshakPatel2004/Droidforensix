@@ -12,7 +12,7 @@ from .framework import (
     validate_zip,
     verify_unpack,
 )
-from .myg0n import MyG0NOracle, MYG0N_SCHEME
+from .myg0n import MYG0N_SCHEME, MyG0NOracle
 
 __all__ = [
     "ArtifactKind",

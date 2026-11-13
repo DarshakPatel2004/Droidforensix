@@ -63,7 +63,8 @@ class Sample:
     source: str
 
 
-PREDICTION_FIELDS = ["sha256", "path", "label", "source", "status", "predicted_malware", "confidence", "correct", "error"]
+PREDICTION_FIELDS = ["sha256", "path", "label", "source", "status", "predicted_malware", "confidence", "correct", "error",
+                     "model_sha256", "threshold"]
 
 
 def _write_predictions(path: Path, rows: list[dict]) -> None:
@@ -73,14 +74,17 @@ def _write_predictions(path: Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
-def _load_done(path: Path) -> dict[str, dict]:
-    """Successful earlier results keyed by sha256. CSV strings are parsed back to types."""
+def _load_done(path: Path, model_sha: str, threshold: float) -> dict[str, dict]:
+    """Successful earlier results from the same model and threshold, keyed by sha256.
+    Rows from another model or threshold (or from before those columns existed) are re-run."""
     if not path.exists():
         return {}
     done: dict[str, dict] = {}
     with path.open(newline="", encoding="utf-8") as handle:
         for row in csv.DictReader(handle):
             if row["status"] != "ok":
+                continue
+            if row.get("model_sha256") != model_sha or float(row.get("threshold") or "nan") != float(threshold):
                 continue
             row["predicted_malware"] = row["predicted_malware"] == "True"
             row["confidence"] = float(row["confidence"])
@@ -154,8 +158,23 @@ def load_manifest(manifest: Path, root: Path = ROOT) -> list[Sample]:
     return samples
 
 
+TRAIN_EXTRA = ROOT / "evaluation" / "malben_eval" / "train_extra.csv"
+VALIDATION_SPLIT = ROOT / "evaluation" / "malben_eval" / "validation_split.csv"
+
+
+def _csv_hashes(path: Path) -> set[str]:
+    import csv
+
+    with path.open(encoding="utf-8", newline="") as f:
+        return {row["sha256"] for row in csv.DictReader(f)}
+
+
 def check_no_training_overlap(samples: list[Sample], train_map: Path) -> None:
+    # Every training-side source, not only the map: the map alone held 222 of the
+    # training hashes, so the guard missed the rest (audit E5). Validation is included
+    # because the threshold was chosen on it.
     trained = set(json.loads(train_map.read_text(encoding="utf-8")))
+    trained |= _csv_hashes(TRAIN_EXTRA) | _csv_hashes(VALIDATION_SPLIT)
     overlap = sorted(s.sha256 for s in samples if s.sha256 in trained)
     if overlap:
         raise ManifestError([f"{len(overlap)} manifest samples are in the training set, e.g. {overlap[0]}"])
@@ -203,24 +222,27 @@ def _disable_network_enrichment() -> None:
     step5.enrich_with_reputation = lambda records, work_dir: records
 
 
-def _classify_one(apk: str, timeout: int, work_dir: str, allow_network: bool) -> dict:
+def _classify_one(apk: str, timeout: int, work_dir: str, allow_network: bool, model_path: Path, threshold: float) -> dict:
     """Runs in a child process (see _classify_in_subprocess). Failures become error rows."""
     from analysis.classify_fast import classify_malware_fast
 
     if not allow_network:
         _disable_network_enrichment()
     try:
-        is_malware, confidence = classify_malware_fast(apk, pipeline_timeout=timeout, work_dir=work_dir)
+        is_malware, confidence = classify_malware_fast(
+            apk, pipeline_timeout=timeout, work_dir=work_dir, model_path=model_path, threshold=threshold)
         return {"status": "ok", "predicted_malware": bool(is_malware), "confidence": float(confidence), "error": ""}
     except Exception as exc:
         return {"status": "error", "predicted_malware": None, "confidence": None, "error": f"{type(exc).__name__}: {exc}"}
 
 
-def _classify_in_subprocess(apk: str, timeout: int, work_dir: str, allow_network: bool) -> dict:
+def _classify_in_subprocess(apk: str, timeout: int, work_dir: str, allow_network: bool,
+                            model_path: Path = MODEL_PATH, threshold: float = 0.5) -> dict:
     """Parent side. The pipeline's own timeout cannot stop a stuck step, so each sample runs in
     a child process that the parent kills at a hard wall-clock cap."""
     cap = timeout + 60
-    cmd = [sys.executable, str(Path(__file__).resolve()), "--classify-one", apk, work_dir, str(timeout), "1" if allow_network else "0"]
+    cmd = [sys.executable, str(Path(__file__).resolve()), "--classify-one", apk, work_dir, str(timeout),
+           "1" if allow_network else "0", str(model_path), str(threshold)]
     try:
         proc = subprocess.run(cmd, capture_output=True, text=True, timeout=cap, cwd=ROOT)
         lines = proc.stdout.strip().splitlines()
@@ -236,7 +258,7 @@ def _classify_in_subprocess(apk: str, timeout: int, work_dir: str, allow_network
 
 def _child_main(argv: list[str]) -> int:
     apk, work_dir, timeout, allow_network = argv[0], argv[1], int(argv[2]), argv[3] == "1"
-    row = _classify_one(apk, timeout, work_dir, allow_network)
+    row = _classify_one(apk, timeout, work_dir, allow_network, Path(argv[4]), float(argv[5]))
     print(json.dumps(row), flush=True)
     return 0
 
@@ -262,20 +284,27 @@ def run(args: argparse.Namespace) -> int:
     try:
         samples = load_manifest(args.manifest)
         check_no_training_overlap(samples, TRAIN_MAP)
-        model_sha = check_model()
+        # The pin guards the deployed model only; a model passed with --model is recorded by hash instead.
+        if args.model is None:
+            model_sha = check_model()
+        elif not args.model.exists():
+            raise ManifestError([f"model file not found: {args.model}"])
+        else:
+            model_sha = file_sha256(args.model)
     except ManifestError as exc:
         for problem in exc.problems:
             print(f"INPUT ERROR: {problem}", file=sys.stderr)
         return 2
 
     manifest_sha = file_sha256(args.manifest)
-    print(f"inputs OK: {len(samples)} samples, model {model_sha[:12]}, manifest {manifest_sha[:12]}")
+    model_path = args.model or MODEL_PATH
+    print(f"inputs OK: {len(samples)} samples, model {model_sha[:12]}, manifest {manifest_sha[:12]}, threshold {args.threshold}")
     if args.validate_only:
         return 0
 
     args.out_dir.mkdir(parents=True, exist_ok=True)
     predictions_path = args.out_dir / "predictions.csv"
-    done = _load_done(predictions_path)  # successful earlier results; errors are retried
+    done = _load_done(predictions_path, model_sha, args.threshold)  # errors and other models are re-run
     work_root = args.out_dir / "work"
     results: dict[str, dict] = dict(done)
     pending = [s for s in samples if s.sha256 not in done]
@@ -284,7 +313,8 @@ def run(args: argparse.Namespace) -> int:
     finished = len(done)
     with ThreadPoolExecutor(max_workers=args.workers) as pool:
         futures = {
-            pool.submit(_classify_in_subprocess, str(ROOT / s.path), args.timeout, str(work_root / s.sha256), args.allow_network): s
+            pool.submit(_classify_in_subprocess, str(ROOT / s.path), args.timeout, str(work_root / s.sha256),
+                        args.allow_network, model_path, args.threshold): s
             for s in pending
         }
         for future in as_completed(futures):
@@ -293,7 +323,8 @@ def run(args: argparse.Namespace) -> int:
                 row = future.result()
             except Exception as exc:  # a crashed worker is scored as a wrong prediction too
                 row = {"status": "error", "predicted_malware": None, "confidence": None, "error": f"{type(exc).__name__}: {exc}"}
-            row.update(sha256=sample.sha256, path=sample.path, label=sample.label, source=sample.source)
+            row.update(sha256=sample.sha256, path=sample.path, label=sample.label, source=sample.source,
+                       model_sha256=model_sha, threshold=args.threshold)
             results[sample.sha256] = row
             finished += 1
             _write_predictions(predictions_path, [results[s.sha256] for s in samples if s.sha256 in results])
@@ -311,8 +342,9 @@ def run(args: argparse.Namespace) -> int:
         "git_commit": _git_commit(),
         "manifest": _display_path(args.manifest),
         "manifest_sha256": manifest_sha,
-        "model": _display_path(MODEL_PATH),
+        "model": _display_path(model_path),
         "model_sha256": model_sha,
+        "threshold": args.threshold,
         "python": platform.python_version(),
         "sklearn": _sklearn_version(),
         "network_enrichment": "enabled" if args.allow_network else "disabled",
@@ -338,6 +370,8 @@ def main() -> int:
     parser.add_argument("--validate-only", action="store_true", help="check inputs and stop")
     parser.add_argument("--workers", type=int, default=4, help="samples analysed in parallel")
     parser.add_argument("--allow-network", action="store_true", help="keep CIRCL/URLhaus enrichment on (not reproducible)")
+    parser.add_argument("--model", type=Path, default=None, help="model to score instead of the pinned deployed model")
+    parser.add_argument("--threshold", type=float, default=0.5, help="flag malware when P(malware) >= threshold")
     return run(parser.parse_args())
 
 

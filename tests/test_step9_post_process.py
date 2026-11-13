@@ -77,7 +77,7 @@ class TestPackageMatch:
         assert _package_match("", MALWARE_PACKAGE_PATTERNS) == ""
 
     def test_none(self):
-        assert _package_match("", MALWARE_PACKAGE_PATTERNS) == ""
+        assert _package_match(None, MALWARE_PACKAGE_PATTERNS) == ""
 
     def test_benign_patterns(self):
         assert _package_match("com.jovial.jrpn", BENIGN_PACKAGE_PATTERNS) == "calculator"
@@ -146,7 +146,7 @@ class TestHasRealC2:
 
 class TestChainsHaveC2:
     def test_has_c2_step(self):
-        chains = [{"steps": [{"type": "c2_match", "artifact": "evil.com"}]}]
+        chains = [{"steps": [{"type": "c2_infrastructure", "artifact": "evil.com"}]}]
         assert _chains_have_c2(chains)
 
     def test_no_c2_step(self):
@@ -192,10 +192,11 @@ class TestGetDexMethodCount:
         result = _make_result(obfuscation_analysis={"indicators": {"total_methods": 42}})
         assert _get_dex_method_count(result) == 42
 
-    def test_from_metadata_fallback(self):
+    def test_from_extraction_fallback(self):
+        # Pipeline stores decompiled_classes under "extraction" (audit A1-06).
         result = _make_result(
             obfuscation_analysis={"indicators": {}},
-            metadata={"decompiled_classes": 30},
+            extraction={"decompiled_classes": 30},
         )
         assert _get_dex_method_count(result) == 30
 

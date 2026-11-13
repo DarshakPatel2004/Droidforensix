@@ -18,6 +18,8 @@ from backend.config import settings
 
 logger = logging.getLogger(__name__)
 
+_RAW_SAMPLE_BYTES = 20_000  # res/raw sample size: covers the 5000-char output as UTF-8 or hex (A1-20)
+
 
 class StringEnumerationError(Exception):
     """Raised when string enumeration fails."""
@@ -45,8 +47,6 @@ def entropy_of_string(s: str) -> float:
 
 
 STRING_LITERAL_REGEX = re.compile(r'"([^"\\]*(?:\\.[^"\\]*)*)"')
-BYTE_ARRAY_REGEX = re.compile(r'\{\s*(0x[0-9A-Fa-f]{2}\s*(?:,\s*0x[0-9A-Fa-f]{2})*)\s*\}')
-NUMERIC_REGEX = re.compile(r'\b(\d{3,5})\b')
 SMALI_STRING_REGEX = re.compile(r'const-string(?:/jumbo)?\s+[^,]+,\s*"([^"\\]*(?:\\.[^"\\]*)*)"')
 
 # DEX-specific noise patterns (type descriptors, method signatures, field refs)
@@ -72,8 +72,15 @@ NOISE_PATTERNS = [
 ]
 
 
+IPV4_LITERAL_RE = re.compile(r'^\d{1,3}(?:\.\d{1,3}){3}(?::\d{1,5})?$')
+
+
 def is_noisy_string(value: str, allow_bare_identifiers: bool = False) -> bool:
     """Return True if a string literal is likely framework/SDK boilerplate or noise."""
+    # Checked first: bare IPs ("8.8.8.8", 7 chars) and IP:port are C2 indicators,
+    # and the digit/length filters below would otherwise drop them.
+    if IPV4_LITERAL_RE.match(value or ""):
+        return False
     if not value or len(value) < 8:
         return True
     lowered = value.lower().strip()
@@ -94,32 +101,17 @@ def is_noisy_string(value: str, allow_bare_identifiers: bool = False) -> bool:
     return False
 
 
-def _extract_strings_from_text(text: str, source_prefix: str, source_path: Path, category: str = "string_literal") -> List[Dict[str, Any]]:
-    """Generic helper to extract string literals from file text."""
-    results = []
-    lines = text.splitlines()
-    for line_no, line in enumerate(lines, start=1):
-        for match in STRING_LITERAL_REGEX.finditer(line):
-            value = match.group(1)
-            if is_noisy_string(value):
-                continue
-            results.append({
-                "category": category,
-                "value": value,
-                "entropy": round(entropy_of_string(value), 4),
-                "source": f"{source_prefix}:{line_no}",
-            })
-    return results
-
-
 def extract_smali_strings(apktool_dir: str) -> List[Dict[str, Any]]:
     """Extract string literals from smali files as a fallback when Androguard DEX extraction fails."""
     results = []
-    smali_path = Path(apktool_dir) / "smali"
-    if not smali_path.exists():
-        return results
-
-    for smali_file in smali_path.rglob("*.smali"):
+    # A1-36: multidex APKs keep secondary dex in smali_classes2..N
+    smali_files = [
+        (root, f)
+        for root in sorted(Path(apktool_dir).glob("smali*"))
+        if root.is_dir()
+        for f in root.rglob("*.smali")
+    ]
+    for smali_path, smali_file in smali_files:
         try:
             with open(smali_file, "r", encoding="utf-8", errors="ignore") as f:
                 content = f.read()
@@ -174,7 +166,8 @@ def extract_resource_strings(apktool_dir: str) -> List[Dict[str, Any]]:
             if raw_file.is_file():
                 try:
                     with open(raw_file, "rb") as f:
-                        data = f.read()
+                        # A1-20: 20 KB covers the 5000-char output even as UTF-8 or hex; never read a whole raw file
+                        data = f.read(_RAW_SAMPLE_BYTES)
                     # Try to decode as text; fallback to hex
                     try:
                         text = data.decode("utf-8")
@@ -288,7 +281,7 @@ def enumerate_strings(extraction_result: dict) -> dict:
     # failed there but apk_path is present).
     dex_strings = extraction_result.get("dex_strings") or []
     if dex_strings:
-        andro_strings = _filter_dex_strings(set(dex_strings))
+        andro_strings = _filter_dex_strings(sorted(set(dex_strings)))
     elif apk_path:
         andro_strings = extract_androguard_strings(apk_path)
     else:
