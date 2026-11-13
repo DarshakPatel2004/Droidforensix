@@ -4,9 +4,8 @@ import ObfuscationView from './ObfuscationView'
 import ManifestView from './ManifestView'
 import FamilySignalsCard from './FamilySignalsCard'
 import ThreatSynthesisPanel from './ThreatSynthesisPanel'
-import { riskLevelBadgeClass } from '../utils/riskLevel'
 import Icon from './ui/Icon'
-const heroAccentToken = (level) => `var(--accent-${riskLevelBadgeClass(level).slice('badge-'.length)})`
+import StateMessage from './ui/StateMessage'
 
 /**
  * Format seconds into human-readable duration.
@@ -207,13 +206,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
 
   if (loading) {
     return (
-      <div className="result-loading text-center p-10 text-lg">
-        <div className="mb-4">⏳</div>
-        <p>Loading analysis results...</p>
-        <p className="text-sm text-muted mt-2">
-          This may take a moment while the backend processes your analysis.
-        </p>
-      </div>
+      <StateMessage tone="pending" title="Loading analysis results…" detail="This may take a moment while the backend processes your analysis." />
     )
   }
 
@@ -246,52 +239,9 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
     )
   }
 
-  const metadata = fullResult.metadata || {}
-  const verdict = analysisState.verdictData
 
   return (
     <div className="analysis-result">
-      {/* Hero Section */}
-      <div className="result-hero">
-        <div className="hero-accent" style={{ backgroundColor: heroAccentToken(verdict?.verdict) }} />
-        <div className="hero-content">
-          <h1>{metadata.package_name || 'Unknown Package'}</h1>
-          <div className="hero-badges">
-            <span className="badge badge-cyan">{metadata.sha256?.slice(0, 16)}...</span>
-            <span className="badge badge-slate">{(metadata.file_size_bytes / 1024 / 1024).toFixed(2)} MB</span>
-          </div>
-        </div>
-
-        <div className="result-metrics">
-          <div className="metric">
-            <span className="metric-label">Verdict</span>
-            <span className={`metric-value badge ${riskLevelBadgeClass(verdict?.verdict)}`}>
-              {verdict?.verdict?.toUpperCase() || '—'}
-            </span>
-          </div>
-          <div className="metric">
-            <span className="metric-label">Risk Score</span>
-            <span className="metric-value">{verdict?.riskScore || 0} / 100</span>
-          </div>
-          <div className="metric">
-            <span className="metric-label">Analysis Time</span>
-            <span className="metric-value">{formatDuration(verdict?.totalDuration)}</span>
-          </div>
-          {fullResult?.threat_synthesis && (
-            <div className="metric">
-              <span className="metric-label">Zero-Day Risk</span>
-              <span className="metric-value">
-                {fullResult.threat_synthesis.zero_day_risk_score ?? 0}
-                {' '}
-                <span className={`badge badge-xs align-middle ${riskLevelBadgeClass(fullResult.threat_synthesis.risk_level)}`}>
-                  {fullResult.threat_synthesis.risk_level?.toUpperCase() || 'NONE'}
-                </span>
-              </span>
-            </div>
-          )}
-        </div>
-      </div>
-
       {/* Tab Navigation */}
       <div className="result-tabs" role="tablist">
         {[
