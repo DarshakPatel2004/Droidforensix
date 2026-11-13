@@ -18,3 +18,25 @@
 .ui-state-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--text-primary); }
 .ui-state-detail { margin: 6px 0 0; font-size: 13px; color: var(--text-secondary); }
 .ui-state.is-error .ui-state-title { color: var(--accent-rose); }
+
+/* Notes form */
+.notes-form { display: flex; flex-direction: column; gap: 16px; max-width: 680px; }
+.notes-field { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--text-secondary); }
+.notes-field input, .notes-field select, .notes-field textarea { padding: 8px 10px; background: var(--bg-surface); color: var(--text-primary); border: 1px solid var(--border-color); border-radius: 6px; font: inherit; }
+.notes-field input, .notes-field select { min-height: 40px; }
+.notes-field textarea { resize: vertical; line-height: 1.5; }
+.notes-field input:focus-visible, .notes-field select:focus-visible, .notes-field textarea:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 1px; }
+.notes-actions { display: flex; align-items: center; gap: 12px; }
+.notes-save { min-height: 40px; padding: 0 16px; background: var(--accent-cyan); color: #04141a; border: 0; border-radius: 6px; font: inherit; font-weight: 600; cursor: pointer; }
+.notes-save:disabled { opacity: 0.5; cursor: default; }
+.notes-feedback { font-size: 13px; color: var(--text-secondary); }
+.notes-meta { margin: 0; font-size: 12px; color: var(--text-muted); }
+
+/* All checks list (Overview) */
+.all-checks { list-style: none; margin: 0; padding: 0; }
+.all-checks li { display: grid; grid-template-columns: minmax(140px, 200px) 90px minmax(0, 1fr); gap: 12px; align-items: baseline; padding: 10px 0; border-bottom: 1px solid var(--border-color); font-size: 13px; }
+.all-checks li:last-child { border-bottom: 0; }
+.all-checks-title { font-weight: 500; color: var(--text-primary); }
+.all-checks-tag { font-size: 12px; color: var(--text-muted); }
+.all-checks-line { color: var(--text-secondary); min-width: 0; overflow-wrap: anywhere; }
+@media (max-width: 720px) { .all-checks li { grid-template-columns: 1fr; gap: 2px; } }
