@@ -1,0 +1,174 @@
+{
+  "train_original": 509,
+  "train_extra": 100,
+  "train_total": 609,
+  "validation_rows": 100,
+  "validation_benign": 50,
+  "validation_malware": 50,
+  "deployed_auc": 0.9816,
+  "retrained_auc": 0.9944,
+  "deployed_at_0_5": {
+    "malware_detected": 0.96,
+    "benign_flagged": 0.22
+  },
+  "retrained_sweep": [
+    {
+      "threshold": 0.3,
+      "malware_detected": 1.0,
+      "benign_flagged": 0.18,
+      "accuracy": 0.91
+    },
+    {
+      "threshold": 0.35,
+      "malware_detected": 0.98,
+      "benign_flagged": 0.16,
+      "accuracy": 0.91
+    },
+    {
+      "threshold": 0.4,
+      "malware_detected": 0.98,
+      "benign_flagged": 0.14,
+      "accuracy": 0.92
+    },
+    {
+      "threshold": 0.45,
+      "malware_detected": 0.98,
+      "benign_flagged": 0.12,
+      "accuracy": 0.93
+    },
+    {
+      "threshold": 0.5,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.08,
+      "accuracy": 0.94
+    },
+    {
+      "threshold": 0.55,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.06,
+      "accuracy": 0.95
+    },
+    {
+      "threshold": 0.6,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.04,
+      "accuracy": 0.96
+    },
+    {
+      "threshold": 0.65,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.04,
+      "accuracy": 0.96
+    },
+    {
+      "threshold": 0.7,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.0,
+      "accuracy": 0.98
+    },
+    {
+      "threshold": 0.75,
+      "malware_detected": 0.94,
+      "benign_flagged": 0.0,
+      "accuracy": 0.97
+    },
+    {
+      "threshold": 0.8,
+      "malware_detected": 0.92,
+      "benign_flagged": 0.0,
+      "accuracy": 0.96
+    },
+    {
+      "threshold": 0.85,
+      "malware_detected": 0.92,
+      "benign_flagged": 0.0,
+      "accuracy": 0.96
+    },
+    {
+      "threshold": 0.9,
+      "malware_detected": 0.86,
+      "benign_flagged": 0.0,
+      "accuracy": 0.93
+    }
+  ],
+  "deployed_sweep": [
+    {
+      "threshold": 0.3,
+      "malware_detected": 1.0,
+      "benign_flagged": 0.44,
+      "accuracy": 0.78
+    },
+    {
+      "threshold": 0.35,
+      "malware_detected": 0.98,
+      "benign_flagged": 0.44,
+      "accuracy": 0.77
+    },
+    {
+      "threshold": 0.4,
+      "malware_detected": 0.98,
+      "benign_flagged": 0.26,
+      "accuracy": 0.86
+    },
+    {
+      "threshold": 0.45,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.24,
+      "accuracy": 0.86
+    },
+    {
+      "threshold": 0.5,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.22,
+      "accuracy": 0.87
+    },
+    {
+      "threshold": 0.55,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.2,
+      "accuracy": 0.88
+    },
+    {
+      "threshold": 0.6,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.18,
+      "accuracy": 0.89
+    },
+    {
+      "threshold": 0.65,
+      "malware_detected": 0.96,
+      "benign_flagged": 0.18,
+      "accuracy": 0.89
+    },
+    {
+      "threshold": 0.7,
+      "malware_detected": 0.94,
+      "benign_flagged": 0.14,
+      "accuracy": 0.9
+    },
+    {
+      "threshold": 0.75,
+      "malware_detected": 0.94,
+      "benign_flagged": 0.08,
+      "accuracy": 0.93
+    },
+    {
+      "threshold": 0.8,
+      "malware_detected": 0.92,
+      "benign_flagged": 0.02,
+      "accuracy": 0.95
+    },
+    {
+      "threshold": 0.85,
+      "malware_detected": 0.9,
+      "benign_flagged": 0.02,
+      "accuracy": 0.94
+    },
+    {
+      "threshold": 0.9,
+      "malware_detected": 0.82,
+      "benign_flagged": 0.0,
+      "accuracy": 0.91
+    }
+  ]
+}

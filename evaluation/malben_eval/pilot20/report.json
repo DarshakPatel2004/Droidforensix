@@ -1,0 +1,53 @@
+{
+  "generated_utc": "2026-11-06T12:28:16+00:00",
+  "git_commit": "462f5cf83532ed10da4cc0b910b1168e3b4c1991",
+  "manifest": "evaluation\\FRESH_CORPUS_MANIFEST.csv",
+  "manifest_sha256": "f47ae4da9bc2219ed0062769b2b003b5b58fa6ee2b3e48cee96ad1a8bc53dbac",
+  "model": "evaluation\\classifier_data\\malben_rf.pkl",
+  "model_sha256": "e19c1e82b909aef6adeaba21d82b10c3372a777614cabe82e53362555318774c",
+  "python": "3.13.14",
+  "sklearn": "1.9.0",
+  "network_enrichment": "disabled",
+  "pipeline": "classify_malware_fast (steps 1-6, no LLM)",
+  "label_counts": {
+    "benign": 10,
+    "malware": 10
+  },
+  "metrics": {
+    "n": 20,
+    "errors": 0,
+    "accuracy": {
+      "value": 0.55,
+      "ci95": [
+        0.3421,
+        0.7418
+      ],
+      "numerator": 11,
+      "denominator": 20
+    },
+    "malware_recall": {
+      "value": 0.6,
+      "ci95": [
+        0.3127,
+        0.8318
+      ],
+      "numerator": 6,
+      "denominator": 10
+    },
+    "benign_specificity": {
+      "value": 0.5,
+      "ci95": [
+        0.2366,
+        0.7634
+      ],
+      "numerator": 5,
+      "denominator": 10
+    },
+    "confusion": {
+      "tp": 6,
+      "fn": 4,
+      "tn": 5,
+      "fp": 5
+    }
+  }
+}

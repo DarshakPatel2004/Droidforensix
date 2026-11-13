@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DroidForensix · Holdout Results</title>
-<meta name="description" content="Static malware vs. benign classifier: 97.3% accuracy on a 300-APK holdout.">
+<meta name="description" content="Static malware vs. benign classifier: 97.3% accuracy on a 300-APK holdout with a source-confounded split (not general accuracy).">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -223,7 +223,7 @@
     </div>
 
     <aside class="verdict rise d2" aria-label="Headline result">
-      <span class="stamp">Holdout · n=300</span>
+      <span class="stamp">Holdout · n=300 · confounded split</span>
       <div class="big">97.3<sup>%</sup></div>
       <div class="cap">Accuracy · 292 of 300 correct · 95% CI 94.8–98.6%</div>
       <div class="bar" role="img" aria-label="292 correct, 8 wrong"><span id="barfill"></span></div>
@@ -276,6 +276,8 @@
       <ul>
         <li>One 300-APK holdout gives a wide confidence interval.</li>
         <li>Treat 97% as a result for this corpus, not a general accuracy claim.</li>
+        <li><b>Confounded split.</b> All 150 malware samples are from the 2010–2012 Drebin list; all 150 benign apps are current F-Droid apps. A file-size-only baseline reached 88.5% on a same-source split, so part of the 97% comes from the easy source difference.</li>
+        <li>The model and report behind these numbers are not yet committed to the repository.</li>
       </ul>
     </article>
   </section>
