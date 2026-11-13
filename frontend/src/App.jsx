@@ -780,7 +780,7 @@ function AppInner() {
         <div className="workbench-main">
         <section className="content" id="main-content" role="main" aria-label="Sample view">
           {selectedSample && activeTab !== 'upload' && (
-            <SampleHeader key={selectedSample.sha256 || selectedSample.sampleId} sample={selectedSample} status={sampleStatus.status} ready={sampleReady} apiUrl={API_URL} />
+            <SampleHeader key={selectedSample.sha256 || selectedSample.sampleId} sample={selectedSample} status={sampleStatus.status} verdict={sampleStatus.verdict} ready={sampleReady} apiUrl={API_URL} />
           )}
           {selectedSample && activeTab !== 'upload' && (
             <SampleTabs tabs={SAMPLE_TABS} activeTab={activeTab} lockedIds={lockedTabIds} onSelect={selectSampleTab} />
