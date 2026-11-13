@@ -59,7 +59,8 @@ ss/
 .code-review-graph/
 claude_files/
 reports/
-data/
+data/*
+!data/known_bad_certificates.json
 samples/
 CICAndMal2017/
 koodous/
@@ -221,6 +222,8 @@ analysis/dissect_*/
 analysis/emulate_*/
 analysis/triage_*/
 analysis/unpack_*/
+# decrypted malware kits and reports (audit P23)
+analysis/unpack/
 analysis/validation_matrix/
 analysis/ARTIFACTS.zip
 analysis/ac4/
@@ -283,3 +286,6 @@ evaluation/lamda_fetch/kb_features.json
 evaluation/archives/holdout_malware_pipeline_results.zip
 evaluation/validation_359_repro_2026-10-31/
 evaluation/validation_359_rerun_errors_2026-10-31/
+
+# Regenerable pipeline outputs (exceed GitHub 100 MB file limit)
+evaluation/subset_baseline_2026-11-03/
