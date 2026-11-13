@@ -11,7 +11,7 @@ const EXPORT_FORMATS = [
 const SEVERITY_CLASS = { critical: 'sev-high', high: 'sev-high', medium: 'sev-medium', low: 'sev-low' }
 
 // Sample header: identity, the four facts the analyst needs before opening a tab, and exports once complete.
-export default function SampleHeader({ sample, status, ready, apiUrl }) {
+export default function SampleHeader({ sample, status, verdict, ready, apiUrl }) {
   const sampleId = sample.sha256 || sample.sampleId
   const [analystStatus, setAnalystStatus] = useState(null)
   const [attribution, setAttribution] = useState(null)
@@ -40,8 +40,10 @@ export default function SampleHeader({ sample, status, ready, apiUrl }) {
     }
   }
 
-  const severity = sample.severity && sample.severity !== 'unknown' ? sample.severity : null
-  const verdict = severity ? `${severity}${sample.risk_score != null ? ` · ${sample.risk_score}/100` : ''}` : 'Not yet scored'
+  // Status endpoint first (works for URL-opened samples), then the list row.
+  const severity = (verdict?.severity ?? sample.severity) || null
+  const riskScore = verdict?.risk_score ?? sample.risk_score ?? null
+  const verdictText = severity && severity !== 'unknown' ? `${severity}${riskScore != null ? ` · ${riskScore}/100` : ''}` : 'Not yet scored'
   const familyName = attribution?.family && attribution.family !== 'unknown' ? attribution.family : null
   const confidence = attribution?.confidence != null ? `${Math.round(attribution.confidence * 100)}% confidence` : null
   const family = attribution?.error ? 'Attribution unavailable' : familyName ? `${familyName}${confidence ? ` · ${confidence}` : ''}` : ready ? 'No family match' : '—'
@@ -77,7 +79,7 @@ export default function SampleHeader({ sample, status, ready, apiUrl }) {
         </div>
         <div>
           <dt>Verdict</dt>
-          <dd className={severity ? SEVERITY_CLASS[severity] : undefined}>{verdict}</dd>
+          <dd className={SEVERITY_CLASS[severity] || undefined}>{verdictText}</dd>
         </div>
         <div>
           <dt>Family</dt>

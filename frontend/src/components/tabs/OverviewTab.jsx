@@ -5,7 +5,7 @@ import LoadingSpinner from '../LoadingSpinner'
 
 const toneStyle = { medium: 'var(--accent-amber)', high: 'var(--accent-rose)', critical: 'var(--accent-rose)', low: 'var(--accent-emerald)' }
 
-function KpiTile({ label, value, unit = '', note, tone }) {
+function KpiTile({ label, value, unit = '', note, source, tone }) {
   return (
     <div style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 16, display: 'flex', flexDirection: 'column', gap: 4 }}>
       <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>{label}</div>
@@ -14,6 +14,7 @@ function KpiTile({ label, value, unit = '', note, tone }) {
         {unit && <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-muted)' }}>{unit}</span>}
       </div>
       <div style={{ fontSize: 12, fontWeight: 600, color: tone || 'var(--text-muted)' }}>{note}</div>
+      <div style={{ fontSize: 11, color: 'var(--text-subtle)' }}>{source}</div>
     </div>
   )
 }
@@ -40,10 +41,10 @@ export default function OverviewTab({ sampleId }) {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 18 }}>
       <section aria-label="Key figures" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', gap: 12 }}>
-        <KpiTile label="LLM risk" value={llm.risk_score ?? '—'} unit={llm.risk_score != null ? ' /100' : ''} note={llm.severity ?? 'not assessed'} tone={toneStyle[llm.severity]} />
-        <KpiTile label="C2 indicators" value={summary.data ? c2Count : '—'} note="unique · not enriched" />
-        <KpiTile label="Obfuscation" value={obfuscation.obfuscation_score ?? '—'} unit={obfuscation.obfuscation_score != null ? ' /100' : ''} note={obfuscation.obfuscation_level ?? 'not assessed'} tone={toneStyle[obfuscation.obfuscation_level]} />
-        <KpiTile label="Zero-day risk" value={zeroDay ?? '—'} unit={zeroDay != null ? ' /100' : ''} note={zeroDay == null ? 'not assessed' : zeroDay > 0 ? 'Review' : 'No signals'} />
+        <KpiTile label="LLM risk" value={llm.risk_score ?? '—'} unit={llm.risk_score != null ? ' /100' : ''} note={llm.severity ?? 'not assessed'} source="from LLM assessment" tone={toneStyle[llm.severity]} />
+        <KpiTile label="C2 indicators" value={summary.data ? c2Count : '—'} note="unique domains · not enriched" source="from static analysis" />
+        <KpiTile label="Obfuscation" value={obfuscation.obfuscation_score ?? '—'} unit={obfuscation.obfuscation_score != null ? ' /100' : ''} note={obfuscation.obfuscation_level ?? 'not assessed'} source="from obfuscation analysis" tone={toneStyle[obfuscation.obfuscation_level]} />
+        <KpiTile label="Zero-day risk" value={zeroDay ?? '—'} unit={zeroDay != null ? ' /100' : ''} note={zeroDay == null ? 'not assessed' : zeroDay > 0 ? 'Review' : 'No signals'} source="from threat synthesis" />
       </section>
 
       <section aria-labelledby="attention-heading" style={{ background: 'var(--bg-card)', border: '1px solid var(--border-color)', borderRadius: 12, padding: 20, display: 'flex', flexDirection: 'column', gap: 10 }}>
