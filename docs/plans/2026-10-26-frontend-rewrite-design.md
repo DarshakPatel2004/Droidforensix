@@ -130,8 +130,18 @@ Each phase ends with `npm run lint`, `npx vitest run`, and `npm run build` green
 - Investigation and Raw code are the largest views and the most likely to regress. They are last, so the earlier phases are not blocked by them.
 - The analysis pipeline still produces the numbers the viewer shows. If a figure looks wrong, the cause may be upstream; the viewer reports what the result file says and does not correct it.
 
-## 10. Open items
+## 10. Decisions (answered 2026-11-13)
 
-- Whether the six unreferenced API routes are removed (section 6).
-- Whether the Checks tab keeps the existing `AnalysisView` internals or splits them into the new layout during Phase D.
-- Whether the header shows a package name. The sample list has no package field today; showing it needs a backend change, which is out of scope here.
+Each of these was asked of the user and answered. They are binding for Phase A onward.
+
+1. **Analyst status values: union of all six.** The UI accepts and shows new, reviewing, closed, confirmed and false positive. The backend validation in `backend/routers/analyst.py` is extended to accept all six. This is a backend change: regenerate `docs/api/openapi.json` in the same commit.
+2. **Tab bodies: rebuild all seven** (Phases C to E). PRODUCT.md is updated to match.
+3. **Header verdict: read from `GET /api/sample/{id}/status`** (it returns `severity` and `risk_score`). This works for samples opened by URL, with no list row needed. No backend change.
+4. **Six unreferenced API routes: keep.** The remake does not touch the API except for item 1.
+
+Still open (not blocking Phase A):
+- Whether the header shows a package name (needs a backend change to the sample list).
+- Whether PDF is an export in the header (it is a POST, so it cannot be a plain download link).
+- How IBM Plex is loaded: self-hosted or from Google Fonts. Self-hosting suits offline LEA use.
+- Whether `App.jsx` (900 lines) is split in Phase B.
+- `/sample/:id` with no tab: currently routed; confirm whether it redirects to `/sample/:id/overview`.

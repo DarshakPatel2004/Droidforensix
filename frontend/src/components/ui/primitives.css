@@ -1,0 +1,20 @@
+/* Shared primitives. Colours come from the existing tokens in index.css. */
+.ui-panel { border: 1px solid var(--border-color); border-radius: 8px; background: var(--bg-card); }
+.ui-panel-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 12px 16px; border-bottom: 1px solid var(--border-color); }
+.ui-panel-head h2 { margin: 0; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.ui-panel-body { padding: 16px; }
+.ui-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin: 0; }
+.ui-facts > div { padding: 0 16px 0 0; min-width: 0; }
+.ui-facts > div + div { padding-left: 16px; border-left: 1px solid var(--border-color); }
+.ui-facts dt { font-size: 12px; color: var(--text-muted); }
+.ui-facts dd { margin: 4px 0 0; font-size: 15px; font-weight: 500; color: var(--text-primary); overflow-wrap: anywhere; }
+.ui-verdict { font-weight: 600; text-transform: lowercase; }
+.ui-verdict.is-none { font-weight: 400; color: var(--text-muted); text-transform: none; }
+.ui-verdict-score { font-family: var(--cf-mono, ui-monospace, monospace); font-weight: 500; color: var(--text-secondary); }
+.tone-high { color: var(--accent-rose); }
+.tone-medium { color: var(--accent-amber); }
+.tone-low { color: var(--accent-emerald); }
+.ui-state { padding: 24px 16px; text-align: left; }
+.ui-state-title { margin: 0; font-size: 14px; font-weight: 600; color: var(--text-primary); }
+.ui-state-detail { margin: 6px 0 0; font-size: 13px; color: var(--text-secondary); }
+.ui-state.is-error .ui-state-title { color: var(--accent-rose); }
