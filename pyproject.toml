@@ -27,8 +27,11 @@ select = ["F", "B", "I"]
 # FastAPI declares parameter defaults with these calls; that is the framework's idiom.
 extend-immutable-calls = ["fastapi.Query", "fastapi.File", "fastapi.Depends", "fastapi.Form"]
 
+[tool.setuptools.packages.find]
+# Explicit include: a fixed list silently dropped backend.routers and packers.
+include = ["analysis*", "backend*", "droidforensix*", "packers*"]
+
 [tool.setuptools]
-packages = ["analysis", "backend", "backend.core", "droidforensix"]
 py-modules = [
     "stage3_replay",
     "droidforensix_llm",

@@ -30,6 +30,8 @@ yara-python
 # Unpacking: JNI emulation oracle (Uses scripts/emulate.py)
 unicorn
 lief
+capstone
+pycryptodome
 
 # ELF section parsing (backend/elf_analyzer.py)
 pyelftools
