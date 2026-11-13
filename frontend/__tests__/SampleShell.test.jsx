@@ -3,7 +3,9 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react'
 import SampleList from '../src/components/SampleList'
 import SampleHeader from '../src/components/SampleHeader'
 
-vi.mock('../src/api/client', () => ({ apiFetch: vi.fn(() => Promise.resolve({ status: 'confirmed' })) }))
+vi.mock('../src/api/client', () => ({
+  apiFetch: vi.fn((url) => Promise.resolve(url.endsWith('/attribution') ? { family: 'KungFu', confidence: 0.8 } : { status: 'confirmed' })),
+}))
 
 const samples = [
   { sha256: 'aaa111', fileName: 'alpha.apk', family: 'KungFu' },
@@ -33,17 +35,19 @@ describe('SampleList', () => {
 })
 
 describe('SampleHeader', () => {
-  test('shows family, analysis status and analyst status', async () => {
-    render(<SampleHeader sample={samples[0]} status="completed" ready apiUrl="http://x" />)
-    expect(screen.getByText('KungFu')).toBeTruthy()
+  test('shows verdict, family with confidence, analysis and analyst status', async () => {
+    render(<SampleHeader sample={{ ...samples[0], severity: 'high', risk_score: 78 }} status="completed" ready apiUrl="http://x" />)
     expect(screen.getByText('completed')).toBeTruthy()
+    expect(screen.getByText('high · 78/100')).toBeTruthy()
+    await waitFor(() => expect(screen.getByText('KungFu · 80% confidence')).toBeTruthy())
     await waitFor(() => expect(screen.getByText('confirmed')).toBeTruthy())
     expect(screen.getByText('CSV').getAttribute('href')).toContain('/threat-intel/export/csv')
   })
 
-  test('hides exports until analysis is ready', () => {
+  test('hides exports and shows a dash for family until analysis is ready', () => {
     render(<SampleHeader sample={samples[1]} status="running" ready={false} apiUrl="http://x" />)
     expect(screen.queryByLabelText('Exports')).toBeNull()
-    expect(screen.getByText('Unattributed')).toBeTruthy()
+    expect(screen.getByText('Not yet scored')).toBeTruthy()
+    expect(screen.getByText('—')).toBeTruthy()
   })
 })

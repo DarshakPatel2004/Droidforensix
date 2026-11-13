@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
-// Case index: every sample numbered, filterable. Opening one loads it into the case file.
+const SEVERITY_CLASS = { critical: 'sev-high', high: 'sev-high', medium: 'sev-medium', low: 'sev-low' }
+
+// Sample index: filterable list. Each row shows family and verdict so triage can happen from the list.
 export default function SampleList({ samples, selectedId, backendReady, onUpload, onSelect }) {
   const [query, setQuery] = useState('')
   const needle = query.trim().toLowerCase()
@@ -9,21 +11,13 @@ export default function SampleList({ samples, selectedId, backendReady, onUpload
     : samples
 
   return (
-    <nav className="case-index" aria-label="Samples">
-      <div className="case-index-brand">
-        <span className="case-index-mark">DF</span>
-        <span>
-          <strong>DroidForensix</strong>
-          <small>Case index</small>
-        </span>
+    <nav className="index-rail" aria-label="Samples">
+      <div className="index-rail-head">
+        <span className="index-rail-title">DroidForensix</span>
+        <button type="button" className="index-rail-upload" onClick={onUpload}>New upload</button>
       </div>
 
-      <button type="button" className="case-index-upload" onClick={onUpload}>
-        <span>New upload</span>
-        <span aria-hidden="true">+</span>
-      </button>
-
-      <label className="case-index-search">
+      <label className="index-rail-filter">
         <span className="visually-hidden">Filter samples</span>
         <input
           type="search"
@@ -33,34 +27,39 @@ export default function SampleList({ samples, selectedId, backendReady, onUpload
         />
       </label>
 
-      <ol className="case-index-items">
-        {shown.map((s, i) => {
+      <ul className="index-rail-list">
+        {shown.map((s) => {
           const id = s.sha256 || s.sampleId
           const selected = id === selectedId
+          const family = s.family && s.family !== 'unknown' ? s.family : 'Unattributed'
+          const severity = s.severity && s.severity !== 'unknown' ? s.severity : null
           return (
-            <li key={id} style={{ '--i': i }}>
+            <li key={id}>
               <button
                 type="button"
-                className={`case-index-item${selected ? ' is-selected' : ''}`}
+                className={`index-rail-item${selected ? ' is-selected' : ''}`}
                 aria-current={selected ? 'true' : undefined}
                 onClick={() => onSelect(s)}
               >
-                <span className="case-index-num">{String(i + 1).padStart(2, '0')}</span>
-                <span className="case-index-body">
-                  <span className="case-index-name">{s.fileName || id?.substring(0, 12)}</span>
-                  <span className="case-index-family">{s.family && s.family !== 'unknown' ? s.family : 'unattributed'}</span>
+                <span className="index-rail-row">
+                  <span className="index-rail-name">{s.fileName || id?.substring(0, 12)}</span>
+                  {severity && (
+                    <span className={`index-rail-verdict ${SEVERITY_CLASS[severity] || ''}`}>
+                      {severity}{s.risk_score != null ? ` ${s.risk_score}` : ''}
+                    </span>
+                  )}
                 </span>
+                <span className="index-rail-family">{family}</span>
               </button>
             </li>
           )
         })}
-      </ol>
+        {shown.length === 0 && <li className="index-rail-empty">No samples match.</li>}
+      </ul>
 
-      <footer className="case-index-foot">
-        <span className={`case-index-live${backendReady ? '' : ' is-offline'}`} role="status">
-          {backendReady ? 'Scanner online' : 'Backend offline'}
-        </span>
-        <a href="https://github.com/DarshakPatel2004/DroidForensix" target="_blank" rel="noreferrer">Docs ↗</a>
+      <footer className="index-rail-foot">
+        <span role="status">{backendReady ? 'Backend connected' : 'Backend offline'}</span>
+        <a href="https://github.com/DarshakPatel2004/DroidForensix" target="_blank" rel="noreferrer">Docs</a>
       </footer>
     </nav>
   )
