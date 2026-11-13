@@ -2,6 +2,7 @@ import { useSampleData } from '../../hooks/useSampleData'
 import { summarizeChecks, needsAttention } from '../../utils/checkSummaries'
 import DeepAnalysis from '../DeepAnalysis'
 import LoadingSpinner from '../LoadingSpinner'
+import Panel from '../ui/Panel'
 
 const toneStyle = { medium: 'var(--accent-amber)', high: 'var(--accent-rose)', critical: 'var(--accent-rose)', low: 'var(--accent-emerald)' }
 
@@ -75,6 +76,18 @@ export default function OverviewTab({ sampleId }) {
       </section>
 
       <DeepAnalysis result={data} />
+
+      <Panel title="All checks">
+        <ul className="all-checks">
+          {summarizeChecks(data).map((c) => (
+            <li key={c.key}>
+              <span className="all-checks-title">{c.title}</span>
+              <span className={`all-checks-tag ${c.tag === 'Finding' ? 'tone-medium' : ''}`}>{c.tag}</span>
+              <span className="all-checks-line">{c.line}</span>
+            </li>
+          ))}
+        </ul>
+      </Panel>
     </div>
   )
 }

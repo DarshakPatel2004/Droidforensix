@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { apiFetch } from '../../api/client'
+import Panel from '../ui/Panel'
+import StateMessage from '../ui/StateMessage'
 
 const STATUS_OPTIONS = [
   { value: 'new', label: 'New' },
@@ -11,12 +13,12 @@ const STATUS_OPTIONS = [
 
 // Analyst-owned status, tags and notes for one sample (GET/PUT analyst-state).
 export default function NotesTab({ sampleId }) {
-  const [state, setState] = useState(null)
+  const [saved, setSaved] = useState(null)
   const [status, setStatus] = useState('new')
   const [tagsText, setTagsText] = useState('')
   const [notes, setNotes] = useState('')
   const [loadError, setLoadError] = useState(null)
-  const [saveMessage, setSaveMessage] = useState(null)
+  const [feedback, setFeedback] = useState(null)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function NotesTab({ sampleId }) {
     apiFetch(`/api/sample/${encodeURIComponent(sampleId)}/analyst-state`)
       .then((body) => {
         if (cancelled) return
-        setState(body)
+        setSaved(body)
         setStatus(body.status)
         setTagsText(body.tags.join(', '))
         setNotes(body.notes)
@@ -33,51 +35,57 @@ export default function NotesTab({ sampleId }) {
     return () => { cancelled = true }
   }, [sampleId])
 
+  const tags = tagsText.split(',').map((t) => t.trim()).filter(Boolean)
+  const dirty = saved && (status !== saved.status || notes !== saved.notes || tags.join('|') !== saved.tags.join('|'))
+
   const save = async (event) => {
     event.preventDefault()
     setSaving(true)
-    setSaveMessage(null)
-    const tags = tagsText.split(',').map((t) => t.trim()).filter(Boolean)
+    setFeedback(null)
     try {
       const body = await apiFetch(`/api/sample/${encodeURIComponent(sampleId)}/analyst-state`, {
         method: 'PUT',
         body: JSON.stringify({ status, tags, notes }),
       })
-      setState(body)
-      setSaveMessage('Saved')
+      setSaved(body)
+      setFeedback('Saved')
     } catch (e) {
-      setSaveMessage(`Not saved: ${e.message}`)
+      setFeedback(`Not saved: ${e.message}`)
     } finally {
       setSaving(false)
     }
   }
 
-  if (loadError) return <div className="empty-state" role="alert">Could not load notes: {loadError}</div>
-  if (!state) return <div className="empty-state" role="status">Loading notes…</div>
+  if (loadError) return <StateMessage tone="error" title="Could not load notes" detail={loadError} />
+  if (!saved) return <StateMessage tone="pending" title="Loading notes…" />
 
   return (
-    <form onSubmit={save} aria-label="Analyst notes" style={{ display: 'flex', flexDirection: 'column', gap: 14, maxWidth: 680 }}>
-      <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
-        Status
-        <select value={status} onChange={(e) => setStatus(e.target.value)} style={{ minHeight: 44, padding: '8px 10px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', font: 'inherit' }}>
-          {STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
-        </select>
-      </label>
-      <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
-        Tags (comma separated)
-        <input value={tagsText} onChange={(e) => setTagsText(e.target.value)} style={{ minHeight: 44, padding: '8px 10px', background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', font: 'inherit' }} />
-      </label>
-      <label style={{ display: 'flex', flexDirection: 'column', gap: 4, fontSize: 13 }}>
-        Notes
-        <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={8} style={{ padding: 10, background: 'var(--bg-surface)', color: 'var(--text-primary)', border: '1px solid var(--border-color)', borderRadius: 'var(--radius-sm)', font: 'inherit' }} />
-      </label>
-      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-        <button type="submit" disabled={saving} style={{ minHeight: 44, padding: '10px 16px', background: 'var(--accent-cyan-soft)', color: 'var(--accent-cyan)', border: '1px solid var(--accent-cyan)', borderRadius: 'var(--radius-sm)', font: 'inherit', fontWeight: 600, cursor: saving ? 'default' : 'pointer' }}>
-          {saving ? 'Saving…' : 'Save notes'}
-        </button>
-        {saveMessage && <span role="status" style={{ fontSize: 13 }}>{saveMessage}</span>}
-      </div>
-      {state.updated_utc && <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Last saved {state.updated_utc}</div>}
-    </form>
+    <Panel title="Analyst record">
+      <form onSubmit={save} aria-label="Analyst notes" className="notes-form">
+        <label className="notes-field">
+          <span>Status</span>
+          <select value={status} onChange={(e) => setStatus(e.target.value)}>
+            {STATUS_OPTIONS.map((o) => <option key={o.value} value={o.value}>{o.label}</option>)}
+          </select>
+        </label>
+        <label className="notes-field">
+          <span>Tags (comma separated)</span>
+          <input value={tagsText} onChange={(e) => setTagsText(e.target.value)} />
+        </label>
+        <label className="notes-field">
+          <span>Notes</span>
+          <textarea value={notes} onChange={(e) => setNotes(e.target.value)} rows={10} />
+        </label>
+        <div className="notes-actions">
+          <button type="submit" className="notes-save" disabled={saving}>
+            {saving ? 'Saving…' : 'Save notes'}
+          </button>
+          <span role="status" className="notes-feedback">
+            {dirty ? 'Unsaved changes' : feedback}
+          </span>
+        </div>
+        {saved.updated_utc && <p className="notes-meta">Last saved {saved.updated_utc}</p>}
+      </form>
+    </Panel>
   )
 }

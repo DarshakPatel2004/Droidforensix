@@ -1,14 +1,23 @@
 import { useState, useCallback, useRef } from 'react'
 import '../styles/UploadPanel.css'
 
-const FEATURES = [
-  { icon: '🧬', title: 'String Extraction', desc: 'Enumerate literals, byte arrays, and constants from decompiled APK code.' },
-  { icon: '🔐', title: 'Encoding Detection', desc: 'Identify Base64, hex, XOR, and custom encoding schemes.' },
-  { icon: '🌐', title: 'C2 Discovery', desc: 'Extract and classify command-and-control endpoints with confidence scores.' },
-  { icon: '⛓', title: 'Threat Chains', desc: 'Map encoded strings through decoding functions to final payloads.' },
-  { icon: '🛡', title: 'Obfuscation Score', desc: 'Score reflection, dynamic loading, and crypto API usage patterns.' },
-  { icon: '⚡', title: 'Risk Assessment', desc: 'LLM-assisted verdict with rule-based fallback scoring.' },
-]
+// One drawn icon set, one stroke weight. Replaces emoji glyphs.
+const ICON_PATHS = {
+  upload: 'M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3',
+  alert: 'M12 9v4m0 4h.01M10.3 3.9 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
+  error: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0-6h.01M12 8v4',
+  info: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0-8v4m0-8h.01',
+  file: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6',
+}
+
+function Icon({ name, size = 18 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
+      <path d={ICON_PATHS[name]} />
+    </svg>
+  )
+}
+
 
 const MAX_SIZE_MB = 100
 
@@ -25,11 +34,6 @@ function validateFile(file) {
   // Extension check
   if (!file.name.toLowerCase().endsWith('.apk')) {
     return `Invalid file type. Only .apk files are supported. Your file is .${file.name.split('.').pop() || 'unknown'}.`
-  }
-
-  // MIME type check (best-effort — browsers don't always set this)
-  if (file.type && file.type !== 'application/vnd.android.package-archive') {
-    return `File doesn't appear to be an APK (detected type: ${file.type}).`
   }
 
   // Size check
@@ -165,7 +169,7 @@ export default function UploadPanel({
           onDrop={handleDrop}
         >
           <div className="upload-dropzone-content">
-            <div className="upload-illustration">📦</div>
+            <div className="upload-illustration"><Icon name="upload" size={26} /></div>
             <h2>{uploading ? 'Uploading APK...' : isRetrying ? 'Retrying Upload...' : 'Drop your APK here'}</h2>
             <p className="upload-subtitle">
               {uploading
@@ -176,7 +180,17 @@ export default function UploadPanel({
             </p>
 
             {!uploading && !isRetrying && (
-              <label className="upload-primary-button">
+              <label
+                className="upload-primary-button"
+                role="button"
+                tabIndex={0}
+                onKeyDown={e => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    e.preventDefault()
+                    fileInputRef.current?.click()
+                  }
+                }}
+              >
                 Browse Files
                 <input
                   ref={fileInputRef}
@@ -205,7 +219,7 @@ export default function UploadPanel({
         {/* Inline error display (Phase 1) */}
         {inlineError && (
           <div className="upload-inline-error">
-            <span className="upload-inline-error-icon">❌</span>
+            <span className="upload-inline-error-icon"><Icon name="error" /></span>
             <span className="upload-inline-error-text">{inlineError}</span>
             <button
               className="upload-inline-error-dismiss"
@@ -221,7 +235,7 @@ export default function UploadPanel({
         {isRetrying && (
           <div className="upload-retry-bar">
             <div className="retry-info">
-              <span className="retry-icon">⚠️</span>
+              <span className="retry-icon"><Icon name="alert" /></span>
               <span className="retry-text">
                 Attempt {retryAttempt} of {maxRetries}
                 {retryEta != null && retryEta > 0 && (
@@ -244,7 +258,7 @@ export default function UploadPanel({
         {/* Exhausted retries — show Try Again + Start Backend (Phase 4, 5) */}
         {isExhausted && (
           <div className="upload-exhausted">
-            <div className="exhausted-icon">❌</div>
+            <div className="exhausted-icon"><Icon name="error" size={22} /></div>
             <p className="exhausted-title">Upload failed after {maxRetries} attempts</p>
             <p className="exhausted-hint">The backend at localhost:8000 may not be running.</p>
             <div className="exhausted-actions">
@@ -271,7 +285,7 @@ export default function UploadPanel({
         {/* Proactive backend offline notice (Phase 5) */}
         {showBackendOffline && (
           <div className="upload-offline-notice">
-            <span className="offline-icon">⚠️</span>
+            <span className="offline-icon"><Icon name="alert" /></span>
             <span className="offline-text">
               Backend at localhost:8000 is not reachable.
             </span>
@@ -287,7 +301,7 @@ export default function UploadPanel({
         {showBackendInstructions && (
           <div className="backend-instructions">
             <div className="backend-instructions-header">
-              <span className="instructions-icon">ℹ️</span>
+              <span className="instructions-icon"><Icon name="info" /></span>
               <span>Backend is not running. Start it with:</span>
             </div>
             <div className="backend-instructions-code">
@@ -340,17 +354,20 @@ export default function UploadPanel({
             <div className="samples-list">
               {samples.map((sample, idx) => (
                 <div key={idx} className="sample-row">
-                  <div className="sample-row-icon">📱</div>
+                  <div className="sample-row-icon"><Icon name="file" /></div>
                   <div className="sample-row-info">
                     <p className="sample-row-name" title={sample.fileName}>{sample.fileName}</p>
                     <p className="sample-row-hash">{sample.sha256.substring(0, 24)}...</p>
-                    <p className="sample-row-time">{new Date(sample.uploadedAt).toLocaleString()}</p>
+                    {sample.uploadedAt && (
+                      <p className="sample-row-time">{new Date(sample.uploadedAt).toLocaleString()}</p>
+                    )}
                   </div>
                   <div className="sample-row-actions">
                     <span className={`status-pill ${sample.status}`}>
                       {sample.status === 'uploaded' && 'Queued'}
                       {sample.status === 'analyzing' && 'Analyzing'}
                       {sample.status === 'completed' && 'Done'}
+                      {sample.status === 'analyzed' && 'Analyzed'}
                       {sample.status === 'failed' && 'Failed'}
                     </span>
                     <button
@@ -367,22 +384,6 @@ export default function UploadPanel({
           </div>
         )}
 
-        <div className="features card">
-          <div className="card-header">
-            <h3>What DroidForensix Does</h3>
-          </div>
-          <div className="features-grid">
-            {FEATURES.map((f, i) => (
-              <div key={i} className="feature-item">
-                <span className="feature-icon">{f.icon}</span>
-                <div>
-                  <h4>{f.title}</h4>
-                  <p>{f.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
       </section>
     </div>
   )

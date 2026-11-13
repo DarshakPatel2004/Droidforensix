@@ -1,27 +1,19 @@
-import { useState, useCallback } from 'react'
-import { apiFetch } from '../api/client'
+import { useState, useCallback, useMemo } from 'react'
 import '../styles/SampleSearch.css'
 
-export default function SampleSearch({ apiUrl, onSelect, samples }) {
+export default function SampleSearch({ onSelect, samples }) {
   const [query, setQuery] = useState('')
-  const [results, setResults] = useState(samples || [])
-  const [searching, setSearching] = useState(false)
-
-  const doSearch = useCallback(async () => {
-    if (!query.trim()) {
-      setResults(samples || [])
-      return
-    }
-    setSearching(true)
-    try {
-      const data = await apiFetch(`${apiUrl || 'http://localhost:8000'}/api/samples?q=${encodeURIComponent(query)}&limit=20`)
-      setResults(data.samples || data || [])
-    } catch {
-      setResults([])
-    } finally {
-      setSearching(false)
-    }
-  }, [query, samples, apiUrl])
+  // Holds the last submitted query. Results are derived from it, so a sample list that loads later still shows.
+  const [submitted, setSubmitted] = useState('')
+  // /api/samples takes no query parameters, so filter the list we already have.
+  const doSearch = useCallback(() => setSubmitted(query.trim().toLowerCase()), [query])
+  const results = useMemo(() => {
+    const all = samples || []
+    if (!submitted) return all
+    return all.filter(s =>
+      [s.sha256, s.package_name, s.family, s.name].some(v => typeof v === 'string' && v.toLowerCase().includes(submitted))
+    )
+  }, [samples, submitted])
 
   return (
     <div className="card sample-search">
@@ -34,14 +26,14 @@ export default function SampleSearch({ apiUrl, onSelect, samples }) {
           onKeyDown={e => e.key === 'Enter' && doSearch()}
           aria-label="Search samples"
         />
-        <button className="btn-primary sample-search-btn" onClick={doSearch} disabled={searching}>
-          {searching ? '...' : 'Search'}
+        <button className="btn-primary sample-search-btn" onClick={doSearch}>
+          Search
         </button>
       </div>
       {results.length > 0 && (
         <div className="sample-search-results">
           {results.map((s, i) => (
-            <button key={i} className="sample-search-row" onClick={() => onSelect?.(s)}>
+            <button key={s.sha256 || i} className="sample-search-row" onClick={() => onSelect?.(s)}>
               {s.sha256?.substring(0, 16) || s.sample_id?.substring(0, 16)}...
               {s.package_name && <span className="text-muted">{s.package_name}</span>}
               {s.family && <span className="text-amber">{s.family}</span>}
@@ -49,7 +41,7 @@ export default function SampleSearch({ apiUrl, onSelect, samples }) {
           ))}
         </div>
       )}
-      {!searching && query && results.length === 0 && (
+      {query && results.length === 0 && (
         <div className="empty-state">No samples found</div>
       )}
     </div>

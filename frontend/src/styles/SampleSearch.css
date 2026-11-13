@@ -64,3 +64,12 @@
 
 .sample-search-row .text-muted { margin-left: 8px; }
 .sample-search-row .text-amber { margin-left: 8px; }
+
+/* Flat action, matching the upload button; no gradient. */
+.sample-search-btn {
+  background: var(--accent-cyan);
+  color: #04141a;
+  border: 0;
+  box-shadow: none;
+  font-weight: 600;
+}

@@ -27,19 +27,6 @@ describe('UploadPanel', () => {
     expect(screen.getByText(/Browse Files/)).toBeTruthy()
   })
 
-  test('shows features grid', () => {
-    renderUploadPanel()
-    expect(screen.getByText(/String Extraction/)).toBeTruthy()
-    expect(screen.getByText(/C2 Discovery/)).toBeTruthy()
-    expect(screen.getByText(/Obfuscation Score/)).toBeTruthy()
-  })
-
-  test('shows features card centered', () => {
-    renderUploadPanel()
-    expect(screen.getByText(/What DroidForensix Does/)).toBeTruthy()
-    expect(screen.getByText(/String Extraction/)).toBeTruthy()
-  })
-
   test('shows recent samples when provided', () => {
     const samples = [
       { fileName: 'malware.apk', sha256: 'abc123def4567890abcdef1234567890abcdef12', status: 'completed', uploadedAt: '2024-01-01T00:00:00Z' },
