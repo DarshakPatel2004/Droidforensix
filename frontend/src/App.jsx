@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef, useReducer, lazy, Suspense } from 'react'
 import { Routes, Route, useNavigate, useMatch } from 'react-router-dom'
 import './App.css'
+import './components/ui/primitives.css'
 import { ToastProvider, useToast } from './components/Toast'
 import UploadPanel from './components/UploadPanel'
 const AnalysisView = lazy(() => import('./components/AnalysisView'))

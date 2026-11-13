@@ -21,7 +21,7 @@ Users are trained, time-pressured in triage, and will be asked to justify findin
 1. Analysis status: complete, running or failed.
 2. Verdict and risk score (0-100).
 3. Family and attribution confidence, including "no family match".
-4. Analyst status and tags (new, confirmed, false positive).
+4. Analyst status and tags. Status values: new, reviewing, closed, confirmed, false positive (all six accepted; see spec section 10).
 
 ## Principles
 
@@ -40,6 +40,6 @@ Users are trained, time-pressured in triage, and will be asked to justify findin
 ## Constraints
 
 - Dark theme. Keep the existing token names in `frontend/src/App.css` and `frontend/src/index.css`.
-- Layout is fixed by the rewrite spec: sample list on the left, per-sample header, tab bar, tab body (`docs/plans/2026-10-26-frontend-rewrite-design.md`, section 9 item 6).
-- Tab bodies are out of scope for this pass.
+- Layout is fixed by the rewrite spec: sample list on the left, per-sample header, tab bar, tab body (`docs/plans/2026-10-26-frontend-rewrite-design.md`, section 3).
+- Tab bodies are in scope: all seven are rebuilt (see spec sections 1 and 8).
 - Keyboard-operable, visible focus, reduced-motion respected.
