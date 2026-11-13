@@ -354,7 +354,7 @@ flowchart TD
 | # | Technique | Tool | What it buys |
 |---|---|---|---|
 | 1 | **Listing-level symbolic evaluation** | `rto_analysis/ghidra_scripts/DecryptStrings.java` + `SliceProbe.java` | Walks raw ARM64 listings for `adrp/add → mov #imm → ldrb → eor → strb` chains and recovers XOR'd string tables byte-by-byte — works where the decompiler OOMs |
-| 2 | **JNI emulation oracle** | `scripts/emulate.py`, `scripts/rto_oracle.py`, Ghidra `EmulateJni2.java` | Runs the packer's own native decoder on a toy CPU with a mocked `JNIEnv*`; every JNI call is logged and `StringBuilder` assembly is replayed, so the key appears as plaintext |
+| 2 | **JNI emulation oracle** | `scripts/emulate.py`, `scripts/rto_oracle.py` *(deleted 2026-11-12, see git history)*, Ghidra `EmulateJni2.java` | Runs the packer's own native decoder on a toy CPU with a mocked `JNIEnv*`; every JNI call is logged and `StringBuilder` assembly is replayed, so the key appears as plaintext |
 | 3 | **Bytecode replay** | `stage3_replay.py` + `cjk_pool.txt` | Ports the installer's 64-bit mul-xorshift PRNG straight from smali to Python — regenerates 177 strings with no execution at all |
 
 **Contract that matters:** a run always ends in `RECOVERED` (artifacts that

@@ -32,7 +32,7 @@ python -m droidforensix analyze|classify|serve|unpack <apk>
 
 Gotchas:
 - `.github/workflows/test.yml` runs pytest, `ruff check analysis backend droidforensix tests` (pyflakes, bugbear, and isort rules, configured in `pyproject.toml`), and `npm run build`. Any failure fails the job. Run the same ruff command locally before pushing.
-- `run_full_pipeline.ps1` calls `run_pipeline_direct.py`, which does not exist. Don't rely on that script.
+- `run_full_pipeline.ps1` runs `scripts/run_batch_analysis.py` (the old `run_pipeline_direct.py` was removed).
 - `tests/conftest.py` has an autouse fixture that redirects `WORK_DIR`/`UPLOADS_DIR` to a tmp dir. Mark a test `@pytest.mark.use_real_work_dir` only if it truly needs the real `analysis/work/`.
 - `.env` holds live API keys and `setenv.sh` holds more. Never copy their values into code, commits, or tests.
 

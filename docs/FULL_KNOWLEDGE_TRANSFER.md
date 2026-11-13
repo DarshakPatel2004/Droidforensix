@@ -81,7 +81,8 @@ venv/bin/python scripts/dissect.py RTO.apk --workdir analysis/dissect_m1/RTO
 # expect: libstrangulation.so arm64, one Java_* export
 
 # 3 emulate (with instrumentation)
-JNI_DEBUG=1 timeout 900 venv/bin/python -u scripts/rto_deep_run.py 2>&1 | tee log
+# scripts/rto_deep_run.py was deleted 2026-11-12 (see git history). To re-run it, restore it first:
+# JNI_DEBUG=1 timeout 900 venv/bin/python -u scripts/rto_deep_run.py 2>&1 | tee log
 # expect: [DIGEST] len=20 input_head=... (hex of seed+"bootstrap.dex2")
 #         [HEAP-SCAN] digest@ 0xa000d90
 # engine strings in JNI trace: SHA-1 then SHA-256
@@ -146,7 +147,7 @@ See `MASTER_KEY_STRATEGY.md` table — each row is a real incident with symptom�
 | `batch_pendrive.py` | 55-sample sweep | Writes `reports/pendrive_*.csv` + `analysis/triage_pendrive/` |
 | `unpack.py` | **Master dispatcher** (2026-08-28): routes JAVA/NATIVE, family sniffing, typed E-codes, self-validating outputs, myg0N KDF brute | Every run ends in artifacts or a typed E-code — never a blank |
 | `retry_pendrive_timeouts.py` | Re-runs timeouts | Don't re-run ZipCrypto trio blindly |
-| `rto_deep_run.py` | Deep oracle with checkpoints | Needs `/tmp/arm64.so` to exist; run with `JNI_DEBUG=1` + `-u` |
+| `rto_deep_run.py` *(deleted 2026-11-12, see git history)* | Deep oracle with checkpoints | Needs `/tmp/arm64.so` to exist; run with `JNI_DEBUG=1` + `-u` |
 
 ---
 
