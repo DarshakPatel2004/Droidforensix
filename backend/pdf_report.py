@@ -237,16 +237,20 @@ def _section_obfuscation(story, st, obfuscation):
 
     score      = obfuscation.get('obfuscation_score', 0)
     level      = obfuscation.get('obfuscation_level', 'unknown')
+    # build_obfuscation_view() returns per-technique entries, not a raw "indicators" dict.
     techniques = obfuscation.get('techniques', [])
-    indicators = obfuscation.get('indicators', {})
+    by_key = {t.get('key'): t for t in techniques}
+
+    def _count(key):
+        return by_key.get(key, {}).get('count', 0)
 
     story.append(_kv_table([
         ('Obfuscation Score',  f'{score} ({level.upper()})'),
-        ('Reflection Usages',  str(len(indicators.get('reflection', [])))),
-        ('Dynamic Loading',    str(len(indicators.get('dynamic_loading', [])))),
-        ('Crypto API Usages',  str(len(indicators.get('crypto_apis', [])))),
-        ('Suspicious APIs',    str(len(indicators.get('suspicious_apis', [])))),
-        ('Dangerous Perms',    str(len(indicators.get('dangerous_permissions', [])))),
+        ('Reflection Usages',  str(_count('reflection'))),
+        ('Dynamic Loading',    str(_count('dynamic_loading'))),
+        ('Crypto API Usages',  str(_count('crypto_apis'))),
+        ('Suspicious APIs',    str(_count('suspicious_apis'))),
+        ('Dangerous Perms',    str(_count('dangerous_permissions'))),
     ]))
 
     if techniques:
@@ -257,7 +261,7 @@ def _section_obfuscation(story, st, obfuscation):
             count = t.get('count', 0)
             story.append(Paragraph(f'- {_safe(name)}: {count} instance(s)', st['finding']))
 
-    perms = indicators.get('dangerous_permissions', [])
+    perms = [item.get('raw', '') for item in by_key.get('dangerous_permissions', {}).get('items', [])]
     if perms:
         story.append(Spacer(1, 6))
         story.append(Paragraph('<b>Dangerous Permissions Detected</b>', st['label']))
@@ -269,7 +273,8 @@ def _section_obfuscation(story, st, obfuscation):
 
 def _section_c2(story, st, threat_data):
     story.append(Paragraph('4. C2 Infrastructure', st['h1']))
-    c2s = threat_data.get('c2_infrastructure', [])
+    # build_threat_intel() returns the C2 list under "c2s" (not "c2_infrastructure").
+    c2s = threat_data.get('c2s', [])
     if not c2s:
         story.append(Paragraph('No C2 indicators detected.', st['muted']))
         _hr(story)
@@ -283,16 +288,21 @@ def _section_c2(story, st, threat_data):
     td = ParagraphStyle('td', fontName='Courier',        fontSize=7, textColor=C_DARK)
     ts = ParagraphStyle('ts', fontName='Helvetica',      fontSize=8, textColor=C_MUTED)
 
-    rows = [[Paragraph(h, th) for h in ['Indicator', 'Protocol', 'Status', 'Classification']]]
+    rows = [[Paragraph(h, th) for h in ['Indicator', 'Protocol', 'Category', 'Classification']]]
+    seen = set()
     for c2 in c2s[:50]:
         indicator = c2.get('domain') or c2.get('ip') or 'unknown'
         port = c2.get('port', '')
         path = c2.get('path', '/')
         detail = f'{indicator}:{port}{path}' if port else f'{indicator}{path}'
+        # Same endpoint can be extracted from several sources; show it once.
+        if detail in seen:
+            continue
+        seen.add(detail)
         rows.append([
             Paragraph(_safe(detail, 60), td),
             Paragraph(_safe(c2.get('protocol', 'N/A')), ts),
-            Paragraph(_safe(c2.get('status', 'N/A')), ts),
+            Paragraph(_safe(c2.get('threat_category', 'N/A')), ts),
             Paragraph(_safe(c2.get('ip_classification', 'N/A')), ts),
         ])
 

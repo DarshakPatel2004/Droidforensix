@@ -105,6 +105,7 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
                     'com.facebook.', 'com.appsflyer.', 'io.sentry.',
                     'com.adjust.', 'com.onesignal.', 'com.amplitude.',
                     'com.firebase.', 'com.google.firebase.',
+                    '.R$', '.Manifest',  # generated resource ids and manifest constants, no logic
                 ]
 
                 def suspicion_score(cls_data):

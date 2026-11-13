@@ -243,6 +243,71 @@ class TestPdfReport:
         assert isinstance(pdf, (bytes, bytearray))
         assert bytes(pdf)[:5] == b"%PDF-"
 
+    def test_c2_section_reads_threat_intel_c2s_key(self):
+        # build_threat_intel() returns C2s under "c2s"; the section must not report none.
+        from backend.pdf_report import _section_c2, _styles
+
+        story = []
+        _section_c2(story, _styles(), {"c2s": [{"domain": "example.test", "path": "/x"}]})
+        texts = [getattr(f, "text", "") for f in story]
+        assert not any("No C2 indicators" in t for t in texts)
+        assert any("1 indicator(s) identified" in t for t in texts)
+
+    def test_obfuscation_counts_come_from_techniques(self):
+        # build_obfuscation_view() exposes techniques[], not indicators{}; counts must reflect it.
+        from reportlab.platypus import Table
+
+        from backend.pdf_report import _section_obfuscation, _styles
+
+        obf = {"obfuscation_score": 60, "obfuscation_level": "medium",
+               "techniques": [{"key": "dangerous_permissions", "count": 5,
+                               "items": [{"raw": "android.permission.SEND_SMS"}]}]}
+        story = []
+        _section_obfuscation(story, _styles(), obf)
+        table = next(f for f in story if isinstance(f, Table))
+        cells = {row[0].text: row[1].text for row in table._cellvalues}
+        assert cells["Dangerous Perms"] == "5"
+
+
+class TestClipSummary:
+    def test_short_summary_is_unchanged(self):
+        from analysis.step7_llm_assessment import _clip_summary
+
+        assert _clip_summary("Short one.") == "Short one."
+
+    def test_long_summary_clips_at_sentence_boundary(self):
+        from analysis.step7_llm_assessment import _clip_summary
+
+        text = ("First sentence here. " * 40) + "Trailing words that get cut off mid"
+        out = _clip_summary(text, limit=200)
+        assert out.endswith("First sentence here.")
+        assert len(out) <= 200
+
+    def test_no_sentence_boundary_gets_ellipsis_not_bare_cut(self):
+        from analysis.step7_llm_assessment import _clip_summary
+
+        out = _clip_summary("x" * 50, limit=20)
+        assert out.endswith("…")
+
+
+class TestSmsFraudSanity:
+    def test_sms_fraud_with_c2_raises_low_to_high(self):
+        from analysis.step7_llm_assessment import sanity_check
+
+        obf = {"indicators": {"permission_behaviors": [{"group": "sms_fraud"}]}}
+        out = sanity_check({"severity": "low", "risk_score": 20, "narrative": ""},
+                           {}, {"total_c2s": 2}, obf, None)
+        assert out["severity"] == "high"
+        assert out["risk_score"] >= 65
+
+    def test_sms_fraud_without_c2_is_not_raised_here(self):
+        from analysis.step7_llm_assessment import sanity_check
+
+        obf = {"indicators": {"permission_behaviors": [{"group": "sms_fraud"}]}}
+        out = sanity_check({"severity": "low", "risk_score": 20, "narrative": ""},
+                           {}, {"total_c2s": 0}, obf, None)
+        assert out["severity"] != "high"
+
 
 # ---------------------------------------------------------------------------
 # T-11b: container repair must survive damaged ZIPs (defect found in review)

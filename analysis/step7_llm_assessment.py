@@ -292,6 +292,17 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         assessment["risk_score"] = max(risk_score, 35)
         assessment["narrative"] += " [SANITY CHECK: elevated due to detected C2 infrastructure.]"
 
+    # SMS send/intercept with C2 is a fraud pattern; the LLM alone under-rates it.
+    # Matches the sms_fraud group in obfuscation indicators.permission_behaviors.
+    sms_fraud = any(
+        b.get("group") == "sms_fraud"
+        for b in indicators.get("permission_behaviors", []) or []
+    )
+    if sms_fraud and c2_count > 0 and assessment.get("severity") in ("low", "medium"):
+        assessment["severity"] = "high"
+        assessment["risk_score"] = max(assessment.get("risk_score", 0), 65)
+        assessment["narrative"] += " [SANITY CHECK: elevated to high — SMS send/intercept permissions combined with C2 infrastructure.]"
+
     # If no C2 was extracted, cap severity and risk_score
     if c2_count == 0:
         sev_map = {"critical": 4, "high": 3, "medium": 2, "low": 1}
@@ -726,6 +737,18 @@ fallback_assessment = heuristic_fallback
 GENERIC_SYSTEM_PROMPT = "Follow the instructions in the user message exactly. Reply with a single JSON object only."
 
 
+def _clip_summary(text, limit: int = 1200) -> str:
+    """Clip an LLM summary at a sentence boundary so it never ends mid-word."""
+    s = str(text or "").strip()
+    if len(s) <= limit:
+        return s
+    cut = s[:limit]
+    end = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
+    if end > limit // 2:
+        return cut[: end + 1]
+    return cut.rstrip() + "…"
+
+
 def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_retries: int = 2,
                      system_prompt: str = SYSTEM_PROMPT) -> Optional[str]:
     """Call NVIDIA NIM chat completions endpoint and return raw response text."""
@@ -753,7 +776,7 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
                 model=model,
                 messages=messages,
                 temperature=0.1,
-                max_tokens=512,
+                max_tokens=1024,  # 512 cut the JSON mid-summary on longer method explanations
                 # OpenRouter reasoning models otherwise spend the token budget on hidden reasoning.
                 extra_body={"reasoning": {"enabled": False}} if "openrouter" in base_url else None,
             )
@@ -1194,7 +1217,7 @@ def explain_threat_chain(chain: dict) -> dict:
         parsed = parse_llm_json(raw_output)
         if parsed and "summary" in parsed:
             return {
-                "summary": str(parsed.get("summary", ""))[:500],
+                "summary": _clip_summary(parsed.get("summary", "")),
                 "threat_type": str(parsed.get("threat_type", "unknown")),
                 "confidence": float(parsed.get("confidence", 0.5)),
             }
@@ -1269,7 +1292,7 @@ def explain_method(
         parsed = parse_llm_json(raw_output)
         if parsed and "summary" in parsed:
             return {
-                "summary": str(parsed.get("summary", ""))[:500],
+                "summary": _clip_summary(parsed.get("summary", "")),
                 "threat_type": str(parsed.get("threat_type", "unknown")),
                 "confidence": float(parsed.get("confidence", 0.5)),
             }
@@ -1519,7 +1542,7 @@ def summarize_dissection(dissection: dict, class_objects: list | None = None) ->
         return {
             "threat_level": threat_level,
             "risk_score": risk_score,
-            "summary": str(parsed.get("summary", ""))[:500],
+            "summary": _clip_summary(parsed.get("summary", "")),
             "key_behaviors": key_behaviors,
             "suspicious_methods": suspicious_methods,
             "c2_indicators": c2_indicators,
