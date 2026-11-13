@@ -1,7 +1,6 @@
 import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react'
 import './AnalysisView.css'
 import ObfuscationView from './ObfuscationView'
-import ManifestView from './ManifestView'
 import ThreatSynthesisPanel from './ThreatSynthesisPanel'
 import Icon from './ui/Icon'
 import StateMessage from './ui/StateMessage'
@@ -232,11 +231,9 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
         {[
           { id: 'secrets', label: 'Secrets' },
           { id: 'llm', label: 'LLM Summary' },
-          { id: 'dissection-summary', label: 'Dissection Summary' },
           { id: 'obfuscation', label: 'Obfuscation' },
           { id: 'chains', label: 'Threat Chains' },
           { id: 'synthesis', label: 'Threat Synthesis' },
-          { id: 'manifest', label: 'Manifest' },
         ].map(tab => (
           <button
             key={tab.id}
@@ -258,9 +255,6 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
         {activeResultTab === 'llm' && (
           <LLMSummaryTab result={fullResult} />
         )}
-        {activeResultTab === 'dissection-summary' && (
-          <DissectionSummaryTab sampleId={effectiveSampleId} apiUrl={apiUrl} />
-        )}
         {activeResultTab === 'obfuscation' && (
           <ObfuscationView sample={sample} apiUrl={apiUrl} result={fullResult} />
         )}
@@ -269,9 +263,6 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
         )}
         {activeResultTab === 'chains' && (
           <ChainsTab result={fullResult} apiUrl={apiUrl} sampleId={effectiveSampleId} />
-        )}
-        {activeResultTab === 'manifest' && (
-          <ManifestView sample={sample} apiUrl={apiUrl} />
         )}
       </div>
     </div>
@@ -350,7 +341,7 @@ LLMSummaryTab.displayName = 'LLMSummaryTab'
  * Dissection Summary Tab — real-time LLM threat assessment from dissection data
  * FIXED: Sanitizes response to prevent "Objects are not valid as React child" error
  */
-const DissectionSummaryTab = memo(({ sampleId, apiUrl }) => {
+export const DissectionSummaryTab = memo(({ sampleId, apiUrl }) => {
   const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
