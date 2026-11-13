@@ -8,6 +8,37 @@ import 'highlight.js/styles/github-dark.min.css'
 hljs.registerLanguage('java', java)
 hljs.registerLanguage('xml', xml)
 
+// Above this size, hljs.highlightElement blocks the tab for seconds.
+const HIGHLIGHT_MAX_CHARS = 200 * 1024
+
+// Wraps matches in text nodes only, so hljs markup is never split or altered.
+function markMatches(root, term) {
+  const escaped = term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const splitter = new RegExp(`(${escaped})`, 'i')
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT)
+  const textNodes = []
+  while (walker.nextNode()) textNodes.push(walker.currentNode)
+
+  for (const node of textNodes) {
+    const parts = node.data.split(splitter)
+    if (parts.length === 1) continue
+    const fragment = document.createDocumentFragment()
+    // With one capture group, odd indices are the matches.
+    parts.forEach((part, index) => {
+      if (!part) return
+      if (index % 2 === 1) {
+        const mark = document.createElement('mark')
+        mark.className = 'source-highlight'
+        mark.textContent = part
+        fragment.append(mark)
+      } else {
+        fragment.append(part)
+      }
+    })
+    node.replaceWith(fragment)
+  }
+}
+
 export default function ClassSourceViewer({ sampleId, className, apiUrl, highlight }) {
   const [source, setSource] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -20,18 +51,13 @@ export default function ClassSourceViewer({ sampleId, className, apiUrl, highlig
     const el = codeRef.current
     if (!el || !source) return
 
-    if (el.dataset._raw) {
-      el.innerHTML = el.dataset._raw
+    // Reset from the source string, not cached markup. React owns this node.
+    el.textContent = source
+    if (source.length <= HIGHLIGHT_MAX_CHARS) {
+      hljs.highlightElement(el)
     }
-    hljs.highlightElement(el)
-
-    const raw = el.innerHTML
-    el.dataset._raw = raw
-
     if (highlight) {
-      const escaped = highlight.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-      const regex = new RegExp(`(${escaped})`, 'gi')
-      el.innerHTML = el.innerHTML.replace(regex, '<mark class="source-highlight">$1</mark>')
+      markMatches(el, highlight)
     }
   }, [source, highlight])
 

@@ -11,6 +11,8 @@ export function useSampleData(sampleId, endpoint, options = {}) {
   const fetchFn = cached ? apiFetchCached : apiFetch
 
   useEffect(() => {
+    // Drop the previous sample's data at once, so it is never shown under the new id (audit F-08).
+    setData(null)
     if (!sampleId || !endpoint || !immediate) return
     let cancelled = false
     setLoading(true)

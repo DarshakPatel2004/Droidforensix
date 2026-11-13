@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import '../styles/ManifestView.css'
+import Icon from './ui/Icon'
 
 const DANGEROUS_PERMISSIONS = new Set([
   'android.permission.READ_CALENDAR',
@@ -137,7 +138,7 @@ export default function ManifestView({ sample, apiUrl }) {
   if (!sampleId) {
     return (
       <div className="manifest-view state-empty">
-        <span className="state-icon">📦</span>
+        <span className="state-icon"><Icon name="cube" size={22} /></span>
         <h3 className="state-title">No sample selected</h3>
         <p className="state-description">Upload and analyze an APK to view its manifest.</p>
       </div>
@@ -156,7 +157,7 @@ export default function ManifestView({ sample, apiUrl }) {
   if (error) {
     return (
       <div className="manifest-view state-error">
-        <span className="state-icon">⚠️</span>
+        <span className="state-icon"><Icon name="alert" size={22} /></span>
         <h3 className="state-title">Failed to load manifest</h3>
         <p className="state-description">{error}</p>
       </div>
@@ -166,7 +167,7 @@ export default function ManifestView({ sample, apiUrl }) {
   if (!manifest) {
     return (
       <div className="manifest-view state-empty">
-        <span className="state-icon">📦</span>
+        <span className="state-icon"><Icon name="cube" size={22} /></span>
         <h3 className="state-title">No manifest available</h3>
       </div>
     )

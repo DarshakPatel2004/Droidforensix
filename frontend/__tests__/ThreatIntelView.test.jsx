@@ -1,6 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from 'vitest'
 import { render, screen, waitFor } from '@testing-library/react'
 import ThreatIntelView from '../src/components/ThreatIntelView'
+import { clearCache } from '../src/utils/fetchWithCache'
 
 vi.mock('react-leaflet', () => ({
   MapContainer: ({ children }) => <div data-testid="map-container">{children}</div>,
@@ -24,7 +25,7 @@ const MOCK_DATA = {
   family: { family: 'XHelper', confidence: 0.95, method: 'llm' },
 }
 
-beforeEach(() => { vi.clearAllMocks() })
+beforeEach(() => { vi.clearAllMocks(); clearCache() })
 
 describe('ThreatIntelView', () => {
   test('shows no sample state', () => {

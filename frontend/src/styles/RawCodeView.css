@@ -97,3 +97,8 @@
     grid-template-columns: 240px minmax(0, 1fr);
   }
 }
+
+/* Flat surfaces: the list and viewer share one hairline frame, no shadows or glow. */
+.raw-code-list, .raw-code-viewer > * { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: 8px; box-shadow: none; }
+.raw-code-row.selected { background: var(--bg-surface); box-shadow: none; }
+.raw-code-row.selected:not(:hover) { color: var(--text-primary); }

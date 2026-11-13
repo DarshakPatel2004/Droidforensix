@@ -40,3 +40,33 @@
 .all-checks-tag { font-size: 12px; color: var(--text-muted); }
 .all-checks-line { color: var(--text-secondary); min-width: 0; overflow-wrap: anywhere; }
 @media (max-width: 720px) { .all-checks li { grid-template-columns: 1fr; gap: 2px; } }
+
+/* Attribution evidence */
+.attr { display: flex; flex-direction: column; gap: 16px; }
+.attr-call { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; }
+.attr-family { font-size: 22px; font-weight: 600; color: var(--text-primary); }
+.attr-confidence { font-size: 14px; color: var(--text-secondary); }
+.attr-note { margin: 10px 0 0; font-size: 13px; color: var(--text-muted); }
+.attr-bars { display: flex; flex-direction: column; gap: 12px; }
+.attr-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; font-size: 13px; color: var(--text-secondary); }
+.attr-list li { padding-left: 0; }
+.attr-categories { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+.attr-categories b { color: var(--text-primary); font-weight: 600; }
+.attr-strings { list-style: none; margin: 0; padding: 0; max-height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+.attr-strings li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 10px; align-items: baseline; font-size: 12px; }
+.attr-entropy { font-family: ui-monospace, monospace; font-weight: 600; }
+.attr-string { color: var(--text-secondary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.mono { font-family: ui-monospace, 'IBM Plex Mono', monospace; }
+.tone-none { color: var(--text-muted); }
+
+/* Related samples */
+.related-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+.related-row { width: 100%; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 0; background: none; border: 0; border-bottom: 1px solid var(--border-color); color: inherit; text-align: left; font: inherit; cursor: pointer; }
+.related-row:hover:not(:disabled) { background: var(--bg-surface-hover); }
+.related-row:disabled { cursor: default; }
+.related-row:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: -2px; }
+.related-list li:last-child .related-row { border-bottom: 0; }
+.related-main { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.related-name { font-size: 13px; color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.related-sub { font-size: 11px; color: var(--text-muted); }
+.related-sim { font-size: 12px; font-weight: 600; white-space: nowrap; }

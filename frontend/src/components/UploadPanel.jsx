@@ -1,22 +1,7 @@
 import { useState, useCallback, useRef } from 'react'
 import '../styles/UploadPanel.css'
+import Icon from './ui/Icon'
 
-// One drawn icon set, one stroke weight. Replaces emoji glyphs.
-const ICON_PATHS = {
-  upload: 'M12 16V4m0 0-4 4m4-4 4 4M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3',
-  alert: 'M12 9v4m0 4h.01M10.3 3.9 2.6 17a2 2 0 0 0 1.7 3h15.4a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z',
-  error: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0-6h.01M12 8v4',
-  info: 'M12 22a10 10 0 1 0 0-20 10 10 0 0 0 0 20zm0-8v4m0-8h.01',
-  file: 'M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9zM14 3v6h6',
-}
-
-function Icon({ name, size = 18 }) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
-      <path d={ICON_PATHS[name]} />
-    </svg>
-  )
-}
 
 
 const MAX_SIZE_MB = 100
