@@ -2,10 +2,20 @@ import { useState, useEffect } from 'react'
 import './AnalysisView.css'
 import SmartDissection from './SmartDissection'
 import ClassSourceViewer from './ClassSourceViewer'
+import { DissectionSummaryTab } from './AnalysisView'
+import ManifestView from './ManifestView'
+import StateMessage from './ui/StateMessage'
+
+const VIEWS = [
+  { id: 'classes', label: 'Classes' },
+  { id: 'summary', label: 'Summary' },
+  { id: 'manifest', label: 'Manifest' },
+]
 
 export default function DissectionPage({ sample, apiUrl }) {
   const [selectedClass, setSelectedClass] = useState(null)
   const [showSource, setShowSource] = useState(false)
+  const [view, setView] = useState('classes')
 
   const sampleId = sample?.sampleId || sample?.sha256 || sample?.uploadId
 
@@ -20,22 +30,37 @@ export default function DissectionPage({ sample, apiUrl }) {
 
   if (!sampleId) {
     return (
-      <div className="analysis-idle">
-        <p>Select a sample to view code dissection.</p>
-      </div>
+      <StateMessage tone="empty" title="Select a sample to view code dissection." />
     )
   }
 
   return (
     <div className="dissection-page" style={{ position: 'relative', minHeight: '400px' }}>
-      <SmartDissection
-        sample={sample}
-        apiUrl={apiUrl}
-        onSelectClass={(name) => {
-          setSelectedClass(name)
-          setShowSource(true)
-        }}
-      />
+      <div className="result-tabs" role="tablist" aria-label="Investigation views">
+        {VIEWS.map((v) => (
+          <button
+            key={v.id}
+            role="tab"
+            aria-selected={view === v.id}
+            className={`tab-button ${view === v.id ? 'active' : ''}`}
+            onClick={() => setView(v.id)}
+          >
+            {v.label}
+          </button>
+        ))}
+      </div>
+      {view === 'classes' && (
+        <SmartDissection
+          sample={sample}
+          apiUrl={apiUrl}
+          onSelectClass={(name) => {
+            setSelectedClass(name)
+            setShowSource(true)
+          }}
+        />
+      )}
+      {view === 'summary' && <DissectionSummaryTab sampleId={sampleId} apiUrl={apiUrl} />}
+      {view === 'manifest' && <ManifestView sample={sample} apiUrl={apiUrl} />}
       {showSource && (
         <div className="source-overlay">
           <div className="source-overlay-header">
