@@ -308,6 +308,13 @@ function AppInner() {
   }, [])
 
   const routeResult = useSampleData(routeSampleId || null, routeSampleId && sampleReady ? `/api/sample/${routeSampleId}` : null)
+  // A sample opened by URL starts with its hash as the name; use the real file name once the result loads.
+  useEffect(() => {
+    const name = routeResult.data?.metadata?.sample_name
+    if (!name || !routeSampleId) return
+    setSelectedSample((s) => (s && s.sampleId === routeSampleId && s.fileName !== name ? { ...s, fileName: name } : s))
+  }, [routeResult.data, routeSampleId])
+
   useEffect(() => {
     if (!routeSampleId || !sampleReady || !routeResult.data || analysisState?.status === 'complete') return
     const llm = routeResult.data.llm_assessment || {}
