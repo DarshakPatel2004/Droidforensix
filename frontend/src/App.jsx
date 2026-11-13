@@ -7,7 +7,6 @@ const AnalysisView = lazy(() => import('./components/AnalysisView'))
 import { ErrorBoundary } from './components/ErrorBoundary'
 import SampleSearch from './components/SampleSearch'
 import LoadingSpinner from './components/LoadingSpinner'
-import ThreatBadge from './components/ThreatBadge'
 import { useSampleData } from './hooks/useSampleData'
 import { apiFetch } from './api/client'
 import { useSampleStatus } from './hooks/useSampleStatus'
@@ -17,6 +16,8 @@ import OverviewTab from './components/tabs/OverviewTab'
 import NotesTab from './components/tabs/NotesTab'
 import AttributionEvidence from './components/AttributionEvidence'
 import RelatedSamples from './components/RelatedSamples'
+import SampleList from './components/SampleList'
+import SampleHeader from './components/SampleHeader'
 
 const DissectionPage = lazy(() => import('./components/DissectionPage'))
 const RawCodeView = lazy(() => import('./components/RawCodeView'))
@@ -27,13 +28,13 @@ const ThreatIntelView = lazy(() => import('./components/ThreatIntelView'))
 const API_URL = 'http://localhost:8000'
 const WS_URL = 'ws://localhost:8000/ws'
 const debugLog = import.meta.env.DEV ? console.log : () => {}
+// Keep in sync with TOTAL_STEPS in analysis/pipeline.py.
+const PIPELINE_TOTAL_STEPS = 18
+const WS_RECONNECT_BASE_MS = 3000
+const WS_RECONNECT_MAX_MS = 30000
 
 const MAX_RETRIES = 5
 const RETRY_BASE_DELAY_MS = 2000
-
-const NAV_ITEMS = [
-  { id: 'upload', label: 'Upload & Analyze', icon: '⬆' },
-]
 
 // Tabs for the selected sample. Only 'analysis' (Checks) is open during analysis, since it shows progress.
 const SAMPLE_TABS = [
@@ -86,12 +87,12 @@ function getHttpErrorMessage(status, body) {
 
 /**
  * Estimate total analysis duration from APK size.
- * Mirrors backend/_estimate_remaining_eta for the full 9-step pipeline.
+ * Mirrors backend/_estimate_remaining_eta for the full pipeline.
  */
 function estimateEtaSeconds(fileSizeBytes) {
-  if (fileSizeBytes < 1_000_000) return 2.0 * 9
-  if (fileSizeBytes < 10_000_000) return 3.5 * 9
-  return 5.0 * 9
+  if (fileSizeBytes < 1_000_000) return 2.0 * PIPELINE_TOTAL_STEPS
+  if (fileSizeBytes < 10_000_000) return 3.5 * PIPELINE_TOTAL_STEPS
+  return 5.0 * PIPELINE_TOTAL_STEPS
 }
 
 /**
@@ -136,11 +137,11 @@ function analysisReducer(state, action) {
       }
 
     case 'STEP_COMPLETED': {
-      const { step_number, duration_seconds, remaining_eta_seconds, progress_percent, step_name } = action.payload
+      const { step_number, total_steps, duration_seconds, remaining_eta_seconds, progress_percent, step_name } = action.payload
       const llmVerification = action.payload.llm_verification
       const newState = {
         ...state,
-        progress: progress_percent || step_number / 9 * 100,
+        progress: progress_percent ?? (step_number / (total_steps || PIPELINE_TOTAL_STEPS)) * 100,
         eta: remaining_eta_seconds,
         stepTimings: {
           ...state.stepTimings,
@@ -225,7 +226,15 @@ function AppInner() {
   const [activeTab, setActiveTab] = useState('upload')
   const [samples, setSamples] = useState([])
   const [selectedSample, setSelectedSample] = useState(null)
-  const sampleStatus = useSampleStatus(selectedSample?.uploadId || selectedSample?.sha256 || selectedSample?.sampleId)
+  // Ids of the sample on screen. WebSocket events for any other sample are dropped (audit F-04).
+  const selectedIdsRef = useRef([])
+  useEffect(() => {
+    selectedIdsRef.current = [selectedSample?.sha256, selectedSample?.sampleId, selectedSample?.uploadId].filter(Boolean)
+  }, [selectedSample])
+  const sampleStatus = useSampleStatus(
+    selectedSample?.uploadId || selectedSample?.sha256 || selectedSample?.sampleId,
+    selectedSample?.sha256,
+  )
   const sampleReady = sampleStatus.status === 'completed'
   const lockedTabIds = sampleReady ? [] : SAMPLE_TABS.map((t) => t.id).filter((id) => !OPEN_DURING_ANALYSIS.has(id))
 
@@ -235,7 +244,6 @@ function AppInner() {
     setSelectedSample({ sampleId: routeSampleId, sha256: routeSampleId, fileName: routeSampleId.substring(0, 16) })
     setActiveTab(SAMPLE_TAB_IDS.includes(routeTab) ? routeTab : 'overview')
   }, [routeSampleId, routeTab, selectedSample])
-  const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // Connection states (Phase 6)
   const [httpStatus, setHttpStatus] = useState('reconnecting') // connected | reconnecting | failed
@@ -293,7 +301,7 @@ function AppInner() {
     return () => { cancelled = true }
   }, [])
 
-  const routeResult = useSampleData(routeSampleId || null, routeSampleId ? `/api/sample/${routeSampleId}` : null, { cached: false })
+  const routeResult = useSampleData(routeSampleId || null, routeSampleId ? `/api/sample/${routeSampleId}` : null)
   useEffect(() => {
     if (!routeSampleId || !sampleReady || !routeResult.data || analysisState?.status === 'complete') return
     const llm = routeResult.data.llm_assessment || {}
@@ -331,9 +339,11 @@ function AppInner() {
   // Initial health check + polling when offline (Phase 5)
   useEffect(() => {
     let pollTimer
+    // Effects can unmount before the first check resolves (StrictMode runs them twice in dev).
+    let cancelled = false
 
     checkBackendHealth().then(ok => {
-      if (!ok) {
+      if (!cancelled && !ok) {
         // Start polling every 2s when backend is offline
         pollTimer = setInterval(() => {
           checkBackendHealth().then(recovered => {
@@ -346,7 +356,10 @@ function AppInner() {
       }
     })
 
-    return () => clearInterval(pollTimer)
+    return () => {
+      cancelled = true
+      clearInterval(pollTimer)
+    }
   }, [checkBackendHealth, addToast])
 
   // Update topbar status dot based on combined HTTP + WS state (Phase 6)
@@ -361,8 +374,13 @@ function AppInner() {
 
     debugLog('[WS]', event_type, data?.sample_id)
 
+    // Realtime broadcasts reach every connection; ignore events for another sample.
+    const ids = selectedIdsRef.current
+    if (data?.sample_id && ids.length > 0 && !ids.includes(data.sample_id)) return
+
     switch (event_type) {
       case 'pong':
+      case 'step_started':
         break
       case 'analysis_started':
         dispatch({ type: 'ANALYSIS_STARTED', payload: data })
@@ -375,12 +393,14 @@ function AppInner() {
         break
       case 'analysis_complete':
         dispatch({ type: 'ANALYSIS_COMPLETE', payload: data })
+        // Sidebar entries created on upload stay 'uploaded' until this event.
+        setSamples(prev => prev.map(s => (s.sha256 === data.sample_id ? { ...s, status: 'analyzed' } : s)))
         break
       case 'error':
         dispatch({ type: 'ERROR', payload: data })
         break
       default:
-        console.log('[WS] Unknown event:', event_type)
+        debugLog('[WS] Unknown event:', event_type)
     }
   }, [])
 
@@ -393,16 +413,19 @@ function AppInner() {
     // this effect's cleanup; without this guard it would arm a fresh reconnect
     // timer that nothing can ever clear, leaking one live socket per navigation.
     let disposed = false
+    // Consecutive failed connects; reset on open. Drives exponential backoff.
+    let attempt = 0
 
     const connect = () => {
       if (disposed) return
       try {
-        console.log('[WS] Connecting to', WS_URL)
+        debugLog('[WS] Connecting to', WS_URL)
         ws = new WebSocket(WS_URL)
         wsRef.current = ws
 
         ws.onopen = () => {
-          console.log('[WS] Connected')
+          debugLog('[WS] Connected')
+          attempt = 0
           setWsState('connected')
           setHttpStatus(prev => prev === 'failed' ? 'connected' : prev)
           // Send ping to keep connection alive
@@ -425,10 +448,12 @@ function AppInner() {
 
         ws.onclose = () => {
           if (disposed) return
-          console.log('[WS] Disconnected, reconnecting in 3s...')
           clearInterval(pingTimer)
           setWsState('reconnecting')
-          reconnectTimer = setTimeout(connect, 3000)
+          const delay = Math.min(WS_RECONNECT_MAX_MS, WS_RECONNECT_BASE_MS * 2 ** attempt)
+          attempt += 1
+          debugLog(`[WS] Disconnected, reconnecting in ${delay / 1000}s...`)
+          reconnectTimer = setTimeout(connect, delay)
         }
 
         ws.onerror = (err) => {
@@ -466,7 +491,11 @@ function AppInner() {
       const response = await fetch(`${API_URL}/api/analyze/${uploadId}`, {
         method: 'POST',
       })
-      const data = await response.json()
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok) {
+        dispatch({ type: 'ERROR', payload: { error_message: data.detail || `Analysis request failed (HTTP ${response.status})` } })
+        return
+      }
       debugLog('Analysis triggered:', data)
     } catch (error) {
       console.error('Analysis failed:', error)
@@ -474,13 +503,6 @@ function AppInner() {
     }
   }, [])
 
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setSidebarOpen(false)
-    }
-    window.addEventListener('keydown', handleKeyDown)
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [])
 
   const retryAnalysis = useCallback(() => {
     if (!selectedSample) return
@@ -495,7 +517,7 @@ function AppInner() {
         sample_id: selectedSample.sha256,
         sample_name: selectedSample.fileName,
         file_size_bytes: 0,
-        total_steps: 9,
+        total_steps: PIPELINE_TOTAL_STEPS,
         predicted_eta_seconds: estimateEtaSeconds(selectedSample.fileSize || 0),
       },
     })
@@ -543,7 +565,7 @@ function AppInner() {
             sample_id: data.sha256,
             sample_name: file.name,
             file_size_bytes: file.size,
-            total_steps: 9,
+            total_steps: PIPELINE_TOTAL_STEPS,
             predicted_eta_seconds: estimateEtaSeconds(file.size),
           },
         })
@@ -711,7 +733,6 @@ function AppInner() {
     setSelectedSample(typeof sample === 'string' ? { sampleId: sample, sha256: sample } : sample)
     const isAlreadyAnalyzed = sample?.status === 'analyzed' || sample?.status === 'completed'
     setActiveTab(isAlreadyAnalyzed ? 'overview' : 'analysis')
-    setSidebarOpen(false)
     if (sid) navigate(`/sample/${sid}`, { replace: true })
 
     const sampleId = sample?.sampleId || sample?.sha256 || sample?.uploadId
@@ -739,83 +760,22 @@ function AppInner() {
     if (id) navigate(`/sample/${id}/${tab}`, { replace: true })
   }
 
-  const activeLabel = [...NAV_ITEMS, ...SAMPLE_TABS].find(n => n.id === activeTab)?.label || ''
-  const severity = selectedSample?.severity || analysisState?.verdictData?.verdict
-  const riskScore = selectedSample?.risk_score || analysisState?.verdictData?.riskScore
 
   return (
-    <div className="app-shell">
+    <div className="workbench">
         <a className="skip-link" href="#main-content">Skip to content</a>
-        <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`} role="navigation" aria-label="Main navigation">
-          <div className="brand">
-            <span className="brand-mark" aria-hidden="true">D</span>
-            <span>DROID<span>FORENSIX</span></span>
-          </div>
-          <div className="nav-scroll">
-            <div className="nav-caption">WORKSPACE</div>
-            {NAV_ITEMS.map(item => (
-              <button
-                key={item.id}
-                className={`nav-item ${activeTab === item.id ? 'active' : ''}`}
-                onClick={() => {
-                  setActiveTab(item.id)
-                  setSidebarOpen(false)
-                }}
-                aria-label={item.label}
-                aria-current={activeTab === item.id ? 'page' : undefined}
-                onKeyDown={e => { if (e.key === 'Escape') setSidebarOpen(false) }}
-              >
-              <b>{item.icon}</b>{item.label}
-            </button>
-          ))}
-          {samples.length > 0 && (
-            <>
-              <div className="nav-caption">SAMPLES</div>
-              <ul aria-label="Samples" style={{ listStyle: 'none', margin: 0, padding: 0, display: 'flex', flexDirection: 'column', gap: 2 }}>
-                {samples.map((s) => (
-                  <li key={s.sha256 || s.sampleId}>
-                    <button
-                      className={`nav-item ${selectedSample?.sha256 === s.sha256 ? 'active' : ''}`}
-                      onClick={() => handleSelectSample(s)}
-                      aria-current={selectedSample?.sha256 === s.sha256 ? 'true' : undefined}
-                      title={s.fileName || s.sha256}
-                      style={{ width: '100%', textAlign: 'left' }}
-                    >
-                      <b aria-hidden="true">•</b>{s.fileName || s.sha256?.substring(0, 12)}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            </>
+        <SampleList
+          samples={samples}
+          selectedId={selectedSample?.sha256 || selectedSample?.sampleId}
+          backendReady={backendReady}
+          onUpload={() => { setSelectedSample(null); setActiveTab('upload'); navigate('/') }}
+          onSelect={handleSelectSample}
+        />
+        <div className="workbench-main">
+        <section className="content" id="main-content" role="main" aria-label="Sample view">
+          {selectedSample && activeTab !== 'upload' && (
+            <SampleHeader key={selectedSample.sha256 || selectedSample.sampleId} sample={selectedSample} status={sampleStatus.status} ready={sampleReady} apiUrl={API_URL} />
           )}
-        </div>
-        <div className="sidebar-bottom">
-          <div className="case-card">
-            <small>CURRENT CASE</small>
-            <strong>{selectedSample?.fileName || 'No sample selected'}</strong>
-            <span>
-              <i className={`pulse ${backendReady ? '' : 'offline'}`} />
-              {' '}{backendReady ? (severity ? <ThreatBadge level={severity} label={`${riskScore || 0}/100`} size="sm" /> : 'SCANNER ONLINE') : 'OFFLINE'}
-            </span>
-          </div>
-          <button className="help" onClick={() => window.open('https://github.com/DarshakPatel2004/DroidForensix', '_blank')}>? &nbsp; Documentation</button>
-        </div>
-      </aside>
-
-      <div className="main">
-        <header className="topbar">
-          <button className="menu" onClick={() => setSidebarOpen(o => !o)}>☰</button>
-          <div className="crumb">CASE / <strong>{activeLabel.toUpperCase()}</strong></div>
-          <div className="top-actions">
-            <button className="selector" aria-label="Current sample">{selectedSample?.fileName || 'droidforensix.apk'} <span aria-hidden="true">⌄</span></button>
-            <span className={`online ${!backendReady ? 'offline' : ''}`} role="status" aria-label={backendReady ? 'Backend connected' : 'Backend offline'}>
-              <i aria-hidden="true" />{backendReady ? 'SCANNER ONLINE' : 'OFFLINE'}
-            </span>
-            <button className="avatar" aria-label="User profile">DF</button>
-          </div>
-        </header>
-
-        <section className="content" id="main-content" role="main" aria-label={`${activeLabel} view`}>
           {selectedSample && activeTab !== 'upload' && (
             <SampleTabs tabs={SAMPLE_TABS} activeTab={activeTab} lockedIds={lockedTabIds} onSelect={selectSampleTab} />
           )}
@@ -891,7 +851,7 @@ function AppInner() {
           {activeTab === 'notes' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <ErrorBoundary>
-                <NotesTab sampleId={selectedSample.sha256 || selectedSample.sampleId} />
+                <NotesTab key={selectedSample.sha256 || selectedSample.sampleId} sampleId={selectedSample.sha256 || selectedSample.sampleId} />
               </ErrorBoundary>
             </div>
           )}
@@ -925,10 +885,12 @@ function AppInner() {
           {activeTab === 'threat-intel' && selectedSample && sampleReady && (
             <div className="view-wrapper">
               <Suspense fallback={<LoadingSpinner message="Loading threat intelligence..." />}>
-                <ThreatIntelView
-                  sample={selectedSample}
-                  apiUrl={API_URL}
-                />
+                <ErrorBoundary>
+                  <ThreatIntelView
+                    sample={selectedSample}
+                    apiUrl={API_URL}
+                  />
+                </ErrorBoundary>
               </Suspense>
             </div>
           )}
