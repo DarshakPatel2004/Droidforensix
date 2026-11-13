@@ -5,6 +5,8 @@ const STATUS_OPTIONS = [
   { value: 'new', label: 'New' },
   { value: 'reviewing', label: 'Reviewing' },
   { value: 'closed', label: 'Closed' },
+  { value: 'confirmed', label: 'Confirmed' },
+  { value: 'false positive', label: 'False positive' },
 ]
 
 // Analyst-owned status, tags and notes for one sample (GET/PUT analyst-state).

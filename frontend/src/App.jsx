@@ -246,6 +246,11 @@ function AppInner() {
     setActiveTab(SAMPLE_TAB_IDS.includes(routeTab) ? routeTab : 'overview')
   }, [routeSampleId, routeTab, selectedSample])
 
+  // /sample/:id with no tab is the same page as /sample/:id/overview; make the URL say so.
+  useEffect(() => {
+    if (routeSampleId && !routeTab) navigate(`/sample/${routeSampleId}/overview`, { replace: true })
+  }, [routeSampleId, routeTab, navigate])
+
   // Connection states (Phase 6)
   const [httpStatus, setHttpStatus] = useState('reconnecting') // connected | reconnecting | failed
   const [wsState, setWsState] = useState('connecting')       // connected | reconnecting | failed
@@ -302,7 +307,7 @@ function AppInner() {
     return () => { cancelled = true }
   }, [])
 
-  const routeResult = useSampleData(routeSampleId || null, routeSampleId ? `/api/sample/${routeSampleId}` : null)
+  const routeResult = useSampleData(routeSampleId || null, routeSampleId && sampleReady ? `/api/sample/${routeSampleId}` : null)
   useEffect(() => {
     if (!routeSampleId || !sampleReady || !routeResult.data || analysisState?.status === 'complete') return
     const llm = routeResult.data.llm_assessment || {}

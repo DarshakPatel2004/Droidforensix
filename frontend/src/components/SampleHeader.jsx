@@ -19,14 +19,14 @@ export default function SampleHeader({ sample, status, ready, apiUrl }) {
 
   useEffect(() => {
     let cancelled = false
+    // Both endpoints 404 until analysis has written its results, so wait for completion.
+    if (!ready) return () => { cancelled = true }
     apiFetch(`/api/sample/${encodeURIComponent(sampleId)}/analyst-state`)
       .then((body) => { if (!cancelled) setAnalystStatus(body.status) })
       .catch(() => { if (!cancelled) setAnalystStatus('unavailable') })
-    if (ready) {
-      apiFetch(`/api/sample/${encodeURIComponent(sampleId)}/attribution`)
-        .then((body) => { if (!cancelled) setAttribution(body) })
-        .catch(() => { if (!cancelled) setAttribution({ error: true }) })
-    }
+    apiFetch(`/api/sample/${encodeURIComponent(sampleId)}/attribution`)
+      .then((body) => { if (!cancelled) setAttribution(body) })
+      .catch(() => { if (!cancelled) setAttribution({ error: true }) })
     return () => { cancelled = true }
   }, [sampleId, ready])
 
@@ -85,7 +85,7 @@ export default function SampleHeader({ sample, status, ready, apiUrl }) {
         </div>
         <div>
           <dt>Analyst status</dt>
-          <dd>{analystStatus ?? '…'}</dd>
+          <dd>{analystStatus ?? (ready ? '…' : '—')}</dd>
         </div>
       </dl>
     </header>

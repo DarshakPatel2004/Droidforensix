@@ -15,7 +15,9 @@
             "enum": [
               "new",
               "reviewing",
-              "closed"
+              "closed",
+              "confirmed",
+              "false positive"
             ],
             "title": "Status",
             "type": "string"
@@ -61,7 +63,9 @@
             "enum": [
               "new",
               "reviewing",
-              "closed"
+              "closed",
+              "confirmed",
+              "false positive"
             ],
             "title": "Status",
             "type": "string"
@@ -234,6 +238,7 @@
       "ExplainMethodRequest": {
         "properties": {
           "class_name": {
+            "maxLength": 512,
             "title": "Class Name",
             "type": "string"
           },
@@ -243,6 +248,7 @@
                 "items": {
                   "type": "string"
                 },
+                "maxItems": 50,
                 "type": "array"
               },
               {
@@ -252,10 +258,12 @@
             "title": "Flags"
           },
           "method_code": {
+            "maxLength": 32000,
             "title": "Method Code",
             "type": "string"
           },
           "method_name": {
+            "maxLength": 256,
             "title": "Method Name",
             "type": "string"
           }
@@ -434,7 +442,9 @@
                   "enum": [
                     "new",
                     "reviewing",
-                    "closed"
+                    "closed",
+                    "confirmed",
+                    "false positive"
                   ],
                   "type": "string"
                 },
@@ -2091,8 +2101,33 @@
     },
     "/api/samples": {
       "get": {
-        "description": "List all analyzed samples with summary fields.",
+        "description": "List analyzed samples with summary fields. q matches the hash prefix, file name or family.",
         "operationId": "api_list_samples_api_samples_get",
+        "parameters": [
+          {
+            "in": "query",
+            "name": "q",
+            "required": false,
+            "schema": {
+              "default": "",
+              "maxLength": 200,
+              "title": "Q",
+              "type": "string"
+            }
+          },
+          {
+            "in": "query",
+            "name": "limit",
+            "required": false,
+            "schema": {
+              "default": 200,
+              "maximum": 1000,
+              "minimum": 1,
+              "title": "Limit",
+              "type": "integer"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "content": {
@@ -2105,6 +2140,16 @@
               }
             },
             "description": "Successful Response"
+          },
+          "422": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            },
+            "description": "Validation Error"
           }
         },
         "summary": "Api List Samples"

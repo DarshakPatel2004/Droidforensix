@@ -11,7 +11,7 @@ from backend.validators import validate_sample_id
 
 router = APIRouter()
 
-Status = Literal["new", "reviewing", "closed"]
+Status = Literal["new", "reviewing", "closed", "confirmed", "false positive"]
 Tag = Annotated[str, Field(min_length=1, max_length=40)]
 
 

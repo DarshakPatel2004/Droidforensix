@@ -13,7 +13,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 DB_NAME = "analyst_state.sqlite3"
-STATUSES = ("new", "reviewing", "closed")
+STATUSES = ("new", "reviewing", "closed", "confirmed", "false positive")
 DEFAULT_STATUS = "new"
 
 _SCHEMA = """
