@@ -37,10 +37,6 @@ vi.mock('../src/components/DissectionPage', () => ({
   default: () => <div>DissectionPage</div>,
 }))
 
-vi.mock('../src/components/RawCodeView', () => ({
-  default: () => <div>RawCodeView</div>,
-}))
-
 vi.mock('../src/components/ThreatIntelView', () => ({
   default: () => <div>ThreatIntelView</div>,
 }))
