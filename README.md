@@ -17,33 +17,35 @@ Read these before quoting any headline figure.
 
 | Measure | Result | Notes |
 |---|---|---|
-| Malware vs. benign, fresh 300-APK holdout | **97.3%** accuracy (292/300; 95% CI 94.8–98.6%) | Static only, no LLM, threshold 0.7. Malware recall 146/150, benign specificity 146/150 |
-| Family identification, exact match | **64.2%** (226/352) | 68.6% on specific (non-catch-all) families |
-| Indicators confirmed as genuine C2 | **2.4%** (9/380) | 68% were clearly benign (Firebase, Google OAuth, CDNs) |
+| Malware vs. benign, 300-APK holdout | **97.3%** accuracy (292/300; 95% CI 94.8–98.6%) | Static only, no LLM, threshold 0.7. The split is confounded (see below) and is not evidence of general accuracy |
+| Family identification, exact match | **64.2%** (226/352), in-sample | 198 of the 352 predictions come from a knowledge base mined from the same ground truth. Leak-free dev baseline: 35.5%. On unseen LAMDA families: 0/51 correct |
+| Confirmed genuine C2 | **Not measured** | An earlier "2.4% (9/380)" figure was wrong. Those 9 entries are heuristic flags (TLD and DNS checks) from 22 samples, not confirmed C2 |
 
 Raw indicator counts measure extraction coverage, not verified accuracy. Most extracted indicators are benign. Treat family output as advisory.
 
-The family and indicator evaluation uses 352 samples with corrected ground truth (`ground_truth_all_corrected.csv`), checked against VirusTotal and MalwareBazaar. The raw review data is in `evaluation_results/`.
+The family evaluation uses the 352-sample corrected ground truth (`ground_truth_all_corrected.csv`) and is in-sample, as noted above. Raw review data is in `evaluation_results/`.
 
 ### Malware vs. benign classifier
 
-A 15-feature random forest (`evaluation/malben_eval/malben_rf_retrained.pkl`) scores each APK from static features only. It runs through `classify_malware_fast` (pipeline steps 1–6, no LLM, no network enrichment).
+A 15-feature random forest scores each APK from static features only. The retrained model (`evaluation/malben_eval/malben_rf_retrained.pkl`) is not yet committed, and the CLI's default model is the older `evaluation/classifier_data/malben_rf.pkl` at threshold 0.5. Results below use the retrained model at threshold 0.7.
 
 - **Training:** 509 original APKs, plus 100 added in the retrain.
 - **Threshold:** 0.7, chosen on a separate 100-APK validation split (98% accuracy, 0 benign flagged). The retrain raised validation AUC from 0.9816 to 0.9944.
 - **Holdout:** 300 APKs (150 malware, 150 benign). No hash overlaps with the training or validation data, and the holdout was not used for tuning.
-- **Result:** 292/300 correct. 4 malware missed, 4 benign flagged. Full report: `evaluation/malben_eval/run_fresh_t070/report.json`.
+- **Confound:** all 150 malware samples come from the 2010–2012 Drebin list, and all benign apps are current F-Droid apps. A file-size-only baseline reached 88.5% on a same-source split in our audit. The 97.3% therefore partly reflects an easy, source-confounded split.
+- **Result:** 292/300 correct. 4 malware missed, 4 benign flagged. Report: `evaluation/malben_eval/run_fresh_t070/report.json` (not yet committed).
 - **Earlier pilot:** a 20-APK pilot scored 55% (11/20) before the retrain. Details are in [evaluation/FRESH_CORPUS_RESULT.md](evaluation/FRESH_CORPUS_RESULT.md).
 
-300 holdout APKs give a wide confidence interval. Treat 97% as a result for this corpus, not a general accuracy claim.
+Treat 97% as a result for this corpus and this split, not a general accuracy claim. A same-source, balanced-by-collection-date holdout is needed before quoting it as general accuracy.
 
 ---
 
 ## What it does
 
 ```
-APK → JADX (bytecode → Java) → API tracer → indicator extraction
-    → threat intel (VT, OTX, Shodan, Censys) → geolocation → scoring → report
+APK → Androguard + apktool (manifest, DEX, strings) → decoding → C2 extraction
+    → correlation → LLM assessment → family attribution → pipeline_result.json
+Dashboard → threat intel (VT, OTX, Shodan, Censys) → geolocation → report
 ```
 
 The analysis is an 18-step pipeline in `analysis/step1_*.py` … `step18_*.py`. It covers manifest and permission extraction, string decoding, C2 extraction, LLM threat assessment, packer detection, native library analysis, certificate analysis, family clustering, and report synthesis. The output is a single `pipeline_result.json` per sample.
@@ -173,6 +175,7 @@ The backend and dashboard only read the pipeline output. Detection logic lives i
 - [Packers](docs/PACKERS.md): packer matrix and how to add one
 - [Performance](docs/PERFORMANCE.md): baseline and hotspots
 - [Codebase reference](docs/codebase-reference.md): module-by-module tour
+- [Audit, 2026-11-11](docs/AUDIT_2026-11-11.md): known bugs, risks, and the fix order
 
 ---
 

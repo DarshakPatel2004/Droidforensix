@@ -56,7 +56,7 @@ Pipeline steps:
 | 2 | `step2_string_enumeration.py` | Dalvik bytecode string extraction (smali fallback) |
 | 3 | `step3_encoding_detection.py` | Detect base64 / hex / XOR / cipher encodings |
 | 4 | `step4_decoding.py` | Decode obfuscated strings |
-| 5 | `step5_c2_extraction.py`, `step5_allowlists.py`, `step5_tiers.py` | C2 indicator extraction (domains, IPs, URLs, APIs) + allowlist/tier filtering |
+| 5 | `step5_c2_extraction.py`, `step5_allowlists.py` | C2 indicator extraction (domains, IPs, URLs, APIs) + allowlist filtering |
 | 6 | `step6_correlation.py` | Build threat chains across indicators |
 | 7 | `step7_llm_assessment.py` | LLM verdict + method/chain explanations (Ollama/NIM/OpenRouter) |
 | 8 | `step8_obfuscation_analysis.py` | Packing, reflection, custom encryption signals |
@@ -64,6 +64,10 @@ Pipeline steps:
 | 10–16 | `step10_binary_packing.py` … `step16_certificate_analysis.py` | Binary packing detection, string clustering, reflective tracing, native ELF analysis, network protocols, reflective-permission correlation, cert analysis |
 | 17 | `step17_family_clustering.py` | Cross-sample family clustering |
 | 18 | `step18_threat_synthesis.py` | Final threat-intel synthesis report |
+
+`step19_container_repair.py`, `step20_payload_kdf_crack.py`, and `step21_string_deobfuscation.py` share the naming scheme but `run_pipeline` does not call them. They are standalone recovery tools (e.g. `python -m analysis.step19_container_repair <apk> [out.apk]`).
+
+Step timeouts run the step in a worker thread and stop waiting after the limit. Python cannot kill that thread, so a timed-out step keeps running in the background until it returns.
 
 Supporting ML / mining modules:
 - `ml_classifier.py` — train/predict model (`--train`, `--predict <sha>`); uses `family_ml.pkl` + `family_ml_vectorizer.pkl`.
@@ -75,32 +79,41 @@ Supporting ML / mining modules:
 
 ## Backend service (`backend/`)
 
-`main.py` (~1,690 lines) defines 40+ REST routes + the `/ws` WebSocket stream. Lifespan
-lifecycle auto-starts Ollama through `LLMVerifier` (`droidforensix_llm.py`).
+`main.py` (~160 lines) builds the app: CORS, the `/` health check, the `/ws` WebSocket, and the
+lifespan hook that auto-starts Ollama through `LLMVerifier` (`droidforensix_llm.py`). The ~45 REST
+routes live in `backend/routers/`.
 
 | Module | Responsibility |
 |--------|----------------|
-| `main.py` | FastAPI app, routes, upload/analyze/orchestration, CORS, WebSocket `EventManager` |
+| `main.py` | FastAPI app, CORS, `/ws`, lifespan (Ollama start/stop), router registration |
+| `routers/jobs.py` | Upload, analyze, status, synchronous `/api/analysis/*`, client error log. Holds the in-memory job registry |
+| `routers/samples.py` | Sample list/detail, graph, clusters, timeline, custody, family, obfuscation, attribution, threat summary, community intel |
+| `routers/dissection.py` | Lazy dissection tabs, class code, code analysis, string references, explain-method |
+| `routers/intel.py` | Threat intel and CSV/STIX/YARA/Suricata exports |
+| `routers/reports.py` | PDF report, explain-chain, deobfuscate |
+| `routers/analyst.py`, `analyst_store.py` | Analyst status/tags/notes in `analysis/work/analyst_state.sqlite3` |
+| `realtime.py` | WebSocket `ConnectionManager` and the thread-safe event emitter the pipeline calls |
+| `api_contract.py` | Frozen OpenAPI snapshot (`docs/api/openapi.json`). `tests/test_api_contract.py` fails on any route change; regenerate with `python -m backend.api_contract --write` |
 | `core/apk_processor.py` | Full-analysis orchestrator for one APK (wraps `analysis.pipeline.run_pipeline`) |
 | `core/androguard_analyzer.py` | AndroGuard-native extraction (manifest, permissions, DEX, strings); `--no-deep` mode |
 | `config.py` | Pydantic `Settings`: env file, tool paths, work/reports/uploads dirs, CORS, timeouts |
 | `transformers.py` | `load_result(load_all_results, transform_graph/clusters/timeline/samples_list)` — pipeline_result.json → view models |
 | `dissection.py` | `APKDissector`, `SampleAPKCache` — cached, lazy tab dissection |
 | `family_id.py` | 3-layer family attribution: `signature_v3` (hand-written) → knowledge-base matcher → LLM with candidate guidance |
-| `threat_intel.py` | Threat-feed aggregation (VT/OTX/Shodan/Censys) — imported by `main.py` |
-| `threat_intelligence.py` | Stand-alone threat-intel module (earlier variant) |
+| `threat_intel.py` | Threat-feed aggregation (VT/OTX/Shodan/Censys), used by `routers/intel.py` |
 | `community_intel.py` | Cached community/C2 intel enrichment |
 | `censys_enrichment.py`, `circl_client.py` | Censys Platform + CIRCL feed clients |
 | `elf_analyzer.py` | Native ELF library analysis |
 | `code_analysis.py` | Method-level code analysis / explanations |
 | `obfuscation_view.py` | Obfuscation summary view + `deobfuscate_text` |
-| `events.py`, `validators.py` | WebSocket event types/validation |
-| `pdf_report.py`, `pdf_report_enhanced.py` | PDF report generation |
+| `events.py` | WebSocket event types |
+| `validators.py` | `validate_sample_id` (rejects path traversal before any `WORK_DIR / sample_id` join) |
+| `pdf_report.py` | PDF report generation |
 
 Request → response flow for the dashboard:
 
-1. `POST /api/upload` (multipart `file`) → `upload_id`, `sample_id` (sha256).
-2. `POST /api/analyze/{upload_id}` → runs `APKProcessor`/`run_pipeline`; progress is pushed over `/ws`.
+1. `POST /api/upload` (multipart `file`) → `upload_id`, `sha256` (the future `sample_id`).
+2. `POST /api/analyze/{upload_id}` → runs `run_pipeline` in a worker thread; progress is pushed over `/ws`.
 3. Dashboard polls `GET /api/sample/{sample_id}/...`; each `transform_*` in `transformers.py`
    shapes `pipeline_result.json` + dissection caches into the view payloads.
 

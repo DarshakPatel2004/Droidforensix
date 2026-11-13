@@ -219,12 +219,12 @@ needed, self-validating output.
 | `rto_analysis/unpacking_tool.py` | **The standalone CLI** (tracked): `--input RTO.apk --output recovered/ [--stage3] [--bundle] [--timeout]`. Always ends in `RECOVERED` (self-validated artifacts) or a typed E-code naming the exact failure. |
 | `scripts/unpack.py` | The master-key dispatcher the tool drives: routes native/Java, runs validators (`pkcs7_tail_ok`, `validate_dex`, `validate_zip`), the **`myg0n_kdf_bruteforce` probe** (the KDF path that actually re-cracked RTO in the reference run — see §4 Step 4), and emits typed E-codes (`E-NATIVE-NOENTRY`, `E-JAVA-RUNTIME-DELIVERY`, …). |
 | `scripts/emulate.py` | The Unicorn/LIEF JNI emulation oracle: loads the ELF (x86_64, ARM32-Thumb, ARM64), mocks a 233-slot `JNIEnv*` vtable, **replays `StringBuilder` assembly in Python**, sweeps decrypted blobs from memory and validates them (`dex\n` / ZIP magic) before reporting. |
-| `scripts/rto_oracle.py` | RTO-specific final oracle: runs the arm64 `SUO4` under Unicorn with full libc + JNIEnv shims and reads out the decrypted base64→DEX from `.data`. |
-| `scripts/rto_deep_run.py` | Corrected-vtable continuation with disk checkpointing (every 2M instructions) and device-property serving for key derivation. |
+| `scripts/rto_oracle.py` *(deleted 2026-11-12, see git history)* | RTO-specific final oracle: runs the arm64 `SUO4` under Unicorn with full libc + JNIEnv shims and reads out the decrypted base64→DEX from `.data`. |
+| `scripts/rto_deep_run.py` *(deleted 2026-11-12, see git history)* | Corrected-vtable continuation with disk checkpointing (every 2M instructions) and device-property serving for key derivation. |
 | `scripts/ijiami_oracle.py` | Generalization proof: same harness runs `JNI_OnLoad` in a fake `JavaVM` table — it enumerated the **Ijiami packer's** `RegisterNatives` table, showing the oracle is packer-agnostic. |
 | `scripts/triage.py`, `data/packer_markers.json` | M1 (see §3.1). |
 | `stage3_replay.py` (repo root) | **M3b: byte-for-byte Python replay** of the installer's 64-bit mul-xorshift PRNG (`lmk`/`nkwa`/`ohm`/`step`, constant `-0x34DB2F5A3773CA4D`) over the CJK pool — straight port of the smali in `_hole1_smali/`. Acceptance: **175/180 seeds byte-identical**, 5 residuals documented. |
-| `scripts/stage3_deobfuscator.py` | Earlier in-repo variant of the same replay (reads the seed fixture directly). |
+| `scripts/stage3_deobfuscator.py` *(deleted 2026-11-12, see git history)* | Earlier in-repo variant of the same replay (reads the seed fixture directly). |
 | `cjk_pool.txt` (repo root) | The **4,320-char UTF-16 CJK pool** the installer strings index into (12,960 B = 4,320 × 3-byte UTF-8). Restored from `archive/cjk_pool_true.txt` after an earlier session corrupted it (`hole1_czrr_definitive.md`). |
 | `rto_analysis/phase2/installer_deobfuscated_strings.json` (+ `.tsv`, `.summary.json`) | **The seed fixture & result:** 221 seed entries, **177 decoded** strings (`.summary.json`), incl. every infrastructure IOC. The replay's acceptance test checks itself against this file. |
 | `rto_analysis/stage3.md` | The PRNG replay specification + acceptance record (status CLOSED 2026-09-18). |
@@ -638,7 +638,7 @@ python -c "import hashlib;print(hashlib.sha1(b'myg0N2').hexdigest()[:32]);print(
 
 | Category | In git (tracked) | Local-only (gitignored / to be handed over as evidence) |
 |---|---|---|
-| Toolchain | `rto_analysis/unpacking_tool.py`, `rto_analysis/README.md`, `rto_analysis/validation_matrix.md`, `scripts/{triage,unpack,emulate,rto_oracle,ijiami_oracle,...}.py`, `stage3_replay.py`, `cjk_pool.txt`, `tests/*`, `data/packer_markers.json`, `requirements-lock.txt` | — |
+| Toolchain | `rto_analysis/unpacking_tool.py`, `rto_analysis/README.md`, `rto_analysis/validation_matrix.md`, `scripts/{triage,unpack,emulate,ijiami_oracle,...}.py`, `stage3_replay.py`, `cjk_pool.txt`, `tests/*`, `data/packer_markers.json`, `requirements-lock.txt` | — |
 | Findings / write-ups | `thesis/06_unpacking_case_study.md` (the case-study chapter), this document | `rto_analysis/PHASE{2..6}_FINDINGS.md`, `ANALYSIS_REPORT.md`, `hole*.md`, `stage3.md`, `PIPELINE_PROBE.md` — **whitelisted out of git by `.gitignore` (`rto_analysis/*`)** |
 | Recovered artifacts | hashes of everything in `detections/iocs.json` → *local copy* | `phase2/*` outputs (`decrypted_strings.*`, `hidden.dex`, `emu_trace.txt`, `crypto_block_annotated.txt`, `installer_deobfuscated_strings.json`), `phase4_payload/` → equivalent `analysis/unpack_standalone/artifacts/kit.zip`, `analysis/ARTIFACTS.zip`, `_hole5/`, `_hole1_smali/` |
 | Detections | — (hand over as files) | `detections/beatbanker_rto.yar`, `detections/iocs.json` |
