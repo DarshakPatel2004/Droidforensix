@@ -34,7 +34,12 @@ export async function apiFetch(path, options = {}) {
 export function apiFetchCached(path, options) {
   const key = path + (options ? JSON.stringify(options) : '')
   if (!cache.has(key)) {
-    cache.set(key, apiFetch(path, options))
+    const pending = apiFetch(path, options)
+    // Evict failures so a transient error or a 404 before analysis finishes is not served for the session.
+    pending.catch(() => {
+      if (cache.get(key) === pending) cache.delete(key)
+    })
+    cache.set(key, pending)
   }
   return cache.get(key)
 }

@@ -44,7 +44,9 @@ export default function ThreatSynthesisPanel({ synthesis }) {
     )
   }
 
-  const { zero_day_risk_score = 0, risk_level = 'none', contributing_signals = [] } = synthesis
+  const { zero_day_risk_score = 0, risk_level, contributing_signals = [] } = synthesis
+  // A null risk_level from the LLM would skip the default above and crash on toUpperCase.
+  const riskLevel = String(risk_level ?? 'none')
   const sorted = [...contributing_signals].sort((a, b) => b.contribution - a.contribution)
 
   return (
@@ -55,8 +57,8 @@ export default function ThreatSynthesisPanel({ synthesis }) {
           <span className="threat-score-value">{zero_day_risk_score}<small>/100</small></span>
         </div>
         <div className="threat-synthesis-score-right">
-          <span className={`badge ${levelBadge(risk_level)}`} style={{ fontSize: '0.85rem', padding: '4px 12px' }}>
-            {risk_level.toUpperCase()}
+          <span className={`badge ${levelBadge(riskLevel)}`} style={{ fontSize: '0.85rem', padding: '4px 12px' }}>
+            {riskLevel.toUpperCase()}
           </span>
         </div>
       </div>

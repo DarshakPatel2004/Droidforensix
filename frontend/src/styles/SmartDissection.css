@@ -492,7 +492,6 @@
 .code-block {
   margin: 0;
   padding: 0.75rem 0;
-  background: linear-gradient(180deg, rgba(148, 163, 184, 0.02), transparent 60%), var(--bg-primary);
   color: var(--text-secondary);
   font-family: var(--font-mono);
   font-size: 0.8rem;
@@ -638,13 +637,13 @@
     rgba(255,255,255,0.04) 75%
   );
   background-size: 200% 100%;
-  animation: shimmer 1.4s infinite;
+  animation: dissection-shimmer 1.4s infinite;
 }
 
 .shimmer-bar-long   { width: 75%; }
 .shimmer-bar-medium { width: 50%; }
 
-@keyframes shimmer {
+@keyframes dissection-shimmer {
   0%   { background-position: 200% 0; }
   100% { background-position: -200% 0; }
 }

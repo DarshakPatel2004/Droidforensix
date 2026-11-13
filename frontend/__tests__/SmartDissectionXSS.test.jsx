@@ -95,7 +95,7 @@ describe('SmartDissection XSS hardening (P2-B1)', () => {
   test('an svg/onload payload is neutralised', async () => {
     const container = await renderWithBody('v = "<svg onload=alert(1)>";')
 
-    expect(container.querySelector('svg')).toBeNull()
+    expect(container.querySelector('[onload]')).toBeNull()
     await waitFor(() => expect(container.textContent).toContain('<svg onload=alert(1)>'))
   })
 

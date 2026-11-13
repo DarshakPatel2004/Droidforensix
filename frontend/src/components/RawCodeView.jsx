@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo } from 'react'
+import { fetchAllDissectionClasses } from '../api/dissectionClasses'
 import ClassSourceViewer from './ClassSourceViewer'
+import StateMessage from './ui/StateMessage'
 import '../styles/RawCodeView.css'
 
 export default function RawCodeView({ sample, apiUrl }) {
@@ -18,11 +20,9 @@ export default function RawCodeView({ sample, apiUrl }) {
       try {
         setLoading(true)
         setError(null)
-        const res = await fetch(`${apiUrl}/api/sample/${sampleId}/dissection/classes?limit=200`)
-        if (!res.ok) throw new Error(`HTTP ${res.status}`)
-        const data = await res.json()
+        const data = await fetchAllDissectionClasses(apiUrl, sampleId)
         if (!cancelled) {
-          const classList = data.classes || []
+          const classList = data.classes
           classList.sort((a, b) => a.name.localeCompare(b.name))
           setClasses(classList)
         }
@@ -44,12 +44,12 @@ export default function RawCodeView({ sample, apiUrl }) {
   }, [classes, search])
 
   if (!sampleId) {
-    return <div className="empty-state">No sample selected.</div>
+    return <StateMessage tone="empty" title="No sample selected." />
   }
 
   return (
     <div className="raw-code-layout">
-      <div className="card raw-code-list">
+      <div className="raw-code-list">
         <input
           className="raw-code-search"
           placeholder="Search classes..."
@@ -63,8 +63,8 @@ export default function RawCodeView({ sample, apiUrl }) {
         </div>
 
         <div className="raw-code-rows">
-          {loading && <div className="empty-state">Loading classes...</div>}
-          {error && <div className="empty-state text-rose">{error}</div>}
+          {loading && <StateMessage tone="pending" title="Loading classes…" />}
+          {error && <StateMessage tone="error" title="Classes could not be loaded" detail={error} />}
 
           {!loading && !error && filtered.map((cls, i) => (
             <button
@@ -83,18 +83,14 @@ export default function RawCodeView({ sample, apiUrl }) {
           ))}
 
           {!loading && !error && filtered.length === 0 && (
-            <div className="empty-state">
-              {search ? 'No classes match your search.' : 'No classes found.'}
-            </div>
+            <StateMessage tone="empty" title={search ? 'No classes match your search.' : 'No classes found.'} />
           )}
         </div>
       </div>
 
       <div className="raw-code-viewer">
         {!selectedClass ? (
-          <div className="card raw-code-placeholder">
-            Select a class to view its decompiled source code
-          </div>
+          <StateMessage tone="empty" title="Select a class to view its decompiled source code" />
         ) : (
           <ClassSourceViewer sampleId={sampleId} className={selectedClass} apiUrl={apiUrl} />
         )}

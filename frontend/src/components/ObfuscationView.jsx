@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import '../styles/ObfuscationView.css'
+import Icon from './ui/Icon'
 
 const TECH_COLORS = ['rose', 'amber', 'cyan', 'violet']
 
@@ -22,6 +23,10 @@ function DeobfCard({ item }) {
     }}>
       <div
         onClick={() => setOpen(!open)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setOpen(!open) }}
         style={{ cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 8 }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 0, flex: 1 }}>
@@ -64,6 +69,10 @@ function LibCard({ lib }) {
     }}>
       <div
         onClick={() => setOpen(!open)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={open}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setOpen(!open) }}
         style={{
           display: 'flex', alignItems: 'center', gap: 10,
           padding: '10px 14px', cursor: 'pointer',
@@ -71,7 +80,7 @@ function LibCard({ lib }) {
           borderBottom: open ? '1px solid var(--border-color)' : 'none',
         }}
       >
-        <span style={{ fontSize: 16 }}>📦</span>
+        <span style={{ display: 'inline-flex' }}><Icon name="cube" size={16} /></span>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ fontWeight: 600, fontSize: 13, color: 'var(--text-primary)', fontFamily: "'JetBrains Mono', monospace" }}>
             {shortName}
@@ -94,7 +103,7 @@ function LibCard({ lib }) {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 4 }}>
                 {(lib.jni_exports || []).map((e, i) => (
                   <span key={i} style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: 'var(--accent-rose)', padding: '2px 6px', background: 'var(--bg-primary)', borderRadius: 4 }}>
-                    {e.symbol || e.class || e}
+                    {String(e.symbol || e.class || e)}
                   </span>
                 ))}
               </div>
@@ -107,7 +116,7 @@ function LibCard({ lib }) {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 4 }}>
                 {(lib.anti_analysis || []).map((a, i) => (
                   <span key={i} style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: 'var(--accent-amber)', padding: '2px 6px', background: 'var(--bg-primary)', borderRadius: 4 }}>
-                    {a.value || a.type || a}
+                    {String(a.value || a.type || a)}
                   </span>
                 ))}
               </div>
@@ -120,7 +129,7 @@ function LibCard({ lib }) {
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 4, marginTop: 4 }}>
                 {(lib.suspicious_strings || []).map((s, i) => (
                   <span key={i} style={{ fontSize: 11, fontFamily: "'JetBrains Mono', monospace", color: 'var(--accent-violet)', padding: '2px 6px', background: 'var(--bg-primary)', borderRadius: 4 }}>
-                    {s.value || s}
+                    {String(s.value || s)}
                   </span>
                 ))}
               </div>
@@ -200,7 +209,7 @@ export default function ObfuscationView({ sample, apiUrl, result }) {
   if (!sample) {
     return (
       <div className="state-container">
-        <span className="state-icon">🔐</span>
+        <span className="state-icon"><Icon name="lock" size={22} /></span>
         <h3 className="state-title">No sample selected</h3>
         <p className="state-description">Analyze an APK first to view obfuscation analysis.</p>
       </div>
@@ -220,7 +229,7 @@ export default function ObfuscationView({ sample, apiUrl, result }) {
   if (error) {
     return (
       <div className="state-container error-container">
-        <span className="state-icon">⚠</span>
+        <span className="state-icon"><Icon name="alert" size={22} /></span>
         <h3 className="state-title">Obfuscation Analysis Error</h3>
         <p className="state-description">{error}</p>
       </div>
@@ -230,7 +239,7 @@ export default function ObfuscationView({ sample, apiUrl, result }) {
   if (!obfuscationData) {
     return (
       <div className="state-container">
-        <span className="state-icon">📭</span>
+        <span className="state-icon"><Icon name="inbox" size={22} /></span>
         <h3 className="state-title">No obfuscation data</h3>
         <p className="state-description">Obfuscation analysis was not available for this sample.</p>
       </div>
@@ -353,13 +362,14 @@ export default function ObfuscationView({ sample, apiUrl, result }) {
         <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
           <input
             type="text"
+            aria-label="Encoded string to decode"
             placeholder="e.g. SGVsbG8gV29ybGQ= or 48656c6c6f..."
             value={deobfInput}
             onChange={(e) => setDeobfInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && runDeobfuscation()}
             style={{ flex: 1, minWidth: 200, padding: '10px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: 6, color: 'var(--text-primary)', fontFamily: 'var(--font-mono)' }}
           />
-          <select value={deobfHint} onChange={(e) => setDeobfHint(e.target.value)} style={{ padding: '10px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: 6, color: 'var(--text-primary)' }}>
+          <select aria-label="Decoder hint" value={deobfHint} onChange={(e) => setDeobfHint(e.target.value)} style={{ padding: '10px 12px', background: 'var(--bg-primary)', border: '1px solid var(--border-color)', borderRadius: 6, color: 'var(--text-primary)' }}>
             <option value="">Auto-detect</option>
             <option value="base64">Base64</option>
             <option value="hex">Hex</option>

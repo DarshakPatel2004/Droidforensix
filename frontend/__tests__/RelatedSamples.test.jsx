@@ -24,7 +24,7 @@ describe('RelatedSamples', () => {
   test('shows loading state initially', () => {
     global.fetch = vi.fn(() => new Promise(() => {}))
     render(<RelatedSamples sampleId="test-001" apiUrl="http://localhost:8000" />)
-    expect(screen.getByText('Loading related samples...')).toBeTruthy()
+    expect(screen.getByText('Loading related samples…')).toBeTruthy()
   })
 
   test('renders related samples list', async () => {
@@ -36,7 +36,7 @@ describe('RelatedSamples', () => {
     render(<RelatedSamples sampleId="test-001" apiUrl="http://localhost:8000" />)
 
     await waitFor(() => {
-      expect(screen.getByText('Related Samples')).toBeTruthy()
+      expect(screen.getByText('Related samples (3)')).toBeTruthy()
       expect(screen.getByText(/97.*High/)).toBeTruthy()
       expect(screen.getByText(/89.*Medium/)).toBeTruthy()
       expect(screen.getByText(/76.*Medium/)).toBeTruthy()
@@ -71,8 +71,8 @@ describe('RelatedSamples', () => {
       expect(screen.getByText('97% · High')).toBeTruthy()
     })
 
-    fireEvent.click(screen.getByText('97% · High').closest('div'))
-    expect(onSelect).toHaveBeenCalledWith('a1b2c3d4e5f6')
+    fireEvent.click(screen.getByText('97% · High').closest('button'))
+    expect(onSelect).toHaveBeenCalledWith(expect.objectContaining({ sampleId: 'a1b2c3d4e5f6', status: 'analyzed' }))
   })
 
   test('shows error state returns null silently', async () => {

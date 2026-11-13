@@ -1,10 +1,12 @@
-import { useState, useEffect, useMemo, useCallback, memo } from 'react'
+import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react'
 import './AnalysisView.css'
 import ObfuscationView from './ObfuscationView'
 import ManifestView from './ManifestView'
 import FamilySignalsCard from './FamilySignalsCard'
 import ThreatSynthesisPanel from './ThreatSynthesisPanel'
 import { riskLevelBadgeClass } from '../utils/riskLevel'
+import Icon from './ui/Icon'
+const heroAccentToken = (level) => `var(--accent-${riskLevelBadgeClass(level).slice('badge-'.length)})`
 
 /**
  * Format seconds into human-readable duration.
@@ -98,25 +100,25 @@ const LoadingState = memo(({ analysisState }) => {
         <KPICard
           label="Encodings"
           value={analysisState.metrics?.encoding_count || 0}
-          icon="🔐"
+          icon={<Icon name="lock" size={20} />}
           color="var(--accent-amber)"
         />
         <KPICard
           label="Payloads"
           value={analysisState.metrics?.payload_count || 0}
-          icon="💾"
+          icon={<Icon name="file" size={20} />}
           color="var(--accent-rose)"
         />
         <KPICard
           label="C2 Endpoints"
           value={analysisState.metrics?.c2_count || 0}
-          icon="🌐"
+          icon={<Icon name="globe" size={20} />}
           color="var(--accent-emerald)"
         />
         <KPICard
           label="Threat Chains"
           value={analysisState.metrics?.threat_chain_count || 0}
-          icon="⛓️"
+          icon={<Icon name="chain" size={20} />}
           color="var(--accent-violet)"
         />
       </div>
@@ -218,7 +220,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
   if (error) {
     return (
       <div className="result-error p-8 bg-secondary rounded-sm border-rose mt-4">
-        <div className="text-3xl mb-3">⚠️</div>
+        <div className="mb-3"><Icon name="alert" size={28} /></div>
         <h3 className="heading-sm mb-2">Analysis Results Unavailable</h3>
         <p className="text-secondary mb-3">
           {error}
@@ -251,7 +253,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
     <div className="analysis-result">
       {/* Hero Section */}
       <div className="result-hero">
-        <div className="hero-accent" style={{ backgroundColor: verdict?.verdict === 'malware' ? 'var(--accent-rose)' : 'var(--accent-emerald)' }} />
+        <div className="hero-accent" style={{ backgroundColor: heroAccentToken(verdict?.verdict) }} />
         <div className="hero-content">
           <h1>{metadata.package_name || 'Unknown Package'}</h1>
           <div className="hero-badges">
@@ -263,7 +265,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
         <div className="result-metrics">
           <div className="metric">
             <span className="metric-label">Verdict</span>
-            <span className={`metric-value badge badge-${verdict?.verdict === 'malware' ? 'rose' : 'emerald'}`}>
+            <span className={`metric-value badge ${riskLevelBadgeClass(verdict?.verdict)}`}>
               {verdict?.verdict?.toUpperCase() || '—'}
             </span>
           </div>
@@ -291,7 +293,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
       </div>
 
       {/* Tab Navigation */}
-      <div className="result-tabs">
+      <div className="result-tabs" role="tablist">
         {[
           { id: 'overview', label: 'Overview' },
           { id: 'secrets', label: 'Secrets' },
@@ -304,6 +306,8 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
         ].map(tab => (
           <button
             key={tab.id}
+            role="tab"
+            aria-selected={activeResultTab === tab.id}
             className={`tab-button ${activeResultTab === tab.id ? 'active' : ''}`}
             onClick={() => setActiveResultTab(tab.id)}
           >
@@ -423,7 +427,7 @@ const LLMSummaryTab = memo(({ result }) => {
               {methods.map((method, i) => (
               <div key={i} className="code-block">
                 <div className="code-block-header">
-                  {method.method_name || method}
+                  {String(method.method_name || method)}
                 </div>
                 {method.reason && (
                   <div className="code-block-detail">
@@ -469,6 +473,7 @@ const DissectionSummaryTab = memo(({ sampleId, apiUrl }) => {
   const [summary, setSummary] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [retryNonce, setRetryNonce] = useState(0)
 
   useEffect(() => {
     if (!sampleId) return
@@ -521,7 +526,7 @@ const DissectionSummaryTab = memo(({ sampleId, apiUrl }) => {
 
     fetchSummary()
     return () => { cancelled = true }
-  }, [sampleId, apiUrl])
+  }, [sampleId, apiUrl, retryNonce])
 
   if (loading) {
     return (
@@ -540,7 +545,7 @@ const DissectionSummaryTab = memo(({ sampleId, apiUrl }) => {
         <p>Failed to load dissection summary: {error}</p>
         <button
           className="filter-button filter-cyan mt-3"
-          onClick={() => { setError(null); setLoading(true); /* re-trigger effect */ }}
+          onClick={() => setRetryNonce(n => n + 1)}
         >
           Retry
         </button>
@@ -670,18 +675,18 @@ const STEP_TYPE_LABELS = {
 }
 
 const STEP_TYPE_ICONS = {
-  encoded_string: '🔒',
-  decoding_function: '⚙️',
-  decoded_artifact: '🔓',
-  usage: '📍',
-  c2_infrastructure: '🌐',
+  encoded_string: 'lock',
+  decoding_function: 'sliders',
+  decoded_artifact: 'unlock',
+  usage: 'pin',
+  c2_infrastructure: 'globe',
 }
 
 const SEVERITY_META = {
-  critical: { badge: 'rose', icon: '🚨', description: 'High-confidence chain to confirmed public C2.' },
-  high: { badge: 'rose', icon: '🔴', description: 'Strong indicators of malicious infrastructure.' },
-  medium: { badge: 'amber', icon: '🟡', description: 'Moderate indicators — may be benign or partial chain.' },
-  low: { badge: 'emerald', icon: '🟢', description: 'Weak indicators — likely benign or incomplete.' },
+  critical: { badge: 'rose', description: 'High-confidence chain to confirmed public C2.' },
+  high: { badge: 'rose', description: 'Strong indicators of malicious infrastructure.' },
+  medium: { badge: 'amber', description: 'Moderate indicators — may be benign or partial chain.' },
+  low: { badge: 'emerald', description: 'Weak indicators — likely benign or incomplete.' },
 }
 
 const CHAIN_THREAT_TYPE_LABELS = {
@@ -713,7 +718,39 @@ const STEP_DESCRIPTIONS = {
   c2_infrastructure: 'The command-and-control server or endpoint contacted by the decoded payload.',
 }
 
-function tryDecode(input, method, key, customFnBody) {
+// Analyst-pasted JS can come from a malware write-up. It runs in an opaque-origin
+// sandboxed iframe, so it cannot reach app state, storage or same-origin APIs.
+const CUSTOM_DECODER_SRCDOC = `<script>
+window.addEventListener('message', (e) => {
+  let out
+  try { out = String(new Function('input', e.data.body)(e.data.input)) } catch (err) { out = 'Error: ' + err.message }
+  parent.postMessage(out, '*')
+})
+</script>`
+
+function runCustomDecoder(input, body) {
+  return new Promise((resolve) => {
+    const iframe = document.createElement('iframe')
+    iframe.setAttribute('sandbox', 'allow-scripts')
+    iframe.style.display = 'none'
+    iframe.srcdoc = CUSTOM_DECODER_SRCDOC
+    const finish = (result) => {
+      clearTimeout(timer)
+      window.removeEventListener('message', onMessage)
+      iframe.remove()
+      resolve(result)
+    }
+    const onMessage = (event) => {
+      if (event.source === iframe.contentWindow) finish(String(event.data))
+    }
+    const timer = setTimeout(() => finish('Error: custom decoder timed out'), 2000)
+    window.addEventListener('message', onMessage)
+    iframe.onload = () => iframe.contentWindow.postMessage({ input, body }, '*')
+    document.body.appendChild(iframe)
+  })
+}
+
+function tryDecode(input, method, key) {
   try {
     switch (method) {
       case 'base64':
@@ -725,10 +762,6 @@ function tryDecode(input, method, key, customFnBody) {
       case 'xor': {
         const k = key || 'K'
         return Array.from(input, (c, i) => String.fromCharCode(c.charCodeAt(0) ^ k.charCodeAt(i % k.length))).join('')
-      }
-      case 'custom': {
-        const fn = new Function('input', customFnBody || 'return input')
-        return fn(input)
       }
       default:
         return input
@@ -752,9 +785,11 @@ function ChainCard({ chain, sampleId, apiUrl }) {
   const sevMeta = SEVERITY_META[chain.severity] || SEVERITY_META.medium
 
   // Fetch LLM explanation when first expanded
+  const llmAttempted = useRef(false)
   useEffect(() => {
-    if (!expanded || llmResult || llmLoading || !sampleId || !apiUrl) return
-    setLlmLoading(true) // eslint-disable-line react-hooks/set-state-in-effect
+    if (!expanded || llmAttempted.current || !sampleId || !apiUrl) return
+    llmAttempted.current = true
+    setLlmLoading(true)
     fetch(`${apiUrl}/api/sample/${sampleId}/explain-chain`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -764,7 +799,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
       .then(data => { if (data?.llm) setLlmResult(data.llm) })
       .catch(() => { })
       .finally(() => setLlmLoading(false))
-  }, [expanded, llmResult, llmLoading, sampleId, apiUrl, chain])
+  }, [expanded, sampleId, apiUrl, chain])
 
   const threatType = llmResult?.threat_type
   const threatLabel = CHAIN_THREAT_TYPE_LABELS[threatType]
@@ -782,11 +817,11 @@ function ChainCard({ chain, sampleId, apiUrl }) {
       >
         <div className="chain-header-left">
           <span className="chain-expand">{expanded ? '▾' : '▸'}</span>
-          <h4>{chain.chain_id.replace('chain_', 'Chain #')}</h4>
+          <h4>{String(chain.chain_id ?? '').replace('chain_', 'Chain #')}</h4>
         </div>
         <div className="chain-header-right">
           <span className="chain-step-count">{chain.steps?.length || 0} steps</span>
-          <span className={`badge badge-${sevMeta.badge}`}>{sevMeta.icon} {chain.severity.toUpperCase()}</span>
+          <span className={`badge badge-${sevMeta.badge}`}>{sevMeta.icon} {String(chain.severity ?? 'unknown').toUpperCase()}</span>
           <span className="chain-confidence-badge">{Math.round(chain.confidence * 100)}%</span>
         </div>
       </div>
@@ -833,7 +868,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
                     } }}
                   >
                     <div className="chain-step-header">
-                      <span className="chain-step-icon">{STEP_TYPE_ICONS[step.type] || '❓'}</span>
+                      <span className="chain-step-icon"><Icon name={STEP_TYPE_ICONS[step.type] || 'help'} size={16} /></span>
                       <span className="chain-step-type">
                         {STEP_TYPE_LABELS[step.type] || step.type}
                       </span>
@@ -908,7 +943,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
 
                         {step.type === 'decoding_function' && (
                           <div className="chain-step-decoder">
-                            <h5 className="decoder-title">⚙️ Interactive Decoder</h5>
+                            <h5 className="decoder-title">Interactive decoder</h5>
                             <div className="decoder-input-row">
                               <label className="detail-label">Encoded Input</label>
                               <textarea
@@ -923,6 +958,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
                               <div className="decoder-method-group">
                                 <label className="detail-label">Method</label>
                                 <select
+                                  aria-label="Decoder method"
                                   className="decoder-select"
                                   value={decoderMethod}
                                   onChange={(e) => setDecoderMethod(e.target.value)}
@@ -940,6 +976,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
                                   <input
                                     className="decoder-input"
                                     type="text"
+                                    aria-label="XOR key"
                                     value={xorKey}
                                     onChange={(e) => setXorKey(e.target.value)}
                                     placeholder="Key"
@@ -949,9 +986,13 @@ function ChainCard({ chain, sampleId, apiUrl }) {
                               <div className="decoder-decode-group">
                                 <button
                                   className="decoder-decode-btn"
-                                  onClick={() => {
+                                  onClick={async () => {
                                     setDecodeError('')
-                                    setDecodedOutput(tryDecode(decoderInput, decoderMethod, xorKey, customFn))
+                                    setDecodedOutput(
+                                      decoderMethod === 'custom'
+                                        ? await runCustomDecoder(decoderInput, customFn)
+                                        : tryDecode(decoderInput, decoderMethod, xorKey)
+                                    )
                                   }}
                                 >
                                   Decode
@@ -981,7 +1022,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
 
                     {!isSelected && step.source_location && (
                       <div className="chain-step-source">
-                        📄 {step.source_location}
+                        <Icon name="file" size={12} /> {step.source_location}
                       </div>
                     )}
                     {!isSelected && step.confidence !== undefined && (
@@ -1008,7 +1049,7 @@ function ChainCard({ chain, sampleId, apiUrl }) {
             ) : llmResult ? (
               <div className="llm-result">
                 <div className="llm-result-header">
-                  <span className="llm-icon">🧠</span>
+                  <span className="llm-icon"><Icon name="info" size={14} /></span>
                   <span className="llm-label">AI Analysis</span>
                   {threatLabel && (
                     <span className={`badge badge-${threatColor} badge-xs`}>
@@ -1082,7 +1123,7 @@ const ChainsTab = memo(({ result, apiUrl, sampleId }) => {
     return (
       <div className="tab-panel">
         <div className="card chains-explainer">
-          <h3>⛓️ What Are Threat Chains?</h3>
+          <h3>What are threat chains?</h3>
           <p>
             Threat chains are <strong>directed evidence links</strong> that trace how an obfuscated string
             flows through the APK — from its encoded form, through decoding logic, to the final
@@ -1107,7 +1148,7 @@ const ChainsTab = memo(({ result, apiUrl, sampleId }) => {
     <div className="tab-panel">
       {/* Explanation card */}
       <div className="card chains-explainer">
-        <h3>⛓️ What Are Threat Chains?</h3>
+        <h3>What are threat chains?</h3>
         <p>
           Threat chains are <strong>directed evidence links</strong> that trace how an obfuscated string
           flows through the APK — from its encoded form, through decoding logic, to the final
@@ -1173,13 +1214,14 @@ const ChainsTab = memo(({ result, apiUrl, sampleId }) => {
               className={`chains-filter-btn chains-filter-${sev} ${filterSeverity === sev ? 'active' : ''}`}
               onClick={() => setFilterSeverity(filterSeverity === sev ? 'all' : sev)}
             >
-              {SEVERITY_META[sev]?.icon || '❓'} {sev.charAt(0).toUpperCase() + sev.slice(1)} ({severityCounts[sev]})
+              {sev.charAt(0).toUpperCase() + sev.slice(1)} ({severityCounts[sev]})
             </button>
           ))}
         </div>
         <div className="chains-toolbar-sort">
           <span className="chains-toolbar-label">Sort</span>
           <select
+            aria-label="Sort chains"
             className="chains-sort-select"
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
@@ -1232,10 +1274,18 @@ const ERROR_MESSAGES = {
   pipeline_error: 'Analysis pipeline failed. Contact administrators.',
 }
 
+// Lives in AnalysisView, not ErrorState: the error view unmounts on every retry,
+// which would otherwise reset the count and never reach MAX_RETRIES.
 function useRetryState() {
   const [retryCount, setRetryCount] = useState(0)
   const [isRetrying, setIsRetrying] = useState(false)
   const [countdown, setCountdown] = useState(0)
+  const timers = useRef({ interval: null, timeout: null })
+
+  useEffect(() => () => {
+    clearInterval(timers.current.interval)
+    clearTimeout(timers.current.timeout)
+  }, [])
 
   const scheduleRetry = useCallback((onRetry) => {
     if (retryCount >= MAX_RETRIES) return
@@ -1254,8 +1304,9 @@ function useRetryState() {
         return prev - 1
       })
     }, 1000)
+    timers.current.interval = interval
 
-    setTimeout(() => {
+    timers.current.timeout = setTimeout(() => {
       clearInterval(interval)
       setIsRetrying(false)
       setCountdown(0)
@@ -1273,12 +1324,14 @@ function useRetryState() {
   return { retryCount, isRetrying, countdown, scheduleRetry, reset }
 }
 
-function ErrorState({ analysisState, onRetry }) {
-  const { retryCount, isRetrying, countdown, scheduleRetry } = useRetryState()
+function ErrorState({ analysisState, onRetry, retryState, canRetry }) {
+  const { retryCount, isRetrying, countdown, scheduleRetry } = retryState
 
   const errorType = analysisState.errorType || 'internal_error'
   const errorMessage = analysisState.error || ERROR_MESSAGES[errorType] || 'Unknown error'
   const isRetryable = retryCount < MAX_RETRIES && errorType !== 'malformed' && errorType !== 'disk_space'
+  // Retry re-runs the upload, so URL-opened samples (no uploadId) cannot retry.
+  const showRetry = isRetryable && canRetry
 
   const handleRetry = () => {
     scheduleRetry(() => {
@@ -1298,7 +1351,7 @@ function ErrorState({ analysisState, onRetry }) {
         </div>
       )}
 
-      {!isRetrying && isRetryable && (
+      {!isRetrying && showRetry && (
         <div className="retry-actions">
           <p className="retry-attempt-info">Attempt {retryCount + 1} of {MAX_RETRIES}</p>
           <button className="retry-button" onClick={handleRetry}>
@@ -1326,9 +1379,17 @@ function AnalysisView({ sample, analysisState, apiUrl, onRetry }) {
   const isAnalyzing = analysisState.status === 'running'
   const isComplete = analysisState.status === 'complete'
   const hasError = analysisState.status === 'error'
+  const retryState = useRetryState()
 
   if (hasError) {
-    return <ErrorState analysisState={analysisState} onRetry={onRetry} />
+    return (
+      <ErrorState
+        analysisState={analysisState}
+        onRetry={onRetry}
+        retryState={retryState}
+        canRetry={Boolean(sample?.uploadId)}
+      />
+    )
   }
 
   if (isAnalyzing) {
@@ -1406,7 +1467,7 @@ const SecretsTab = memo(({ result }) => {
       </div>
 
       <div className="secrets-grid">
-        {secrets.sort((a, b) => (SEVERITY_CONFIG[a.severity]?.order ?? 9) - (SEVERITY_CONFIG[b.severity]?.order ?? 9)).map((s, i) => {
+        {[...secrets].sort((a, b) => (SEVERITY_CONFIG[a.severity]?.order ?? 9) - (SEVERITY_CONFIG[b.severity]?.order ?? 9)).map((s, i) => {
           const cfg = SEVERITY_CONFIG[s.severity] || { color: 'var(--text-muted)' }
           const loc = s.source || s.source_file || '?'
           return (
@@ -1417,7 +1478,7 @@ const SecretsTab = memo(({ result }) => {
               </div>
               <p className="secret-item-value">{s.value}</p>
               {s.decoded && (
-                <p className="secret-item-decoded">✓ {s.decoded}</p>
+                <p className="secret-item-decoded"><Icon name="check" size={12} /> {s.decoded}</p>
               )}
               <div className="secret-item-location">
                 {loc}{s.occurrence_count > 1 ? ` · ${s.occurrence_count} occurrences` : ''}

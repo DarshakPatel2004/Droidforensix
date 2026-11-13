@@ -33,7 +33,7 @@ describe('AttributionEvidence', () => {
   test('shows loading state initially', () => {
     global.fetch = vi.fn(() => new Promise(() => {}))
     render(<AttributionEvidence sampleId="test-001" apiUrl="http://localhost:8000" />)
-    expect(screen.getByText('Loading attribution evidence...')).toBeTruthy()
+    expect(screen.getByText('Loading attribution evidence…')).toBeTruthy()
   })
 
   test('renders family and confidence on success', async () => {
@@ -59,10 +59,10 @@ describe('AttributionEvidence', () => {
     render(<AttributionEvidence sampleId="test-001" apiUrl="http://localhost:8000" />)
 
     await waitFor(() => {
-      expect(screen.getByText('Permissions Match')).toBeTruthy()
-      expect(screen.getByText('C2 Overlap')).toBeTruthy()
-      expect(screen.getByText('Obfuscation Pattern')).toBeTruthy()
-      expect(screen.getByText('Code Similarity')).toBeTruthy()
+      expect(screen.getByText('Permissions match')).toBeTruthy()
+      expect(screen.getByText('C2 overlap')).toBeTruthy()
+      expect(screen.getByText('Obfuscation pattern')).toBeTruthy()
+      expect(screen.getByText('Code similarity')).toBeTruthy()
     })
   })
 
@@ -79,19 +79,6 @@ describe('AttributionEvidence', () => {
     })
   })
 
-  test('renders related samples', async () => {
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: () => Promise.resolve(MOCK_ATTRIBUTION),
-    })
-
-    render(<AttributionEvidence sampleId="test-001" apiUrl="http://localhost:8000" />)
-
-    await waitFor(() => {
-      expect(screen.getByText(/97% similar/)).toBeTruthy()
-    })
-  })
-
   test('shows error on failed fetch', async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: false,
@@ -101,7 +88,7 @@ describe('AttributionEvidence', () => {
     render(<AttributionEvidence sampleId="test-001" apiUrl="http://localhost:8000" />)
 
     await waitFor(() => {
-      expect(screen.getByText(/Failed to load/)).toBeTruthy()
+      expect(screen.getByText(/Attribution failed to load/)).toBeTruthy()
     })
   })
 })

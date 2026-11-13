@@ -1,5 +1,7 @@
 import { useState, useEffect, useMemo, useCallback } from 'react'
+import { fetchAllDissectionClasses } from '../api/dissectionClasses'
 import '../styles/SmartDissection.css'
+import Icon from './ui/Icon'
 
 const UNWANTED_PATTERNS = [
   /android\.support\..*/,
@@ -52,13 +54,11 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
     if (!sampleId) return
     try {
       setLoading(true)
-      const [classesRes, obfRes] = await Promise.all([
-        fetch(`${apiUrl}/api/sample/${sampleId}/dissection/classes`),
+      const [classesData, obfRes] = await Promise.all([
+        fetchAllDissectionClasses(apiUrl, sampleId),
         fetch(`${apiUrl}/api/sample/${sampleId}/obfuscation`),
       ])
       if (isCancelled && isCancelled()) return
-      if (!classesRes.ok) throw new Error(`HTTP ${classesRes.status}`)
-      const classesData = await classesRes.json()
       const obfData = obfRes.ok ? await obfRes.json() : null
       setDissectionData(classesData)
       setObfuscationData(obfData)
@@ -104,6 +104,7 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
       const q = search.toLowerCase()
       classes = classes.filter(cls =>
         cls.name.toLowerCase().includes(q) ||
+        (cls.method_names || []).some(n => n.toLowerCase().includes(q)) ||
         (cls.methods || []).some(m => m.name.toLowerCase().includes(q)) ||
         (cls.network_calls || []).some(c => c.toLowerCase().includes(q))
       )
@@ -128,7 +129,7 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
   if (error) {
     return (
       <div className="state-container error-container modern-empty">
-        <span className="state-icon">⚠</span>
+        <span className="state-icon"><Icon name="alert" size={22} /></span>
         <h3 className="state-title">Dissection Error</h3>
         <p className="state-description">{error}</p>
         <button className="filter-button filter-cyan" style={{ marginTop: '1rem' }} onClick={() => { setError(null); fetchDissection() }}>
@@ -173,9 +174,10 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
             {expandAll ? 'Collapse code' : 'Expand code'}
           </button>
           <div className="dissection-search">
-            <span className="search-icon">🔎</span>
+            <span className="search-icon"><Icon name="search" size={16} /></span>
             <input
               type="text"
+              aria-label="Search classes and methods"
               placeholder="Search class or method name..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -194,7 +196,7 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
 
         {filteredClasses.length === 0 ? (
           <div className="dissection-empty">
-            <span className="empty-icon">🔍</span>
+            <span className="empty-icon"><Icon name="search" size={22} /></span>
             <p>No matching classes found</p>
             {filter === 'malicious' && allClasses.length > 0 && (
               <button
@@ -207,9 +209,9 @@ export default function SmartDissection({ sample, apiUrl, onSelectClass }) {
           </div>
         ) : (
           <div className="classes-list">
-            {filteredClasses.map((cls, idx) => (
+            {filteredClasses.map((cls) => (
               <ClassCard
-                key={idx}
+                key={cls.name}
                 classData={cls}
                 isObfuscated={isObfuscatedClass(cls)}
                 expandAll={expandAll}
@@ -273,7 +275,14 @@ function ClassCard({ classData, isObfuscated, expandAll, onSelectClass, sampleId
 
   return (
     <div className={`class-card ${isSuspicious ? 'suspicious' : ''} ${isObfuscated ? 'obfuscated' : ''}`}>
-      <div className="class-header" onClick={() => setExpanded(!expanded)}>
+      <div
+        className="class-header"
+        onClick={() => setExpanded(!expanded)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setExpanded(!expanded) }}
+      >
         <div className="class-header-left">
           <span className="class-expand">{expanded ? '▼' : '▶'}</span>
           <span className="class-name text-mono" title={classData.name}>{classData.name}</span>
@@ -339,7 +348,7 @@ function ClassCard({ classData, isObfuscated, expandAll, onSelectClass, sampleId
             ) : methodsLoadError ? (
               <div className="methods-error">
                 <p className="class-empty">Failed to load methods: {methodsLoadError}</p>
-                <button className="filter-button filter-cyan" onClick={() => { setMethodsLoadError(null); setMethodsLoading(true); setMethods(null); }}>
+                <button className="filter-button filter-cyan" onClick={() => { setMethodsLoadError(null); setMethods(null); }}>
                   Retry
                 </button>
               </div>
@@ -413,9 +422,10 @@ function MethodCard({ method, expandAll, sampleId, className, apiUrl }) {
     setExpanded(expandAll) // eslint-disable-line react-hooks/set-state-in-effect
   }, [expandAll])
 
-  // Fire explain-method when first expanded
+  // Fire explain-method (an LLM call) only when the analyst expands this card.
+  // "Expand code" flips every card at once, which would start one LLM call per method.
   useEffect(() => {
-    if (!expanded || annotation || annotating) return
+    if (!expanded || expandAll || annotation || annotating) return
     if (!sampleId || apiUrl === undefined || apiUrl === null || !method.body) return
 
     const flags = SUSPICIOUS_KEYWORDS.filter(kw =>
@@ -438,7 +448,7 @@ function MethodCard({ method, expandAll, sampleId, className, apiUrl }) {
       .then(data => { if (data) setAnnotation(data) })
       .catch(err => setAnnotationError(String(err)))
       .finally(() => setAnnotating(false))
-  }, [expanded, sampleId, apiUrl, className, method.name, method.body]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [expanded, expandAll, sampleId, apiUrl, className, method.name, method.body]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const matchedKeyword = SUSPICIOUS_KEYWORDS.find(kw =>
     method.name.toLowerCase().includes(kw.toLowerCase()) ||
@@ -450,7 +460,14 @@ function MethodCard({ method, expandAll, sampleId, className, apiUrl }) {
 
   return (
     <div className={`method-card ${matchedKeyword ? 'method-suspicious' : ''}`}>
-      <div className="method-header" onClick={() => setExpanded(!expanded)}>
+      <div
+        className="method-header"
+        onClick={() => setExpanded(!expanded)}
+        role="button"
+        tabIndex={0}
+        aria-expanded={expanded}
+        onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') setExpanded(!expanded) }}
+      >
         <div className="method-header-left">
           <span className="method-expand">{expanded ? '▼' : '▶'}</span>
           <span className="method-name text-mono">{method.name}</span>
@@ -481,7 +498,7 @@ function MethodCard({ method, expandAll, sampleId, className, apiUrl }) {
               ) : annotation?.llm ? (
                 <div className="llm-result">
                   <div className="llm-result-header">
-                    <span className="llm-icon">🧠</span>
+                    <span className="llm-icon"><Icon name="info" size={14} /></span>
                     <span className="llm-label">AI Analysis</span>
                     {annotation.llm.threat_type && annotation.llm.threat_type !== 'unknown' && (
                       <span className={`llm-threat-badge threat-${annotation.llm.threat_type}`}>
@@ -558,7 +575,7 @@ function highlightSyntax(line) {
     .replace(/>/g, '&gt;')
   SUSPICIOUS_KEYWORDS.forEach(keyword => {
     const regex = new RegExp(`\\b${keyword}\\b`, 'gi')
-    highlighted = highlighted.replace(regex, `<span class="code-keyword">${keyword}</span>`)
+    highlighted = highlighted.replace(regex, '<span class="code-keyword">$&</span>')
   })
   return <code dangerouslySetInnerHTML={{ __html: highlighted }} />
 }

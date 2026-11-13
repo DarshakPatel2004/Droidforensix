@@ -46,9 +46,10 @@ function ToastProvider({ children }) {
   return (
     <ToastContext.Provider value={{ addToast, removeToast }}>
       {children}
-      <div className="toast-container" role="alert" aria-live="polite">
+      <div className="toast-container">
         {toasts.map(toast => (
-          <div key={toast.id} className={`toast toast-${toast.type}`}>
+          // Errors interrupt; info and success are polite status updates.
+          <div key={toast.id} role={toast.type === 'error' ? 'alert' : 'status'} className={`toast toast-${toast.type}`}>
             <span className="toast-icon">
               {toast.type === 'success' && '✅'}
               {toast.type === 'info' && 'ℹ️'}

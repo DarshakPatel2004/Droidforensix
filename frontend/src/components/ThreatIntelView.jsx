@@ -3,6 +3,8 @@ import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
 import '../styles/ThreatIntelView.css'
+import { fetchWithCache } from '../utils/fetchWithCache'
+import Icon from './ui/Icon'
 
 const API_URL = 'http://localhost:8000'
 
@@ -20,21 +22,25 @@ export default function ThreatIntelView({ sample, apiUrl }) {
   const [error, setError] = useState(null)
 
   const sampleId = sample?.sampleId || sample?.sha256 || sample?.uploadId
+  const requestRef = useRef(0)
 
   const fetchThreatIntel = useCallback(async () => {
     if (!sampleId) return
+    const requestId = ++requestRef.current
+    const isStale = () => requestId !== requestRef.current
     try {
       setLoading(true)
-      const response = await fetch(`${apiUrl || API_URL}/api/sample/${sampleId}/threat-intel`)
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      const data = await response.json()
+      // Shared with FamilySignalsCard: one request per sample, not two live-DNS rounds.
+      const data = await fetchWithCache(`${apiUrl || API_URL}/api/sample/${sampleId}/threat-intel`)
+      if (isStale()) return
       setThreatData(data)
       setError(null)
     } catch (err) {
+      if (isStale()) return
       setError('Threat intelligence data not available: ' + err.message)
       console.error(err)
     } finally {
-      setLoading(false)
+      if (!isStale()) setLoading(false)
     }
   }, [sampleId, apiUrl])
 
@@ -46,7 +52,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
   if (!sample) {
     return (
       <div className="state-container">
-        <span className="state-icon">🌐</span>
+        <span className="state-icon"><Icon name="globe" size={22} /></span>
         <h3 className="state-title">No sample selected</h3>
         <p className="state-description">Analyze an APK first to view Phase 2 threat intelligence enrichment.</p>
       </div>
@@ -60,7 +66,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
   if (error) {
     return (
       <div className="state-container">
-        <span className="state-icon">🛰</span>
+        <span className="state-icon"><Icon name="globe" size={22} /></span>
         <h3 className="state-title">Threat Intelligence</h3>
         <p className="state-description">Phase 2 enrichment is not available for this sample. Ensure analysis completed successfully.</p>
       </div>
@@ -70,7 +76,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
   if (!threatData) {
     return (
       <div className="state-container">
-        <span className="state-icon">📭</span>
+        <span className="state-icon"><Icon name="inbox" size={22} /></span>
         <h3 className="state-title">No data available</h3>
         <p className="state-description">No threat intelligence data was returned for this sample.</p>
       </div>
@@ -96,7 +102,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
         <StatCard value={c2s.length} label="Total C2 Indicators" color="rose" />
         <StatCard value={geoIps.length} label="IPs Geo-Located" color="cyan" />
         <StatCard value={`${activeRate}%`} label="Active C2 Rate" color="amber" />
-        <StatCard value={classification.malicious || 0} label="Malicious C2s" color="emerald" />
+        <StatCard value={classification.malicious || 0} label="Malicious C2s" color="rose" />
       </div>
 
       {family && <FamilyCard family={family} />}
@@ -165,7 +171,8 @@ export default function ThreatIntelView({ sample, apiUrl }) {
                   <Marker key={idx} position={[ip.latitude, ip.longitude]} icon={DEFAULT_ICON}>
                     <Popup>
                       <strong>{ip.ip}</strong><br />
-                      {ip.country}{ip.isp ? `<br/>${ip.isp}` : ''}
+                      {ip.country}
+                      {ip.isp && <><br />{ip.isp}</>}
                     </Popup>
                   </Marker>
                 ))}
@@ -217,6 +224,34 @@ export default function ThreatIntelView({ sample, apiUrl }) {
       </div>
 
       <PdfExportSection sampleId={sampleId} apiUrl={apiUrl || API_URL} />
+      <IocExportLinks sampleId={sampleId} apiUrl={apiUrl || API_URL} />
+    </div>
+  )
+}
+
+const IOC_EXPORT_FORMATS = [
+  { format: 'csv', label: 'CSV' },
+  { format: 'stix', label: 'STIX' },
+  { format: 'yara', label: 'YARA' },
+  { format: 'suricata', label: 'Suricata' },
+]
+
+function IocExportLinks({ sampleId, apiUrl }) {
+  return (
+    <div className="card" style={{ marginTop: 16, padding: 16 }}>
+      <div className="section-title" style={{ marginBottom: 12 }}>IOC Exports</div>
+      <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+        {IOC_EXPORT_FORMATS.map(({ format, label }) => (
+          <a
+            key={format}
+            className="btn-primary"
+            href={`${apiUrl}/api/sample/${encodeURIComponent(sampleId)}/threat-intel/export/${format}`}
+            download
+          >
+            {label}
+          </a>
+        ))}
+      </div>
     </div>
   )
 }
@@ -459,7 +494,8 @@ function PdfExportSection({ sampleId, apiUrl }) {
       }
       a.download = `droidforensix_${sampleId.slice(0, 12)}_${suffix}.pdf`
       a.click()
-      URL.revokeObjectURL(url)
+      // Revoking synchronously can abort the download in some browsers.
+      setTimeout(() => URL.revokeObjectURL(url), 1000)
       setState('done')
       setTimeout(() => setState('idle'), 3000)
     } catch (err) {
@@ -494,7 +530,7 @@ function PdfExportSection({ sampleId, apiUrl }) {
           {state === 'generating' && mode === 'quick' ? (
             <><span className="pdf-spinner" /> Generating…</>
           ) : (
-            <><span className="pdf-icon">📄</span> Export PDF Report</>
+            <><span className="pdf-icon"><Icon name="file" size={14} /></span> Export PDF report</>
           )}
           <span className="pdf-badge">Top 30 methods</span>
         </button>
@@ -508,7 +544,7 @@ function PdfExportSection({ sampleId, apiUrl }) {
           {state === 'generating' && mode === 'full' ? (
             <><span className="pdf-spinner" /> Generating… (this may take a while)</>
           ) : (
-            <><span className="pdf-icon">📋</span> Full Export PDF</>
+            <><span className="pdf-icon"><Icon name="copy" size={14} /></span> Full export PDF</>
           )}
           <span className="pdf-badge pdf-badge-warning">⏱ May take minutes</span>
         </button>
@@ -536,10 +572,10 @@ function PdfExportSection({ sampleId, apiUrl }) {
       </details>
 
       {state === 'done' && (
-        <p className="pdf-status pdf-status-ok">✓ Report downloaded successfully</p>
+        <p className="pdf-status pdf-status-ok"><Icon name="check" size={14} /> Report downloaded</p>
       )}
       {state === 'error' && (
-        <p className="pdf-status pdf-status-error">✗ {errorMsg}</p>
+        <p className="pdf-status pdf-status-error"><Icon name="x" size={14} /> {errorMsg}</p>
       )}
     </div>
   )
