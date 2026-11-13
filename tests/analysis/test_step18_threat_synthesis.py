@@ -20,8 +20,13 @@ class TestSynthesizeThreatProfile:
             "strings": {"total_high_entropy": 10},
         }
         result = synthesize_threat_profile(context)
-        assert result["zero_day_risk_score"] > 0
-        assert result["risk_level"] in ("low", "medium", "high", "critical")
+        # packing 16 + reflection 20 + C2 10 + entropy 10 = 56 (permissions add nothing here)
+        assert result["zero_day_risk_score"] == 56.0
+        assert result["risk_level"] == "medium"
+        assert result["signal_count"] == 4
+        assert {s["signal"] for s in result["contributing_signals"]} == {
+            "reflective_calls", "binary_packing", "c2_endpoints", "high_entropy_strings",
+        }
 
     def test_clean(self):
         context = {
@@ -32,7 +37,9 @@ class TestSynthesizeThreatProfile:
             "strings": {"total_high_entropy": 0},
         }
         result = synthesize_threat_profile(context)
-        assert result["risk_level"] in ("none", "low", "unknown")
+        assert result["zero_day_risk_score"] == 0.0
+        assert result["risk_level"] == "none"
+        assert result["contributing_signals"] == []
 
     def test_none_context(self):
         result = synthesize_threat_profile(None)

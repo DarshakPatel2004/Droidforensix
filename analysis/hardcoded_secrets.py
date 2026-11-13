@@ -266,14 +266,18 @@ SECRET_NOTEBOOKS = frozenset({
 
 def _is_placeholder(value: str) -> bool:
     lowered = value.lower().replace("-", "").replace("_", "").replace(" ", "")
+    tokens = set(re.split(r"[^a-z0-9]+", value.lower()))
     for p in SECRET_NOTEBOOKS:
         norm_p = p.lower().replace("-", "").replace("_", "").replace(" ", "")
         if "." in norm_p:
             if lowered == norm_p:
                 return True
-        else:
-            if norm_p in lowered:
+        elif len(norm_p) < 6:
+            # Short words must be whole tokens: "test" must not match "latest" (audit L7).
+            if norm_p in tokens:
                 return True
+        elif norm_p in lowered:
+            return True
     return False
 
 
@@ -325,7 +329,7 @@ def _try_base64_decode(value: str) -> Optional[str]:
             if _is_printable_text(text):
                 return text[:500]
         except Exception as exc:
-            logger.warning("Suppressed error in _try_base64_decode: %s", exc)
+            logger.debug("Suppressed error in _try_base64_decode: %s", exc)
             continue
     return None
 
@@ -339,7 +343,7 @@ def _try_base64url_decode(value: str) -> Optional[str]:
         if _is_printable_text(text):
             return text[:500]
     except Exception as exc:
-        logger.warning("Suppressed error in _try_base64url_decode: %s", exc)
+        logger.debug("Suppressed error in _try_base64url_decode: %s", exc)
     return None
 
 
@@ -351,7 +355,7 @@ def _try_hex_decode(value: str) -> Optional[str]:
         if _is_printable_text(text):
             return text[:500]
     except Exception as exc:
-        logger.warning("Suppressed error in _try_hex_decode: %s", exc)
+        logger.debug("Suppressed error in _try_hex_decode: %s", exc)
     return None
 
 
@@ -363,8 +367,10 @@ def _decode_jwt(value: str) -> Optional[str]:
     try:
         padded = parts[1] + "=" * (4 - len(parts[1]) % 4)
         decoded = base64.urlsafe_b64decode(padded)
-        parsed = json.loads(decoded)
-        return json.dumps(parsed, indent=2)[:500]
+    except Exception:
+        return None  # not valid base64: nothing to preview
+    try:
+        return json.dumps(json.loads(decoded), indent=2)[:500]
     except Exception:
         return decoded.decode("utf-8", errors="replace")[:500]
 
@@ -445,7 +451,7 @@ def auto_decode_secret(
             if len(decoded) > 20 and decoded[0] == 0x30:
                 return f"(potential headerless crypto key — {len(stripped)} chars base64)"
         except Exception as exc:
-            logger.warning("Suppressed error in auto_decode_secret: %s", exc)
+            logger.debug("Suppressed error in auto_decode_secret: %s", exc)
 
     # Generic: if value looks like base64, try to decode
     if BASE64_RX.match(stripped) and len(stripped) >= 16:
@@ -527,14 +533,11 @@ def scan_strings(
         List of secret findings, each with name, value, severity, source, and context.
     """
     findings = []
-    seen_values: Set[str] = set()
     notebooks = secret_notebooks or SECRET_NOTEBOOKS
 
     for entry in string_list:
         value = entry.get("value", "")
         if not isinstance(value, str) or len(value) < 6:
-            continue
-        if value in seen_values:
             continue
         if _is_placeholder(value):
             continue
@@ -553,7 +556,7 @@ def scan_strings(
                 matched_value = match.group(0)
             else:
                 matched_value = match.group(min(key_group, num_groups))
-            if matched_value in seen_values or matched_value in notebooks:
+            if matched_value in notebooks:
                 continue
             validation = pattern_def.get("validation")
             if validation and not validation(match):
@@ -562,13 +565,12 @@ def scan_strings(
             findings.append({
                 "secret_type": pattern_def["name"],
                 "description": pattern_def["description"],
-                "value": matched_value[:80],
+                "value": matched_value[:512],   # full value: decoders need it (JWT ~128 chars)
                 "severity": pattern_def["severity"],
                 "source": entry.get("source", "unknown"),
                 "category": entry.get("category", "string_literal"),
                 "context": value[:120],
             })
-            seen_values.add(matched_value)
 
     return _dedup_and_enrich(findings)
 

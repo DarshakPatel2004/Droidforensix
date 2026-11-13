@@ -22,12 +22,11 @@ GROUND_TRUTH = Path("D:/DroidForensix/ground_truth_all.csv")
 OUTPUT = Path("D:/DroidForensix/analysis/obfuscation_cache.json")
 WORK_DIR = Path("D:/DroidForensix/analysis/obfuscation_work")
 MAX_WORKERS = 4
-TIMEOUT_PER_SAMPLE = 180
 
 
 def load_ground_truth():
     gt = {}
-    with open(GROUND_TRUTH) as f:
+    with open(GROUND_TRUTH, encoding="utf-8") as f:
         for row in csv.DictReader(f):
             gt[row["sha256"].lower()] = {
                 "apk_path": row.get("apk_path", ""),
@@ -44,7 +43,7 @@ def run_step8(sha256, apk_path, work_dir):
     output_file = sample_dir / "step8_obfuscation.json"
     if output_file.exists():
         try:
-            with open(output_file) as f:
+            with open(output_file, encoding="utf-8") as f:
                 return json.load(f)
         except Exception as exc:
             logger.warning("Suppressed error in run_step8: %s", exc)
@@ -70,14 +69,15 @@ def main():
     # Check existing cache
     existing = {}
     if OUTPUT.exists():
-        with open(OUTPUT) as f:
+        with open(OUTPUT, encoding="utf-8") as f:
             existing = json.load(f)
     print(f"Existing cache: {len(existing)} samples")
 
     # Find samples that need processing
     to_process = []
     for sha256, info in gt.items():
-        if sha256 in existing and "obfuscation_score" in existing[sha256]:
+        # Failed samples carry "error" and are retried, not stored as real zero scores (L8).
+        if sha256 in existing and "obfuscation_score" in existing[sha256] and "error" not in existing[sha256]:
             continue
         apk_path = info.get("apk_path", "")
         if apk_path and os.path.exists(apk_path):
@@ -105,7 +105,7 @@ def main():
             sha256 = futures[future]
             completed += 1
             try:
-                result = future.result(timeout=TIMEOUT_PER_SAMPLE + 30)
+                result = future.result()  # run_step8 has no timeout; the old one fired after as_completed (L8)
                 results[sha256] = result
                 score = result.get("obfuscation_score", 0)
                 level = result.get("obfuscation_level", "?")
@@ -123,12 +123,12 @@ def main():
             # Save intermediate results every 20 samples
             if completed % 20 == 0:
                 merged = {**existing, **results}
-                with open(OUTPUT, "w") as f:
+                with open(OUTPUT, "w", encoding="utf-8") as f:
                     json.dump(merged, f, indent=1)
 
     # Final save
     merged = {**existing, **results}
-    with open(OUTPUT, "w") as f:
+    with open(OUTPUT, "w", encoding="utf-8") as f:
         json.dump(merged, f, indent=1)
 
     elapsed = time.time() - start_time

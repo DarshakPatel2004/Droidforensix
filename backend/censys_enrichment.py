@@ -16,6 +16,7 @@ import asyncio
 import json
 import logging
 import os
+import threading
 import time
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -27,6 +28,7 @@ _load_dotenv_path = Path(__file__).resolve().parent.parent / ".env"
 if _load_dotenv_path.exists():
     load_dotenv(_load_dotenv_path)
 
+from backend.cache_utils import atomic_write_json
 from backend.config import settings
 
 logger = logging.getLogger(__name__)
@@ -41,23 +43,34 @@ REQUEST_TIMEOUT = 20
 RATE_LIMIT_DELAY = 0.6  # seconds between requests to stay under rate cap
 
 
+# Serialises read-modify-write of the shared cache file across threads (audit B1-27).
+_CACHE_LOCK = threading.Lock()
+
+
 def _load_cache() -> Dict[str, Any]:
     if CACHE_PATH.exists():
         try:
             with open(CACHE_PATH, "r", encoding="utf-8") as f:
                 return json.load(f)
         except Exception:
-            logger.debug("Failed to load Censys cache")
+            logger.warning("Censys cache %s unreadable; starting empty", CACHE_PATH, exc_info=True)
     return {}
 
 
 def _save_cache(cache: Dict[str, Any]) -> None:
     try:
         CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
-        with open(CACHE_PATH, "w", encoding="utf-8") as f:
-            json.dump(cache, f, indent=2)
+        atomic_write_json(CACHE_PATH, cache)
     except Exception as exc:
         logger.warning("Failed to write Censys cache: %s", exc)
+
+
+def _cache_put(ip: str, result: Dict[str, Any]) -> None:
+    """Merge one entry into the on-disk cache under the lock, so concurrent lookups keep each other's entries."""
+    with _CACHE_LOCK:
+        cache = _load_cache()
+        cache[ip] = result
+        _save_cache(cache)
 
 
 def _headers() -> Dict[str, str]:
@@ -151,8 +164,7 @@ def enrich_ip(ip: str) -> Optional[Dict[str, Any]]:
             resp = requests.get(url, headers=_headers(), timeout=REQUEST_TIMEOUT)
             if resp.status_code == 404:
                 result = _error_result(ip, "not_found")
-                cache[ip] = result
-                _save_cache(cache)
+                _cache_put(ip, result)
                 return result
             if _is_retryable(resp.status_code) and attempt < 3:
                 wait = 2.0 ** attempt
@@ -162,8 +174,7 @@ def enrich_ip(ip: str) -> Optional[Dict[str, Any]]:
             resp.raise_for_status()
             data = resp.json()
             result = _extract(ip, data)
-            cache[ip] = result
-            _save_cache(cache)
+            _cache_put(ip, result)
             return result
         except Exception as exc:
             last_exc = exc
@@ -176,8 +187,7 @@ def enrich_ip(ip: str) -> Optional[Dict[str, Any]]:
 
     logger.warning("Censys enrich_ip(%s) failed: %s", ip, last_exc)
     result = _error_result(ip, last_exc)
-    cache[ip] = result
-    _save_cache(cache)
+    _cache_put(ip, result)
     return result
 
 
@@ -194,7 +204,7 @@ async def _query_one(client: httpx.AsyncClient, sem: asyncio.Semaphore,
                 resp = await client.get(url, headers=_headers(), timeout=REQUEST_TIMEOUT)
                 if resp.status_code == 404:
                     result = _error_result(ip, "not_found")
-                    cache[ip] = result
+                    _cache_put(ip, result)
                     return result
                 if _is_retryable(resp.status_code) and attempt < 3:
                     wait = 2.0 ** attempt
@@ -204,7 +214,7 @@ async def _query_one(client: httpx.AsyncClient, sem: asyncio.Semaphore,
                 resp.raise_for_status()
                 data = resp.json()
                 result = _extract(ip, data)
-                cache[ip] = result
+                _cache_put(ip, result)
                 return result
             except asyncio.CancelledError:
                 raise
@@ -220,7 +230,7 @@ async def _query_one(client: httpx.AsyncClient, sem: asyncio.Semaphore,
 
         logger.warning("Censys _query_one(%s) failed: %s", ip, last_exc)
         result = _error_result(ip, last_exc)
-        cache[ip] = result
+        _cache_put(ip, result)
         return result
 
 
@@ -236,7 +246,6 @@ async def _batch(ips: List[str]) -> Dict[str, Any]:
     async with httpx.AsyncClient(limits=limits) as client:
         tasks = [_rate_limited_query(ip) for ip in ips]
         results = await asyncio.gather(*tasks)
-    _save_cache(cache)
     return {r["ip"]: r for r in results}
 
 

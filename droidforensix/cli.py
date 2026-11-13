@@ -102,7 +102,7 @@ def build_parser() -> argparse.ArgumentParser:
     p.set_defaults(func=_cmd_classify)
 
     p = sub.add_parser("serve", help="start the FastAPI backend")
-    p.add_argument("--host", default="0.0.0.0")
+    p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8000)
     p.add_argument("--reload", action="store_true")
     p.set_defaults(func=_cmd_serve)

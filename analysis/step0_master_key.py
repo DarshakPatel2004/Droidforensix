@@ -34,9 +34,10 @@ See: docs/accuracy-improvement-plan.md Phase 0, docs/MASTER_KEY_STRATEGY.md,
 """
 
 import hashlib
+import importlib.util
 import logging
 import pathlib
-import sys
+import types
 import zipfile
 from typing import Any, Dict, Optional
 
@@ -45,8 +46,7 @@ from analysis.payload_evidence import collect_payload_evidence
 logger = logging.getLogger(__name__)
 
 REPO = pathlib.Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(REPO))
-sys.path.insert(0, str(REPO / "scripts"))
+_SCRIPT_MODULES: Dict[str, types.ModuleType] = {}
 
 # E-codes that are EXPECTED for commercial packers - not model failures
 # MUST stay in sync with scripts/unpack.py E_CODES + PENDRIVE_MASTER_KEY_INTEL.md
@@ -70,6 +70,7 @@ PACKED_VERDICTS = ("packed_custom", "packed_known", "indeterminate", "obfuscated
 # Master key breaker second chance: runs only after the unpack dispatcher failed.
 # The cap is per APK (packers.breaker.engine), so it bounds the added wall clock of
 # one packed sample; the name-prior tier runs first and normally lands in ~1 second.
+_PAYLOAD_BLOB_CAP = 20_000_000  # max bytes of recovered DEX/APK kit mined for strings (A1-20)
 BREAKER_ATTEMPTS_CAP = 20_000
 BREAKER_BUDGET_S = 120.0
 # breaker hit.json carries key material, so evidence may only be written to a
@@ -77,13 +78,30 @@ BREAKER_BUDGET_S = 120.0
 BREAKER_EVIDENCE_DIR = REPO / "analysis" / "master_key_breaker"
 
 
+def _load_script_module(name: str) -> types.ModuleType:
+    """Load scripts/<name>.py by file path, cached per process.
+
+    Nothing is added to sys.path for step0's own imports, so an installed package
+    cannot be shadowed by a scripts/ module name (audit A1-39).
+    """
+    if name not in _SCRIPT_MODULES:
+        path = REPO / "scripts" / f"{name}.py"
+        spec = importlib.util.spec_from_file_location(f"df_scripts_{name}", path)
+        if spec is None or spec.loader is None:
+            raise ImportError(f"cannot load script module {path}")
+        module = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(module)
+        _SCRIPT_MODULES[name] = module
+    return _SCRIPT_MODULES[name]
+
+
 def _load_triage(apk_path: pathlib.Path) -> Dict[str, Any]:
     """Run H1-H6 triage without subprocess - direct import for speed."""
     try:
-        from triage import ALLOWLIST_PATH, MARKERS_PATH, load_json, triage_apk
-        markers = load_json(MARKERS_PATH)
-        allowlist = load_json(ALLOWLIST_PATH)
-        report = triage_apk(apk_path, markers, allowlist)
+        triage = _load_script_module("triage")
+        markers = triage.load_json(triage.MARKERS_PATH)
+        allowlist = triage.load_json(triage.ALLOWLIST_PATH)
+        report = triage.triage_apk(apk_path, markers, allowlist)
         return report
     except Exception as e:
         logger.warning("MasterKey Step0: triage failed: %s", e)
@@ -93,12 +111,12 @@ def _load_triage(apk_path: pathlib.Path) -> Dict[str, Any]:
 def _attempt_unpack(apk_path: pathlib.Path, work_dir: pathlib.Path, triage_report: Dict[str, Any]) -> Dict[str, Any]:
     """Delegate to scripts/unpack.py dispatcher - JAVA/NATIVE + myg0N KDF brute."""
     try:
-        from unpack import java_route, native_route
+        unpack = _load_script_module("unpack")
+        java_route, native_route = unpack.java_route, unpack.native_route
         with zipfile.ZipFile(apk_path) as zf:
             names = zf.namelist()
             so_count = sum(1 for n in names if n.endswith(".so"))
         # Minimal report scaffold unpack.py expects
-        import hashlib
         raw = apk_path.read_bytes()
         report: Dict[str, Any] = {
             "apk": str(apk_path),
@@ -116,10 +134,6 @@ def _attempt_unpack(apk_path: pathlib.Path, work_dir: pathlib.Path, triage_repor
             else:
                 report["route"] = "NATIVE"
                 report = native_route(apk_path, zf, work_dir, report)
-        # Normalize: unpack returns ecode without E- prefix in some paths
-        if report.get("ecode") and not report.get("verdict") == "RECOVERED":
-            # ensure ecode is present
-            pass
         return report
     except Exception as e:
         logger.warning("MasterKey Step0: unpack dispatch failed: %s", e)
@@ -409,8 +423,18 @@ def _payload_blob(path: pathlib.Path) -> bytes:
     data = path.read_bytes()
     if data[:4] == b"dex\n":
         return data
+    # A1-20: stream members and stop at the cap instead of reading whole entries first
+    chunks, total = [], 0
     with zipfile.ZipFile(io.BytesIO(data)) as zf:
-        return b"".join(zf.read(n) for n in zf.namelist() if n.endswith(".dex") or n.endswith(".apk"))[:20_000_000]
+        for n in zf.namelist():
+            if total >= _PAYLOAD_BLOB_CAP:
+                break
+            if n.endswith(".dex") or n.endswith(".apk"):
+                with zf.open(n) as member:
+                    chunk = member.read(_PAYLOAD_BLOB_CAP - total)
+                chunks.append(chunk)
+                total += len(chunk)
+    return b"".join(chunks)
 
 
 def enrich_strings_with_recovered(strings_result: Dict[str, Any], master_key: Dict[str, Any]) -> Dict[str, Any]:
@@ -442,13 +466,21 @@ def enrich_strings_with_recovered(strings_result: Dict[str, Any], master_key: Di
         if "string_literals" not in cats:
             cats["string_literals"] = []
         # Keep as dict format pipeline expects: {"value": str}
-        existing = { (v.get("value") if isinstance(v, dict) else v) for v in cats["string_literals"] }
+        # One lowercased set, built once (was rebuilt per string). None values are skipped (audit A1-16).
+        existing_lower = {
+            str(v.get("value") if isinstance(v, dict) else v).lower()
+            for v in cats["string_literals"]
+            if (v.get("value") if isinstance(v, dict) else v) is not None
+        }
+        added = 0
         for s in decoded[:5000]:  # cap to avoid blowup
-            if s.lower() not in {e.lower() for e in existing}:
+            if s.lower() not in existing_lower:
                 cats["string_literals"].append({"value": s})
-                existing.add(s)
-        strings_result["total_strings"] = len(cats["string_literals"])
-        logger.info("MasterKey enrich: +%d strings from %d payload(s) (now %d)", len(decoded), len(blobs), strings_result["total_strings"])
+                existing_lower.add(s.lower())
+                added += 1
+        # Add to the step-2 total (which includes native and resource strings), never reset it.
+        strings_result["total_strings"] = strings_result.get("total_strings", 0) + added
+        logger.info("MasterKey enrich: +%d strings from %d payload(s) (total %d)", added, len(blobs), strings_result["total_strings"])
     except Exception as e:
         logger.warning("MasterKey enrich failed: %s", e)
     return strings_result

@@ -240,6 +240,10 @@ class APKProcessor:
             with zipfile.ZipFile(self.apk_path, 'r') as z:
                 for lib in androguard_data['native_libs']:
                     lib_path = lib['path']
+                    # Cap before reading: a hostile entry can inflate to gigabytes (B2-02).
+                    if z.getinfo(lib_path).file_size > 50_000_000:
+                        logger.warning("Skipping entropy for oversized native lib %s", lib_path)
+                        continue
                     try:
                         lib_content = z.read(lib_path)
                         entropy = self._calculate_entropy(lib_content)

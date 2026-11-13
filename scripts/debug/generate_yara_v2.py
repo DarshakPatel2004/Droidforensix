@@ -1,7 +1,27 @@
-import json, os, re, sys, collections, base64
+import collections
+import json
+import os
+import re
+import sys
 from pathlib import Path
 
-BASE_DIR = Path(__file__).resolve().parent.parent
+BASE_DIR = Path(__file__).resolve().parents[2]
+
+_used_rule_names: set = set()
+
+
+def _unique_rule_name(name: str) -> str:
+    """Truncated names can collide, which is a YARA compile error; suffix a counter instead."""
+    candidate, n = name, 2
+    while candidate in _used_rule_names:
+        candidate = f"{name}_{n}"
+        n += 1
+    _used_rule_names.add(candidate)
+    return candidate
+
+
+def _yara_escape(text: str) -> str:
+    return text.replace("\\", "\\\\").replace('"', '\\"')
 WORK_DIR = str(BASE_DIR / "analysis" / "work")
 OUTPUT = str(BASE_DIR / "analysis" / "yara_rules.yar")
 META = str(BASE_DIR / "sample_metadata.csv")
@@ -168,7 +188,7 @@ for key in sorted(xor_patterns.keys()):
     family_name = "multi-family" if len(families_set) > 1 else families_set.pop() if families_set else "unknown"
 
     hex_strings = []
-    for orig, fam, sid, ent, conf in entries[:12]:
+    for orig, _fam, _sid, _ent, _conf in entries[:12]:
         raw = orig.encode("utf-8", errors="replace")
         hex_part = raw[:16].hex()
         if len(hex_part) >= 8:
@@ -179,7 +199,7 @@ for key in sorted(xor_patterns.keys()):
         continue
 
     rule_name = "XOR_Key_%d_%s" % (key, re.sub(r'[^a-zA-Z0-9]', '_', family_name[:30]))
-    rule_name = re.sub(r'_+', '_', rule_name).strip('_')
+    rule_name = _unique_rule_name(re.sub(r'_+', '_', rule_name).strip('_'))
 
     r = []
     r.append(f"rule {rule_name} {{")
@@ -201,7 +221,7 @@ for key in sorted(xor_patterns.keys()):
 
     r.append("")
     r.append("    condition:")
-    r.append(f"        uint16(0) == {key} or any of them")
+    r.append("        any of them")  # no uint16 clause: a small-int header match hits unrelated files
     r.append("}")
     r.append("")
     rules.append("\n".join(r))
@@ -213,7 +233,7 @@ for magic, entries in sorted(payload_magic_patterns.items()):
     family_name = "multi-family" if len(families_set) > 1 else families_set.pop() if families_set else "unknown"
 
     rule_name = "Payload_Magic_%s" % re.sub(r'[^a-zA-Z0-9]', '_', magic[:20])
-    rule_name = re.sub(r'_+', '_', rule_name).strip('_')
+    rule_name = _unique_rule_name(re.sub(r'_+', '_', rule_name).strip('_'))
 
     r = []
     r.append(f"rule {rule_name} {{")
@@ -254,7 +274,7 @@ for domain in sorted(c2_domain_patterns.keys()):
 
     d_clean = domain.replace(".", "_").replace("-", "_")
     rule_name = "C2_Domain_%s" % d_clean[:30]
-    rule_name = re.sub(r'[^a-zA-Z0-9_]', '_', rule_name)
+    rule_name = _unique_rule_name(re.sub(r'[^a-zA-Z0-9_]', '_', rule_name))
 
     r = []
     r.append(f"rule {rule_name} {{")
@@ -264,11 +284,11 @@ for domain in sorted(c2_domain_patterns.keys()):
     r.append('        date = "2026-06-16"')
     r.append(f'        sample_count = "{len(samples_set)}"')
     r.append(f'        family = "{family_name}"')
-    r.append(f'        c2_domain = "{domain}"')
+    r.append(f'        c2_domain = "{_yara_escape(domain)}"')
     r.append('        confidence = "medium"')
     r.append("")
     r.append("    strings:")
-    r.append(f'        $domain = "{domain}"')
+    r.append(f'        $domain = "{_yara_escape(domain)}"')
     r.append("")
     r.append("    condition:")
     r.append("        $domain")

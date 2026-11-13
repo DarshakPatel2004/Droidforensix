@@ -5,6 +5,7 @@ import hashlib
 import logging
 import shutil
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, Optional
@@ -34,6 +35,8 @@ sample_status: Dict[str, dict] = {}
 # pipeline_timeout, default 600s) is authoritative and the worker thread keeps
 # running after this expires, so exceeding it is not a failure.
 ANALYSIS_AWAIT_TIMEOUT_S = 300
+# Dedicated pool: a burst of uploads must not start unbounded full pipelines on the default executor (B2-28).
+_ANALYSIS_EXECUTOR = ThreadPoolExecutor(max_workers=2, thread_name_prefix="analysis")
 
 # Strong references to fire-and-forget analysis tasks, so they are not
 # garbage-collected mid-flight and their exceptions stay retrievable.
@@ -88,6 +91,10 @@ def _resolve_upload_path(filename: Optional[str]) -> Path:
     """
     if not filename or not filename.strip():
         raise HTTPException(status_code=400, detail="Invalid filename: filename is empty")
+    # Separators are rejected on every OS: "/" would let "<upload_id>/file.apk" overwrite another
+    # upload's file (B2-06); "\" is a separator on Windows only.
+    if "/" in filename or "\\" in filename:
+        raise HTTPException(status_code=400, detail="Invalid filename: path separators rejected")
 
     uploads_root = Path(settings.UPLOADS_DIR).resolve()
     candidate = (uploads_root / filename).resolve()
@@ -134,14 +141,25 @@ async def api_upload_file(file: UploadFile = File(...)) -> dict:
 
     dest_path = upload_dir / "file.apk"
     sha256_hash = hashlib.sha256()
+    written = 0
     try:
         with open(dest_path, "wb") as f:
             while True:
                 chunk = await asyncio.wait_for(file.read(64 * 1024), timeout=60.0)
                 if not chunk:
                     break
+                written += len(chunk)
+                # file.size is only known after spooling, so count bytes as they arrive (audit B2-17).
+                if written > max_bytes:
+                    raise HTTPException(
+                        status_code=413,
+                        detail=f"File too large. Maximum allowed: {settings.MAX_UPLOAD_SIZE_MB}MB",
+                    )
                 f.write(chunk)
                 sha256_hash.update(chunk)
+    except HTTPException:
+        shutil.rmtree(upload_dir, ignore_errors=True)
+        raise
     except asyncio.TimeoutError as exc:
         # Partial upload: remove the directory so stalled transfers do not
         # accumulate unreferenced files on disk.
@@ -242,11 +260,14 @@ async def api_analyze_upload(upload_id: str) -> dict:
                 upload["sample_id"] = sample_id
             return result
         except Exception as e:
-            sample_status[upload_id] = {"status": "failed", "sample_id": None, "error": str(e)}
-            raise
+            # Logged here and not re-raised: the background task has no awaiter, so a
+            # re-raise only produces "Task exception was never retrieved" (B2-28).
+            logger.exception("Analysis for upload %s failed", upload_id)
+            sample_status[upload_id] = {"status": "failed", "sample_id": None, "error": str(e), "started_at": sample_status.get(upload_id, {}).get("started_at")}
+            return None
 
     async def run_analysis_async():
-        future = loop.run_in_executor(None, run_analysis)
+        future = loop.run_in_executor(_ANALYSIS_EXECUTOR, run_analysis)
         try:
             return await asyncio.wait_for(future, timeout=ANALYSIS_AWAIT_TIMEOUT_S)
         except asyncio.TimeoutError:
@@ -256,7 +277,7 @@ async def api_analyze_upload(upload_id: str) -> dict:
             logger.warning(
                 "Analysis for upload %s exceeded %.0fs and is still running in the background",
                 upload_id, ANALYSIS_AWAIT_TIMEOUT_S)
-            raise
+            return None
 
     # Keep a reference so the task is not garbage-collected mid-flight and its
     # exception is retrievable.
@@ -351,7 +372,8 @@ async def api_androguard_analysis(file: UploadFile = File(...)):
 
 @router.post("/api/log-error")
 async def log_error(payload: dict):
-    logger.warning("Client-side error: %s", payload.get("message", "No message"))
+    # Truncate and repr so client text cannot forge log lines or flood the log (B2-29).
+    logger.warning("Client-side error: %s", repr(str(payload.get("message", "No message")))[:500])
     if payload.get("stack"):
-        logger.debug("Client-side stack trace: %s", payload["stack"])
+        logger.debug("Client-side stack trace: %s", repr(str(payload["stack"]))[:4000])
     return {"ok": True}

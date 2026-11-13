@@ -28,6 +28,13 @@ os.environ["DROIDFORENSIX_TESTING"] = "1"
 # Modules that bind WORK_DIR at import time; patching settings alone is not enough.
 _MODULES_BINDING_WORK_DIR = ("backend.routers.dissection", "backend.transformers")
 
+# Module-level file paths computed from settings.WORK_DIR at import time.
+_PATHS_BINDING_WORK_DIR = (
+    ("analysis.cross_sample_index", "INDEX_PATH", "cross_sample_index.json"),
+    ("backend.censys_enrichment", "CACHE_PATH", "censys_cache.json"),
+    ("backend.threat_intel", "_ISP_CACHE_PATH", "isp_cache.json"),
+)
+
 
 @pytest.fixture(autouse=True)
 def isolate_work_dir(request, tmp_path, monkeypatch):
@@ -57,6 +64,9 @@ def isolate_work_dir(request, tmp_path, monkeypatch):
         if hasattr(module, "WORK_DIR"):
             monkeypatch.setattr(module, "WORK_DIR", work_dir)
 
+    for module_name, attr, filename in _PATHS_BINDING_WORK_DIR:
+        monkeypatch.setattr(importlib.import_module(module_name), attr, work_dir / filename)
+
     yield work_dir
 
 
@@ -70,6 +80,10 @@ _CACHES_TO_RESET = (
     ("backend.transformers", "_FAMILY_INDEX_MTIME"),
     ("backend.dissection", "_DISSECTION_CACHE"),
     ("backend.dissection", "_CLASS_OBJECTS_CACHE"),
+    # Upload registry, job status and SHA-256 dedup map (module-level dicts).
+    ("backend.routers.jobs", "upload_registry"),
+    ("backend.routers.jobs", "sample_status"),
+    ("backend.routers.jobs", "_sha256_to_upload"),
 )
 
 

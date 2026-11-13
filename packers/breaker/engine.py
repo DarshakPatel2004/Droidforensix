@@ -22,6 +22,7 @@ from pathlib import Path
 from packers.breaker.blobs import (
     E_KDF_BUDGET,
     E_KDF_EXHAUSTED,
+    MAX_MEMBER_BYTES,
     PENDING,
     PROBE_MAGICS,
     RECOVERED,
@@ -164,13 +165,17 @@ def _is_elf(data: bytes) -> bool:
 def _is_json(data: bytes) -> bool:
     if data[:1] != JSON_MAGIC:
         return False
-    try:
-        json.loads(data)
-    except Exception:
-        # ValueError covers malformed JSON, UnicodeDecodeError bad encodings, and RecursionError
-        # a deeply nested payload. None of them is a reason to abort a run.
-        return False
-    return True
+    # A block-cipher payload keeps its PKCS#7 padding, so also try the unpadded buffer.
+    pad = _pkcs7_pad_length(data)
+    for candidate in ((data, data[:-pad]) if pad else (data,)):
+        try:
+            json.loads(candidate)
+            return True
+        except Exception:
+            # ValueError covers malformed JSON, UnicodeDecodeError bad encodings, and RecursionError
+            # a deeply nested payload. None of them is a reason to abort a run.
+            continue
+    return False
 
 
 @dataclass
@@ -263,6 +268,7 @@ def break_apk(
     raw = apk_path.read_bytes()
     sha256 = hashlib.sha256(raw).hexdigest()
     collection = collect_from_zip(raw, depth=0)
+    _fold_plaintext_containers(collection, depth)
     plan = plan_from_collection(collection, extra_path=seeds_extra, max_strings=max_strings)
     budget = _Budget(attempts_cap=attempts_cap, deadline=started + budget_s)
     hits, scheme_count = _sweep(collection.blobs, plan, budget, depth, collection)
@@ -285,6 +291,34 @@ def break_apk(
     )
     _write_outputs(Path(out_dir), result, collection)
     return result
+
+
+def _fold_plaintext_containers(collection, depth: int) -> None:
+    """Make plaintext ZIP members in the APK attack-eligible, as the recursion contract promises.
+
+    Each plaintext container is read at the next depth and its members join the sweep, and its
+    plaintext feeds string mining. A container zipfile rejects keeps its SKIPPED_PLAINTEXT row,
+    with the reason added to its detail.
+    """
+    pending = [(name, data, 1) for name, data in collection.recurse]
+    rows = {record.name: record for record in collection.records}
+    while pending:
+        name, data, child_depth = pending.pop(0)
+        if child_depth >= depth:
+            continue
+        try:
+            children = collect_from_zip(data, depth=child_depth, prefix=name + "!")
+        except Exception as exc:  # zipfile raises a variety of types on hostile input
+            rows[name].detail = f"unreadable nested zip: {type(exc).__name__}"
+            continue
+        collection.members_total += children.members_total
+        collection.members_ignored_dirs += children.members_ignored_dirs
+        collection.members_out_of_scope += children.members_out_of_scope
+        collection.records.extend(children.records)
+        collection.plaintext.extend(children.plaintext)
+        collection.blobs.extend(children.blobs)
+        pending.extend((child, child_data, child_depth + 1) for child, child_data in children.recurse)
+    collection.blobs.sort(key=lambda blob: (-len(blob.data), blob.member))
 
 
 def _outcome(hits: list[Hit], budget: _Budget) -> str:
@@ -520,17 +554,20 @@ def _payload_artifacts(data: bytes) -> tuple[list[dict], int]:
         return [], 0
     try:
         with zipfile.ZipFile(io.BytesIO(data)) as archive:
-            names = [info.filename for info in archive.infolist() if not info.filename.endswith("/")]
+            infos = [info for info in archive.infolist() if not info.filename.endswith("/")]
             artifacts = []
-            for name in names[:ARTIFACT_CAP]:
+            for info in infos[:ARTIFACT_CAP]:
+                # Oversized members are left out of the listing (the total still counts them).
+                if info.file_size > MAX_MEMBER_BYTES:
+                    continue
                 try:
-                    member = archive.read(name)
+                    member = archive.read(info)
                 except Exception:
                     continue
                 artifacts.append(
-                    {"file": name, "sha256": hashlib.sha256(member).hexdigest(), "size": len(member)}
+                    {"file": info.filename, "sha256": hashlib.sha256(member).hexdigest(), "size": len(member)}
                 )
-            return artifacts, len(names)
+            return artifacts, len(infos)
     except Exception:
         return [], 0
 

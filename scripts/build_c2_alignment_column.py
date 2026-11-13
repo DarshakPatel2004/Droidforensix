@@ -39,6 +39,7 @@ Usage:
 import argparse
 import csv
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -97,10 +98,12 @@ def main() -> None:
         print("--check: not writing")
         return
 
-    with open(FEATS_CSV, "w", newline="", encoding="utf-8") as f:
+    tmp_csv = FEATS_CSV.with_suffix(".csv.tmp")  # atomic: a crash never truncates features.csv
+    with open(tmp_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=out_fields, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
+    os.replace(tmp_csv, FEATS_CSV)
     print(f"Wrote {COLUMN} -> {FEATS_CSV}")
 
 

@@ -9,7 +9,6 @@ Sources:
 
 import argparse
 import csv
-import hashlib
 import json
 import logging
 import time
@@ -60,6 +59,7 @@ def download_sslbl(output: Path):
     existing_sources.add("sslbl.abuse.ch")
 
     new_count = 0
+    parsed = 0
     try:
         req = urllib.request.Request(url, headers={"User-Agent": "DroidForensix/1.0"})
         with urllib.request.urlopen(req, timeout=60) as resp:
@@ -74,6 +74,7 @@ def download_sslbl(output: Path):
             fp = ":".join(raw_fp[i:i+2] for i in range(0, len(raw_fp), 2)).upper() if ":" not in raw_fp else raw_fp.upper()
             if len(fp) != 95:
                 continue
+            parsed += 1
             if fp not in existing_fps:
                 existing["certificates"].append({
                     "sha256_fingerprint": fp,
@@ -83,9 +84,13 @@ def download_sslbl(output: Path):
                 })
                 existing_fps.add(fp)
                 new_count += 1
+        if parsed == 0:
+            # SSLBL publishes SHA-1 fingerprints (40 hex), which the 95-char SHA-256 filter drops.
+            raise ValueError("no SHA-256 fingerprints parsed from the SSLBL feed")
         time.sleep(RATE_LIMIT_SECONDS)
     except Exception as e:
-        logger.error("SSLBL download failed: %s", e)
+        logger.error("SSLBL download failed, existing data left unchanged: %s", e)
+        return
 
     existing["sources"] = sorted(existing_sources)
     existing["last_updated"] = datetime.now().strftime("%Y-%m-%d")

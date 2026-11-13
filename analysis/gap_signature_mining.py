@@ -34,8 +34,6 @@ from collections import Counter
 from pathlib import Path
 from typing import Any, Dict, List, Set
 
-logging.disable(logging.CRITICAL)  # androguard DEBUG spam
-
 ROOT = Path(__file__).resolve().parent.parent
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
@@ -230,6 +228,13 @@ def _feature_row(sha256: str, apk_path: str) -> Dict[str, Any]:
     return f
 
 
+def _write_json_atomic(path: Path, data: Any) -> None:
+    """Write JSON to a temp file, then swap it in, so an interrupted write keeps the old cache (L9)."""
+    tmp = path.with_name(path.name + ".tmp")
+    tmp.write_text(json.dumps(data), encoding="utf-8")
+    os.replace(tmp, path)
+
+
 def extract_corpus(gt_csv: Path, cache: Path, workers: int = 8) -> Path:
     with open(gt_csv, encoding="utf-8") as f:
         rows = list(csv.DictReader(f))
@@ -237,8 +242,10 @@ def extract_corpus(gt_csv: Path, cache: Path, workers: int = 8) -> Path:
     if cache.exists():
         try:
             cache_data = json.loads(cache.read_text(encoding="utf-8"))
-        except Exception:
-            cache_data = {}
+        except json.JSONDecodeError as exc:
+            # Resetting here and then rewriting the file would destroy the resumable cache (L9).
+            logger.error("corrupt feature cache %s: %s; move it aside and rerun", cache, exc)
+            raise
     pending = [r for r in rows if r["sha256"] not in cache_data]
     print(f"feature cache: {len(cache_data)} done, {len(pending)} pending", flush=True)
     if pending:
@@ -254,9 +261,9 @@ def extract_corpus(gt_csv: Path, cache: Path, workers: int = 8) -> Path:
                 except Exception as exc:
                     cache_data[sha] = {"sha256": sha, "parse_error": str(exc)}
                 if i % 25 == 0 or i == len(pending):
-                    cache.write_text(json.dumps(cache_data), encoding="utf-8")
+                    _write_json_atomic(cache, cache_data)
                     print(f"features: {len(cache_data)}/{len(rows)}", flush=True)
-    cache.write_text(json.dumps(cache_data), encoding="utf-8")
+    _write_json_atomic(cache, cache_data)
     print(f"features written: {cache} ({len(cache_data)} samples)", flush=True)
     return cache
 
@@ -525,4 +532,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    logging.disable(logging.CRITICAL)  # M6: androguard DEBUG spam; script-only, not on import
     main()

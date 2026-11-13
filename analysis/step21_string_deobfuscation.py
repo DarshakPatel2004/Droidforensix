@@ -61,7 +61,8 @@ def dex_strings(data: bytes) -> List[str]:
         end = data.find(b"\x00", p)
         try:
             out.append(_mutf8_decode(data[p:end]))
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error decoding mutf8 string: %s", exc)
             out.append("")
     return out
 
@@ -188,8 +189,8 @@ def load_paranoid_chunks_from_bytes(dex_data: bytes) -> List[str]:
     for s in dex_strings(dex_data):
         if len(s) >= 2000 and ord(s[0]) >= 0xE000:
             rows.append(s)
-    rows.sort(key=len, reverse=True)
-    return rows[:4]
+    # DEX order is kept: chunk k covers ids [k*_CHUNK, (k+1)*_CHUNK), so sorting or capping breaks indexing (L13).
+    return rows
 
 
 # ---------------------------------------------------------------------------
@@ -250,7 +251,8 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
             continue
         try:
             key, cts = harvest_npstringfog(zf.read(dn))
-        except Exception:
+        except Exception as exc:
+            logger.warning("Suppressed error in NPStringFog harvest of %s: %s", dn, exc)
             key, cts = None, []
         if key:
             for ct in cts:
@@ -285,15 +287,11 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
         if ids:
             chunks = load_paranoid_chunks_from_bytes(zf.read(primary_dex))
             ok = {}
-            for cid in sorted(ids):
-                for chunk_set in ([chunks[0]] if chunks else []):
-                    try:
-                        s = paranoid_get_string(cid, [chunk_set])
-                        ok[str(cid)] = s
-                        break
-                    except Exception as exc:
-                        logger.warning("Suppressed error in deobfuscate_strings: %s", exc)
-                        continue
+            for cid in sorted(ids) if chunks else []:
+                try:
+                    ok[str(cid)] = paranoid_get_string(cid, chunks)
+                except Exception as exc:
+                    logger.warning("Suppressed error in deobfuscate_strings: %s", exc)
             clean = {k: v for k, v in ok.items() if v.isprintable()}
             if clean:
                 result["families"]["paranoid"] = {"decoded": clean,

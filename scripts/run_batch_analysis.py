@@ -155,6 +155,8 @@ def main():
     parser.add_argument("--shard-total", type=int, default=1,
                         help="Total number of parallel shards (default 1 = no sharding)")
     args = parser.parse_args()
+    if args.shard_total > 1 and Path(args.meta_path) == Path(__file__).parent.parent / "sample_metadata.csv":
+        parser.error("--shard-total > 1 needs its own --meta-path; shards sharing the default file overwrite each other's status")
 
     META_PATH = Path(args.meta_path)
     records = load_metadata()

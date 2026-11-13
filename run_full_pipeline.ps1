@@ -37,6 +37,6 @@ print(f'Reset {len(records)} to pending')
 
 # 4. Run pipeline
 Write-Host "[*] Running pipeline on all samples..."
-python run_pipeline_direct.py
+python scripts/run_batch_analysis.py
 
 Write-Host "[+] Pipeline complete"

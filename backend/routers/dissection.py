@@ -8,7 +8,7 @@ from typing import Dict, List, Optional
 
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from analysis.step7_llm_assessment import explain_method, summarize_dissection
 from backend.code_analysis import CodeAnalyzer
@@ -16,6 +16,7 @@ from backend.config import settings
 from backend.dissection import APKDissector, SampleAPKCache, load_dissection
 from backend.transformers import (
     load_result,
+    source_stamp,
 )
 from backend.validators import validate_sample_id
 
@@ -34,18 +35,32 @@ _dissection_cache = SampleAPKCache()
 WORK_DIR = settings.WORK_DIR
 
 
+# sample_id -> APK path, once found. Avoids walking samples/ on every class click (audit B2-15).
+_APK_PATH_MEMO: Dict[str, Path] = {}
+
+
 def _get_sample_apk_path(sample_id: str) -> Optional[Path]:
     """Find the original APK path for a sample from its work directory."""
+    memo = _APK_PATH_MEMO.get(sample_id)
+    if memo is not None and memo.exists():
+        return memo
+    found = _find_sample_apk_path(sample_id)
+    if found is not None:
+        _APK_PATH_MEMO[sample_id] = found
+    return found
+
+
+def _find_sample_apk_path(sample_id: str) -> Optional[Path]:
     result = load_result(sample_id)
     if result is None:
         return None
 
     # Prefer the exact path recorded during analysis.
-    recorded_apk = result.get("metadata", {}).get("apk_path")
+    recorded_apk = (result.get("metadata") or {}).get("apk_path")
     if recorded_apk and Path(recorded_apk).exists():
         return Path(recorded_apk)
 
-    sample_name = result.get("metadata", {}).get("sample_name")
+    sample_name = (result.get("metadata") or {}).get("sample_name")
     if not sample_name:
         return None
 
@@ -66,16 +81,8 @@ def _get_sample_apk_path(sample_id: str) -> Optional[Path]:
         if candidate.exists():
             return candidate
 
-    # Fallback: recursive search under samples/ and uploads/ (slower but thorough)
-    for base_dir in (settings.SAMPLES_DIR, settings.UPLOADS_DIR):
-        if base_dir.exists():
-            for candidate in base_dir.rglob(sample_name):
-                if candidate.is_file():
-                    return candidate
-            for candidate in base_dir.rglob("file.apk"):
-                if candidate.is_file():
-                    return candidate
-
+    # No recursive fallback: walking samples/ and uploads/ per request blocked the event loop
+    # and could return another sample's APK (audit B2-15). Unresolved means no APK to dissect.
     return None
 
 
@@ -113,7 +120,7 @@ async def _get_or_create_dissection(sample_id: str, refresh: bool = False) -> di
         raise HTTPException(status_code=404, detail="APK file not found for sample")
 
     def _build() -> dict:
-        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
+        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache, sample_id=sample_id)
         data = dissector.dissect()
         # Cache for future requests
         dissection_path = WORK_DIR / sample_id / "dissection.json"
@@ -217,7 +224,7 @@ async def api_get_dissection_classes(
                 logger.debug("Failed to remove classes cache: %s", ex)
 
     try:
-        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
+        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache, sample_id=sample_id)
         loop = asyncio.get_event_loop()
         all_classes = await loop.run_in_executor(None, lambda: dissector.list_decompiled_class_objects(refresh=refresh))
 
@@ -263,7 +270,7 @@ async def api_get_class_methods(sample_id: str, class_name: str, refresh: bool =
 
     try:
         from backend.dissection import get_class_methods_lite
-        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
+        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache, sample_id=sample_id)
         loop = asyncio.get_event_loop()
         all_classes = await loop.run_in_executor(None, lambda: dissector.list_decompiled_class_objects(refresh=refresh))
 
@@ -292,7 +299,7 @@ async def api_get_class_code(sample_id: str, class_name: str, refresh: bool = Qu
         _dissection_cache.invalidate(sample_id)
 
     try:
-        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
+        dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache, sample_id=sample_id)
         # read_class_source re-parses DEX via Androguard (seconds per class on a
         # multi-dex APK) and must not run on the event loop.
         loop = asyncio.get_event_loop()
@@ -338,10 +345,11 @@ async def api_get_dissection_strings(sample_id: str):
 
 
 class ExplainMethodRequest(BaseModel):
-    class_name: str
-    method_name: str
-    method_code: str
-    flags: Optional[List[str]] = None
+    # Bounded: these go straight into a paid or local LLM prompt (audit B2-16).
+    class_name: str = Field(max_length=512)
+    method_name: str = Field(max_length=256)
+    method_code: str = Field(max_length=32_000)
+    flags: Optional[List[str]] = Field(default=None, max_length=50)
 
 
 # ---------------------------------------------------------------------------
@@ -481,10 +489,14 @@ async def api_get_dissection_summary(sample_id: str, refresh: bool = Query(False
 
     # Check for cached summary (unless refresh requested)
     summary_path = WORK_DIR / sample_id / "dissection_summary.json"
+    # Invalidate when the pipeline result or the family knowledge base changes (audit B2-21).
+    stamp = source_stamp(sample_id)
     if not refresh and summary_path.exists():
         try:
             with open(summary_path, "r", encoding="utf-8") as f:
-                return json.load(f)
+                cached = json.load(f)
+            if cached.get("source_stamp") == stamp:
+                return cached
         except Exception:
             logger.debug("Failed to load cached summary, regenerating")
 
@@ -499,7 +511,7 @@ async def api_get_dissection_summary(sample_id: str, refresh: bool = Query(False
     class_objects = None
     if apk_path is not None:
         try:
-            dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache)
+            dissector = APKDissector(str(apk_path), work_dir=str(WORK_DIR), cache=_dissection_cache, sample_id=sample_id)
             loop = asyncio.get_event_loop()
             class_objects = await loop.run_in_executor(None, dissector.list_decompiled_class_objects)
         except Exception:
@@ -523,12 +535,14 @@ async def api_get_dissection_summary(sample_id: str, refresh: bool = Query(False
             "status": "error",
         }
 
-    # Cache the summary
-    try:
-        summary_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(summary_path, "w", encoding="utf-8") as f:
-            json.dump(summary, f, indent=2, default=str)
-    except Exception:
-        logger.debug("Failed to cache summary to disk")
+    # Cache successful summaries only: a failed LLM call must not be served from disk forever (audit B2-12).
+    if summary.get("status") != "error":
+        summary["source_stamp"] = stamp
+        try:
+            summary_path.parent.mkdir(parents=True, exist_ok=True)
+            with open(summary_path, "w", encoding="utf-8") as f:
+                json.dump(summary, f, indent=2, default=str)
+        except Exception:
+            logger.warning("Failed to cache dissection summary for %s", sample_id)
 
     return summary

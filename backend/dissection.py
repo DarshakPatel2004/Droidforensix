@@ -10,9 +10,11 @@ import json
 import logging
 import math
 import os
+import re
 import threading
 import time
 import zipfile
+from collections import Counter, OrderedDict
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -20,10 +22,14 @@ from androguard.core.apk import APK
 from androguard.core.dex import DEX
 from lxml import etree
 
+from backend.cache_utils import store_timed
 from backend.config import settings
 from backend.elf_analyzer import ELFBreaker
 
 logger = logging.getLogger(__name__)
+
+# Same cap as analysis/step8_obfuscation_analysis.py: larger native libs are not analysed.
+ELF_ANALYSIS_MAX_BYTES = 1_000_000
 
 
 def _iter_instructions(code: Any):
@@ -49,6 +55,7 @@ _CLASS_OBJECTS_TTL = 300  # 5 minutes
 # In-memory dissection.json cache (avoids re-reading 2.7MB JSON per endpoint call)
 _DISSECTION_CACHE: Dict[str, Tuple[Dict[str, Any], float]] = {}
 _DISSECTION_TTL = 300  # 5 minutes
+_TIMED_CACHE_MAX_ENTRIES = 32  # expired and overflowing entries are evicted on insert (audit B2-23)
 
 # Android namespace used in binary XML manifests
 ANDROID_NS = "{http://schemas.android.com/apk/res/android}"
@@ -121,9 +128,7 @@ def _shannon_entropy(data: bytes) -> float:
     if not data:
         return 0.0
     length = len(data)
-    freq = {}
-    for byte in data:
-        freq[byte] = freq.get(byte, 0) + 1
+    freq = Counter(data)  # C-level counting; the per-byte dict loop was slow on multidex APKs (audit B2-14)
     entropy = 0.0
     for count in freq.values():
         p = count / length
@@ -138,16 +143,32 @@ class SampleAPKCache:
     Also caches the SHA-256 hash so it's computed once.
     """
 
+    # Bounded: each entry holds a whole APK in memory (audit B2-09).
+    MAX_ENTRIES = 8
+
     def __init__(self):
-        self._cache: Dict[str, Tuple[APK, str]] = {}
+        self._cache: "OrderedDict[str, Tuple[APK, str]]" = OrderedDict()
         self._lock = threading.RLock()
+        self._sample_locks: Dict[str, threading.Lock] = {}
 
     def get_or_parse(self, sample_id: str, apk_path: str) -> Tuple[APK, str]:
-        """Return cached (APK, sha256) or parse and cache."""
+        """Return cached (APK, sha256) or parse and cache.
+
+        The parse runs under a per-sample lock, not the global one, so one slow APK does not
+        serialise every other sample's requests.
+        """
         with self._lock:
             entry = self._cache.get(sample_id)
             if entry is not None:
+                self._cache.move_to_end(sample_id)
                 return entry
+            sample_lock = self._sample_locks.setdefault(sample_id, threading.Lock())
+
+        with sample_lock:
+            with self._lock:
+                entry = self._cache.get(sample_id)
+                if entry is not None:
+                    return entry
 
             start = time.perf_counter()
             apk = APK(apk_path)
@@ -155,7 +176,11 @@ class SampleAPKCache:
             logger.info(f"APK parse: {elapsed:.3f}s for sample={sample_id[:12]} ({Path(apk_path).stat().st_size / 1e6:.1f}MB)")
 
             sha256 = self._compute_sha256(apk_path)
-            self._cache[sample_id] = (apk, sha256)
+            with self._lock:
+                self._cache[sample_id] = (apk, sha256)
+                self._cache.move_to_end(sample_id)
+                while len(self._cache) > self.MAX_ENTRIES:
+                    self._cache.popitem(last=False)
             return apk, sha256
 
     def invalidate(self, sample_id: str) -> None:
@@ -176,12 +201,18 @@ class SampleAPKCache:
 class APKDissector:
     """Fast APK structural dissection."""
 
-    def __init__(self, apk_path: str, work_dir: str = None, cache: Optional[SampleAPKCache] = None):
+    def __init__(self, apk_path: str, work_dir: str = None, cache: Optional[SampleAPKCache] = None,
+                 sample_id: Optional[str] = None):
         self.apk_path = Path(apk_path)
         self.work_dir = Path(work_dir) if work_dir else settings.WORK_DIR
         self._cache = cache or SampleAPKCache()
+        self._class_index: Optional[Dict[str, Any]] = None  # built once; see _dex_class_index
+        # A route already validated sample_id (= APK SHA-256). Reusing it avoids re-hashing the APK
+        # on every request (audit B2-10). Anything else (e.g. an upload id) is hashed as before.
         self._apk: Optional[APK] = None
         self._sample_id_cache: Optional[str] = None
+        if sample_id and re.fullmatch(r"[0-9a-f]{64}", sample_id):
+            self._sample_id_cache = sample_id
 
     def _get_apk(self) -> APK:
         sample_id = self._sample_id_from_apk()
@@ -221,7 +252,7 @@ class APKDissector:
         """Return parsed AndroidManifest.xml fields."""
         apk = self._get_apk()
         manifest = apk.get_android_manifest_xml()
-        app = manifest.find("application")
+        app = manifest.find("application") if manifest is not None else None
         app_attrs = {}
         if app is not None:
             for key, value in app.attrib.items():
@@ -355,7 +386,6 @@ class APKDissector:
         libs = []
         with zipfile.ZipFile(self.apk_path, "r") as zf:
             zip_info = {info.filename: info for info in zf.infolist()}
-            content_cache = {}
             for file_name in apk.get_files():
                 if not file_name.endswith(".so"):
                     continue
@@ -370,11 +400,16 @@ class APKDissector:
                     "crc32": f"{info.CRC & 0xFFFFFFFF:08x}" if info else None,
                 }
 
+                # Size cap before reading: ELFBreaker's brute force is too slow on big libs,
+                # and a hostile entry can inflate to gigabytes (B2-01, B2-02).
+                if info is not None and info.file_size > ELF_ANALYSIS_MAX_BYTES:
+                    entry["elf_analysis_skipped"] = f"larger than {ELF_ANALYSIS_MAX_BYTES} bytes"
+                    libs.append(entry)
+                    continue
+
                 # Run full ELF break down
                 try:
-                    if file_name not in content_cache:
-                        content_cache[file_name] = zf.read(file_name)
-                    content = content_cache[file_name]
+                    content = zf.read(file_name)
                     if content:
                         breaker = ELFBreaker(entry["name"], content)
                         analysis = breaker.analyze()
@@ -508,7 +543,7 @@ class APKDissector:
                     continue
             return sorted(classes)
         except Exception:
-            logger.debug("Androguard class listing failed, returning empty")
+            logger.warning("Androguard class listing failed", exc_info=True)
             return []
 
     def list_decompiled_class_objects(self, refresh: bool = False) -> List[Dict[str, Any]]:
@@ -533,12 +568,15 @@ class APKDissector:
             try:
                 with open(cache_path, "r", encoding="utf-8") as f:
                     data = json.load(f)
-                _CLASS_OBJECTS_CACHE[sample_id] = (data, now)
+                store_timed(_CLASS_OBJECTS_CACHE, sample_id, data, now, _CLASS_OBJECTS_TTL, _TIMED_CACHE_MAX_ENTRIES)
                 return data
             except Exception:
                 logger.debug("Class cache corrupt, rebuilding")
 
-        result = self._list_class_objects_from_androguard()
+        try:
+            result = self._list_class_objects_from_androguard()
+        except Exception:
+            return []  # not cached: the next request retries the parse
 
         # Atomic write cache with per-sample lock
         with _class_cache_locks_lock:
@@ -556,7 +594,7 @@ class APKDissector:
             except Exception:
                 logger.debug("Cache write failed (non-fatal)")
 
-        _CLASS_OBJECTS_CACHE[sample_id] = (result, now)
+        store_timed(_CLASS_OBJECTS_CACHE, sample_id, result, now, _CLASS_OBJECTS_TTL, _TIMED_CACHE_MAX_ENTRIES)
         return result
 
     def _list_class_objects_from_androguard(self) -> List[Dict[str, Any]]:
@@ -600,60 +638,70 @@ class APKDissector:
                 except Exception:
                     logger.debug("Skipping DEX class in androguard")
                     continue
-        except Exception:
-            logger.debug("Androguard class object extraction failed entirely")
+        except Exception as exc:
+            # Raised, not returned: a failed parse must not be cached as an empty class list (audit B2-11).
+            logger.warning("Androguard class object extraction failed: %s", exc)
+            raise
         return sorted(classes, key=lambda x: x["name"])
 
     def read_class_source(self, class_name: str) -> Optional[str]:
         """Read class source as disassembled DEX instructions via Androguard."""
         return self._disassemble_class_from_androguard(class_name)
 
+    def _dex_class_index(self) -> Dict[str, Any]:
+        """Map class name -> androguard ClassDef. Each DEX is parsed once per dissector (audit B2-04)."""
+        if self._class_index is None:
+            index: Dict[str, Any] = {}
+            for dex_data in self._get_apk().get_all_dex():
+                try:
+                    dex = DEX(dex_data)
+                except Exception:
+                    logger.debug("Failed to parse a DEX while indexing classes")
+                    continue
+                for cls in dex.get_classes():
+                    index.setdefault(cls.get_name(), cls)
+            self._class_index = index
+        return self._class_index
+
     def _disassemble_class_from_androguard(self, class_name: str) -> Optional[str]:
         """Disassemble a class from DEX using Androguard and return a text representation."""
         try:
-            apk = self._get_apk()
+            index = self._dex_class_index()
             targets = [
                 "L" + class_name.replace(".", "/") + ";",
                 class_name,
                 class_name.replace(".", "/"),
             ]
-            for dex_data in apk.get_all_dex():
-                try:
-                    dex = DEX(dex_data)
-                    for cls in dex.get_classes():
-                        cls_raw = cls.get_name()
-                        if cls_raw in targets:
-                            output = [
-                                "// Disassembled DEX Class via Androguard",
-                                f"class {class_name} {{",
-                                ""
-                            ]
-                            for method in cls.get_methods():
-                                access_flags = method.get_access_flags()
-                                flags = []
-                                if access_flags & 0x1: flags.append("public")
-                                if access_flags & 0x2: flags.append("private")
-                                if access_flags & 0x4: flags.append("protected")
-                                if access_flags & 0x8: flags.append("static")
-                                if access_flags & 0x10: flags.append("final")
-                                if access_flags & 0x100: flags.append("native")
-                                
-                                flag_str = " ".join(flags) + " " if flags else ""
-                                output.append(f"    {flag_str}{method.get_name()}{method.get_descriptor()} {{")
-                                
-                                code = method.get_code()
-                                if code:
-                                    for ins in _iter_instructions(code):
-                                        output.append(f"        {ins.get_name():<15} {ins.get_output()}")
-                                else:
-                                    output.append("        // No code body (abstract/native/empty)")
-                                output.append("    }")
-                                output.append("")
-                            output.append("}")
-                            return "\n".join(output)
-                except Exception:
-                    logger.debug("Failed to disassemble DEX for class %s", class_name)
-                    continue
+            cls = next((index[t] for t in targets if t in index), None)
+            if cls is not None:
+                output = [
+                    "// Disassembled DEX Class via Androguard",
+                    f"class {class_name} {{",
+                    "",
+                ]
+                for method in cls.get_methods():
+                    access_flags = method.get_access_flags()
+                    flags = []
+                    if access_flags & 0x1: flags.append("public")
+                    if access_flags & 0x2: flags.append("private")
+                    if access_flags & 0x4: flags.append("protected")
+                    if access_flags & 0x8: flags.append("static")
+                    if access_flags & 0x10: flags.append("final")
+                    if access_flags & 0x100: flags.append("native")
+
+                    flag_str = " ".join(flags) + " " if flags else ""
+                    output.append(f"    {flag_str}{method.get_name()}{method.get_descriptor()} {{")
+
+                    code = method.get_code()
+                    if code:
+                        for ins in _iter_instructions(code):
+                            output.append(f"        {ins.get_name():<15} {ins.get_output()}")
+                    else:
+                        output.append("        // No code body (abstract/native/empty)")
+                    output.append("    }")
+                    output.append("")
+                output.append("}")
+                return "\n".join(output)
         except Exception:
             logger.debug("Androguard disassemble failed for class %s", class_name)
         logger.warning("Androguard: class '%s' not found in DEX (listed but source unavailable)", class_name)
@@ -710,7 +758,7 @@ def load_dissection(work_dir: str, sample_id: str) -> Optional[Dict[str, Any]]:
     try:
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
-        _DISSECTION_CACHE[sample_id] = (data, now)
+        store_timed(_DISSECTION_CACHE, sample_id, data, now, _DISSECTION_TTL, _TIMED_CACHE_MAX_ENTRIES)
         return data
     except Exception:
         logger.debug("Failed to load dissection.json for %s", sample_id)

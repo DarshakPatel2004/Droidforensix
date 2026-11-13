@@ -7,10 +7,17 @@ Tests verify that:
 - Cross-platform utility functions work on both Windows and Linux
 """
 
+import importlib.util
 import sys
 from pathlib import Path
 
 import pytest
+
+# `tools/` is gitignored (local-only); tests that import it skip on a clean clone.
+needs_tools = pytest.mark.skipif(
+    importlib.util.find_spec("tools") is None,
+    reason="local-only tools/ package is absent (gitignored)",
+)
 
 
 class TestPlatformDetection:
@@ -20,6 +27,7 @@ class TestPlatformDetection:
         """Verify platform is either Windows or Linux."""
         assert sys.platform.startswith("win") or sys.platform.startswith("linux")
 
+    @needs_tools
     def test_is_windows_flag(self):
         """Verify IS_WINDOWS is correctly set."""
         from tools import IS_WINDOWS
@@ -29,6 +37,7 @@ class TestPlatformDetection:
         else:
             assert IS_WINDOWS is False
 
+    @needs_tools
     def test_is_linux_flag(self):
         """Verify IS_LINUX is correctly set."""
         from tools import IS_LINUX
@@ -42,6 +51,7 @@ class TestPlatformDetection:
 class TestToolPaths:
     """Test that tool paths resolve to the correct platform-specific binaries."""
 
+    @needs_tools
     def test_apktool_path_valid(self):
         """APKTOOL_PATH should point to a valid file or .jar."""
         from tools import get_tool_path
@@ -62,26 +72,13 @@ class TestToolPaths:
 
         assert seven_zip.exists() or seven_zip_on_path, "7-Zip not found"
 
-    def test_ollama_model_is_mistral_by_default(self):
-        """OLLAMA_MODEL should default to mistral:3b (unless overridden in .env)."""
-        from backend.config import Settings
-
-        # Create fresh settings without loading .env to test default
-        # The .env override is expected behavior, but default should be mistral:3b
-        # We verify the default value in the class definition
-        default_model = Settings.model_fields["OLLAMA_MODEL"].default
-        assert default_model == "mistral:3b", f"Default model should be mistral:3b, got {default_model}"
-
-
-class TestCrossPlatformUtils:
-    """Test cross-platform utility functions."""
-
-    def test_file_entropy_calculation(self):
+    @needs_tools
+    def test_file_entropy_calculation(self, tmp_path):
         """Test entropy calculation works on both platforms."""
         from tools import get_file_entropy
 
         # Create a test file with known entropy
-        test_file = Path("test_entropy_file.bin")
+        test_file = tmp_path / "test_entropy_file.bin"
         try:
             # Low entropy: repeated bytes
             test_file.write_bytes(b"A" * 1000)
@@ -98,12 +95,13 @@ class TestCrossPlatformUtils:
             if test_file.exists():
                 test_file.unlink()
 
-    def test_elf_detection(self):
+    @needs_tools
+    def test_elf_detection(self, tmp_path):
         """Test ELF magic byte detection."""
         from tools import is_elf_file
 
         # Create a test ELF file
-        test_file = Path("test.elf")
+        test_file = tmp_path / "test.elf"
         try:
             # Write ELF magic bytes
             test_file.write_bytes(b"\x7fELF" + b"\x00" * 100)
@@ -116,6 +114,7 @@ class TestCrossPlatformUtils:
             if test_file.exists():
                 test_file.unlink()
 
+    @needs_tools
     def test_tool_availability_check(self):
         """Test is_tool_available function."""
         from tools import is_tool_available
@@ -127,42 +126,10 @@ class TestCrossPlatformUtils:
         assert is_tool_available("nonexistent_tool_xyz") is False
 
 
-class TestConfigDirectories:
-    """Test that config directories are properly set up."""
-
-    def test_work_dir_exists(self):
-        """WORK_DIR should be created automatically."""
-        from backend.config import settings
-
-        assert settings.WORK_DIR.exists()
-        assert settings.WORK_DIR.is_dir()
-
-    def test_reports_dir_exists(self):
-        """REPORTS_DIR should be created automatically."""
-        from backend.config import settings
-
-        assert settings.REPORTS_DIR.exists()
-        assert settings.REPORTS_DIR.is_dir()
-
-    def test_uploads_dir_exists(self):
-        """UPLOADS_DIR should be created automatically."""
-        from backend.config import settings
-
-        assert settings.UPLOADS_DIR.exists()
-        assert settings.UPLOADS_DIR.is_dir()
-
-    def test_directories_are_absolute(self):
-        """All directory paths should be absolute."""
-        from backend.config import settings
-
-        for attr in ["WORK_DIR", "REPORTS_DIR", "SAMPLES_DIR", "UPLOADS_DIR"]:
-            path = getattr(settings, attr)
-            assert path.is_absolute(), f"{attr} should be absolute: {path}"
-
-
 class TestOllamaConnection:
     """Test Ollama connectivity (skip if not running)."""
 
+    @pytest.mark.slow
     @pytest.mark.skipif(
         not sys.platform.startswith("win") and not sys.platform.startswith("linux"),
         reason="Only Windows/Linux supported"

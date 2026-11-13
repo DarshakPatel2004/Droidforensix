@@ -10,33 +10,19 @@ Example:
 """
 
 import csv
-import hashlib
 import os
 import sys
 import time
 from pathlib import Path
 
 import requests
+from download_common import safe_error, sanitize_filename, sha256_file
 
 ANDROZOO_API = "https://androzoo.uni.lu/api/download"
 SAMPLES_DIR = Path(__file__).parent.parent / "samples"
 META_PATH = Path(__file__).parent.parent / "sample_metadata.csv"
 REQUEST_TIMEOUT = 120
 RATE_LIMIT = 1  # seconds between downloads
-
-
-def sha256_file(path: str) -> str:
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def sanitize_filename(name: str) -> str:
-    """Make a string safe to use in a filename."""
-    safe = "".join(c if c.isalnum() or c in "._-" else "_" for c in name)
-    return safe.strip("._") or "unknown"
 
 
 def load_metadata():
@@ -76,7 +62,7 @@ def download_apk(sha256_hash: str, dest: Path) -> bool:
                         f.write(chunk)
         return True
     except Exception as e:
-        print(f"  [!] Download error for {sha256_hash}: {e}")
+        print(f"  [!] Download error for {sha256_hash}: {safe_error(e, api_key)}")
         return False
 
 
@@ -134,7 +120,7 @@ def main():
         if download_apk(sha256_hash, dest):
             actual_sha = sha256_file(str(dest))
             if actual_sha != sha256_hash:
-                print(f"  [!] Hash mismatch, deleting")
+                print("  [!] Hash mismatch, deleting")
                 dest.unlink(missing_ok=True)
                 failed += 1
                 continue

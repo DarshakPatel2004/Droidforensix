@@ -1,3 +1,5 @@
+import hashlib
+import json
 import shutil
 from pathlib import Path
 
@@ -12,6 +14,23 @@ from backend.main import app
 @pytest.fixture
 def client():
     return TestClient(app)
+
+
+@pytest.fixture
+def analyzed_sample(client, tmp_path):
+    """Write a synthetic analysed sample into the (tmp) WORK_DIR and return its id."""
+    sample_id = hashlib.sha256(b"synthetic-backend-sample").hexdigest()
+    sample_dir = settings.WORK_DIR / sample_id
+    sample_dir.mkdir(parents=True, exist_ok=True)
+    result = {
+        "sample_id": sample_id,
+        "metadata": {"sample_name": "synthetic.apk", "package_name": "com.example.synthetic"},
+        "family_identification": {"family": "SyntheticFamily"},
+        "llm_assessment": {"threat_level": "low"},
+        "threat_chains": [],
+    }
+    (sample_dir / "pipeline_result.json").write_text(json.dumps(result), encoding="utf-8")
+    return sample_id
 
 
 @pytest.fixture(scope="module")
@@ -49,14 +68,8 @@ def test_api_samples(client):
         assert "risk_score" in data["samples"][0]
 
 
-# Reads previously-analysed samples from the real WORK_DIR, so the
-# conftest isolation fixture must not redirect it.
-@pytest.mark.use_real_work_dir
-def test_api_sample_detail(client):
-    samples = client.get("/api/samples").json()["samples"]
-    if not samples:
-        pytest.skip("No analyzed samples available")
-    sample_id = samples[0]["id"]
+def test_api_sample_detail(client, analyzed_sample):
+    sample_id = analyzed_sample
     response = client.get(f"/api/sample/{sample_id}")
     assert response.status_code == 200
     data = response.json()
@@ -65,14 +78,8 @@ def test_api_sample_detail(client):
     assert "threat_chains" in data
 
 
-# Reads previously-analysed samples from the real WORK_DIR, so the
-# conftest isolation fixture must not redirect it.
-@pytest.mark.use_real_work_dir
-def test_api_graph(client):
-    samples = client.get("/api/samples").json()["samples"]
-    if not samples:
-        pytest.skip("No analyzed samples available")
-    sample_id = samples[0]["id"]
+def test_api_graph(client, analyzed_sample):
+    sample_id = analyzed_sample
     response = client.get(f"/api/graph/{sample_id}")
     assert response.status_code == 200
     data = response.json()
@@ -81,10 +88,7 @@ def test_api_graph(client):
     assert data["total_nodes"] >= 1
 
 
-# Reads previously-analysed samples from the real WORK_DIR, so the
-# conftest isolation fixture must not redirect it.
-@pytest.mark.use_real_work_dir
-def test_api_clusters(client):
+def test_api_clusters(client, analyzed_sample):
     response = client.get("/api/clusters")
     assert response.status_code == 200
     data = response.json()
@@ -97,14 +101,8 @@ def test_api_clusters(client):
         assert "z" in sample
 
 
-# Reads previously-analysed samples from the real WORK_DIR, so the
-# conftest isolation fixture must not redirect it.
-@pytest.mark.use_real_work_dir
-def test_api_timeline(client):
-    samples = client.get("/api/samples").json()["samples"]
-    if not samples:
-        pytest.skip("No analyzed samples available")
-    sample_id = samples[0]["id"]
+def test_api_timeline(client, analyzed_sample):
+    sample_id = analyzed_sample
     response = client.get(f"/api/timeline/{sample_id}")
     assert response.status_code == 200
     data = response.json()
@@ -155,30 +153,19 @@ def test_api_upload_and_status(client, test_apk_path):
     assert response.status_code == 404  # not analyzed yet
 
 
-# Reads previously-analysed samples from the real WORK_DIR, so the
-# conftest isolation fixture must not redirect it.
-@pytest.mark.use_real_work_dir
-def test_api_graph_node_ids_are_deterministic(client):
+def test_api_graph_node_ids_are_deterministic(client, analyzed_sample):
     """Graph endpoint should return stable node IDs across calls."""
-    samples = client.get("/api/samples").json()["samples"]
-    if not samples:
-        pytest.skip("No analyzed samples available")
-    sample_id = samples[0]["id"]
+    sample_id = analyzed_sample
     resp1 = client.get(f"/api/graph/{sample_id}").json()
     resp2 = client.get(f"/api/graph/{sample_id}").json()
     assert resp1["total_nodes"] == resp2["total_nodes"]
     assert [n["id"] for n in resp1["nodes"]] == [n["id"] for n in resp2["nodes"]]
 
 
-# Reads previously-analysed samples from the real WORK_DIR, so the
-# conftest isolation fixture must not redirect it.
-@pytest.mark.use_real_work_dir
-def test_api_dissection_caches_on_demand(client):
+@pytest.mark.skip(reason="needs the original APK on disk to regenerate dissection.json; no committed APK fixture")
+def test_api_dissection_caches_on_demand(client, analyzed_sample):
     """Dissection endpoint should generate and cache dissection.json if missing."""
-    samples = client.get("/api/samples").json()["samples"]
-    if not samples:
-        pytest.skip("No analyzed samples available")
-    sample_id = samples[0]["id"]
+    sample_id = analyzed_sample
     dissection_path = settings.WORK_DIR / sample_id / "dissection.json"
     if dissection_path.exists():
         dissection_path.unlink()

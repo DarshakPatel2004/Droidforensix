@@ -30,13 +30,25 @@ from backend.elf_analyzer import ELFBreaker
 
 logger = logging.getLogger(__name__)
 
+# Zip-bomb guard: the declared size is checked before decompressing (audit A1-20, B2-02).
+MAX_ZIP_ENTRY_BYTES = 100 * 1024 * 1024
+
+
+def _read_capped(z: zipfile.ZipFile, name: str) -> Optional[bytes]:
+    """Read a zip entry, or return None if its declared size exceeds MAX_ZIP_ENTRY_BYTES."""
+    if z.getinfo(name).file_size > MAX_ZIP_ENTRY_BYTES:
+        logger.warning("Skipping oversized zip entry %s", name)
+        return None
+    return z.read(name)
+
 # Suppress verbose Androguard logging
 logging.getLogger("androguard").setLevel(logging.WARNING)
 try:
-    import loguru
-    loguru.logger.remove()
+    # Scoped: silence only androguard's loguru records. logger.remove() would drop every sink in the process (A1-45).
+    from loguru import logger as loguru_logger
+    loguru_logger.disable("androguard")
 except Exception:
-    logger.debug("Loguru not available, skipping log removal")
+    logger.debug("Loguru not available, skipping androguard log silencing")
 
 
 class ObfuscationAnalysisError(Exception):
@@ -144,6 +156,7 @@ PERMISSION_BEHAVIOR_GROUPS = {
         "boost": 20,
         "description": "Device admin abuse (persistence/control)",
     },
+    # INTERNET is a normal permission, so it is matched from all_permissions, not dangerous_permissions (A1-32).
     "exfiltration": {
         "permissions": {"SEND_SMS", "READ_CONTACTS", "INTERNET"},
         "boost": 30,
@@ -273,16 +286,22 @@ def analyze_assets(apk_path: Path) -> Dict[str, Any]:
                 # Skip directories
                 if name.endswith('/'):
                     continue
+                # A1-20: only read the entries this function uses (res/ and others are never decompressed)
+                is_dex = name.startswith('classes') and name.endswith('.dex')
+                if not (is_dex or name.startswith('assets/') or name.endswith('.so')):
+                    continue
 
                 try:
-                    data = z.read(name)
+                    data = _read_capped(z, name)
                 except RuntimeError:
                     # Skip encrypted entries (password-protected ZIP)
                     continue
+                if data is None:
+                    continue  # oversized: skipped by _read_capped
                 file_size = len(data)
 
                 # Track DEX files
-                if name.startswith('classes') and name.endswith('.dex'):
+                if is_dex:
                     ent = shannon_entropy(data) if data else 0.0
                     result["dex_files"].append({
                         "file": name,
@@ -371,7 +390,9 @@ def dex_entropy_from_apk(apk_path: Path) -> List[Dict[str, Any]]:
         with zipfile.ZipFile(apk_path, 'r') as z:
             for name in z.namelist():
                 if name.startswith('classes') and name.endswith('.dex'):
-                    data = z.read(name)
+                    data = _read_capped(z, name)
+                    if data is None:
+                        continue  # oversized: skipped by _read_capped
                     entropy = shannon_entropy(data)
                     results.append({
                         "file": name,
@@ -397,7 +418,7 @@ def extract_native_strings(apk_path: Path) -> List[Dict[str, Any]]:
                 if not name.endswith('.so'):
                     continue
                 try:
-                    data = z.read(name)
+                    data = _read_capped(z, name)
                     if not data:
                         continue
 
@@ -481,7 +502,7 @@ def analyze_native_libraries(apk_path: Path) -> Dict[str, Any]:
                     continue
                 output["summary"]["total_so"] += 1
                 try:
-                    data = z.read(name)
+                    data = _read_capped(z, name)
                     if not data:
                         continue
 
@@ -559,9 +580,10 @@ def analyze_with_androguard(apk_path: Path) -> Dict[str, Any]:
 
     # Permissions
     perms = a.get_permissions() if hasattr(a, 'get_permissions') else []
+    indicators["all_permissions"] = [_perm_short_name(p) for p in perms]
     for perm in perms:
         for dangerous in DANGEROUS_PERMISSIONS:
-            if dangerous in perm:
+            if dangerous == perm.rsplit('.', 1)[-1]:  # exact short name (A1-45)
                 indicators["dangerous_permissions"].append(perm)
                 break
 
@@ -676,7 +698,7 @@ def calculate_obfuscation_score(indicators: Dict[str, Any], dex_entropy: List[Di
     # permissions but never calling the corresponding APIs — distinguishes malware
     # that collects permissions "just in case" from legitimate apps that actually use them.
     dangerous_perms = indicators.get("dangerous_permissions", [])
-    matched_groups = _match_behavior_groups(dangerous_perms)
+    matched_groups = _match_behavior_groups(indicators.get("all_permissions") or dangerous_perms)
     if matched_groups:
         indicators["permission_behaviors"] = matched_groups
         code_signals = (
@@ -799,10 +821,11 @@ def analyze_obfuscation(apk_path: str, work_dir: Optional[str] = None, sample_id
         return {
             "sample_id": sample_id or Path(apk_path).stem,
             "obfuscation_score": 0.0,
-            "obfuscation_level": "low",
+            "obfuscation_level": "unknown",
             "indicators": {},
             "dex_entropy": [],
             "native_library_artifacts": [],
+            "timed_out": True,  # downstream must treat this as unknown, not as clean
             "notes": ["Step 8 timed out after 180s - analysis skipped"],
         }
 

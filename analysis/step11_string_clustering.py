@@ -47,6 +47,9 @@ def classify_obfuscation_type(s: str) -> str:
     return "plaintext"
 
 
+MAX_CLUSTER_CANDIDATES = 2000
+
+
 def cluster_high_entropy_strings(
     strings: List[str],
     entropy_threshold: float = 5.5,
@@ -68,19 +71,21 @@ def cluster_high_entropy_strings(
                 "type": classify_obfuscation_type(s),
             })
 
+    # shortcut: pairwise clustering is O(n^2) and runs on the first 2000 high-entropy strings only, upgrade to length/charset bucketing if large APKs need full clusters (L3)
+    candidates = high_entropy[:MAX_CLUSTER_CANDIDATES]
     clusters = []
     assigned = set()
-    for i, a in enumerate(high_entropy):
+    for i, a in enumerate(candidates):
         if i in assigned:
             continue
-        cluster = [high_entropy[i]]
+        cluster = [candidates[i]]
         assigned.add(i)
-        for j, b in enumerate(high_entropy):
+        for j, b in enumerate(candidates):
             if j in assigned:
                 continue
             sim = string_similarity(a["value"], b["value"])
             if sim >= similarity_threshold:
-                cluster.append(high_entropy[j])
+                cluster.append(candidates[j])
                 assigned.add(j)
         if len(cluster) > 1:
             clusters.append({

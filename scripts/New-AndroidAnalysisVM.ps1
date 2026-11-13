@@ -9,6 +9,8 @@ param(
     [string]$IsoPath = "$env:USERPROFILE\Downloads\android-x86_64-9.0-r2.iso",
 
     [Parameter(Mandatory = $false)]
+    [string]$IsoSha256 = "",
+    [Parameter(Mandatory = $false)]
     [string]$IsoUrl = "https://sourceforge.net/projects/android-x86/files/Release%209.0/android-x86_64-9.0-r2.iso/download",
 
     [Parameter(Mandatory = $false)]
@@ -70,27 +72,29 @@ if (-not (Test-Path $IsoPath)) {
     }
 
     try {
+        # Synchronous download: errors throw, so the BITS fallback below actually runs.
         $wc = New-Object System.Net.WebClient
         $wc.Headers.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64)")
-        Register-ObjectEvent -InputObject $wc -EventName DownloadProgressChanged -Action {
-            $pct = $eventArgs.ProgressPercentage
-            $received = $eventArgs.BytesReceived / 1MB
-            $total = $eventArgs.TotalBytesToReceive / 1MB
-            Write-Progress -Activity "Downloading Android-x86 ISO" -Status "$([math]::Round($received,1)) MB / $([math]::Round($total,1)) MB" -PercentComplete $pct
-        } | Out-Null
-        $wc.DownloadFileAsync($IsoUrl, $IsoPath)
-        while ($wc.IsBusy) { Start-Sleep -Seconds 1 }
-        Write-Progress -Activity "Downloading Android-x86 ISO" -Completed
-        Unregister-Event -SourceIdentifier * -ErrorAction SilentlyContinue
+        $wc.DownloadFile($IsoUrl, $IsoPath)
     }
     catch {
         # fallback: BITS transfer
         Write-Warn "WebClient failed, trying BITS transfer..."
+        Remove-Item -LiteralPath $IsoPath -Force -ErrorAction SilentlyContinue
         Start-BitsTransfer -Source $IsoUrl -Destination $IsoPath -DisplayName "Android-x86 ISO" -Priority High
     }
 
     if (-not (Test-Path $IsoPath)) {
         throw "Download failed. Try manually from $IsoUrl"
+    }
+    if ($IsoSha256) {
+        $actual = (Get-FileHash -LiteralPath $IsoPath -Algorithm SHA256).Hash
+        if ($actual -ne $IsoSha256.ToUpper()) {
+            Remove-Item -LiteralPath $IsoPath -Force
+            throw "ISO SHA-256 mismatch (expected $IsoSha256, got $actual). Partial or tampered download removed."
+        }
+    } else {
+        Write-Warn "No -IsoSha256 given: the ISO was not verified against a published checksum."
     }
     Write-Ok "Downloaded $( '{0:N1}' -f ((Get-Item $IsoPath).Length / 1MB) ) MB"
 }
@@ -169,7 +173,7 @@ ethernet0.present = "TRUE"
 ethernet0.connectionType = "nat"
 ethernet0.virtualDev = "e1000"
 ethernet0.allowGuestConnectionControl = "FALSE"
-ethernet0.startConnected = "TRUE"
+ethernet0.startConnected = "FALSE"  # malware VM boots offline; connect manually if needed
 ethernet0.addressType = "generated"
 
 # NO USB controllers (attack surface reduction)

@@ -116,7 +116,7 @@ def test_traversal_sample_id_touches_nothing_outside_work_dir(client, work_dir, 
 
     # Any status is acceptable EXCEPT a success that resolved outside WORK_DIR.
     response = client.get(url)
-    assert response.status_code != 500 or True  # never fatal
+    assert response.status_code in (400, 404), f"{url} returned {response.status_code}"
 
     # Nothing outside WORK_DIR may exist as a result.
     assert not (work_dir.parent / "evil").exists(), f"{url} created a directory outside WORK_DIR"

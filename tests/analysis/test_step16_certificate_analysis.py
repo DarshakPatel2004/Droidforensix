@@ -1,5 +1,8 @@
 import json
 
+import pytest
+
+import analysis.step16_certificate_analysis as step16
 from analysis.step16_certificate_analysis import (
     DEFAULT_CERT_DB_PATH,
     add_known_bad_cert,
@@ -12,6 +15,12 @@ from analysis.step16_certificate_analysis import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _reset_cert_cache(monkeypatch):
+    # The module-level cache otherwise leaks between tests (and across tmp DBs).
+    monkeypatch.setattr(step16, "_cert_cache", None)
+
+
 class TestAnalyzeCertificate:
     def test_no_apk(self):
         result = analyze_certificate("")
@@ -19,8 +28,10 @@ class TestAnalyzeCertificate:
 
     def test_nonexistent_apk(self):
         result = analyze_certificate("/nonexistent/path.apk")
-        assert result["certificate_found"] is False
-        assert "error" in result
+        assert result == {
+            "certificate_found": False,
+            "error": "APK path not provided or does not exist",
+        }
 
 
 class TestCheckKnownBadCertificate:
@@ -31,8 +42,7 @@ class TestCheckKnownBadCertificate:
         result = check_known_bad_certificate(
             "00:11:22:33:44:55:66:77:88:99:AA:BB:CC:DD:EE:FF:00:11:22:33"
         )
-        assert isinstance(result, dict)
-        assert "known_bad" in result
+        assert result["known_bad"] is False
 
     def test_empty(self):
         result = check_known_bad_certificate("")
@@ -82,10 +92,6 @@ class TestFingerprintFallback:
 
 
 class TestLoadKnownBadCerts:
-    def setup_method(self):
-        global _cert_cache
-        _cert_cache = None
-
     def test_load_missing_file(self, tmp_path):
         missing = tmp_path / "nonexistent.json"
         result = load_known_bad_certs(str(missing))
@@ -123,10 +129,6 @@ class TestLoadKnownBadCerts:
 
 
 class TestGetKnownBadCerts:
-    def setup_method(self):
-        global _cert_cache
-        _cert_cache = None
-
     def test_get_cached(self, tmp_path):
         f = tmp_path / "test_get.json"
         data = {"certificates": [{"sha256_fingerprint": "ab:cd:ef", "family": "cached_test"}]}
@@ -135,22 +137,17 @@ class TestGetKnownBadCerts:
         result = get_known_bad_certs()
         assert result == {"ab:cd:ef": "cached_test"}
 
-    def test_get_auto_loads(self, tmp_path):
-        global _cert_cache
-        _cert_cache = None
+    def test_get_auto_loads(self, tmp_path, monkeypatch):
         f = tmp_path / "auto.json"
         data = {"certificates": [{"sha256_fingerprint": "11:22:33:44", "family": "auto_test"}]}
         f.write_text(json.dumps(data))
-        load_known_bad_certs(str(f))
+        # Nothing preloaded: get_known_bad_certs must load the default DB itself.
+        monkeypatch.setattr(step16, "DEFAULT_CERT_DB_PATH", f)
         result = get_known_bad_certs()
         assert "11:22:33:44" in result
 
 
 class TestAddKnownBadCert:
-    def setup_method(self):
-        global _cert_cache
-        _cert_cache = None
-
     def test_add_to_new_file(self, tmp_path):
         f = tmp_path / "add_test.json"
         add_known_bad_cert("ff:ee:dd:cc", "new_malware", source="test", path=str(f))

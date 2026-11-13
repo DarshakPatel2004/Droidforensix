@@ -9,13 +9,52 @@ against a copy recorded elsewhere (for example in a signed report).
 
 import hashlib
 import json
+import os
 import sys
+from contextlib import contextmanager
 from datetime import datetime, timezone
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, Iterator, List, Optional
 
 CUSTODY_NAME = "custody.jsonl"
 GENESIS_HASH = "0" * 64
+
+if os.name == "nt":
+    import msvcrt
+
+    def _lock_file(handle) -> None:
+        # LK_LOCK gives up after ~10 s, so keep retrying until the holder releases.
+        handle.seek(0)
+        while True:
+            try:
+                msvcrt.locking(handle.fileno(), msvcrt.LK_LOCK, 1)
+                return
+            except OSError:
+                continue
+
+    def _unlock_file(handle) -> None:
+        handle.seek(0)
+        msvcrt.locking(handle.fileno(), msvcrt.LK_UNLCK, 1)
+else:
+    import fcntl
+
+    def _lock_file(handle) -> None:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_EX)
+
+    def _unlock_file(handle) -> None:
+        fcntl.flock(handle.fileno(), fcntl.LOCK_UN)
+
+
+@contextmanager
+def _exclusive(sample_dir: Path) -> Iterator[None]:
+    """Hold an OS-level lock on the sample's custody log while one writer appends (A1-46)."""
+    sample_dir.mkdir(parents=True, exist_ok=True)
+    with open(sample_dir / (CUSTODY_NAME + ".lock"), "a+b") as handle:
+        _lock_file(handle)
+        try:
+            yield
+        finally:
+            _unlock_file(handle)
 
 
 def _digest(seq: int, ts: str, event: str, data: Dict[str, Any], prev_hash: str) -> str:
@@ -48,22 +87,23 @@ def read_entries(sample_dir: Path) -> List[Dict[str, Any]]:
 
 def append_event(sample_dir: Path, event: str, data: Dict[str, Any]) -> Dict[str, Any]:
     """Append one event to the sample's custody log and return the entry."""
-    entries = read_entries(sample_dir)
-    seq = len(entries)
-    prev_hash = entries[-1]["hash"] if entries else GENESIS_HASH
-    ts = datetime.now(timezone.utc).isoformat()
-    entry = {
-        "seq": seq,
-        "ts": ts,
-        "event": event,
-        "data": data,
-        "prev": prev_hash,
-        "hash": _digest(seq, ts, event, data, prev_hash),
-    }
     sample_dir = Path(sample_dir)
-    sample_dir.mkdir(parents=True, exist_ok=True)
-    with open(sample_dir / CUSTODY_NAME, "a", encoding="utf-8") as f:
-        f.write(json.dumps(entry, sort_keys=True, default=str) + "\n")
+    with _exclusive(sample_dir):
+        # Read and append under one lock so two writers cannot pick the same seq.
+        entries = read_entries(sample_dir)
+        seq = len(entries)
+        prev_hash = entries[-1]["hash"] if entries else GENESIS_HASH
+        ts = datetime.now(timezone.utc).isoformat()
+        entry = {
+            "seq": seq,
+            "ts": ts,
+            "event": event,
+            "data": data,
+            "prev": prev_hash,
+            "hash": _digest(seq, ts, event, data, prev_hash),
+        }
+        with open(sample_dir / CUSTODY_NAME, "a", encoding="utf-8") as f:
+            f.write(json.dumps(entry, sort_keys=True, default=str) + "\n")
     return entry
 
 
@@ -78,7 +118,7 @@ def verify(sample_dir: Path) -> Dict[str, Any]:
         expected = _digest(entry.get("seq"), entry.get("ts"), entry.get("event"),
                            entry.get("data"), entry.get("prev"))
         if entry.get("seq") != index or entry.get("prev") != prev_hash or entry.get("hash") != expected:
-            return {"valid": False, "entries": len(entries), "head_hash": entries[-1]["hash"],
+            return {"valid": False, "entries": len(entries), "head_hash": entries[-1].get("hash"),
                     "broken_at": index, "reason": "entry does not match its hash chain"}
         prev_hash = entry["hash"]
     return {"valid": True, "entries": len(entries), "head_hash": prev_hash,

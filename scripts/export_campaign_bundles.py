@@ -10,6 +10,7 @@ import csv
 import json
 import sys
 from collections import Counter
+from pathlib import Path
 
 
 def main() -> None:
@@ -28,6 +29,8 @@ def main() -> None:
         if campaign.get("size", 0) < 2:
             continue
         members = campaign.get("members", [])
+        if not members:
+            continue
         families = Counter(
             gt.get(sha, {}).get("family", "unlabeled") for sha in members
         )
@@ -44,6 +47,7 @@ def main() -> None:
             }
         )
     bundles.sort(key=lambda b: -b["size"])
+    Path(out_path).parent.mkdir(parents=True, exist_ok=True)
     with open(out_path, "w", encoding="utf-8") as f:
         json.dump({"campaigns": bundles, "total": len(bundles)}, f, indent=1)
     print(f"bundles={len(bundles)} samples={sum(b['size'] for b in bundles)} -> {out_path}")

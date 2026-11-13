@@ -3,7 +3,6 @@ Tests for APK dissection backend.
 """
 
 import json
-import os
 import threading
 from pathlib import Path
 
@@ -14,8 +13,6 @@ from backend.config import settings
 from backend.dissection import (
     APKDissector,
     SampleAPKCache,
-    _class_cache_locks,
-    _class_cache_locks_lock,
     load_dissection,
 )
 from backend.main import app
@@ -256,55 +253,6 @@ class TestSampleAPKCache:
         assert not errors, f"Thread safety failures: {errors}"
 
 
-class TestAtomicClassCache:
-    def test_atomic_write_creates_file(self, test_apk_path, tmp_path):
-        sample_id = "test_atomic"
-        cache_path = tmp_path / sample_id / "dissection_classes_cache.json"
-        lock_key = sample_id
-        with _class_cache_locks_lock:
-            if lock_key not in _class_cache_locks:
-                _class_cache_locks[lock_key] = threading.Lock()
-        lock = _class_cache_locks[lock_key]
-        with lock:
-            cache_path.parent.mkdir(parents=True, exist_ok=True)
-            tmp = cache_path.with_suffix(".tmp")
-            data = [{"name": "com.test.TestClass", "methods": [], "network_calls": [], "permissions_used": []}]
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(data, f)
-            os.replace(tmp, cache_path)
-        assert cache_path.exists()
-        with open(cache_path, "r", encoding="utf-8") as f:
-            loaded = json.load(f)
-        assert loaded[0]["name"] == "com.test.TestClass"
-
-    def test_atomic_write_no_partial_read(self, test_apk_path, tmp_path):
-        """Verify that a half-written tmp file doesn't leave a corrupt cache."""
-        sample_id = "test_atomic_partial"
-        cache_path = tmp_path / sample_id / "dissection_classes_cache.json"
-        lock_key = sample_id
-        with _class_cache_locks_lock:
-            if lock_key not in _class_cache_locks:
-                _class_cache_locks[lock_key] = threading.Lock()
-        lock = _class_cache_locks[lock_key]
-        with lock:
-            cache_path.parent.mkdir(parents=True, exist_ok=True)
-            tmp = cache_path.with_suffix(".tmp")
-            # Simulate partial write (truncated JSON)
-            with open(tmp, "w", encoding="utf-8") as f:
-                f.write('{"incomplete": true')
-            # Crash before os.replace — tmp file should be removed on next write
-            if tmp.exists():
-                tmp.unlink()
-            # Now write properly
-            data = [{"name": "com.test.OK", "methods": [], "network_calls": [], "permissions_used": []}]
-            with open(tmp, "w", encoding="utf-8") as f:
-                json.dump(data, f)
-            os.replace(tmp, cache_path)
-        with open(cache_path, "r", encoding="utf-8") as f:
-            loaded = json.load(f)
-        assert loaded[0]["name"] == "com.test.OK"
-
-
 @pytest.mark.use_real_work_dir
 class TestAndroguardDissection:
     def test_list_decompiled_classes_returns_empty_for_bogus_path(self):
@@ -451,6 +399,7 @@ class TestLLMSummary:
         result = _condense_dissection(dissection)
         assert len(result) <= 14100  # Some margin for the truncation message
 
+    @pytest.mark.slow
     def test_summarize_dissection_fallback_on_no_ollama(self, monkeypatch):
         """summarize_dissection should return fallback when Ollama is unavailable."""
         monkeypatch.delenv("NVIDIA_NIM_API_KEY", raising=False)

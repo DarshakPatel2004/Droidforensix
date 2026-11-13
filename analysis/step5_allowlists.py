@@ -86,27 +86,46 @@ LIBRARY_DOCS = {
 # Union for quick check
 TIER3_ALLOWLIST = OAUTH_DOMAINS | CDN_PROVIDERS | LIBRARY_DOCS
 
+# Shared hosting: any tenant can create <name>.<parent>, so only the exact parent host is
+# allowlisted, never its subdomains (audit A1-03). Malware C2 is hosted on these platforms.
+TENANT_HOSTING_PARENTS = frozenset({
+    "firebaseio.com", "appspot.com", "githubusercontent.com", "github.com", "github.io",
+    "gitlab.io", "amazonaws.com", "cloudfront.net", "azureedge.net", "windows.net",
+    "byethost3.com", "dropbox.com", "t.me", "telegram.me", "mail.ru", "qq.com",
+    "dropboxusercontent.com", "herokuapp.com", "ngrok.io", "pages.dev", "workers.dev",
+    "s3.amazonaws.com", "cloudfront.amazonaws.com", "storage.googleapis.com",
+    "blob.core.windows.net", "cdn.jsdelivr.net",
+})
+
+
+def suffix_allowed(hostname: str, allowed) -> bool:
+    """True if hostname, or one of its parent domains, is in `allowed`.
+
+    A tenant-hosting parent matches only the exact host, so an attacker subdomain
+    under a shared platform is not allowlisted by its parent.
+    """
+    parts = hostname.lower().split(".")
+    for i in range(len(parts)):
+        suffix = ".".join(parts[i:])
+        if suffix in allowed and (i == 0 or suffix not in TENANT_HOSTING_PARENTS):
+            return True
+    return False
+
+
 # Also include all BENIGN_DOMAINS from step5 as Tier 3 (568 entries) - import at runtime to avoid circular
 def is_tier3(domain: str) -> bool:
     """Check if domain is Tier 3 legitimate infrastructure."""
     if not domain:
         return False
     d = domain.lower().removeprefix("www.")
-    if d in TIER3_ALLOWLIST:
-        return True
     # Subdomain match: e.g. api.ktor.io -> ktor.io
-    parts = d.split(".")
-    for i in range(len(parts)):
-        if ".".join(parts[i:]) in TIER3_ALLOWLIST:
-            return True
+    if suffix_allowed(d, TIER3_ALLOWLIST):
+        return True
     # Also check against step5 BENIGN_DOMAINS (568) at runtime
     try:
         from analysis.step5_c2_extraction import BENIGN_DOMAINS
-        if d in BENIGN_DOMAINS:
+        if suffix_allowed(d, BENIGN_DOMAINS):
             return True
-        for i in range(len(parts)):
-            if ".".join(parts[i:]) in BENIGN_DOMAINS:
-                return True
     except Exception as exc:
         logger.warning("BENIGN_DOMAINS unavailable, using Tier 3 allowlist only: %s", exc)
     return False

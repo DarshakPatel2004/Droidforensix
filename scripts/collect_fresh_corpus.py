@@ -13,13 +13,13 @@ import gzip
 import hashlib
 import json
 import os
-import sys
 from datetime import date
 from pathlib import Path
 from typing import Any
 
 import requests
 from dotenv import load_dotenv
+from download_common import safe_error
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA_DIR = ROOT / "data" / "fresh_corpus"
@@ -75,33 +75,30 @@ def load_exclusions(extra_manifest: Path | None = None) -> tuple[set[str], set[s
     return hashes, packages
 
 
-def safe_error(exc: Exception, secret: str = "") -> str:
-    """Remove API credentials from third-party request errors."""
-    message = str(exc)
-    if secret:
-        message = message.replace(secret, "<redacted>")
-    return message
-
-
 def download(url: str, destination: Path, expected_sha256: str, max_bytes: int) -> int:
     destination.parent.mkdir(parents=True, exist_ok=True)
     digest = hashlib.sha256()
     downloaded = 0
-    with requests.get(url, stream=True, timeout=180) as response:
-        response.raise_for_status()
-        with destination.open("wb") as handle:
-            for chunk in response.iter_content(chunk_size=1024 * 1024):
-                if not chunk:
-                    continue
-                downloaded += len(chunk)
-                if downloaded > max_bytes:
-                    raise ValueError(f"download exceeded {max_bytes} bytes: {url}")
-                digest.update(chunk)
-                handle.write(chunk)
-    if digest.hexdigest() != expected_sha256:
-        destination.unlink(missing_ok=True)
-        raise ValueError(f"SHA-256 mismatch for {url}")
-    return downloaded
+    verified = False
+    try:
+        with requests.get(url, stream=True, timeout=180) as response:
+            response.raise_for_status()
+            with destination.open("wb") as handle:
+                for chunk in response.iter_content(chunk_size=1024 * 1024):
+                    if not chunk:
+                        continue
+                    downloaded += len(chunk)
+                    if downloaded > max_bytes:
+                        raise ValueError(f"download exceeded {max_bytes} bytes: {url}")
+                    digest.update(chunk)
+                    handle.write(chunk)
+        if digest.hexdigest() != expected_sha256:
+            raise ValueError(f"SHA-256 mismatch for {url}")
+        verified = True
+        return downloaded
+    finally:
+        if not verified:  # never leave a partial or unverified APK behind
+            destination.unlink(missing_ok=True)
 
 
 def fdroid_candidates(
@@ -155,7 +152,7 @@ def collect_fdroid(
     for candidate in candidates:
         if len(rows) >= count:
             break
-        relative = Path("data") / "fresh_corpus" / "benign" / "fdroid" / candidate["apk_name"]
+        relative = Path("data") / "fresh_corpus" / "benign" / "fdroid" / Path(candidate["apk_name"]).name
         destination = ROOT / relative
         try:
             download(candidate["source_url"], destination, candidate["sha256"], max_bytes)

@@ -405,6 +405,11 @@ class TestFamilyCacheWriteFlag:
         assert not (tmp_path / probe / "family.json").exists(), (
             "use_cache=False must not persist a verdict over the cache")
 
+        # A "none" verdict is deliberately not cached (B1-04), so give it a real match to persist.
+        monkeypatch.setattr(family_id, "_match_family_signatures", lambda _res: {
+            "family": "TestFam", "confidence": 0.9, "method": "signature_v3",
+            "reasoning": "test", "candidates": [], "deterministic": True,
+        })
         identify_family(probe, res, use_llm=False, use_cache=True)
         assert (tmp_path / probe / "family.json").exists()
 

@@ -12,6 +12,7 @@ introduces the new number, and say why in the commit message.
 """
 
 import re
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -45,14 +46,16 @@ BANNED = [
 
 
 def _iter_doc_files():
+    """Tracked files only: the gitignored scratch under evaluation/ must not be scanned."""
     yield from SCAN_FILES
-    for dirname in SCAN_DIRS:
-        base = ROOT / dirname
-        if not base.exists():
-            continue
-        for path in sorted(base.rglob("*")):
-            if path.suffix in SUFFIXES and path.is_file():
-                yield path
+    listed = subprocess.run(
+        ["git", "ls-files", "--", *SCAN_DIRS],
+        cwd=ROOT, capture_output=True, text=True, check=True,
+    ).stdout
+    for rel in listed.splitlines():
+        path = ROOT / rel
+        if path.suffix in SUFFIXES and path.is_file():
+            yield path
 
 
 def test_no_stale_thesis_numbers():

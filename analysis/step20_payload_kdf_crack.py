@@ -15,6 +15,7 @@ padding validity; decrypted ZIP/APK members are recursed up to max_depth.
 import hashlib
 import io
 import json
+import re
 import zipfile
 import zlib
 from pathlib import Path
@@ -24,6 +25,8 @@ from Cryptodome.Cipher import AES
 
 MAX_DEPTH = 3
 
+# Largest zip member read into memory; bigger members are skipped (zip-bomb guard, L4).
+MAX_MEMBER_BYTES = 100 * 1024 * 1024
 MAGICS = [
     (b"PK\x03\x04", "zip"),
     (b"dex\n", "dex"),
@@ -71,6 +74,10 @@ def decrypt_blob(data: bytes, seed: str, kdf: str) -> Any:
         if len(data) % 16:
             return None
         try:
+            # Magic lives in the first block, and CBC's first block needs only the key and IV,
+            # so reject wrong keys before paying for a full decrypt (L12).
+            if not _magic(AES.new(key, AES.MODE_CBC, iv).decrypt(data[:16])):
+                return None
             pt = AES.new(key, AES.MODE_CBC, iv).decrypt(data)
         except ValueError:
             return None
@@ -107,6 +114,9 @@ def _members(container: bytes):
         z = zipfile.ZipFile(file=io.BytesIO(container))
         for n in z.namelist():
             if n.endswith("/"):
+                continue
+            if z.getinfo(n).file_size > MAX_MEMBER_BYTES:  # checked before decompressing (L4)
+                yield n, b""
                 continue
             try:
                 yield n, z.read(n)
@@ -155,7 +165,8 @@ def crack_apk(apk_path: str, out_dir: str, depth: int = 0,
                "kdf": res["kdf"], "kind": res["kind"], "size": len(res["plaintext"])}
         suffix = {"zip": ".zip", "dex": ".dex", "elf": ".so", "json": ".json",
                   "ttf": ".ttf", "gzip": ".gz"}.get(res["kind"], ".bin")
-        out_file = out / (tag.replace("/", "_").replace("\\", "_") + suffix)
+        # M9: member names are attacker-controlled ("C:evil" would be drive-relative on Windows)
+        out_file = out / (re.sub(r"[^A-Za-z0-9._-]", "_", tag) + suffix)
         out_file.write_bytes(res["plaintext"])
         rec["decrypted_path"] = str(out_file)
 

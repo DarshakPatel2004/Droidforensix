@@ -333,6 +333,7 @@ def test_build_threat_intel_liveness_enrichment(tmp_path, monkeypatch):
     
     # Mock settings.WORK_DIR to use our temp path
     monkeypatch.setattr(settings, "WORK_DIR", tmp_path)
+    monkeypatch.setenv("DF_ALLOW_LIVE_LOOKUPS", "1")  # live DNS is opt-in (audit B1-12/13)
     
     # Mock DNS resolution to avoid hanging on slow/no network
     def _mock_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
@@ -411,13 +412,13 @@ def test_build_threat_intel_liveness_enrichment(tmp_path, monkeypatch):
     pub_geo = next(g for g in geo_ips if g["ip"] == "8.8.8.8")
     assert pub_geo["country"] == "Unknown"
     
-    # Check that disk caches were updated
+    # Liveness goes to the c2_liveness.json sidecar; pipeline_result.json is never rewritten (audit B1-14).
+    with open(sample_dir / "c2_liveness.json", "r", encoding="utf-8") as f:
+        saved_liveness = json.load(f)
+    assert saved_liveness["c2_public_ip"]["status"] == "active"
+    assert saved_liveness["c2_public_ip"]["live_dns"]["resolves"] is True
     with open(pipeline_path, "r", encoding="utf-8") as f:
-        saved_result = json.load(f)
-    saved_c2s = saved_result["c2_infrastructure"]
-    saved_pub = next(c for c in saved_c2s if c["c2_id"] == "c2_public_ip")
-    assert saved_pub["status"] == "active"
-    assert saved_pub["live_dns"]["resolves"] is True
+        assert "status" not in json.load(f)["c2_infrastructure"][1]
 
 
 # ---------------------------------------------------------------------------

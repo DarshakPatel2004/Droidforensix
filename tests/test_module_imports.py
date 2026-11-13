@@ -3,6 +3,8 @@
 import importlib
 from pathlib import Path
 
+import pytest
+
 
 def _iter_modules(package_name: str, path: Path):
     """Yield (module_name, module_path) for all .py files in a package dir."""
@@ -12,10 +14,9 @@ def _iter_modules(package_name: str, path: Path):
         yield f"{package_name}.{f.stem}", f
 
 
-BACKEND_MODULES = list(_iter_modules("backend", Path("backend")))
-ANALYSIS_MODULES = list(
-    _iter_modules("analysis", Path("analysis"))
-)
+ROOT = Path(__file__).resolve().parents[1]
+BACKEND_MODULES = list(_iter_modules("backend", ROOT / "backend"))
+ANALYSIS_MODULES = list(_iter_modules("analysis", ROOT / "analysis"))
 
 
 def _check_import(module_name: str, file_path: Path):
@@ -113,3 +114,12 @@ class TestAnalysisImports:
 
     def test_pipeline(self):
         self._import("analysis.pipeline", Path("analysis/pipeline.py"))
+
+
+@pytest.mark.parametrize(
+    "module_name,file_path",
+    [(name, path) for name, path in BACKEND_MODULES + ANALYSIS_MODULES],
+)
+def test_every_module_imports(module_name, file_path):
+    """Every backend and analysis module must import, not just the hand-listed ones."""
+    _check_import(module_name, file_path)

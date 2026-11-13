@@ -10,7 +10,8 @@ batch scripts) and computed on the fly otherwise so the endpoint works for
 any analyzed sample.
 
 Geo-location is read from the shared cache ``analysis/work/c2_geo.json`` when
-available; no network calls are made from the request path.
+available. Live DNS, geo and Censys lookups send malware C2 addresses to third
+parties, so they run only when ``DF_ALLOW_LIVE_LOOKUPS=1``.
 """
 
 import csv
@@ -21,11 +22,14 @@ import logging
 import os
 import re
 import socket
+import threading
 import time
+import uuid
 from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional, Tuple
 from urllib.request import Request, urlopen
 
+from backend.cache_utils import atomic_write_json as _atomic_write_json
 from backend.censys_enrichment import enrich_ip as _censys_enrich
 from backend.config import settings
 from backend.family_id import identify_family
@@ -40,6 +44,9 @@ except Exception:
 
 _ISP_CACHE_PATH = settings.WORK_DIR / 'isp_cache.json'
 _LAST_ISP_QUERY = 0.0
+# Serialises ISP lookups: the cache is read-modify-written and ip-api allows 45 requests/min.
+_ISP_LOCK = threading.Lock()
+
 
 def _load_isp_cache() -> Dict[str, Any]:
     if _ISP_CACHE_PATH.exists():
@@ -47,18 +54,22 @@ def _load_isp_cache() -> Dict[str, Any]:
             with open(_ISP_CACHE_PATH, 'r', encoding='utf-8') as f:
                 return json.load(f)
         except Exception:
-            logger.debug("Failed to load ISP cache")
+            logger.warning("ISP cache %s unreadable; starting empty", _ISP_CACHE_PATH, exc_info=True)
     return {}
 
 def _save_isp_cache(cache: Dict[str, Any]) -> None:
     try:
-        with open(_ISP_CACHE_PATH, 'w', encoding='utf-8') as f:
-            json.dump(cache, f, indent=2)
+        _atomic_write_json(_ISP_CACHE_PATH, cache)
     except Exception:
         logger.warning("Failed to save ISP cache")
 
 def _enrich_isp(ip: str) -> Dict[str, str]:
     """Query ip-api.com for ISP/org/AS, with rate limiting and caching."""
+    with _ISP_LOCK:
+        return _enrich_isp_unlocked(ip)
+
+
+def _enrich_isp_unlocked(ip: str) -> Dict[str, str]:
     global _LAST_ISP_QUERY
     cache = _load_isp_cache()
     if ip in cache:
@@ -69,6 +80,10 @@ def _enrich_isp(ip: str) -> Dict[str, str]:
         cache[ip] = result
         _save_isp_cache(cache)
         return result
+
+    if not live_lookups_enabled():
+        # No live ip-api query without DF_ALLOW_LIVE_LOOKUPS=1; a cached answer is still used above.
+        return {'isp': '', 'org': '', 'as': ''}
 
     elapsed = time.time() - _LAST_ISP_QUERY
     if elapsed < 1.4:
@@ -144,7 +159,7 @@ BENIGN_SDK_DOMAINS = {
     'www.googleapis.com', 'android.clients.google.com',
     'facebook.com', 'www.facebook.com', 'api.facebook.com', 'apps.facebook.com',
     'graph.facebook.com', 'connect.facebook.net',
-    'amazon-adsystem.com', 's3.amazonaws.com', 'aws.amazon.com',
+    'amazon-adsystem.com', 'aws.amazon.com',
     'applovin.com', 'a.applovin.com', 'd.applovin.com',
     'flurry.com', 'data.flurry.com', 'cdn.flurry.com', 'adlog.flurry.com', 'ads.flurry.com',
     'vungle.com', 'api.vungle.com',
@@ -159,7 +174,6 @@ BENIGN_SDK_DOMAINS = {
     'unity3d.com', 'cdn.unityads.unity3d.com',
     'avocarrot.com', 'ads.avocarrot.com',
     'rubiconproject.com', 'ads.rubiconproject.com',
-    'leadbolt.net', 'ad.leadbolt.net',
     'mydas.mobi', 'ads.mp.mydas.mobi', 'cvt.mydas.mobi', 'androidsdk.ads.mp.mydas.mobi',
     'scoreloop.com', 'api.scoreloop.com', 'community.scoreloop.com',
     'openfeint.com', 'api.openfeint.com', 'ads.openfeint.com',
@@ -169,8 +183,7 @@ BENIGN_SDK_DOMAINS = {
     'adobe.com', 'www.adobe.com', 'www.macromedia.com',
     'crl3.adobe.com', 'airdownload.adobe.com', 'airinstall.adobe.com',
     'microsoft.com', 'www.microsoft.com', 'live.com', 'msn.com',
-    'cloudfront.net', 'akamai.net', 'akamaihd.net',
-    'github.com', 'raw.githubusercontent.com',
+    'akamai.net', 'akamaihd.net',
     'curl.haxx.se', 'daneden.me', 'tumblr.com', 'api.tumblr.com',
     'yahoo.com', 'www.yahoo.com',
     # Indian payment gateways
@@ -221,16 +234,16 @@ BENIGN_SDK_DOMAINS = {
     'system.net', 'system.io', 'system.web', 'system.data', 'system.core',
     # Google OAuth / Firebase / Firebase Auth
     'googleusercontent.com', 'apps.googleusercontent.com',
-    'firebaseio.com', 'firebaseapp.com', 'firebase.analytics.app',
+    'firebase.analytics.app',
     # Xiaomi payment / HPPlay
     'mipay.com', 'hpplay.cn', 'hpplay.com.cn', 'hpplay.cdn.cibn.cc',
     'cdnauth1.hpplay.cn', 'cdnauth2.hpplay.cn', 'dep.hpplay.cn',
     'devicemgr.hpplay.cn', 'misdkauth.hpplay.cn', 'logu.hpplay.cn', 'loguhk.hpplay.cn',
-    'image.hpplay.cn', 'api.box.appmob.cn', 'frame.top',
+    'image.hpplay.cn',
     # URL shorteners / legitimate short domains
-    'youtu.be', 'goo.gl', 'bit.ly', 'tinyurl.com', 'ow.ly',
+    'youtu.be', 'ow.ly',
     # Amazon Associates
-    'assoc-amazon.com', 'amazon.com', 'amazonaws.com',
+    'assoc-amazon.com', 'amazon.com',
     # Alipay
     'alipay.com', 'alipay.net', 'alipaydev.com', 'mobilegw.alipay.com',
     'wappaygw.alipay.com',
@@ -441,7 +454,7 @@ def classify_c2(c2: Dict[str, Any]) -> Tuple[str, str]:
 
     # 3. Template/obfuscated domains
     if '%' in domain or domain.startswith('__'):
-        return 'malicious', 'template/obfuscated domain'
+        reasons.append('template/obfuscated domain')
 
     # 4. Junk domains (code fragments, sentence fragments)
     if _is_junk_domain(domain):
@@ -546,11 +559,19 @@ def _collect_ips(c2: Dict[str, Any]) -> List[str]:
     return ips
 
 
+def live_lookups_enabled() -> bool:
+    """Live DNS, geo and Censys lookups send malware C2 addresses to third parties.
+
+    They can alert the operators, so they are opt-in (audit B1-12/13).
+    """
+    return os.environ.get("DF_ALLOW_LIVE_LOOKUPS") == "1"
+
+
 def _is_valid_ip(ip: str) -> bool:
     try:
-        socket.inet_aton(ip)
+        ipaddress.ip_address(ip)
         return True
-    except socket.error:
+    except ValueError:
         return False
 
 
@@ -568,13 +589,38 @@ def _classify_ip(ip: str) -> str:
         return "invalid"
 
 
+C2_LIVENESS_FILE = 'c2_liveness.json'
+
+
+def _c2_key(c2: Dict[str, Any]) -> str:
+    return str(c2.get('c2_id') or c2.get('domain') or c2.get('ip') or '')
+
+
+def _load_c2_liveness(sample_id: str) -> Dict[str, Dict[str, Any]]:
+    """Liveness written by earlier enrichment runs, keyed by C2 id. pipeline_result.json is never rewritten."""
+    path = settings.WORK_DIR / sample_id / C2_LIVENESS_FILE
+    if not path.exists():
+        return {}
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            data = json.load(f)
+    except (OSError, ValueError):
+        logger.warning("C2 liveness sidecar %s unreadable; ignoring it", path, exc_info=True)
+        return {}
+    return data if isinstance(data, dict) else {}
+
+
 def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]:
     """Aggregate the threat-intel view for a single sample's pipeline result."""
+    # Liveness lives in a sidecar so pipeline_result.json keeps the hash that custody.json recorded (audit B1-14).
     c2s: List[Dict[str, Any]] = result.get('c2_infrastructure', []) or []
+    liveness = _load_c2_liveness(sample_id)
+    for c in c2s:
+        c.update(liveness.get(_c2_key(c), {}))
 
     # Enrich liveness on-the-fly if needed
     unresolved_c2s = [c for c in c2s if not c.get('status') and not c.get('live_dns')]
-    if unresolved_c2s:
+    if unresolved_c2s and live_lookups_enabled():
         from concurrent.futures import ThreadPoolExecutor
 
         def resolve_dns(hostname, timeout=2.0):
@@ -582,13 +628,16 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
             from concurrent.futures import TimeoutError as _FutTimeoutError
             def _resolve():
                 return socket.getaddrinfo(hostname, 80, socket.AF_INET)
-            with ThreadPoolExecutor(max_workers=1) as pool:
-                future = pool.submit(_resolve)
-                try:
-                    addrs = future.result(timeout=timeout)
-                    return list(sorted(set(a[4][0] for a in addrs)))
-                except _FutTimeoutError as exc:
-                    raise _FutTimeoutError(f"DNS resolution timed out for {hostname}") from exc
+            # No with-block: its exit would wait for the blocked getaddrinfo and defeat the timeout.
+            pool = ThreadPoolExecutor(max_workers=1)
+            future = pool.submit(_resolve)
+            try:
+                addrs = future.result(timeout=timeout)
+                return list(sorted(set(a[4][0] for a in addrs)))
+            except _FutTimeoutError as exc:
+                raise _FutTimeoutError(f"DNS resolution timed out for {hostname}") from exc
+            finally:
+                pool.shutdown(wait=False)
 
         def resolve_one(c):
             domain = c.get('domain')
@@ -597,8 +646,12 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
                 try:
                     ips = resolve_dns(domain, timeout=2.0)
                     return c, {'live_dns': {'resolves': True, 'ips': ips}, 'status': 'active'}
-                except Exception as e:
+                except socket.gaierror as e:
                     return c, {'live_dns': {'resolves': False, 'ips': [], 'error': str(e)[:60]}, 'status': 'dead'}
+                except Exception:
+                    # Timeouts and other transient failures are not persisted as 'dead' (B1-13).
+                    logger.debug("Transient DNS failure for %s; liveness left unset", domain)
+                    return c, None
             elif ip:
                 ip_class = _classify_ip(ip)
                 if ip_class in ('public', 'private', 'vpn'):
@@ -623,37 +676,14 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
 
         if has_changes:
             try:
-                # 1. Update pipeline_result.json (atomic tmp+replace: concurrent
-                #    build_threat_intel calls for the same sample would otherwise
-                #    truncate each other's writes and corrupt the file)
-                result_path = settings.WORK_DIR / sample_id / "pipeline_result.json"
-                if result_path.exists():
-                    tmp_result_path = result_path.with_name("pipeline_result.json.tmp")
-                    with open(tmp_result_path, "w", encoding="utf-8") as f:
-                        json.dump(result, f, indent=2, default=str)
-                    os.replace(tmp_result_path, result_path)
-
-                # 2. Update step5_c2s.json
-                step5_path = settings.WORK_DIR / sample_id / "step5_c2s.json"
-                if step5_path.exists():
-                    with open(step5_path, "r", encoding="utf-8") as f:
-                        step5_data = json.load(f)
-                    
-                    step5_c2s = step5_data.get('c2_infrastructure', []) or []
-                    c2_map = {c.get('c2_id'): c for c in step5_c2s if c.get('c2_id')}
-                    for c in c2s:
-                        c2_id = c.get('c2_id')
-                        if c2_id and c2_id in c2_map:
-                            c2_map[c2_id].update({
-                                'live_dns': c.get('live_dns'),
-                                'status': c.get('status')
-                            })
-                    tmp_step5_path = step5_path.with_name("step5_c2s.json.tmp")
-                    with open(tmp_step5_path, "w", encoding="utf-8") as f:
-                        json.dump(step5_data, f, indent=2, default=str)
-                    os.replace(tmp_step5_path, step5_path)
-            except Exception as e:
-                print(f"[WARN] Failed to save enriched threat intel for {sample_id}: {e}")
+                sample_dir = settings.WORK_DIR / sample_id
+                if (sample_dir / "pipeline_result.json").exists():
+                    _atomic_write_json(sample_dir / C2_LIVENESS_FILE, {
+                        _c2_key(c): {'live_dns': c.get('live_dns'), 'status': c.get('status')}
+                        for c in c2s if _c2_key(c)
+                    })
+            except Exception:
+                logger.warning("Failed to save C2 liveness for %s", sample_id, exc_info=True)
 
     dns = {'active': 0, 'likely_active': 0, 'dead': 0}
     classification = {'benign': 0, 'suspicious': 0, 'malicious': 0}
@@ -681,10 +711,10 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
                 continue
             seen_ips.add(ip)
             ip_type = _classify_ip(ip)
-            geo = geo_cache.get(ip) or _geo_lookup(ip)
+            geo = geo_cache.get(ip) or (_geo_lookup(ip) if live_lookups_enabled() else None)
             isp_data = _enrich_isp(ip) if not (geo and geo.get('isp')) else {'isp': geo.get('isp', ''), 'org': '', 'as': ''}
 
-            censys = _censys_enrich(ip) if ip_type == 'public' else None
+            censys = _censys_enrich(ip) if ip_type == 'public' and live_lookups_enabled() else None
             if censys and censys.get('_error'):
                 censys = None
 
@@ -796,19 +826,24 @@ def to_stix(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]:
     now = datetime.now(timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
     bundle = {
         'type': 'bundle',
-        'id': f'bundle--{sample_id[:32]}',
+        'id': f"bundle--{uuid.uuid5(uuid.NAMESPACE_URL, sample_id)}",
         'objects': [],
     }
     for c2 in _export_c2s(result):
         domain = c2.get('domain') or ''
         ip = c2.get('ip') or ''
-        if not domain and not ip:
+        # Unchecked values would break out of the quoted STIX pattern.
+        if domain and not _is_safe_domain(domain):
+            continue
+        if not domain and not _is_safe_ipv4(ip):
             continue
         pattern = (f"[domain-name:value = '{domain}']" if domain
                    else f"[ipv4-addr:value = '{ip}']")
+        indicator_key = f"{sample_id}:{c2.get('c2_id', 'unknown')}"
         bundle['objects'].append({
             'type': 'indicator',
-            'id': f"indicator--{sample_id[:16]}-{c2.get('c2_id', 'unknown')}",
+            'spec_version': '2.1',
+            'id': f"indicator--{uuid.uuid5(uuid.NAMESPACE_URL, indicator_key)}",
             'created': now,
             'valid_from': now,
             'name': domain or ip,
@@ -866,6 +901,12 @@ def to_suricata(result: Dict[str, Any], sample_id: str) -> str:
     return '\n'.join(lines) + '\n'
 
 
+def _yara_escape(value: str) -> str:
+    """Escape a value for a YARA double-quoted string, including newlines that would break the rule."""
+    return (str(value).replace('\\', '\\\\').replace('"', '\\"')
+            .replace('\n', '\\n').replace('\r', '\\r').replace('\t', '\\t'))
+
+
 def to_yara(result: Dict[str, Any], sample_id: str) -> str:
     """Generate a per-sample YARA rule from this sample's C2 indicators."""
     metadata = result.get('metadata', {}) or {}
@@ -882,12 +923,11 @@ def to_yara(result: Dict[str, Any], sample_id: str) -> str:
             if not value or value in seen:
                 continue
             seen.add(value)
-            escaped = value.replace('\\', '\\\\').replace('"', '\\"')
-            strings.append(f'        $s{idx} = "{escaped}" ascii wide nocase')
+            strings.append(f'        $s{idx} = "{_yara_escape(value)}" ascii wide nocase')
             idx += 1
 
     lines = [f'rule {rule_name}', '{', '    meta:']
-    lines.append(f'        description = "Auto-generated C2 indicators for {package}"')
+    lines.append(f'        description = "Auto-generated C2 indicators for {_yara_escape(package)}"')
     lines.append(f'        sample_sha256 = "{metadata.get("sha256", sample_id)}"')
     lines.append('        generator = "DroidForensix"')
     if strings:

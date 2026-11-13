@@ -25,10 +25,15 @@ class TestCorrelateReflectivePermissionUsage:
         ]
         result = correlate_reflective_permission_usage(permissions, reflective_calls)
         assert result["total_permissions"] == 3
-        assert len(result["used_permissions"]) <= 3
-        for up in result["used_permissions"]:
-            assert "permission" in up
-            assert "used_reflectively" in up
+        used = {up["permission"]: up for up in result["used_permissions"]}
+        assert set(used) == {"android.permission.SEND_SMS", "android.permission.INTERNET"}
+        assert all(up["used_reflectively"] is True for up in used.values())
+        assert [u["permission"] for u in result["unused_permissions"]] == ["android.permission.ACCESS_NETWORK_STATE"]
+        assert result["total_used"] == 2
+        assert result["total_unused"] == 1
+        assert result["usage_ratio"] == 0.67
+        assert result["category_summary"]["sms"] == {"total": 1, "used_reflectively": 1}
+        assert result["category_summary"]["network"] == {"total": 2, "used_reflectively": 1}
 
     def test_none_permissions(self):
         with pytest.raises(TypeError):

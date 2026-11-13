@@ -96,7 +96,9 @@ class SampleSignals:
         """Adapt a pipeline result dict (same shape reeval_families passes)."""
         extraction = result.get("extraction", {}) or {}
         manifest = result.get("manifest", {}) or {}
-        raw_strings = extraction.get("string_literals", []) or []
+        # Pipeline keeps strings under result["strings"]["string_literals"], not under extraction (L15).
+        raw_strings = ((result.get("strings", {}) or {}).get("string_literals", [])
+                       or extraction.get("string_literals", []) or [])
         values: list[str] = []
         for s in raw_strings:
             values.append(s.get("value") if isinstance(s, dict) else s)

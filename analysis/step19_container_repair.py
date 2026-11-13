@@ -131,7 +131,7 @@ def repair_container(apk_path: str, out_path: str) -> Dict[str, Any]:
 
     spans: Dict[int, Any] = {}
     for j, h in enumerate(heads):
-        nxt = heads[j + 1]["offset"] if j + 1 < len(heads) else None
+        nxt = heads[j + 1]["offset"] if j + 1 < len(heads) else len(data)  # M10: last member had no end
         spans[h["offset"]] = (h["data_start"], nxt)
 
     recovered, failed = 0, []

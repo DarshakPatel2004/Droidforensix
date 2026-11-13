@@ -12,6 +12,7 @@ import json
 import logging
 import math
 import re
+from pathlib import Path
 from typing import List, Optional, Tuple
 
 from analysis.decoding_engine import classify_entropy
@@ -209,10 +210,14 @@ def is_likely_obfuscated_payload(value: str, decoded: str, source: str,
 
     Rules (strict — biased toward fewer false positives):
       1. Meaningful decoded content (URL/IP/domain/email) → keep regardless.
-      2. Suspicious source AND (high entropy OR meaningful) → keep.
+      2. Suspicious source → keep (high entropy or meaningful content is not required).
       3. Benign source / benign value shape → reject.
       4. Short string (< 16 chars) in a utility class → reject (constants).
       5. High entropy alone → keep as uncertain (XOR candidates).
+
+    Source rules (2-4) only see real locations on the smali fallback path (step 2).
+    On the primary DEX path every source is the literal "dex", so only rules 1 and 5
+    take effect there.
     """
     meaningful = has_meaningful_content(decoded)
     suspicious = is_suspicious_source(source)
@@ -222,13 +227,9 @@ def is_likely_obfuscated_payload(value: str, decoded: str, source: str,
     if meaningful:
         return True
 
-    # Rule 2a: suspicious source with high entropy or meaningful content → keep.
-    if suspicious and (high_entropy or meaningful):
-        return True
-
-    # Rule 2b: suspicious source alone (even without meaningful content/high entropy)
-    # keeps the payload for further analysis — avoids false negatives on
-    # multi-stage payloads where the decoded content is an intermediate stage.
+    # Rule 2: suspicious source alone keeps the payload for further analysis, even
+    # without meaningful content or high entropy. This avoids false negatives on
+    # multi-stage payloads whose decoded content is an intermediate stage.
     if suspicious:
         return True
 
@@ -265,7 +266,7 @@ def try_base64_decode(s: str) -> Optional[str]:
         except UnicodeDecodeError:
             return decoded.hex()
     except Exception as exc:
-        logger.warning("Suppressed error in try_base64_decode: %s", exc)
+        logger.debug("Suppressed error in try_base64_decode: %s", exc)
         return None
 
 
@@ -282,7 +283,7 @@ def try_urlsafe_base64_decode(s: str) -> Optional[str]:
         except UnicodeDecodeError:
             return decoded.hex()
     except Exception as exc:
-        logger.warning("Suppressed error in try_urlsafe_base64_decode: %s", exc)
+        logger.debug("Suppressed error in try_urlsafe_base64_decode: %s", exc)
         return None
 
 
@@ -295,7 +296,7 @@ def try_hex_decode(s: str) -> Optional[str]:
         except UnicodeDecodeError:
             return decoded.hex()
     except Exception as exc:
-        logger.warning("Suppressed error in try_hex_decode: %s", exc)
+        logger.debug("Suppressed error in try_hex_decode: %s", exc)
         return None
 
 
@@ -320,6 +321,10 @@ def xor_brute_force(data: bytes) -> List[Tuple[int, str, float]]:
     Key 0 is excluded because XOR with 0 is identity and would always
     match printable inputs, producing false positives.
     """
+    # Already-printable input (plain text, user agents) yields "printable" XOR output for
+    # nearly every key, so every such string became a false XOR payload (audit A1-11).
+    if is_printable_ratio(data) > 0.9:
+        return []
     candidates = []
     for key in range(1, 256):
         decrypted = data.translate(_XOR_TABLES[key])
@@ -368,7 +373,9 @@ def detect_encoding(strings_result: dict) -> dict:
         dict with detected encodings.
     """
     sample_id = strings_result["sample_id"]
-    work_dir = settings.WORK_DIR / sample_id
+    # Honour the pipeline work_dir carried from step 2 (audit A1-10); global default otherwise.
+    carried = strings_result.get("work_dir")
+    work_dir = Path(carried) if carried else settings.WORK_DIR / sample_id
     work_dir.mkdir(parents=True, exist_ok=True)
 
     encodings = []
@@ -476,7 +483,9 @@ def detect_encoding(strings_result: dict) -> dict:
             try:
                 # Use latin-1 to preserve byte values for XOR analysis
                 data = clean.encode("latin-1", errors="ignore")
-                if len(data) >= 8:
+                # A1-11: XOR of already-printable or already-meaningful text yields garbage that passes
+                # the meaningful check (a URL or user agent would come out as "xor key 1").
+                if len(data) >= 8 and is_printable_ratio(data) <= 0.9 and not has_meaningful_content(clean):
                     candidates = xor_brute_force(data)
                     if candidates:
                         best_key, best_text, best_score = candidates[0]
@@ -524,10 +533,11 @@ def detect_encoding(strings_result: dict) -> dict:
         custom_encodings = [e for e in encodings if e.get("type") == "custom"]
         regular_encodings = [e for e in encodings if e.get("type") != "custom"]
         regular_encodings.sort(key=lambda e: e.get("confidence", 0.0), reverse=True)
-        encodings = custom_encodings + regular_encodings[:MAX_ENCODINGS - len(custom_encodings)]
+        encodings = custom_encodings + regular_encodings[:max(0, MAX_ENCODINGS - len(custom_encodings))]
 
     result = {
         "sample_id": sample_id,
+        "work_dir": str(work_dir),
         "total_encodings": len(encodings),
         "encodings": encodings,
     }

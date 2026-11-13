@@ -17,6 +17,7 @@ decrypted deterministically by Step 4 via the stored key/IV.
 
 import base64
 import binascii
+import bisect
 import logging
 import math
 import re
@@ -188,17 +189,17 @@ def decode_blob_text(blob: str) -> Tuple[Optional[bytes], Optional[str]]:
         try:
             return binascii.unhexlify(clean), "hex"
         except Exception as exc:
-            logger.warning("Suppressed error in decode_blob_text: %s", exc)
+            logger.debug("Suppressed error in decode_blob_text: %s", exc)
     try:
         return base64.b64decode(clean, validate=True), "base64"
     except Exception as exc:
-        logger.warning("Suppressed error in decode_blob_text: %s", exc)
+        logger.debug("Suppressed error in decode_blob_text: %s", exc)
     try:
         padding = 4 - len(clean) % 4
         padded = clean + ("=" * padding if padding != 4 else "")
         return base64.urlsafe_b64decode(padded), "base64"
     except Exception as exc:
-        logger.warning("Suppressed error in decode_blob_text: %s", exc)
+        logger.debug("Suppressed error in decode_blob_text: %s", exc)
     try:
         return binascii.unhexlify(clean), "hex"
     except Exception:
@@ -210,13 +211,18 @@ def decode_blob_text(blob: str) -> Tuple[Optional[bytes], Optional[str]]:
 # ---------------------------------------------------------------------------
 
 
+def _newline_ends(text: str) -> List[int]:
+    """Offsets just past each newline, so bisect gives a 1-based line number (L2: no per-match rescans)."""
+    return [m.end() for m in re.finditer("\n", text)]
+
+
 def extract_const_strings(text: str, is_smali: bool) -> List[Tuple[str, int]]:
     """All string literals in a source file with 1-based line numbers."""
     pattern = SMALI_CONST_STRING_RE if is_smali else JAVA_STRING_RE
     found = []
+    newline_ends = _newline_ends(text)
     for match in pattern.finditer(text):
-        line = text[: match.start()].count("\n") + 1
-        found.append((match.group(1), line))
+        found.append((match.group(1), bisect.bisect_right(newline_ends, match.start()) + 1))
     return found
 
 
@@ -315,14 +321,9 @@ def blob_candidates(
     return out
 
 
-SMALI_ESCAPES = {
-    "\\\\": "\\",
-    '\\"': '"',
-    "\\n": "\n",
-    "\\r": "\r",
-    "\\t": "\t",
-}
-SMALI_UNICODE_RE = re.compile(r"\\u([0-9a-fA-F]{4})")
+# One pass over the literal, so an escaped backslash ("\n" in smali) is not re-read as an escape (L6).
+SMALI_ESCAPE_RE = re.compile(r'\\(u[0-9a-fA-F]{4}|[\\"nrt])')
+_SMALI_SIMPLE_ESCAPES = {"\\": "\\", '"': '"', "n": "\n", "r": "\r", "t": "\t"}
 SMALI_INVOKE_RE = re.compile(r"invoke-\S+\s+\{([^}]*)\},\s*(\S+)")
 SMALI_METHOD_RE = re.compile(r"^\s*\.method\b.*?\n(.*?)^\s*\.end method", re.MULTILINE | re.DOTALL)
 
@@ -340,9 +341,13 @@ B64_TO_BYTES_MARKERS = ("base64_to_bytes", "base64ToBytes", "decodeBase64", "b64
 
 def smali_unescape(literal: str) -> str:
     """Undo common smali string escapes so emulated keys match runtime."""
-    for escaped, char in SMALI_ESCAPES.items():
-        literal = literal.replace(escaped, char)
-    return SMALI_UNICODE_RE.sub(lambda m: chr(int(m.group(1), 16)), literal)
+    def _unescape(match: "re.Match[str]") -> str:
+        body = match.group(1)
+        if body[0] == "u":
+            return chr(int(body[1:], 16))
+        return _SMALI_SIMPLE_ESCAPES[body]
+
+    return SMALI_ESCAPE_RE.sub(_unescape, literal)
 
 
 def iter_smali_methods(text: str):
@@ -398,7 +403,7 @@ def _b64decode_loose(value: bytes) -> Optional[bytes]:
         try:
             return base64.b64decode(value + b"=" * ((-len(value)) % 4))
         except Exception as exc:
-            logger.warning("Suppressed error in _b64decode_loose: %s", exc)
+            logger.debug("Suppressed error in _b64decode_loose: %s", exc)
             return None
 
 
@@ -406,7 +411,7 @@ def _unhexlify_loose(value: bytes) -> Optional[bytes]:
     try:
         return binascii.unhexlify(value.decode("ascii", errors="strict").strip())
     except Exception as exc:
-        logger.warning("Suppressed error in _unhexlify_loose: %s", exc)
+        logger.debug("Suppressed error in _unhexlify_loose: %s", exc)
         return None
 
 
@@ -501,7 +506,8 @@ def _resolve_value(lines, use_idx: int, reg: str, depth: int, seen) -> Optional[
             field_value = _find_static_field_init(lines, field_class, field_name)
             if field_value is not None:
                 return field_value
-            continue
+            # Unresolved: fail closed. Walking past this write would return an older value (L5).
+            return None
 
         result_match = re.match(r"move-result(?:-object)?\s+(\S+)", line)
         if result_match and result_match.group(1) == reg:
@@ -683,14 +689,15 @@ def try_decrypt(
             return plain if plain else None
         return pkcs7_unpad(plain, block)
     except Exception as exc:
-        logger.warning("Suppressed error in try_decrypt: %s", exc)
+        logger.debug("Suppressed error in try_decrypt: %s", exc)
         return None
 
 
 def marker_lines(text: str, marker: str) -> List[int]:
     """1-based line numbers where a smali/Java marker occurs."""
+    newline_ends = _newline_ends(text)
     return [
-        text[: match.start()].count("\n") + 1
+        bisect.bisect_right(newline_ends, match.start()) + 1
         for match in re.finditer(re.escape(marker), text)
     ]
 
@@ -771,7 +778,7 @@ def solve_file(
             # Lazy packers reuse a zero IV; cheap to try, gated by looks_decoded.
             zero_iv = bytes(16 if algorithm == "AES" else 8)
             iv_options.append(zero_iv)
-            iv_label[id(zero_iv)] = None
+            iv_label[id(zero_iv)] = base64.b64encode(zero_iv).decode()  # M3: replay needs a real IV
 
         # Handle CTR mode IV options (similar to CBC)
         if mode == "CTR":
@@ -784,7 +791,7 @@ def solve_file(
             # Zero IV fallback for CTR
             zero_iv = bytes(16)
             ctr_iv_options.append(zero_iv)
-            ctr_iv_label[id(zero_iv)] = None
+            ctr_iv_label[id(zero_iv)] = base64.b64encode(zero_iv).decode()  # M3
         else:
             ctr_iv_options = []
             ctr_iv_label = {}
@@ -801,6 +808,8 @@ def solve_file(
                     options = ctr_iv_options if ctr_iv_options else [None]
                 else:
                     options = iv_options if mode == "CBC" or not mode else [None]
+                # M3: CTR hits carry the CTR IV labels; every other mode uses the CBC/none map
+                active_iv_label = ctr_iv_label if try_mode == "CTR" else iv_label
                 for key_bytes, _, _ in keys:
                     for iv_bytes in options:
                         plain = try_decrypt(
@@ -838,9 +847,9 @@ def solve_file(
                                 "cipher_mode": try_mode,
                                 "cipher_key_length": len(key_bytes),
                                 "cipher_iv_present": iv_bytes is not None
-                                and iv_label.get(id(iv_bytes)) is not None,
+                                and active_iv_label.get(id(iv_bytes)) is not None,
                                 "cipher_key_b64": base64.b64encode(key_bytes).decode(),
-                                "cipher_iv_b64": iv_label.get(id(iv_bytes)),
+                                "cipher_iv_b64": active_iv_label.get(id(iv_bytes)),
                                 "cipher_blob_encoding": blob_enc,
                             }
                         )

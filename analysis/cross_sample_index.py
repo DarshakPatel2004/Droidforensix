@@ -13,6 +13,7 @@ sequential. Before parallelizing the pipeline, a file lock is required.
 
 import json
 import logging
+import os
 from typing import Any, Dict
 
 from backend.config import settings
@@ -40,8 +41,11 @@ def save_index(index: Dict[str, Any]):
     index["version"] = 2
     try:
         INDEX_PATH.parent.mkdir(parents=True, exist_ok=True)
-        with open(INDEX_PATH, "w", encoding="utf-8") as f:
+        # Temp file then replace: a crash mid-write must not leave invalid JSON behind (L10).
+        tmp_path = INDEX_PATH.with_name(INDEX_PATH.name + ".tmp")
+        with open(tmp_path, "w", encoding="utf-8") as f:
             json.dump(index, f, indent=2)
+        os.replace(tmp_path, INDEX_PATH)
     except Exception as e:
         logger.warning("Failed to save cross-sample index: %s", e)
 

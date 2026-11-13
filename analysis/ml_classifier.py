@@ -20,9 +20,12 @@ Usage:
 import argparse
 import csv
 import json
+import logging
 import pickle
 from pathlib import Path
 from typing import Dict, List, Tuple
+
+logger = logging.getLogger(__name__)
 
 ROOT = Path(__file__).resolve().parent.parent
 CACHE_PATH = ROOT / "analysis" / "gap_features_cache.json"
@@ -140,10 +143,14 @@ def predict_for_result(result: Dict, sample_id: str = None) -> Tuple[str, float]
     clf, vec = load_model()
     if clf is None:
         return "unknown", 0.0
-    # Try gap cache first
+    # Try gap cache first. A missing or unreadable cache must fall back to result strings, not give up.
+    entry = None
     try:
         cache = json.loads(CACHE_PATH.read_text(encoding="utf-8"))
         entry = cache.get(sample_id.lower()) if sample_id else None
+    except (OSError, ValueError) as exc:
+        logger.warning("Gap cache unavailable, using result strings: %s", exc)
+    try:
         if entry and not entry.get("parse_error"):
             strings = entry.get("strings", []) or []
             blob = " ".join(s.lower() for s in strings if isinstance(s, str) and 4 <= len(s) <= 120)[:10000]
@@ -154,7 +161,8 @@ def predict_for_result(result: Dict, sample_id: str = None) -> Tuple[str, float]
             blob = " ".join(str(v) for v in result.get("strings", {}).values() if isinstance(v, str))[:10000]
             perms = result.get("permissions", []) or result.get("manifest", {}).get("uses_permissions", []) or []
             class_count = result.get("extraction", {}).get("decompiled_classes", 0)
-    except Exception:
+    except Exception as exc:
+        logger.warning("Feature extraction failed, classifying as unknown: %s", exc)
         return "unknown", 0.0
 
     tfidf = vec["tfidf"]

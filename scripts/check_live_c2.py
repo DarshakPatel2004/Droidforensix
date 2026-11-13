@@ -15,12 +15,17 @@ Output:
 
 import argparse
 import csv
+import ipaddress
 import json
 import socket
 import sys
+from collections import defaultdict
 from pathlib import Path
 from urllib.parse import urlparse
-from collections import defaultdict
+
+ROOT = Path(__file__).resolve().parents[1]
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
 
 from backend.config import settings
 
@@ -47,23 +52,11 @@ def extract_domain(value: str) -> str | None:
 
 
 def is_private_ip(ip: str) -> bool:
-    """Return True for RFC1918 / loopback IPs."""
-    parts = ip.split(".")
-    if len(parts) != 4:
-        return True
+    """Return True for any address that is not publicly routable (private, loopback, link-local, multicast, ...)."""
     try:
-        o = [int(p) for p in parts]
+        return not ipaddress.ip_address(ip).is_global
     except ValueError:
         return True
-    if o[0] == 127:
-        return True
-    if o[0] == 10:
-        return True
-    if o[0] == 172 and 16 <= o[1] <= 31:
-        return True
-    if o[0] == 192 and o[1] == 168:
-        return True
-    return False
 
 
 def resolve_domain(domain: str, timeout: float = 3.0) -> list[str]:

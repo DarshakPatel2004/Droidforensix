@@ -1,25 +1,19 @@
 #!/usr/bin/env python3
 """Retrain family classifier on clean labels only."""
 
-import pandas as pd
-import json
+import sys
 from pathlib import Path
+
+import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.model_selection import cross_val_score, train_test_split
-from sklearn.metrics import accuracy_score, classification_report
+from sklearn.metrics import accuracy_score
+from sklearn.model_selection import cross_val_score
 
-gt = pd.read_csv('ground_truth_all_corrected.csv')
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from analysis.labels import is_catch_all  # same label policy as the scorer
 
-# Catch-all labels to exclude
-CATCHALL_LABELS = [
-    'AndroidOS', 'GenericKD', 'Agent', 'Trojan', 'Adware', 'Detected', 'Unknown', 
-    'UnknownFamily', 'Android/Packed', 'HEUR', 'Backdoor', 'Dropper', 'Exploit', 
-    'Application', 'General', 'Gen', 'Linux', 'Evo-gen [Trj]', 'Trojan-Banker', 
-    'Trojan-Dropper', 'a', 'A', '33107585', '40094400', 'AdLibrary', 'Evo-gen', 
-    'Virus', 'Android/Agent', 'Andr/Banker-HDY', 'Andr/NGate-G', 'Andr/Xgen2-AYJ',
-    'Android', 'Packed', 'Android/Packed', 'FakeTimer', 'SpyHasb', 'SpyNote_like',
-    'BoithirtyeightBanker_dropper', 'FrontierSmartRAT_dropper', 'CraxsRAT'
-]
+gt = pd.read_csv(ROOT / 'ground_truth_all_corrected.csv')
 
 # Clean sources (exclude abusech which is 82.6% catch-all)
 clean_sources = ['AndroZoo', 'androzoo_drebin', 'modern_eval']
@@ -27,7 +21,7 @@ clean_sources = ['AndroZoo', 'androzoo_drebin', 'modern_eval']
 malware = gt[
     (gt['is_malware'] == 'yes') & 
     (gt['source'].isin(clean_sources)) & 
-    (~gt['family'].isin(CATCHALL_LABELS))
+    (~gt['family'].fillna('').map(is_catch_all))
 ].copy()
 
 print(f"Original malware: {len(gt[gt['is_malware']=='yes'])}")
@@ -36,15 +30,16 @@ print(f"Families in clean: {malware['family'].nunique()}")
 print("Families:", sorted(malware['family'].unique()))
 
 # Load features
-feats = pd.read_csv('evaluation/classifier_data/features.csv')
+feats = pd.read_csv(ROOT / 'evaluation' / 'classifier_data' / 'features.csv')
 
 # Merge
 train_set = malware.merge(feats, on='sha256', how='inner', suffixes=('', '_feat'))
 print(f"Samples with features: {len(train_set)}")
 
 # Save clean training set
-train_set.to_csv('evaluation/clean_family_train.csv', index=False)
-print("Saved to evaluation/clean_family_train.csv")
+out_csv = ROOT / 'evaluation' / 'clean_family_train.csv'
+train_set.to_csv(out_csv, index=False)
+print(f"Saved to {out_csv}")
 
 # Prepare features - unique columns don't get _feat suffix
 feature_cols = [c for c in feats.columns if c not in ['sha256', 'is_malware', 'source', 'family']]
@@ -82,5 +77,6 @@ print(importances.head(15).to_string(index=False))
 
 # Save model
 import joblib
+
 joblib.dump(clf, 'evaluation/family_classifier_clean.pkl')
 print("\nSaved model to evaluation/family_classifier_clean.pkl")

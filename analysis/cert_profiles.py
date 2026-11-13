@@ -19,7 +19,6 @@ from pathlib import Path
 
 logger = logging.getLogger(__name__)
 
-logging.disable(logging.DEBUG)
 logging.getLogger("androguard").setLevel(logging.ERROR)
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -149,6 +148,7 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    logging.disable(logging.DEBUG)  # M6: process-wide, so script-only
     main()
 
 # Module-level CERT_PROFILES dict — populated when main() is invoked.

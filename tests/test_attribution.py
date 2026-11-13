@@ -396,7 +396,8 @@ class TestUniqueC2Indicators:
 
 class TestCommunityIntel:
 
-    def test_community_intel_200(self, client):
+    def test_community_intel_200(self, client, monkeypatch):
+        monkeypatch.setenv("DF_ALLOW_LIVE_LOOKUPS", "1")
         response = client.get("/api/sample/test_sample_001/community-intel")
         assert response.status_code == 200
         data = response.json()
@@ -411,7 +412,8 @@ class TestCommunityIntel:
             assert post["title"]
             assert post["url"]
 
-    def test_community_intel_404(self, client):
+    def test_community_intel_404(self, client, monkeypatch):
+        monkeypatch.setenv("DF_ALLOW_LIVE_LOOKUPS", "1")
         response = client.get("/api/sample/nonexistent/community-intel")
         assert response.status_code == 404
 

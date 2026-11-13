@@ -1,5 +1,6 @@
 import logging
 import math
+import re
 import zipfile
 from pathlib import Path
 from typing import Any, Dict, List, Optional
@@ -115,18 +116,31 @@ def extract_symbols_from_elf(elf_path: str) -> List[str]:
         return []
 
 
+def _is_word_hit(sym: str, pattern: str) -> bool:
+    """Case-aware whole-word match, so 'des' does not hit 'destroy' or 'trace' hit 'stacktrace' (L24).
+
+    A boundary is a non-alphanumeric character, a digit, or a camelCase hump in the original symbol.
+    """
+    lowered, pat = sym.lower(), pattern.lower()
+    for m in re.finditer(re.escape(pat), lowered):
+        i, j = m.start(), m.end()
+        starts_word = (not pat[0].isalnum() or i == 0 or not lowered[i - 1].isalnum()
+                       or sym[i].isupper())
+        ends_word = (not pat[-1].isalnum() or j == len(lowered) or not lowered[j].isalnum()
+                     or lowered[j].isdigit() or sym[j].isupper())
+        if starts_word and ends_word:
+            return True
+    return False
+
+
 def match_symbols(symbols: List[str]) -> Dict[str, List[str]]:
     crypto = []
     anti = []
     for sym in symbols:
-        for pat in CRYPTO_SYMBOL_PATTERNS:
-            if pat.lower() in sym.lower():
-                crypto.append(sym)
-                break
-        for pat in ANTI_ANALYSIS_PATTERNS:
-            if pat.lower() in sym.lower():
-                anti.append(sym)
-                break
+        if any(_is_word_hit(sym, pat) for pat in CRYPTO_SYMBOL_PATTERNS):
+            crypto.append(sym)
+        if any(_is_word_hit(sym, pat) for pat in ANTI_ANALYSIS_PATTERNS):
+            anti.append(sym)
     return {"crypto_functions": crypto, "anti_analysis": anti}
 
 

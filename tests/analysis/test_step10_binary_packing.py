@@ -20,7 +20,7 @@ class TestDetectBinaryPacking:
 
     def test_with_dex_sections(self):
         sections = {
-            ".text": {"size": 500000, "entropy": 7.9},
+            "classes.dex": {"size": 500000, "entropy": 7.9},
             ".data": {"size": 1000, "entropy": 4.5},
         }
         result = analyze_dex_sections(sections)
@@ -29,7 +29,7 @@ class TestDetectBinaryPacking:
 
     def test_clean_sections(self):
         sections = {
-            ".text": {"size": 10000, "entropy": 5.2},
+            "classes.dex": {"size": 10000, "entropy": 5.2},
         }
         result = analyze_dex_sections(sections)
         assert result["obfuscation_score"] == 0.0
@@ -61,3 +61,17 @@ class TestDetectDexInDex:
         result = detect_dex_in_dex([])
         assert result["suspicious"] is True
         assert "missing_dex" in result["indicators"]
+
+
+def test_random_classes_dex_is_flagged_end_to_end(tmp_path):
+    # Audit A2-H6: real pipeline keys sections by entry name; a random 600 KB DEX must be flagged.
+    import os
+    import zipfile
+
+    from analysis.step10_binary_packing import detect_binary_packing
+
+    apk = tmp_path / "rand.apk"
+    with zipfile.ZipFile(apk, "w", zipfile.ZIP_DEFLATED) as zf:
+        zf.writestr("classes.dex", os.urandom(600_000))
+    result = detect_binary_packing({"apk_path": str(apk)})
+    assert result["obfuscation_score"] > 0

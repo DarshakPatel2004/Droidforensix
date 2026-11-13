@@ -17,9 +17,11 @@ import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import requests
+
+from backend.cache_utils import store_timed
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +29,10 @@ REQUEST_TIMEOUT = 5
 MAX_POSTS_PER_SOURCE = 8
 MAX_TOTAL_POSTS = 30
 CACHE_TTL_SECONDS = 600  # community data changes slowly; cache per sample
+MAX_CACHE_ENTRIES = 64
 
-_CACHE: Dict[str, tuple] = {}  # sample_id -> (timestamp, payload)
+# Keyed on the package and family too: the search depends on them, not only on the sample (audit B1-19).
+_CACHE: Dict[Tuple[str, str, str], Tuple[Dict, float]] = {}
 _CACHE_LOCK = threading.Lock()
 
 _HEADERS = {
@@ -181,11 +185,12 @@ def search_community_intel(package_name: str, family: str) -> Dict:
 
 def get_cached_community_intel(sample_id: str, package_name: str, family: str) -> Dict:
     """Return cached community intel for a sample, refreshing if stale."""
+    key = (sample_id, package_name, family)
     with _CACHE_LOCK:
-        cached = _CACHE.get(sample_id)
-        if cached and (time.time() - cached[0]) < CACHE_TTL_SECONDS:
-            return cached[1]
+        cached = _CACHE.get(key)
+        if cached and (time.time() - cached[1]) < CACHE_TTL_SECONDS:
+            return cached[0]
     payload = search_community_intel(package_name, family)
     with _CACHE_LOCK:
-        _CACHE[sample_id] = (time.time(), payload)
+        store_timed(_CACHE, key, payload, time.time(), CACHE_TTL_SECONDS, MAX_CACHE_ENTRIES)
     return payload

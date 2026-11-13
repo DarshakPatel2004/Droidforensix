@@ -166,8 +166,8 @@ def extract_native_jni_symbols(apk_path: str) -> Set[str]:
                         os.unlink(tmp_path)
                     except OSError:
                         pass
-    except (zipfile.BadZipFile, FileNotFoundError, RuntimeError):
-        pass
+    except (zipfile.BadZipFile, FileNotFoundError, RuntimeError) as exc:
+        logger.warning("Suppressed error reading JNI symbols from %s: %s", apk_path, exc)
     return symbols
 
 
@@ -713,16 +713,9 @@ def _entropy_cluster_match(left: Dict[str, Any], right: Dict[str, Any]) -> bool:
     if not shared_types:
         return False
     
-    # Bonus: check for similar cluster members (same encrypted strings)
-    for lc in left_clusters:
-        for rc in right_clusters:
-            if lc.get("dominant_type") == rc.get("dominant_type"):
-                left_members = set(lc.get("members", []))
-                right_members = set(rc.get("members", []))
-                if left_members & right_members:
-                    return True
-    
-    return bool(shared_types)
+    # A shared cluster type is the whole test. The member-overlap loop it used to have
+    # could only return True in the same cases, so it was removed (L20).
+    return True
 
 
 def edge_weight(
@@ -734,7 +727,7 @@ def edge_weight(
     """(weight, reasons) between two feature dicts.
 
     ``kinds`` restricts which signals contribute (ablation variants);
-    defaults to all signals (pipeline behavior).
+    defaults to DEFAULT_KINDS (the signals the pipeline uses).
     """
     weight = 0
     reasons: List[str] = []
@@ -795,9 +788,10 @@ def edge_weight(
 def build_campaign_graph(features: List[Dict[str, Any]], kinds: frozenset = DEFAULT_KINDS):
     """Weighted graph; an edge needs weight >= LINK_MIN_WEIGHT.
 
-    Default links come from: code similarity (MinHash), non-testkey shared certs,
-    JNI family match, obfuscation/packing profile match, cert issuer family match.
-    Shared C2 and entropy clusters are annotation-only (see campaign_evidence).
+    Default links (DEFAULT_KINDS) come from: code similarity (MinHash), non-testkey
+    shared certs, JNI family match, cert issuer family match. The obfuscation profile
+    is not a default kind. Shared C2 and entropy clusters are annotation-only (see
+    campaign_evidence).
     ``kinds`` overrides the contributing signals (ablation variants).
     """
     import networkx as nx

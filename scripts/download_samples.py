@@ -11,20 +11,21 @@ Generates sample_metadata.csv with SHA-256, family tags, and source info.
 """
 
 import csv
-import hashlib
-import json
 import os
+import re
 import sys
 import time
 import zipfile
 from pathlib import Path
+
+from download_common import safe_error, sanitize_filename, sha256_file
+from sample_archive import ZIP_PASSWORD, place_sample
 
 try:
     from dotenv import load_dotenv
     load_dotenv(Path(__file__).parent.parent / ".env")
 except ImportError:
     pass
-from urllib.parse import urlparse
 
 import requests
 
@@ -76,20 +77,6 @@ def get_malwarebazaar_headers() -> dict:
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
-
-def sha256_file(path: str) -> str:
-    h = hashlib.sha256()
-    with open(path, "rb") as f:
-        for chunk in iter(lambda: f.read(65536), b""):
-            h.update(chunk)
-    return h.hexdigest()
-
-
-def sanitize_filename(name: str) -> str:
-    """Make a string safe to use in a filename."""
-    safe = "".join(c if c.isalnum() or c in "._-" else "_" for c in name)
-    return safe.strip("._") or "unknown"
-
 
 def load_family_map(csv_path: Path = DREBIN_FAMILY_CSV) -> dict:
     """Load sha256 -> family mapping from the Drebin family CSV."""
@@ -183,74 +170,26 @@ def mb_query_tag(tag: str = "apk", limit: int = 50) -> list:
         return []
 
 
+def _extract_mb_zip(archive: Path, staging: Path) -> None:
+    with zipfile.ZipFile(archive, "r") as z:
+        z.extractall(path=staging, pwd=ZIP_PASSWORD)
+
+
 def mb_download(sha256_hash: str, dest_path: Path) -> bool:
-    """Download a sample from MalwareBazaar by SHA-256 (handles unsupported compression)."""
+    """Download a sample from MalwareBazaar by SHA-256 into dest_path (only that file is written)."""
     data = {"query": "get_file", "sha256_hash": sha256_hash}
+    zip_path = dest_path.with_suffix(".zip")
     try:
         resp = requests.post(MALWAREBazaar_API, data=data, headers=get_malwarebazaar_headers(), timeout=REQUEST_TIMEOUT)
         resp.raise_for_status()
         # Response is a ZIP containing the sample with password "infected"
-        zip_path = dest_path.with_suffix(".zip")
-        with open(zip_path, "wb") as f:
-            f.write(resp.content)
-        # Try extract with password; fallback if compression not supported
-        try:
-            with zipfile.ZipFile(zip_path, "r") as z:
-                z.extractall(path=dest_path.parent, pwd=b"infected")
-            zip_path.unlink()
-        except NotImplementedError as e:
-            # Unsupported compression (e.g. Deflate64) — treat zip as raw APK if magic matches
-            print(f"[!] Zip extract fallback for {sha256_hash}: {e}", flush=True)
-            try:
-                with open(zip_path, "rb") as f:
-                    magic = f.read(4)
-                if magic == b"PK\x03\x04":
-                    zip_path.rename(dest_path)
-                else:
-                    # Try 7zip via patool if available
-                    zip_path.unlink(missing_ok=True)
-                    return False
-            except Exception as e2:
-                print(f"[!] Fallback failed for {sha256_hash}: {e2}", flush=True)
-                zip_path.unlink(missing_ok=True)
-                return False
-        except zipfile.BadZipFile as e:
-            print(f"[!] Bad zip for {sha256_hash}: {e}", flush=True)
-            # Maybe content is raw APK not zip
-            try:
-                with open(zip_path, "rb") as f:
-                    magic = f.read(4)
-                if magic == b"PK\x03\x04":
-                    zip_path.rename(dest_path)
-                else:
-                    zip_path.unlink(missing_ok=True)
-                    return False
-            except Exception:
-                zip_path.unlink(missing_ok=True)
-                return False
-        else:
-            # success path already unlinked
-            pass
-        # The extracted file may have a generic name; rename if needed
-        extracted = list(dest_path.parent.iterdir())
-        for item in extracted:
-            if item.is_file() and item.suffix != ".apk" and not item.name.endswith(".zip"):
-                # Try to determine if it's an APK by magic bytes
-                with open(item, "rb") as f:
-                    magic = f.read(4)
-                if magic == b"PK\x03\x04":  # ZIP = APK
-                    item.rename(dest_path)
-                    break
-        if not dest_path.exists():
-            # Maybe it was already named .apk inside the zip
-            for item in extracted:
-                if item.suffix == ".apk" and item != dest_path:
-                    item.rename(dest_path)
-                    break
-        return dest_path.exists()
+        zip_path.write_bytes(resp.content)
+        return place_sample(zip_path, dest_path, sha256_hash, _extract_mb_zip)
     except Exception as e:
         print(f"[!] Download failed for {sha256_hash}: {e}")
         return False
+    finally:
+        zip_path.unlink(missing_ok=True)
 
 
 # ---------------------------------------------------------------------------
@@ -305,7 +244,7 @@ def download_androzoo_csv(dest_path: Path) -> bool:
     """Download the AndroZoo latest.csv.gz metadata file."""
     try:
         url = "https://androzoo.uni.lu/static/lists/latest.csv.gz"
-        print(f"[*] Downloading AndroZoo metadata CSV (this may take a while)...")
+        print("[*] Downloading AndroZoo metadata CSV (this may take a while)...")
         print(f"    URL: {url}")
         with requests.get(url, headers=HEADERS, timeout=REQUEST_TIMEOUT * 10, stream=True) as resp:
             resp.raise_for_status()
@@ -380,7 +319,7 @@ def androzoo_download(sha256_hash: str, dest_path: Path) -> bool:
             print(f"    Saved {downloaded} bytes {sha256_hash[:12]} {downloaded/1024/1024:.1f}MB", flush=True)
         return True
     except Exception as e:
-        print(f"[!] AndroZoo download error for {sha256_hash}: {e}", flush=True)
+        print(f"[!] AndroZoo download error for {sha256_hash}: {safe_error(e, os.environ.get('ANDROZOO_API_KEY', ''))}", flush=True)
         return False
 
 
@@ -445,7 +384,6 @@ def fetch_androzoo(target_count: int = 50, csv_path: Path = None,
                    min_vt: int = 2, max_size: int = 50_000_000) -> int:
     """Fetch malware APKs from AndroZoo using the latest CSV metadata."""
     records = load_existing_metadata()
-    existing_hashes = {r["sha256"].lower() for r in records if r.get("type") == "malware"}
     fetched = 0
 
     print(f"[*] Fetching {target_count} malware APKs from AndroZoo...")
@@ -560,10 +498,10 @@ def fetch_malware(target_count: int = 50) -> int:
         if already_have(sha256_hash, records):
             continue
 
-        file_name = sample.get("file_name", f"{sha256_hash}.apk")
-        if not file_name.endswith(".apk"):
-            file_name += ".apk"
-        dest = SAMPLES_DIR / "malware" / file_name
+        # Name by hash only: the submitter-chosen file_name can collide with or escape other samples (R2).
+        if not re.fullmatch(r"[0-9a-f]{64}", sha256_hash):
+            continue
+        dest = SAMPLES_DIR / "malware" / f"{sha256_hash}.apk"
 
         print(f"[*] Downloading malware {fetched+1}/{target_count}: {sha256_hash}")
         if mb_download(sha256_hash, dest):
@@ -603,7 +541,6 @@ def fetch_malware(target_count: int = 50) -> int:
 def fetch_koodous(target_count: int = 30, search: str = None) -> int:
     """Fetch malware APKs from Koodous."""
     records = load_existing_metadata()
-    existing_hashes = {r["sha256"].lower() for r in records if r.get("type") == "malware"}
     fetched = 0
 
     print(f"[*] Querying Koodous for Android APK malware (target: {target_count})...")
@@ -664,7 +601,7 @@ def fetch_koodous(target_count: int = 30, search: str = None) -> int:
                 "tags": ";".join(tags),
                 "file_size_bytes": dest.stat().st_size,
                 "status": "pending",
-                "vt_detections": sample.get(" positives", ""),
+                "vt_detections": sample.get("positives", ""),
                 "collection_date": time.strftime("%Y-%m-%d"),
             }
             records.append(record)
@@ -683,7 +620,6 @@ def fetch_koodous(target_count: int = 30, search: str = None) -> int:
 def fetch_legitimate(target_count: int = 10) -> int:
     """Fetch legitimate APKs from F-Droid."""
     records = load_existing_metadata()
-    existing_hashes = {r["sha256"].lower() for r in records if r.get("type") == "legitimate"}
     fetched = 0
 
     # Popular, well-known F-Droid packages — 100 for full-speed Phase 2 (valid per index.xml)

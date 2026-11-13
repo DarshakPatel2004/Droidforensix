@@ -129,8 +129,7 @@ def main() -> None:
         entry["_reason"] = reason
         rows.append(entry)
         category[cat] += 1
-        asn = entry.get("asn")
-        if cat != "unresolved" and not asn:
+        if cat == "unresolved":
             unresolved.append(ip)
 
     with REPORT_PATH.open("w", newline="", encoding="utf-8") as fh:

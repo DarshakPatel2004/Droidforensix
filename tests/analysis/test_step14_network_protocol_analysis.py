@@ -15,7 +15,10 @@ class TestAnalyzeNetworkProtocols:
             "http://94.137.2.8:8080/gate.php",
             "https://api.amplitude.com/identify",
         ])
-        assert result["total_endpoints"] >= 1
+        assert result["total_c2"] == 2
+        assert result["total_benign"] == 1
+        assert {e["hostname"] for e in result["c2_endpoints"]} == {"94.137.2.8"}
+        assert result["benign_endpoints"][0]["hostname"] == "api.amplitude.com"
 
     def test_only_normal_strings(self):
         result = analyze_network_protocols(["hello world", "just a string"])
@@ -30,7 +33,8 @@ class TestClassifyEndpoint:
 
     def test_sdk(self):
         classification = classify_endpoint("https://api.amplitude.com/identify")
-        assert classification["classification"] in ("sdk", "benign", "unknown")
+        assert classification["classification"] == "benign"
+        assert classification["confidence"] == 0.9
 
     def test_benign_google(self):
         classification = classify_endpoint("https://www.google.com/")
@@ -38,7 +42,8 @@ class TestClassifyEndpoint:
 
     def test_unknown(self):
         classification = classify_endpoint("https://some-cdn.example.com/assets.js")
-        assert classification["classification"] in ("unknown", "benign")
+        assert classification["classification"] == "unknown"
+        assert classification["confidence"] == 0.3
 
     def test_ip_only(self):
         classification = classify_endpoint("192.168.1.1")
@@ -46,7 +51,9 @@ class TestClassifyEndpoint:
 
     def test_empty_string(self):
         classification = classify_endpoint("")
-        assert "classification" in classification
+        assert classification["classification"] == "unknown"
+        assert classification["hostname"] == ""
+        assert classification["is_ip"] is False
 
 
 class TestExtractEndpoints:
@@ -57,7 +64,10 @@ class TestExtractEndpoints:
             "/api/update",
             "just a normal string",
         ])
-        assert len(endpoints) >= 1
+        assert "https://evil.com/payload" in endpoints
+        assert "http://192.168.1.1/config" in endpoints
+        assert "/api/update" not in endpoints
+        assert "just a normal string" not in endpoints
 
     def test_empty(self):
         assert extract_endpoints([]) == []

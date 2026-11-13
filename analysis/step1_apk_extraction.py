@@ -131,6 +131,9 @@ def run_androguard(apk_path: str) -> dict:
         result["success"] = True
         result["class_count"] = class_count
         result["dex_strings"] = sorted(dex_strings)
+        # Androguard parsed the manifest even when apktool failed: keep its metadata (audit A1-09).
+        result["package_name"] = apk.get_package()
+        result["permissions"] = sorted(apk.get_permissions())
         # Crypter stub detection: a 0-byte classes.dex means the APK is a
         # packer shell (e.g. SpyNote crypter) with no extractable code.
         try:
@@ -255,20 +258,17 @@ def classify_extraction_status(result: dict, apk_path: str) -> str:
     return "empty_extraction"
 
 
+# Native strings kept per library. Large libs (e.g. libunity.so) otherwise produce
+# hundreds of thousands of entries that steps 2-5 and the JSON files copy around (A1-40).
+# shortcut: a hard cap drops strings past the first N per lib, revisit if a real C2 hides beyond it
+MAX_NATIVE_STRINGS_PER_LIB = 20000
+_PRINTABLE_RUN = re.compile(rb"[ -~]{6,}")
+
+
 def _extract_printable_strings(data: bytes, min_len: int = 6) -> list:
     """Pure-Python fallback to extract printable ASCII strings."""
-    strings = []
-    current = bytearray()
-    for b in data:
-        if 32 <= b <= 126:
-            current.append(b)
-        else:
-            if len(current) >= min_len:
-                strings.append(current.decode("ascii", errors="ignore"))
-            current.clear()
-    if len(current) >= min_len:
-        strings.append(current.decode("ascii", errors="ignore"))
-    return strings
+    pattern = _PRINTABLE_RUN if min_len == 6 else re.compile(rb"[ -~]{%d,}" % min_len)
+    return [m.decode("ascii") for m in pattern.findall(data)]
 
 
 def extract_native_strings(apk_dir: str) -> list:
@@ -343,10 +343,15 @@ def extract_native_strings(apk_dir: str) -> list:
             else:
                 lines = _extract_printable_strings(data, min_len=6)
 
+            kept = 0
             for line in lines:
                 line = line.strip()
                 if not line:
                     continue
+                if kept >= MAX_NATIVE_STRINGS_PER_LIB:
+                    logger.warning("Native string cap (%d) reached for: %s", MAX_NATIVE_STRINGS_PER_LIB, so_file)
+                    break
+                kept += 1
                 strings.append({
                     "value": line,
                     "source": so_file.relative_to(apk_dir).as_posix(),
@@ -411,6 +416,19 @@ def extract_manifest_info(apk_dir: str) -> dict:
             info["uses_permissions"].append(m.group(1))
     except Exception as e:
         logger.warning("Failed to parse manifest info from %s (%s: %s)", manifest_path, type(e).__name__, e)
+    # apktool moves versionInfo/sdkInfo out of AndroidManifest.xml into apktool.yml (audit A1-08).
+    yml_path = Path(apk_dir) / "apktool.yml"
+    if yml_path.exists():
+        try:
+            yml = yml_path.read_text(encoding="utf-8", errors="ignore")
+            for key, field in (("versionName", "version_name"), ("versionCode", "version_code"),
+                               ("targetSdkVersion", "target_sdk_version"), ("minSdkVersion", "min_sdk_version")):
+                if info[field] is None:
+                    m = re.search(rf"^\s*{key}:\s*['\"]?([^'\"\s]+)", yml, re.MULTILINE)
+                    if m:
+                        info[field] = int(m.group(1)) if key.endswith(("Code", "SdkVersion")) and m.group(1).isdigit() else m.group(1)
+        except Exception as e:
+            logger.warning("Failed to parse apktool.yml in %s (%s: %s)", apk_dir, type(e).__name__, e)
     return info
 
 
@@ -457,6 +475,10 @@ def extract_apk(apk_path: str, work_dir: Optional[str] = None) -> dict:
     if apktool_result["success"]:
         package_name = extract_package_name(str(apktool_dir))
         manifest_info = extract_manifest_info(str(apktool_dir))
+    elif androguard_result["success"]:
+        # apktool failed but Androguard parsed the APK: use its package and permissions (audit A1-09).
+        package_name = androguard_result.get("package_name")
+        manifest_info = {"uses_permissions": androguard_result.get("permissions", [])}
 
     # Class count from Androguard
     decompiled_classes = androguard_result["class_count"]

@@ -22,6 +22,9 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 
 
+FULL_MODE_METHOD_CAP = 200  # max LLM-summarised methods in full mode
+
+
 class DeobfuscateRequest(BaseModel):
     text: str
     hint: Optional[str] = None
@@ -34,6 +37,8 @@ class ExplainChainRequest(BaseModel):
 @router.post("/api/sample/{sample_id}/explain-chain")
 async def api_explain_chain(sample_id: str, request: ExplainChainRequest) -> dict:
     """Return LLM explanation for a threat chain."""
+    if load_result(sample_id) is None:  # no open LLM proxy for unknown samples (audit B2-16)
+        raise HTTPException(status_code=404, detail="Sample not found")
     loop = asyncio.get_event_loop()
     try:
         llm_result = await loop.run_in_executor(
@@ -65,7 +70,11 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
         raise HTTPException(status_code=404, detail="Sample not found")
 
     mode = request.get("mode", "quick")
+    if mode not in ("quick", "full"):  # unknown modes used to render as quick under a "Full" footer (B2-34)
+        raise HTTPException(status_code=400, detail="mode must be 'quick' or 'full'")
     sections = request.get("sections") if mode == "quick" else None
+    if sections is not None and not isinstance(sections, dict):
+        raise HTTPException(status_code=400, detail="sections must be an object")
 
     def _gather_report_data():
         """Build everything the PDF needs. Runs in an executor: it performs
@@ -82,7 +91,7 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
 
         if apk:
             try:
-                dissector = APKDissector(str(apk), work_dir=str(dissection_routes.WORK_DIR), cache=dissection_routes._dissection_cache)
+                dissector = APKDissector(str(apk), work_dir=str(dissection_routes.WORK_DIR), cache=dissection_routes._dissection_cache, sample_id=sample_id)
                 classes = dissector.list_decompiled_class_objects()
 
                 SUSPICIOUS_KEYWORDS = [
@@ -118,7 +127,7 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
                 ]
                 suspicious.sort(key=suspicion_score, reverse=True)
 
-                method_limit = None if mode == 'full' else 30
+                method_limit = FULL_MODE_METHOD_CAP if mode == 'full' else 30  # shortcut: caps LLM calls per request (B2-18); raise with a background job
                 processed = 0
 
                 for cls in suspicious:

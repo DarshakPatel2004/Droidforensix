@@ -2,12 +2,14 @@ import json
 import logging
 import math
 import zipfile
+from collections import Counter
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List
 
 logger = logging.getLogger(__name__)
 
+MAX_ENTRY_BYTES = 100 * 1024 * 1024
 MARKERS_PATH = Path(__file__).resolve().parent.parent / "data" / "packer_markers.json"
 MARKER_SCAN_BYTES = 256 * 1024  # per-DEX cap for marker scanning
 
@@ -30,9 +32,7 @@ PACKING_INDICATORS = [
 def shannon_entropy(data: bytes) -> float:
     if not data:
         return 0.0
-    freq = {}
-    for byte in data:
-        freq[byte] = freq.get(byte, 0) + 1
+    freq = Counter(data)  # counts in C; the per-byte Python loop was the slow part (L4)
     entropy = 0.0
     length = len(data)
     for count in freq.values():
@@ -49,17 +49,18 @@ def analyze_dex_sections(sections: Dict[str, Dict]) -> Dict[str, Any]:
         size = info.get("size", 0)
         entropy = info.get("entropy", 0.0)
 
-        if name == ".text" and size > 300000:
+        # Keys are DEX entry names (classes.dex, classes2.dex, ...) from detect_binary_packing.
+        if name.endswith(".dex") and size > 300000:
             indicators.append({
                 "type": "oversized_dex_section",
-                "detail": f".text section {size} bytes (threshold: 300KB)",
+                "detail": f"{name} {size} bytes (threshold: 300KB)",
             })
             score += 30
 
-        if name == ".text" and entropy > 7.0:
+        if name.endswith(".dex") and entropy > 7.0:
             indicators.append({
                 "type": "high_entropy_code",
-                "detail": f".text entropy {entropy:.2f} (threshold: 7.0)",
+                "detail": f"{name} entropy {entropy:.2f} (threshold: 7.0)",
             })
             score += 30
 
@@ -156,6 +157,8 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
             for name in entry_names:
                 if name.endswith(".dex"):
                     info = zf.getinfo(name)
+                    if info.file_size > MAX_ENTRY_BYTES:
+                        continue  # zip-bomb guard: declared size checked before decompressing
                     data = zf.read(name)
                     sections[name] = {
                         "size": info.file_size,
@@ -201,7 +204,8 @@ def detect_binary_packing(apk_info: Dict[str, Any]) -> Dict[str, Any]:
             if ind["type"] == pi["name"]:
                 total_score += pi["weight"]
 
-    packing_detected = total_score >= 30
+    # M2: a matched commercial packer brand counts even when no structural indicator fired
+    packing_detected = total_score >= 30 or bool(packer_brands)
 
     return {
         "packing_detected": packing_detected,

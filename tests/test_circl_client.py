@@ -18,7 +18,8 @@ from backend.circl_client import (
 
 @pytest.fixture
 def client():
-    return CIRCLClient(username="test_user", password="test_pass")
+    # No real rate-limit sleeps: the tests mock the HTTP session, so pacing only adds wall time.
+    return CIRCLClient(username="test_user", password="test_pass", rate_limit_delay=0)
 
 
 class TestCIRCLClientInit:

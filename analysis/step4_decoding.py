@@ -11,6 +11,7 @@ import json
 import logging
 import re
 import socket
+from pathlib import Path
 from typing import Any, Dict, List, Optional
 from urllib.parse import urlparse
 
@@ -86,7 +87,7 @@ def decode_hex(s: str) -> Optional[bytes]:
 def decode_xor(s: str, key: int) -> Optional[bytes]:
     """Decode XOR with given key."""
     try:
-        data = s.encode("utf-8", errors="ignore")
+        data = s.encode("latin-1", errors="ignore")  # same as step 3 brute force (audit A1-07)
         return bytes(b ^ key for b in data)
     except Exception as exc:
         logger.debug("Suppressed error in decode_xor: %s", exc)
@@ -213,7 +214,7 @@ def decode_payload(encoding: dict) -> Optional[bytes]:
 
 
 def normalize_url(url: str) -> str:
-    """Normalize URL: lowercase scheme/host, remove trailing slash."""
+    """Normalize URL: lowercase scheme/host, remove trailing slash. Query, params and fragment are dropped (A1-42)."""
     try:
         parsed = urlparse(url)
         netloc = parsed.netloc.lower()
@@ -366,7 +367,9 @@ def decode_payloads(encodings_result: dict) -> dict:
         dict with decoded payloads.
     """
     sample_id = encodings_result["sample_id"]
-    work_dir = settings.WORK_DIR / sample_id
+    # Honour the pipeline work_dir carried from step 2 (audit A1-10); global default otherwise.
+    carried = encodings_result.get("work_dir")
+    work_dir = Path(carried) if carried else settings.WORK_DIR / sample_id
     work_dir.mkdir(parents=True, exist_ok=True)
 
     payloads = []
@@ -439,6 +442,7 @@ def decode_payloads(encodings_result: dict) -> dict:
 
     result = {
         "sample_id": sample_id,
+        "work_dir": str(work_dir),
         "total_payloads": len(payloads),
         "payloads": payloads,
     }

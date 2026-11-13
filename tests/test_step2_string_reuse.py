@@ -22,7 +22,8 @@ def test_reuses_step1_dex_strings_without_reparsing(extraction, monkeypatch):
     result = enumerate_strings(extraction)
     values = {s["value"] for s in result["categories"]["string_literals"]}
     assert "https://evil.example/panel" in values
-    assert {"192.168.1.1:8080", "abc"} <= set(extraction["dex_strings"]) - values
+    assert "192.168.1.1:8080" in values  # IP:port kept for step 5 (audit A1-01)
+    assert "abc" not in values  # short literal still dropped
 
 
 def test_falls_back_to_androguard_when_step1_empty(extraction, monkeypatch):

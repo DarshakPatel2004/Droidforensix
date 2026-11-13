@@ -6,6 +6,7 @@ C2 infrastructure. Calculates composite confidence scores and severity indicator
 """
 
 import json
+from pathlib import Path
 
 from backend.config import settings
 
@@ -50,7 +51,9 @@ def build_threat_chains(encodings_result: dict, payloads_result: dict,
         dict with threat chains.
     """
     sample_id = encodings_result["sample_id"]
-    work_dir = settings.WORK_DIR / sample_id
+    # Honour the pipeline work_dir carried from step 2 (audit A1-10); global default otherwise.
+    carried = encodings_result.get("work_dir")
+    work_dir = Path(carried) if carried else settings.WORK_DIR / sample_id
     work_dir.mkdir(parents=True, exist_ok=True)
 
     chains = []
@@ -233,6 +236,7 @@ def build_threat_chains(encodings_result: dict, payloads_result: dict,
 
     result = {
         "sample_id": sample_id,
+        "work_dir": str(work_dir),
         "total_chains": len(chains),
         "threat_chains": chains,
     }

@@ -19,8 +19,8 @@ Operationalized state (see backend/family_id.py "Gap-recovery signatures"):
                Hamob, SpyHasb, Dougalek*  (* = tuned during validation:
                Secapk dropped the generic "addprovider"/"chmod 755" strings
                and raised min_matches to 4; Dougalek gained require_c2=True)
-  HELD       - kept here for future work, single generic C2 or FP risk:
-               FakeTimer, Lemon, Stiniter, Nandrobox
+  HELD       - none now. Earlier held drafts are listed in COMMITTED_FAMILIES, so
+               held_drafts is empty and main() checks nothing held (L16).
 
 Unsignable families are documented in gap_signal_report.json:
   - statically unrecoverable (encrypted/corrupt/hollow DEX): CraxsRAT, Mirax,

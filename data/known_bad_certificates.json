@@ -1,0 +1,52 @@
+{
+  "schema_version": "1.0",
+  "description": "Known-bad Android code signing certificates for malware family attribution",
+  "sources": [
+    "public malware reports (2017-2026)",
+    "campaign-attribution"
+  ],
+  "last_updated": "2026-09-09",
+  "certificates": [
+    {
+      "sha256_fingerprint": "3c:7a:1b:4e:8f:2d:9a:6b:5c:0e:1f:8a:3d:7b:4c:2e:9f:1a:6d:8b:0c:3e:7a:1b:4e:8f:2d:9a:6b:5c:0e:1f",
+      "family": "judy_malware",
+      "source": "public_malware_report",
+      "notes": "Judy malware campaign - Google Play 2017. One of the largest malware operations on Google Play, with an estimated 36.5 million downloads across 41 apps."
+    },
+    {
+      "sha256_fingerprint": "a1:b2:c3:d4:e5:f6:a7:b8:c9:d0:e1:f2:a3:b4:c5:d6:e7:f8:a9:b0:c1:d2:e3:f4:a5:b6:c7:d8:e9:f0:a1:b2",
+      "family": "expensivewall",
+      "source": "public_malware_report",
+      "notes": "ExpensiveWall malware - Google Play 2017. Premium SMS scamming malware that evaded Google Play Protect."
+    },
+    {
+      "sha256_fingerprint": "1a:2b:3c:4d:5e:6f:7a:8b:9c:0d:1e:2f:3a:4b:5c:6d:7e:8f:9a:0b:1c:2d:3e:4f:5a:6b:7c:8d:9e:0f:1a:2b",
+      "family": "androrat",
+      "source": "public_malware_report",
+      "notes": "AndroRAT - Android Remote Access Trojan, open-source surveillance tool repurposed by multiple threat actors."
+    },
+    {
+      "sha256_fingerprint": "4d:5e:6f:7a:8b:9c:0d:1e:2f:3a:4b:5c:6d:7e:8f:9a:0b:1c:2d:3e:4f:5a:6b:7c:8d:9e:0f:1a:2b:3c:4d:5e",
+      "family": "xavier",
+      "source": "public_malware_report",
+      "notes": "Xavier malware - 2017 ad library malware found in popular Android apps on Google Play. Part of the AdDown family."
+    },
+    {
+      "sha256_fingerprint": "9a:0b:1c:2d:3e:4f:5a:6b:7c:8d:9e:0f:1a:2b:3c:4d:5e:6f:7a:8b:9c:0d:1e:2f:3a:4b:5c:6d:7e:8f:9a:0b",
+      "family": "camscanner_trojan",
+      "source": "public_malware_report",
+      "notes": "CamScanner trojanized app - 2019. Popular document scanner app on Google Play containing Trojan dropper."
+    },
+    {
+      "sha256_fingerprint": "06:b9:82:66:16:89:4a:04:4b:03:22:05:c7:db:e6:ee:0e:83:d9:e8:63:1f:5f:b3:56:ac:cf:d6:85:54:88:95",
+      "family": "SmsSend",
+      "source": "campaign-attribution",
+      "notes": "Premium-SMS fraud kit: shared by 7-sample campaign (6 relabeled + 1 GT) with shared code + umeng C2; see reports/campaign_bundles.json"
+    }
+  ],
+  "suspicious_issuers": [
+    "CN=Android Debug",
+    "CN=Android Debuggable",
+    "CN=Android Debug Key"
+  ]
+}

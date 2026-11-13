@@ -7,6 +7,7 @@ Converts pipeline_result.json into frontend-friendly formats:
 - Timeline data (attack progression)
 """
 
+import copy
 import hashlib
 import json
 import logging
@@ -14,6 +15,7 @@ import math
 import time
 from typing import Any, Dict, List, Optional
 
+from backend.cache_utils import StampedLRU
 from backend.config import settings
 
 logger = logging.getLogger(__name__)
@@ -30,6 +32,9 @@ _ALL_RESULTS_TTL = 300  # seconds before re-scanning disk (pipeline results are 
 _FAMILY_INDEX_CACHE: dict[str, str] | None = None
 _FAMILY_INDEX_MTIME: float = 0
 _FAMILY_INDEX_TTL = 300
+
+# Parsed pipeline results, keyed by path and invalidated by source_stamp (audit B2-23).
+_RESULT_CACHE = StampedLRU(max_entries=16)
 
 
 # ---------------------------------------------------------------------------
@@ -68,7 +73,7 @@ def _strip_surrogates(obj):
     if isinstance(obj, str):
         return obj.encode("utf-8", "surrogatepass").decode("utf-8", "ignore")
     if isinstance(obj, dict):
-        return {k: _strip_surrogates(v) for k, v in obj.items()}
+        return {_strip_surrogates(k): _strip_surrogates(v) for k, v in obj.items()}
     if isinstance(obj, list):
         return [_strip_surrogates(v) for v in obj]
     return obj
@@ -77,6 +82,21 @@ def _strip_surrogates(obj):
 # ---------------------------------------------------------------------------
 # Load helpers
 # ---------------------------------------------------------------------------
+
+
+def source_stamp(sample_id: str) -> str:
+    """Invalidation key for anything derived from a sample's pipeline result (audit B2-21).
+
+    Changes when the pipeline re-runs (result mtime) or the family knowledge base changes.
+    """
+    from backend.family_id import _family_cache_stamp
+
+    result_path = WORK_DIR / sample_id / "pipeline_result.json"
+    try:
+        mtime_ns = result_path.stat().st_mtime_ns
+    except OSError:
+        mtime_ns = 0
+    return f"{mtime_ns}|{_family_cache_stamp()}"
 
 
 def load_result(sample_id: str) -> Optional[Dict[str, Any]]:
@@ -97,6 +117,11 @@ def load_result(sample_id: str) -> Optional[Dict[str, Any]]:
     path = WORK_DIR / sample_id / "pipeline_result.json"
     if not path.exists():
         return None
+    stamp = source_stamp(sample_id)
+    cached = _RESULT_CACHE.get(str(path), stamp)
+    if cached is not None:
+        # Callers mutate what they get back, so they never share the cached object.
+        return copy.deepcopy(cached)
     try:
         with open(path, "r", encoding="utf-8") as f:
             result = json.load(f)
@@ -115,6 +140,7 @@ def load_result(sample_id: str) -> Optional[Dict[str, Any]]:
             from backend.family_id import identify_family
             result["family_identification"] = identify_family(sample_id, result, use_llm=True, use_cache=True)
         except Exception:
+            logger.warning("Family backfill failed for %s", sample_id, exc_info=True)
             result["family_identification"] = {
                 "family": "unknown",
                 "confidence": 0.0,
@@ -122,6 +148,7 @@ def load_result(sample_id: str) -> Optional[Dict[str, Any]]:
                 "reasoning": "backfill failed",
                 "candidates": [],
             }
+    _RESULT_CACHE.put(str(path), stamp, copy.deepcopy(result))
     return result
 
 
@@ -189,7 +216,7 @@ def transform_graph(result: Dict[str, Any]) -> Dict[str, Any]:
     node_ids = set()
 
     sample_id = result.get("sample_id", "unknown")
-    sample_name = result.get("metadata", {}).get("sample_name", sample_id)
+    sample_name = (result.get("metadata") or {}).get("sample_name", sample_id)
 
     # Root sample node
     sample_node_id = f"sample:{sample_id}"
@@ -313,12 +340,12 @@ def transform_clusters(results: List[Dict[str, Any]]) -> Dict[str, Any]:
         obfuscation = result.get("obfuscation_analysis", {})
         z = len(payloads) + len(chains) + (obfuscation.get("obfuscation_score", 0) / 25)
 
-        assessment = result.get("llm_assessment", {})
+        assessment = result.get("llm_assessment") or {}
         risk_score = assessment.get("risk_score", 0)
         severity = assessment.get("severity", "low")
 
         # Family from family_identification, sample_name or package_name
-        family_info = result.get("family_identification", {})
+        family_info = result.get("family_identification") or {}
         family = family_info.get("family") or metadata.get("package_name", "unknown")
         if family == "unknown" and "." in sample_name:
             family = sample_name.split(".")[0]
@@ -375,7 +402,7 @@ def transform_timeline(result: Dict[str, Any]) -> Dict[str, Any]:
 
     return {
         "sample_id": result.get("sample_id", "unknown"),
-        "sample_name": result.get("metadata", {}).get("sample_name", ""),
+        "sample_name": (result.get("metadata") or {}).get("sample_name", ""),
         "total_chains": len(chains),
         "chains": chains,
     }
@@ -391,9 +418,9 @@ def transform_samples_list(results: List[Dict[str, Any]]) -> List[Dict[str, Any]
     samples = []
     for result in results:
         metadata = result.get("metadata", {})
-        assessment = result.get("llm_assessment", {})
+        assessment = result.get("llm_assessment") or {}
         obfuscation = result.get("obfuscation_analysis", {})
-        family_info = result.get("family_identification", {})
+        family_info = result.get("family_identification") or {}
         family = family_info.get("family") or metadata.get("package_name", "unknown")
         if family == "unknown" and "." in metadata.get("sample_name", ""):
             family = metadata.get("sample_name", "").split(".")[0]
@@ -415,11 +442,11 @@ def transform_samples_list(results: List[Dict[str, Any]]) -> List[Dict[str, Any]
             "payloads_count": len(result.get("payloads", [])),
             "c2_count": len(result.get("c2_infrastructure", [])),
             "chains_count": len(result.get("threat_chains", [])),
-            "zero_day_risk_score": result.get("threat_synthesis", {}).get("zero_day_risk_score", 0),
-            "zero_day_risk_level": result.get("threat_synthesis", {}).get("risk_level", "none"),
-            "packing_detected": result.get("binary_packing", {}).get("packing_detected", False),
-            "reflective_calls": result.get("reflective_tracing", {}).get("total_reflective_calls", 0),
-            "c2_endpoints": result.get("network_protocols", {}).get("total_c2", 0),
-            "certificate_found": result.get("certificate_analysis", {}).get("certificate_found", False),
+            "zero_day_risk_score": (result.get("threat_synthesis") or {}).get("zero_day_risk_score", 0),
+            "zero_day_risk_level": (result.get("threat_synthesis") or {}).get("risk_level", "none"),
+            "packing_detected": (result.get("binary_packing") or {}).get("packing_detected", False),
+            "reflective_calls": (result.get("reflective_tracing") or {}).get("total_reflective_calls", 0),
+            "c2_endpoints": (result.get("network_protocols") or {}).get("total_c2", 0),
+            "certificate_found": (result.get("certificate_analysis") or {}).get("certificate_found", False),
         })
     return samples

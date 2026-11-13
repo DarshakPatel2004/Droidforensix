@@ -89,6 +89,23 @@ def add_known_bad_cert(fingerprint: str, family: str, source: str = "manual", pa
         json.dump(data, f, indent=2)
 
 
+def _load_signing_certificate(cert_data: bytes, x509, backend):
+    """Return the signing certificate from a META-INF/*.RSA|DSA|EC blob.
+
+    jarsigner writes PKCS#7 (SignedData) blobs, which are not raw DER X.509, so the
+    raw parse is tried first and the PKCS#7 container is parsed as the fallback (M12).
+    Returns None when the blob holds no certificate.
+    """
+    try:
+        return x509.load_der_x509_certificate(cert_data, backend)
+    except ValueError:
+        pass
+    from cryptography.hazmat.primitives.serialization import pkcs7
+
+    certs = pkcs7.load_der_pkcs7_certificates(cert_data)
+    return certs[0] if certs else None
+
+
 def parse_certificate_from_apk(apk_path: str) -> Optional[Dict[str, Any]]:
     try:
         with zipfile.ZipFile(apk_path, "r") as zf:
@@ -106,7 +123,9 @@ def parse_certificate_from_apk(apk_path: str) -> Optional[Dict[str, Any]]:
         from cryptography.hazmat.backends import default_backend
         from cryptography.hazmat.primitives import hashes
 
-        cert = x509.load_der_x509_certificate(cert_data, default_backend())
+        cert = _load_signing_certificate(cert_data, x509, default_backend())
+        if cert is None:
+            return None
         subject = cert.subject.rfc4514_string()
         issuer = cert.issuer.rfc4514_string()
 

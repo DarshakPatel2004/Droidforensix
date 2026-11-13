@@ -9,19 +9,24 @@ Usage:  venv/bin/python scripts/unpack.py <apk> [--workdir DIR] [--out JSON]
 """
 import argparse
 import hashlib
+import io
 import json
+import os
 import pathlib
 import re
 import shutil
 import struct
 import subprocess
 import sys
+import time
 import zipfile
 
 sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
-sys.path.insert(0, ".")
 
 from Crypto.Cipher import AES  # noqa: E402
+
+LOCAL_HEADER = b"PK\x03\x04"   # ZIP local-file header signature
+UNPACK_BUDGET_S = int(os.environ.get("DF_UNPACK_BUDGET_S", "900"))   # per-route wall clock (audit P9)
 
 
 # --------------------------------------------------------------------------
@@ -57,8 +62,34 @@ def pkcs7_tail_ok(pt: bytes) -> bool:
     return True  # full check done by caller with key; here structural only
 
 
-def validate_dex(b: bytes):
-    return b[:4] == b"dex\n" and len(b) > 112
+def validate_dex(b: bytes) -> bool:
+    """DEX magic, header file_size equal to the buffer length, and the header Adler-32 checksum.
+
+    A magic check alone accepted junk and partial heap copies as recovered code (audit P5).
+    """
+    import zlib
+
+    if len(b) <= 112 or b[:4] != b"dex\n":
+        return False
+    checksum = struct.unpack_from("<I", b, 8)[0]
+    file_size = struct.unpack_from("<I", b, 32)[0]
+    return file_size == len(b) and (zlib.adler32(b[12:]) & 0xFFFFFFFF) == checksum
+
+
+MAX_ENTRY_BYTES = 256 * 1024 * 1024   # one archive member, declared size (audit P13)
+MAX_KIT_BYTES = 512 * 1024 * 1024     # total uncompressed size of a recovered kit
+
+
+def read_entry(zfile, name, cap=MAX_ENTRY_BYTES, limit=None):
+    """Read one member, refusing a declared size over cap before any inflation.
+
+    The declared size comes from the (untrusted) central directory, so it is checked
+    before reading. `limit` caps how much of the member is read."""
+    info = zfile.getinfo(name)
+    if info.file_size > cap:
+        raise ValueError(f"{name}: {info.file_size} bytes exceeds {cap}")
+    with zfile.open(info) as f:
+        return f.read(limit) if limit is not None else f.read()
 
 
 def validate_zip(pt: bytes):
@@ -68,6 +99,8 @@ def validate_zip(pt: bytes):
     try:
         import io
         zf = zipfile.ZipFile(io.BytesIO(pt))
+        if sum(i.file_size for i in zf.infolist()) > MAX_KIT_BYTES:
+            return False, "uncompressed size exceeds cap"
         bad = zf.testzip()
         if bad is not None:
             return False, f"crc fail at {bad}"
@@ -82,14 +115,26 @@ def validate_zip(pt: bytes):
 # --------------------------------------------------------------------------
 # myg0N-family KDF brute (substring-corrected)
 # --------------------------------------------------------------------------
-def myg0n_kdf_bruteforce_probe(probe: bytes, ct: bytes, stem: str,
-                               base_literal: str = None):
-    """Enumerate seed = base_literal[a:b][c:] + "2"; probe validates PK magic
-    on a 16-byte-aligned prefix; full decrypt only on hit."""
+MAX_BRUTE_LITERAL = 96   # bounds the O(n^3) seed enumeration (audit P9)
+
+
+def myg0n_kdf_hits(probe: bytes, ct: bytes, stem: str, base_literal: str = None,
+                   deadline: float = None):
+    """Yield (seed, key, iv, plaintext) for every seed whose decrypted probe starts
+    with a ZIP local-file header.
+
+    A bare two-byte 'PK' prefix matches about 1 seed in 65536, so the full decrypt
+    runs only on the complete four-byte local-header signature, over the whole
+    16-byte blocks of ct (audit P11). Callers validate each hit and keep enumerating
+    when validation fails. Stops early once `deadline` (time.monotonic) has passed.
+    """
     if base_literal is None:
         base_literal = stem + "bootstrap.dex"
-    S = base_literal
+    S = base_literal[:MAX_BRUTE_LITERAL]
+    aligned = ct[:len(ct) // 16 * 16]
     for a in range(len(S) + 1):
+        if deadline is not None and time.monotonic() > deadline:
+            return
         for b in range(a, len(S) + 1):
             mid = S[a:b]
             for c in range(len(mid) + 1):
@@ -97,16 +142,17 @@ def myg0n_kdf_bruteforce_probe(probe: bytes, ct: bytes, stem: str,
                 k = hashlib.sha1(seed).digest()[:16]
                 iv = hashlib.sha256(seed).digest()[:16]
                 pt = AES.new(k, AES.MODE_CBC, iv).decrypt(probe)
-                if pt[:2] == b"PK":
-                    pt_full = AES.new(k, AES.MODE_CBC, iv).decrypt(ct)
-                    return seed.decode(errors="replace"), k.hex(), iv.hex(), pt_full
-    return None
+                if pt[:4] == LOCAL_HEADER:
+                    pt_full = AES.new(k, AES.MODE_CBC, iv).decrypt(aligned)
+                    yield seed.decode(errors="replace"), k.hex(), iv.hex(), pt_full
 
 
 def myg0n_kdf_bruteforce(ct: bytes, stem: str, base_literal: str = None):
-    """Back-compat wrapper: full-ct brute (validates PK magic on prefix)."""
-    return myg0n_kdf_bruteforce_probe(ct[:48], ct, stem, base_literal)
-
+    """First hit that validates as a ZIP, or None."""
+    for seed, khex, ivhex, pt in myg0n_kdf_hits(ct[:48], ct, stem, base_literal):
+        if validate_zip(pt)[0]:
+            return seed, khex, ivhex, pt
+    return None
 
 # --------------------------------------------------------------------------
 # routes
@@ -154,7 +200,7 @@ def java_layer_handoff(zfile) -> bool:
     unreadable stub falls back to False (old behavior, still typed).
     """
     try:
-        head = zfile.read("classes.dex")[:2_000_000]
+        head = read_entry(zfile, "classes.dex", limit=2_000_000)
     except Exception:
         return False
     if b"TxAppEntry" in head:
@@ -181,7 +227,7 @@ def java_route(apk, zfile, workdir: pathlib.Path, report):
         report["manifest_error"] = str(e)[:120]
 
     # decompile + IOC strings from every dex
-    blob = b"".join(zfile.read(n) for n in dexes)
+    blob = b"".join(read_entry(zfile, n) for n in dexes if zfile.getinfo(n).file_size <= MAX_ENTRY_BYTES)
     pats = {
         "urls": rb"https?://[A-Za-z0-9./?=_&%-]{6,90}",
         "telegram": rb"(api\.telegram\.org|bot[0-9]{6,}:[A-Za-z0-9_-]{20,})",
@@ -201,10 +247,11 @@ def java_route(apk, zfile, workdir: pathlib.Path, report):
         report["ecode"] = "E-JAVA-NO-IOC"
     # optional jadx for human follow-up
     try:
-        if shutil.which("jadx"):
+        jadx = shutil.which("jadx")  # resolved path: on Windows this is jadx.bat, which needs it (audit P25)
+        if jadx:
             out = workdir / "jadx"
             if not out.exists():
-                subprocess.run(["jadx", "-d", str(out), str(apk)],
+                subprocess.run([jadx, "-d", str(out), str(apk)],
                                capture_output=True, timeout=600)
             report["jadx_out"] = str(out)
     except Exception as e:
@@ -226,8 +273,10 @@ FAM_MARKS = {"Ijiami": ("ijm", "ijiami", "execmain", "libexec"),
 
 
 def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
+    """Native route. `workdir` is the per-sample directory (libs/, kit.zip, recovered dex)."""
     import emulate as emu_mod
 
+    deadline = time.monotonic() + UNPACK_BUDGET_S   # one wall-clock budget for the route (audit P9)
     names = zfile.namelist()
     fam = sniff_family(names)
     report["family"] = fam
@@ -237,6 +286,7 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
     packer_libs = [l for l in libs if any(m in str(l) for m in marks)]
     ordered = packer_libs + [l for l in libs if l not in packer_libs] if packer_libs else libs
     export_libs = []
+    onload_only = []
     hardened = []
     for lib in ordered:
         try:
@@ -251,20 +301,30 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
                 hardened.append((lib, hev))
                 continue
             entry, ename = e.find_entry()
+            if ename == "JNI_OnLoad":
+                # No Java_* export: the oneshot route supplies the fake JavaVM and ctors.
+                # Running JNI_OnLoad directly would pass a JNIEnv as the JavaVM (audit P1).
+                onload_only.append(lib)
+                continue
             export_libs.append((lib, entry, ename))
         except RuntimeError as ex:
             if "no Java_*" in str(ex):
                 continue
         except Exception:
             continue
-    if not export_libs:
+    packer_exports = [l for l, _, _ in export_libs if l in packer_libs]
+    if not export_libs or (onload_only and not packer_exports):
         # JNI_OnLoad-only packers (Ijiami, Bangcle, ...): try the oneshot
         # boot (ctors + JNI_OnLoad with fake JavaVM) before declaring NOENTRY.
         # Code-protected (VM) libs fail decode at the entry -> E-HARDENED-VM
         # without burning minutes in the emulator.
         fam = fam or "Unknown"
+        candidates = onload_only or ordered
         hardened = []
-        for lib in ordered:
+        for lib in candidates:
+            if time.monotonic() > deadline:
+                report["budget_exhausted"] = "oneshot"
+                break
             try:
                 emu = emu_mod.Emulator(lib)
             except Exception:
@@ -285,16 +345,18 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
             if dexes:
                 out = workdir / (report["sha256"][:16] + "_recovered.dex")
                 out.write_bytes(dexes[0].pop("data"))
-                ok, why = validate_dex(out.read_bytes()), "dex magic"
+                ok = validate_dex(out.read_bytes())
                 report["oracle"] = {"lib": lib.name, "entry": meta.get("entry"),
                                     "status": meta.get("status"),
                                     "ctors": meta.get("ctors"),
                                     "jni_calls": meta.get("jni_calls"),
                                     "register_natives": meta.get("register_natives")[:6],
-                                    "fault": meta.get("fault")}
+                                    "fault": meta.get("fault"),
+                                    "null_reads": getattr(emu, "null_reads", [])[:8]}
                 report["artifacts"] = [{"file": str(out), "sha256": sha256(out.read_bytes()),
                                         "validated": bool(ok)}]
-                report["verdict"] = "RECOVERED"
+                # RECOVERED only when the DEX validates; otherwise say so (audit P5).
+                report["verdict"] = "RECOVERED" if ok else "UNVALIDATED_DEX"
                 report["route_detail"] = "JNI_OnLoad oneshot"
                 return report
         if hardened:
@@ -311,6 +373,8 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
             return report
         report["ecode"] = "E-NATIVE-NOENTRY"
         report["family"] = fam
+        if export_libs:
+            report["benign_exports"] = [l.name for l, _, _ in export_libs[:4]]
         report["next_step"] = ("Implement .init_array/JNI_OnLoad capture "
                                "(scripts/ijiami_oracle.py has a JavaVM mock) "
                                "or run scripts/ijiami_oracle.py directly.")
@@ -340,19 +404,20 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
         return report
     emu = emu_mod.Emulator(lib)
     emu.load_elf(); emu.map_regions(); emu.wire_got_shims(); emu.wire_jni_table()
-    status = emu.run(entry, timeout_s=300)
+    status = emu.run(entry, timeout_s=min(300, max(1, int(deadline - time.monotonic()))))
     report["oracle"] = {"lib": lib.name, "entry": ename, "status": status,
                         "jni_calls": len(emu.jni_log),
-                        "fault": getattr(emu, "fault_info", None)}
+                        "fault": getattr(emu, "fault_info", None),
+                        "null_reads": getattr(emu, "null_reads", [])[:8]}
     blobs = emu.sweep_blobs()
     dexes = [b for b in blobs if b.get("kind") in ("b64_dex", "raw_dex")]
     if dexes:
         out = workdir / (report["sha256"][:16] + "_recovered.dex")
         out.write_bytes(dexes[0].pop("data"))
-        ok, why = validate_dex(out.read_bytes()), "dex magic"
+        ok = validate_dex(out.read_bytes())
         report["artifacts"] = [{"file": str(out), "sha256": sha256(out.read_bytes()),
                                 "validated": bool(ok)}]
-        report["verdict"] = "RECOVERED"
+        report["verdict"] = "RECOVERED" if ok else "UNVALIDATED_DEX"
         return report
 
     # no sweep blob → myg0N-style KDF brute on suspicious assets
@@ -360,7 +425,13 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
     assets = [n for n in names if n.startswith("assets/") and
               not n.lower().endswith((".png", ".jpg", ".xml", ".html", ".js", ".css"))]
     for asset in assets:
-        ct = zfile.read(asset)
+        if time.monotonic() > deadline:
+            report["budget_exhausted"] = "kdf-brute"
+            break
+        try:
+            ct = read_entry(zfile, asset)
+        except ValueError:
+            continue                            # oversized member: skipped, not read (audit P13)
         if len(ct) < 512:                       # skip tiny/profile assets
             continue
         if ct[:2] in (b"PK", b"d" + b"e", b"ID", b"\x1f\x8b", b"BM"):  # already plaintext
@@ -373,39 +444,44 @@ def native_route(apk, zfile, workdir: pathlib.Path, report, prefer="arm64"):
                 base_literal = base_literal if base_literal.endswith("dex") else stem + "bootstrap.dex"
                 break
         probe = ct[:48 - len(ct) % 16] if len(ct) < 48 else ct[:48]
-        hit = myg0n_kdf_bruteforce_probe(probe, ct, stem, base_literal)
-        if hit:
-            seed, khex, ivhex, pt = hit
+        for seed, khex, ivhex, pt in myg0n_kdf_hits(probe, ct, stem, base_literal, deadline):
             ok, why = validate_zip(pt)
-            if ok:
-                kit = workdir / report["sha256"][:16] / "kit.zip"
-                kit.parent.mkdir(parents=True, exist_ok=True)
-                kit.write_bytes(pt)
-                report["verdict"] = "RECOVERED"
-                report["kdf"] = {"asset": asset, "seed": seed,
-                                 "key": khex, "iv": ivhex}
-                report["artifacts"] = [{"file": str(kit), "sha256": sha256(pt),
-                                        "validated": str(why)}]
-                # IOC sweep inside kit
-                try:
-                    import io
-                    zf = zipfile.ZipFile(io.BytesIO(pt))
-                    blob = b"".join(zf.read(n) for n in zf.namelist()
-                                    if not n.endswith((".png", ".jpg", ".so")))[:20_000_000]
-                    report["iocs"] = {
-                        "firebase": sorted({m.decode() for m in re.findall(
-                            rb"[a-z0-9-]+\.firebaseio\.com", blob)})[:6],
-                        "api_keys": sorted({m.decode() for m in re.findall(
-                            rb"AIza[0-9A-Za-z_-]{30,}", blob)})[:6],
-                    }
-                except Exception as e:
-                    # validate_zip() can pass via its EOCD fallback while ZipFile()
-                    # itself still fails, so this sweep can fail on an otherwise
-                    # "RECOVERED" kit. Record it: an absent IOC section must not
-                    # read as "this kit contains no indicators".
-                    report["iocs_error"] = "%s: %s" % (type(e).__name__, e)
-                    report.setdefault("iocs", {})
-                return report
+            if not ok:
+                continue                        # a false PK hit: keep enumerating (audit P11)
+            kit = workdir / "kit.zip"
+            kit.write_bytes(pt)
+            report["verdict"] = "RECOVERED"
+            report["kdf"] = {"asset": asset, "seed": seed,
+                             "key": khex, "iv": ivhex}
+            report["artifacts"] = [{"file": str(kit), "sha256": sha256(pt),
+                                    "validated": str(why)}]
+            # IOC sweep inside kit, capped per member and in total
+            try:
+                zf = zipfile.ZipFile(io.BytesIO(pt))
+                parts, total = [], 0
+                for n in zf.namelist():
+                    if n.endswith((".png", ".jpg", ".so")):
+                        continue
+                    chunk = read_entry(zf, n, limit=20_000_000)
+                    parts.append(chunk)
+                    total += len(chunk)
+                    if total > 20_000_000:
+                        break
+                blob = b"".join(parts)[:20_000_000]
+                report["iocs"] = {
+                    "firebase": sorted({m.decode() for m in re.findall(
+                        rb"[a-z0-9-]+\.firebaseio\.com", blob)})[:6],
+                    "api_keys": sorted({m.decode() for m in re.findall(
+                        rb"AIza[0-9A-Za-z_-]{30,}", blob)})[:6],
+                }
+            except Exception as e:
+                # validate_zip() can pass via its EOCD fallback while ZipFile()
+                # itself still fails, so this sweep can fail on an otherwise
+                # "RECOVERED" kit. Record it: an absent IOC section must not
+                # read as "this kit contains no indicators".
+                report["iocs_error"] = "%s: %s" % (type(e).__name__, e)
+                report.setdefault("iocs", {})
+            return report
     if fam == "TencentLegu" and java_layer_handoff(zfile):
         # Native ran clean and the stub carries the Java-delivery signature:
         # report the typed handoff instead of a generic oracle failure.
@@ -431,24 +507,37 @@ def main():
     workdir = pathlib.Path(args.workdir)
     workdir.mkdir(parents=True, exist_ok=True)
     raw = apk.read_bytes()
-    report = {"apk": str(apk), "sha256": sha256(raw),
+    sha = sha256(raw)
+    # Per-sample scratch (libs/, jadx/, kit): concurrent analyses cannot collide (audit P10).
+    sample_dir = workdir / sha[:16]
+    sample_dir.mkdir(parents=True, exist_ok=True)
+    report = {"apk": str(apk), "sha256": sha,
               "verdict": "FAILED", "ecode": None, "artifacts": []}
+    out = pathlib.Path(args.out) if args.out else workdir / "unpack_report.json"
+
+    def finish():
+        # Every branch writes the report, so a crash never leaves a stale file behind (audit P12).
+        print(json.dumps(report, indent=2, default=str))
+        out.parent.mkdir(parents=True, exist_ok=True)
+        out.write_text(json.dumps(report, indent=2, default=str))
+        return 0
 
     try:
         zfile = zipfile.ZipFile(apk)
     except Exception as e:
         report["ecode"] = "E-ORACLE-FAULT"
         report["detail"] = f"not a readable zip/apk: {e}"
-        print(json.dumps(report, indent=2)); return 0
+        return finish()
 
     names = zfile.namelist()
     report["stats"] = {"entries": len(names),
                        "so_count": sum(1 for n in names if n.endswith(".so")),
                        "dex_count": sum(1 for n in names if n.endswith(".dex"))}
 
-    # triage verdict (subprocess: triage.py has side-effect-y imports)
+    # triage verdict; resolved next to this file so it works from any cwd (audit P12)
+    triage_script = pathlib.Path(__file__).resolve().parent / "triage.py"
     try:
-        t = subprocess.run([sys.executable, "scripts/triage.py", str(apk)],
+        t = subprocess.run([sys.executable, str(triage_script), str(apk)],
                            capture_output=True, timeout=180, text=True)
         j = re.search(r"\{.*\}", t.stdout, re.S)
         if j:
@@ -458,18 +547,20 @@ def main():
     except Exception as e:
         report["triage"] = {"error": str(e)[:120]}
 
-    if report["stats"]["so_count"] == 0:
-        report["route"] = "JAVA"
-        report = java_route(apk, zfile, workdir, report)
-    else:
-        report["route"] = "NATIVE"
-        report = native_route(apk, zfile, workdir, report)
+    try:
+        if report["stats"]["so_count"] == 0:
+            report["route"] = "JAVA"
+            report = java_route(apk, zfile, sample_dir, report)
+        else:
+            report["route"] = "NATIVE"
+            report = native_route(apk, zfile, sample_dir, report)
+    except Exception as e:
+        # The docstring promises a typed verdict: an unhandled route failure becomes E-ORACLE-FAULT.
+        report["ecode"] = "E-ORACLE-FAULT"
+        report["detail"] = f"{type(e).__name__}: {str(e)[:200]}"
     if report.get("verdict") != "RECOVERED" and not report.get("ecode"):
         report["ecode"] = "E-NATIVE-NO-RECOVERY"
-    print(json.dumps(report, indent=2, default=str))
-    out = pathlib.Path(args.out) if args.out else workdir / "unpack_report.json"
-    out.write_text(json.dumps(report, indent=2, default=str))
-    return 0
+    return finish()
 
 
 if __name__ == "__main__":

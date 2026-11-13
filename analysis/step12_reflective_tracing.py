@@ -1,3 +1,4 @@
+import bisect
 import logging
 import re
 from pathlib import Path
@@ -6,8 +7,8 @@ from typing import Any, Dict, List
 logger = logging.getLogger(__name__)
 
 REFLECTION_PATTERNS = [
+    # Matches Class.forName("x") too; a separate Class.forName pattern counted each call twice (L1).
     re.compile(r'forName\s*\(\s*"([^"]+)"'),
-    re.compile(r'Class\.forName\s*\(\s*"([^"]+)"'),
     re.compile(r'getDeclaredMethod\s*\(\s*"([^"]+)"'),
     re.compile(r'getMethod\s*\(\s*"([^"]+)"'),
     re.compile(r'Method\.invoke\s*\(\s*"[^"]*"\s*,\s*"([^"]+)"'),
@@ -19,6 +20,12 @@ SENSITIVE_API_MAP = {
     "android.telephony.TelephonyManager": ["getDeviceId", "getSubscriberId", "getSimSerialNumber"],
     "android.accounts.AccountManager": ["getAccounts", "getPassword", "getAuthToken"],
     "android.location.LocationManager": ["getLastKnownLocation", "requestLocationUpdates"],
+    "android.net.ConnectivityManager": ["getActiveNetworkInfo", "getNetworkInfo"],
+    "android.hardware.Camera": ["open", "takePicture"],
+    "android.media.MediaRecorder": ["start", "setAudioSource"],
+    "android.provider.ContactsContract": ["query"],
+    "android.provider.CallLog": ["query"],
+    "android.os.Environment": ["getExternalStorageDirectory"],
     "android.content.Context": ["getContentResolver", "startService", "bindService"],
     "java.net.URL": ["openConnection", "openStream"],
     "java.net.Socket": ["connect", "getOutputStream", "getInputStream"],
@@ -34,10 +41,12 @@ SENSITIVE_API_MAP = {
 
 def scan_source_for_reflection(source_text: str, file_path: str) -> List[Dict[str, Any]]:
     calls = []
+    # Offsets just past each newline; bisect gives the line number in O(log n) per match (L2).
+    newline_ends = [m.end() for m in re.finditer("\n", source_text)]
     for pattern in REFLECTION_PATTERNS:
         for match in pattern.finditer(source_text):
             target = match.group(1) if match.lastindex else match.group(0)
-            line_num = source_text[:match.start()].count("\n") + 1
+            line_num = bisect.bisect_right(newline_ends, match.start()) + 1
             calls.append({
                 "target": target,
                 "file": file_path,
@@ -48,15 +57,13 @@ def scan_source_for_reflection(source_text: str, file_path: str) -> List[Dict[st
 
 
 def find_reflective_calls(apk_info: Dict[str, Any]) -> Dict[str, Any]:
-    extracted_path = apk_info.get("extracted_path") or apk_info.get("work_dir", "")
+    # Step 1 stores the apktool tree as apktool_output_dir (smali/, smali_classes2/, ...).
+    extracted_path = apk_info.get("extracted_path") or apk_info.get("apktool_output_dir") or apk_info.get("work_dir", "")
     if not extracted_path:
         return {"total_reflective_calls": 0, "reflective_calls": [], "sensitive_targets": []}
 
-    source_dirs = []
     base = Path(extracted_path)
-    for candidate in [base / "sources", base / "smali"]:
-        if candidate.is_dir():
-            source_dirs.append(candidate)
+    source_dirs = [d for d in [base / "sources", *sorted(base.glob("smali*"))] if d.is_dir()]
 
     if not source_dirs:
         return {"total_reflective_calls": 0, "reflective_calls": [], "sensitive_targets": []}

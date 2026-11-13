@@ -93,15 +93,24 @@ def validate_dex(data: bytes) -> bool:
     return data[:4] == b"dex\n" and len(data) > 112
 
 
+# testzip() inflates every member, so validation is bounded by the declared sizes first.
+MAX_VALIDATE_BYTES = 256 << 20
+
+
 def validate_zip(data: bytes) -> Tuple[bool, Union[str, dict]]:
-    """ZIP magic + central directory presence + CRC spot check."""
+    """ZIP magic + central directory presence + CRC spot check. Never raises."""
     if data[:2] != b"PK" or data[2:4] != b"\x03\x04":
         return False, "no local-file header"
     try:
         archive = zipfile.ZipFile(io.BytesIO(data))
+        declared = sum(info.file_size for info in archive.infolist())
+        if declared > MAX_VALIDATE_BYTES:
+            return False, f"declared size {declared} exceeds validation cap"
+        bad_member = archive.testzip()
     except zipfile.BadZipFile as exc:
         return False, f"bad zip: {exc}"
-    bad_member = archive.testzip()
+    except Exception as exc:  # hostile archives raise RuntimeError, NotImplementedError, ...
+        return False, f"unreadable zip: {type(exc).__name__}: {exc}"
     if bad_member is not None:
         return False, f"crc fail at {bad_member}"
     return True, {"entries": len(archive.namelist())}

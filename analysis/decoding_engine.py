@@ -120,7 +120,7 @@ def decode_base64(s: str) -> Optional[bytes]:
     try:
         return base64.b64decode(s, validate=True)
     except Exception as exc:
-        logger.warning("Suppressed error in decode_base64: %s", exc)
+        logger.debug("Suppressed error in decode_base64: %s", exc)
         return None
 
 
@@ -131,7 +131,7 @@ def decode_base64_urlsafe(s: str) -> Optional[bytes]:
             s += '=' * padding
         return base64.urlsafe_b64decode(s)
     except Exception as exc:
-        logger.warning("Suppressed error in decode_base64_urlsafe: %s", exc)
+        logger.debug("Suppressed error in decode_base64_urlsafe: %s", exc)
         return None
 
 
@@ -139,7 +139,7 @@ def decode_hex(s: str) -> Optional[bytes]:
     try:
         return binascii.unhexlify(s)
     except Exception as exc:
-        logger.warning("Suppressed error in decode_hex: %s", exc)
+        logger.debug("Suppressed error in decode_hex: %s", exc)
         return None
 
 
@@ -147,7 +147,7 @@ def decode_xor(data: bytes, key: int) -> Optional[bytes]:
     try:
         return bytes(b ^ key for b in data)
     except Exception as exc:
-        logger.warning("Suppressed error in decode_xor: %s", exc)
+        logger.debug("Suppressed error in decode_xor: %s", exc)
         return None
 
 
@@ -168,7 +168,7 @@ def xor_bruteforce(data: bytes, min_printable: float = 0.70) -> List[Tuple[int, 
                 if reg["detect"](cleaned):
                     return True
             except Exception as exc:
-                logger.warning("Suppressed error in reencodable: %s", exc)
+                logger.debug("Suppressed error in reencodable: %s", exc)
         return False
 
     candidates = []
@@ -200,7 +200,7 @@ DECODER_REGISTRY: List[Dict[str, Any]] = [
         "name": "base64",
         "detect": lambda s: bool(re.match(r'^[A-Za-z0-9+/]{8,}=*$', s))
             and not bool(re.match(r'^[0-9A-Fa-f]+$', s))  # exclude pure hex
-            and (bool(re.search(r'[A-Z]', s)) or '+/' in s),  # must have uppercase or +/
+            and (bool(re.search(r'[A-Z]', s)) or bool(re.search(r'[+/]', s))),  # must have uppercase or + or /
         "decode": lambda s: decode_base64(s),
         "entropy_range": (3.5, 6.5),
         "input_type": "string",

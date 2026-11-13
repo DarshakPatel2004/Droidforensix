@@ -20,6 +20,7 @@ and prints a before/after summary.
 
 import csv
 import json
+import os
 import re
 import sys
 from collections import Counter
@@ -176,10 +177,12 @@ def main():
         if (fam or "unknown") != (row["family"] or "unknown"):
             changed += 1
 
-    with open(GT_CHECK_CSV, "w", newline="", encoding="utf-8") as f:
+    tmp_csv = GT_CHECK_CSV.with_suffix(".csv.tmp")  # atomic: a crash never truncates the GT file
+    with open(tmp_csv, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         writer.writeheader()
         writer.writerows(rows)
+    os.replace(tmp_csv, GT_CHECK_CSV)
 
     print("=" * 60)
     print("Family label correction complete")

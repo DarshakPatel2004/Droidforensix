@@ -112,7 +112,7 @@ def run_ctors(emu):
         for i in range(n):
             (fn,) = struct.unpack("<Q", uc.mem_read(base + init_arr_va + i * 8, 8))
             if fn:
-                emu.run(base + fn, timeout_s=120)
+                emu.run(fn if fn >= base else base + fn, timeout_s=120)  # slot may already be absolute (P2)
         print(f"[ctor] INIT_ARRAY {n} ctors executed")
 
 
@@ -167,7 +167,7 @@ def main():
 
     vm = build_vm_table(uc)
     uc.hook_add(UC_HOOK_CODE, vm_hook, begin=VM_STUB, end=VM_STUB + 4)
-    uc.hook_add(UC_HOOK_CODE, emu.dispatch_hook)
+    emu._ensure_dispatch_hook()  # once; see emulate.Emulator._ensure_dispatch_hook (audit P3)
     capture_register_natives(emu)
 
     run_ctors(emu)
@@ -215,7 +215,7 @@ def main():
         meta = {k: v for k, v in b.items() if k != "data"}
         print("  ", meta)
         if b.get("data"):
-            out = pathlib.Path("/home/kali/DroidForensix/analysis/recovered/Ijiami")
+            out = pathlib.Path(__file__).resolve().parents[1] / "analysis" / "recovered" / "Ijiami"
             out.mkdir(parents=True, exist_ok=True)
             kind = "dex" if b.get("kind") in ("b64_dex", "raw_dex") else "bin"
             p = out / f"{so.stem}_{b['sha256'][:12]}.{kind}"
