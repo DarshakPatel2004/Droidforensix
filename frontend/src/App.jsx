@@ -21,7 +21,6 @@ import SampleList from './components/SampleList'
 import SampleHeader from './components/SampleHeader'
 
 const DissectionPage = lazy(() => import('./components/DissectionPage'))
-const RawCodeView = lazy(() => import('./components/RawCodeView'))
 const ThreatIntelView = lazy(() => import('./components/ThreatIntelView'))
 
 /* eslint-disable react-hooks/set-state-in-effect */
@@ -43,7 +42,6 @@ const SAMPLE_TABS = [
   { id: 'attribution', label: 'Attribution' },
   { id: 'analysis', label: 'Checks' },
   { id: 'dissection', label: 'Investigation' },
-  { id: 'raw-code', label: 'Raw code' },
   { id: 'threat-intel', label: 'Threat intel' },
   { id: 'notes', label: 'Notes' },
 ]
@@ -882,18 +880,6 @@ function AppInner() {
             </div>
           )}
 
-          {activeTab === 'raw-code' && selectedSample && sampleReady && (
-            <div className="view-wrapper">
-              <ErrorBoundary>
-                <Suspense fallback={<LoadingSpinner message="Loading code viewer..." />}>
-                  <RawCodeView
-                    sample={selectedSample}
-                    apiUrl={API_URL}
-                  />
-                </Suspense>
-              </ErrorBoundary>
-            </div>
-          )}
 
           {activeTab === 'threat-intel' && selectedSample && sampleReady && (
             <div className="view-wrapper">
