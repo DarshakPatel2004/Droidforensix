@@ -2,7 +2,6 @@ import { useState, useEffect, useMemo, useCallback, useRef, memo } from 'react'
 import './AnalysisView.css'
 import ObfuscationView from './ObfuscationView'
 import ManifestView from './ManifestView'
-import FamilySignalsCard from './FamilySignalsCard'
 import ThreatSynthesisPanel from './ThreatSynthesisPanel'
 import Icon from './ui/Icon'
 import StateMessage from './ui/StateMessage'
@@ -135,9 +134,7 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
   const [fullResult, setFullResult] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
-  const [activeResultTab, setActiveResultTab] = useState('overview')
-  // Unique C2 count from the threat summary, so this card matches the Overview tab.
-  const [c2UniqueCount, setC2UniqueCount] = useState(null)
+  const [activeResultTab, setActiveResultTab] = useState('secrets')
 
   const sampleId = analysisState.sampleId
 
@@ -145,18 +142,6 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
   // Prefer SHA-256 from the sample prop (backend key) over analysisState.sampleId
   // for robustness against any ID type inconsistency.
   const effectiveSampleId = sample?.sha256 || sampleId
-
-  useEffect(() => {
-    if (!effectiveSampleId) return
-    let cancelled = false
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setC2UniqueCount(null)
-    fetch(`${apiUrl}/api/sample/${effectiveSampleId}/threat-summary`)
-      .then((r) => (r.ok ? r.json() : null))
-      .then((body) => { if (!cancelled && body) setC2UniqueCount(body.c2_count) })
-      .catch(() => {})
-    return () => { cancelled = true }
-  }, [effectiveSampleId, apiUrl])
 
   useEffect(() => {
     if (!effectiveSampleId) return
@@ -245,7 +230,6 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
       {/* Tab Navigation */}
       <div className="result-tabs" role="tablist">
         {[
-          { id: 'overview', label: 'Overview' },
           { id: 'secrets', label: 'Secrets' },
           { id: 'llm', label: 'LLM Summary' },
           { id: 'dissection-summary', label: 'Dissection Summary' },
@@ -268,9 +252,6 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
 
       {/* Tab Content */}
       <div className="tab-content">
-        {activeResultTab === 'overview' && (
-          <OverviewTab result={fullResult} sampleId={effectiveSampleId} apiUrl={apiUrl} c2Count={c2UniqueCount} />
-        )}
         {activeResultTab === 'secrets' && (
           <SecretsTab result={fullResult} />
         )}
@@ -299,56 +280,6 @@ const ResultView = memo(({ analysisState, apiUrl, sample }) => {
 
 ResultView.displayName = 'ResultView'
 
-/**
- * Overview Tab Content
- */
-const OverviewTab = memo(({ result, sampleId, apiUrl, c2Count }) => (
-  <div className="tab-panel">
-    <div className="card">
-      <h3 className="heading-sm">Assessment Summary</h3>
-      <p>{result?.llm_assessment?.narrative || 'No narrative available.'}</p>
-    </div>
-
-    <div className="card">
-        <h3 className="heading-sm">Recommended Actions</h3>
-      <ul className="detail-list">
-        {(result?.llm_assessment?.recommended_actions || []).map((action, i) => (
-          <li key={i}>{action}</li>
-        ))}
-      </ul>
-    </div>
-
-    <FamilySignalsCard key={sampleId} sampleId={sampleId} apiUrl={apiUrl} />
-
-    <div className="metrics-grid">
-      <div className="card">
-        <h4 className="heading-sm">Strings</h4>
-        <p className="metric-value">{result?.extraction?.total_strings_extracted || 0}</p>
-      </div>
-      <div className="card">
-        <h4 className="heading-sm">Classes</h4>
-        <p className="metric-value">{result?.extraction?.decompiled_classes || 0}</p>
-      </div>
-      <div className="card">
-        <h4 className="heading-sm">C2 Endpoints</h4>
-        <p className="metric-value">{c2Count ?? '—'}</p>
-      </div>
-      <div className="card">
-        <h4 className="heading-sm">Threat Chains</h4>
-        <p className="metric-value">{(result?.threat_chains || []).length}</p>
-      </div>
-      <div className="card">
-        <h4 className="heading-sm">Secrets</h4>
-        <p className="metric-value">{result?.secret_risk?.total_secrets || 0}</p>
-        <p className="metric-sub text-sm text-muted">
-          {result?.secret_risk?.severity || 'none'}
-        </p>
-      </div>
-    </div>
-  </div>
-))
-
-OverviewTab.displayName = 'OverviewTab'
 
 /**
  * LLM Summary Tab
