@@ -104,13 +104,12 @@ describe('App', () => {
 
   test('renders brand name', () => {
     renderApp()
-    expect(screen.getByText('DROID')).toBeTruthy()
-    expect(screen.getByText('FORENSIX')).toBeTruthy()
+    expect(screen.getByText('DroidForensix')).toBeTruthy()
   })
 
   test('shows Help and Documentation link', () => {
     renderApp()
-    expect(screen.getByText(/Documentation/)).toBeTruthy()
+    expect(screen.getByText(/Docs/)).toBeTruthy()
   })
 
   test('shows status indicator', () => {
