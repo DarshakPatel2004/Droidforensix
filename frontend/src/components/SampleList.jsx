@@ -1,6 +1,6 @@
 import { useState } from 'react'
 
-// Left column on every page: upload entry, search, and every sample. Clicking a sample opens it.
+// Case index: every sample numbered, filterable. Opening one loads it into the case file.
 export default function SampleList({ samples, selectedId, backendReady, onUpload, onSelect }) {
   const [query, setQuery] = useState('')
   const needle = query.trim().toLowerCase()
@@ -9,40 +9,59 @@ export default function SampleList({ samples, selectedId, backendReady, onUpload
     : samples
 
   return (
-    <nav className="sample-list" aria-label="Samples">
-      <div className="sample-list-brand">DROID<span>FORENSIX</span></div>
-      <button type="button" className="sample-list-upload" onClick={onUpload}>+ Upload APK</button>
-      <input
-        type="search"
-        className="sample-list-search"
-        placeholder="Search samples"
-        aria-label="Search samples"
-        value={query}
-        onChange={(e) => setQuery(e.target.value)}
-      />
-      <ul className="sample-list-items">
-        {shown.map((s) => {
+    <nav className="case-index" aria-label="Samples">
+      <div className="case-index-brand">
+        <span className="case-index-mark">DF</span>
+        <span>
+          <strong>DroidForensix</strong>
+          <small>Case index</small>
+        </span>
+      </div>
+
+      <button type="button" className="case-index-upload" onClick={onUpload}>
+        <span>New upload</span>
+        <span aria-hidden="true">+</span>
+      </button>
+
+      <label className="case-index-search">
+        <span className="visually-hidden">Filter samples</span>
+        <input
+          type="search"
+          placeholder="Filter by name, family or hash"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+        />
+      </label>
+
+      <ol className="case-index-items">
+        {shown.map((s, i) => {
           const id = s.sha256 || s.sampleId
-          const family = s.family && s.family !== 'unknown' ? s.family : 'no family match'
+          const selected = id === selectedId
           return (
-            <li key={id}>
+            <li key={id} style={{ '--i': i }}>
               <button
                 type="button"
-                className={`sample-list-item ${id === selectedId ? 'active' : ''}`}
-                aria-current={id === selectedId ? 'true' : undefined}
+                className={`case-index-item${selected ? ' is-selected' : ''}`}
+                aria-current={selected ? 'true' : undefined}
                 onClick={() => onSelect(s)}
               >
-                <span className="sample-list-name">{s.fileName || id?.substring(0, 12)}</span>
-                <span className="sample-list-meta">{family}</span>
+                <span className="case-index-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="case-index-body">
+                  <span className="case-index-name">{s.fileName || id?.substring(0, 12)}</span>
+                  <span className="case-index-family">{s.family && s.family !== 'unknown' ? s.family : 'unattributed'}</span>
+                </span>
               </button>
             </li>
           )
         })}
-      </ul>
-      <div className="sample-list-status" role="status">
-        {backendReady ? 'Scanner online' : 'Backend offline'}
-      </div>
-      <a className="sample-list-docs" href="https://github.com/DarshakPatel2004/DroidForensix" target="_blank" rel="noreferrer">Documentation</a>
+      </ol>
+
+      <footer className="case-index-foot">
+        <span className={`case-index-live${backendReady ? '' : ' is-offline'}`} role="status">
+          {backendReady ? 'Scanner online' : 'Backend offline'}
+        </span>
+        <a href="https://github.com/DarshakPatel2004/DroidForensix" target="_blank" rel="noreferrer">Docs ↗</a>
+      </footer>
     </nav>
   )
 }
