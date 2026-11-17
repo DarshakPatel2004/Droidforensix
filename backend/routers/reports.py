@@ -11,6 +11,7 @@ from pydantic import BaseModel
 from analysis.step7_llm_assessment import explain_method, explain_threat_chain
 from backend import threat_intel as ti
 from backend.dissection import APKDissector
+from backend.family_id import identify_family
 from backend.obfuscation_view import build_obfuscation_view, deobfuscate_text
 from backend.pdf_report import generate_report
 from backend.routers import dissection as dissection_routes
@@ -105,6 +106,7 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
                     'com.facebook.', 'com.appsflyer.', 'io.sentry.',
                     'com.adjust.', 'com.onesignal.', 'com.amplitude.',
                     'com.firebase.', 'com.google.firebase.',
+                    '.R$', '.Manifest',  # generated resource ids and manifest constants, no logic
                 ]
 
                 def suspicion_score(cls_data):
@@ -178,6 +180,7 @@ async def api_generate_pdf_report(sample_id: str, request: dict) -> Response:
                 annotated_methods=annotated_methods,
                 mode=mode,
                 selected_sections=sections,
+                family=identify_family(sample_id, result, use_llm=False),
             )
         )
     except Exception as e:

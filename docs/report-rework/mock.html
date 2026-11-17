@@ -1,0 +1,258 @@
+<!doctype html>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>DroidForensix Report Mock</title>
+<style>
+/* One column report. Every finding carries a status and evidence IDs. */
+:root {
+  --bg: #f6f5f2; --panel: #ffffff; --fg: #1b1d22; --muted: #5d6270;
+  --line: #dcdfe5; --accent: #2f5d8a; --sev: #b4432b; --ok: #2d7a4f; --warn: #8a5a00;
+  --mono: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #14161b; --panel: #1d2028; --fg: #e8eaef; --muted: #aab1bf;
+    --line: #2e3340; --accent: #7fb0e0; --sev: #f08a6e; --ok: #6fc796; --warn: #e4b35a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #14161b; --panel: #1d2028; --fg: #e8eaef; --muted: #aab1bf;
+  --line: #2e3340; --accent: #7fb0e0; --sev: #f08a6e; --ok: #6fc796; --warn: #e4b35a;
+  color-scheme: dark;
+}
+body { margin: 0; background: var(--bg); color: var(--fg); font: 14px/1.6 var(--sans); }
+main { max-width: 900px; margin: 0 auto; padding-block: 24px 48px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+h1 { font-size: 24px; margin: 0; letter-spacing: -0.01em; text-wrap: balance; overflow-wrap: anywhere; }
+h2 { font-size: 16px; margin: 0 0 10px; }
+section { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 18px; margin-top: 14px; }
+.mock-banner { font: 600 12px var(--mono); color: var(--warn); border: 1px dashed var(--warn); padding: 6px 10px; border-radius: 6px; }
+.cover { display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: flex-start; }
+.assess { min-width: 0; border: 2px solid var(--sev); border-radius: 8px; padding: 10px 14px; }
+.assess b { display: block; color: var(--sev); font-size: 18px; letter-spacing: .03em; }
+.assess .note { display: block; }
+.kv { display: grid; grid-template-columns: minmax(120px, 30%) 1fr; gap: 6px 14px; margin: 0; }
+.kv dt { color: var(--muted); font-size: 13px; }
+.kv dd { margin: 0; min-width: 0; overflow-wrap: anywhere; }
+.code { font-family: var(--mono); font-size: 12px; overflow-wrap: anywhere; }
+.status { display: inline-block; font: 600 12px var(--mono); padding: 1px 7px; border-radius: 4px; border: 1px solid currentColor; white-space: nowrap; }
+.s-observed { color: var(--ok); }
+.s-inferred { color: var(--accent); }
+.s-model { color: var(--warn); }
+.s-unverified { color: var(--sev); }
+.s-none { color: var(--muted); }
+.ev { font: 600 12px var(--mono); color: var(--accent); white-space: nowrap; }
+.wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+th, td { text-align: left; padding: 7px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; text-transform: uppercase; letter-spacing: .05em; }
+ol, ul { margin: 0; padding-left: 20px; }
+li { margin-bottom: 6px; }
+.note { color: var(--muted); font-size: 13px; }
+.ph { color: var(--muted); font-style: italic; }
+</style>
+<main>
+  <div class="mock-banner">MOCK. Structure and wording for review. Values are from sample 0f5ca11e (pipeline output). Bracketed items are not in the pipeline output yet and must not be filled in by hand.</div>
+
+  <section class="cover">
+    <div style="min-width:0">
+      <div class="note">DroidForensix · Android malware analysis report · Full export</div>
+      <h1>com.software.application</h1>
+      <div class="note code" style="margin-top:6px">SHA-256 0f5ca11ec61fac8547626fa6ce363584d547bfbbbdd016181052911b4295bbbb</div>
+    </div>
+    <div class="assess">
+      <b>Assessment: HIGH</b>
+      <span class="note">Rule-based, risk 65 / 100</span>
+      <span class="note">Assessment confidence: <span class="status s-unverified">LOW</span> pending endpoint and permission checks</span>
+      <span class="note">Model self-reported confidence 0.80 (not calibrated)</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Summary</h2>
+    <p>The APK declares SMS read and send permissions and contains strings for three hosts and four endpoints. It matches the FakeInst family by signature (0.95). The family match and the C2 classification both depend on one endpoint, <span class="code">depositmobi.com</span>, which has not been verified. The HIGH rating should be read as a lead to investigate, not a confirmed finding.</p>
+    <p class="note">Each claim below has a status (observed, inferred, model, or unverified) and evidence IDs that point to the register at the end.</p>
+  </section>
+
+  <section>
+    <h2>Key findings</h2>
+    <div class="wrap"><table>
+      <thead><tr><th>Finding</th><th>Status</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td>Manifest declares READ_SMS and SEND_SMS</td><td><span class="status s-observed">OBSERVED</span></td><td class="ev">E1</td></tr>
+        <tr><td>Strings contain three hosts and four HTTP endpoints</td><td><span class="status s-observed">OBSERVED</span></td><td class="ev">E2</td></tr>
+        <tr><td>Those endpoints are used for C2</td><td><span class="status s-unverified">UNVERIFIED</span></td><td class="ev">E2, E5</td></tr>
+        <tr><td>SMS permissions are used in code</td><td><span class="status s-unverified">UNVERIFIED</span></td><td class="ev">[call-site trace not run]</td></tr>
+        <tr><td>No packer, reflection, or dynamic loading</td><td><span class="status s-inferred">INFERRED</span> from zero counts</td><td class="ev">E3</td></tr>
+        <tr><td>Packed content recovered, with items listed by stage</td><td><span class="status s-none">[PENDING]</span> shown only if a packer is detected</td><td class="ev">E8</td></tr>
+        <tr><td>Family is FakeInst, by signature_v3 (4 of 4 signals)</td><td><span class="status s-inferred">INFERRED</span> depends on unverified endpoint</td><td class="ev">E6</td></tr>
+        <tr><td>Narrative and recommended actions</td><td><span class="status s-model">MODEL OUTPUT</span></td><td class="ev">E7</td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section>
+    <h2>Case and custody</h2>
+    <dl class="kv">
+      <dt>Case ID</dt><dd class="ph">[examiner enters]</dd>
+      <dt>Examiner</dt><dd class="ph">[examiner enters]</dd>
+      <dt>Acquisition source</dt><dd class="ph">[device image or path, not in the intake record]</dd>
+      <dt>Original filename</dt><dd class="code">file.apk (size 1,659,337 bytes)</dd>
+      <dt>Intake</dt><dd>Recorded in custody log, seq 0 <span class="ev">E4</span></dd>
+      <dt>Result written</dt><dd>2026-11-13 07:31:40 UTC</dd>
+      <dt>Custody log</dt><dd>19 records. Sequence contiguous and each hash link verified. Last event: result_written.</dd>
+      <dt>Pipeline version</dt><dd class="code">2026-11-12.2 · 18 steps · stop_after 18, no steps skipped</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Assessment basis</h2>
+    <p class="note">Severity comes from deterministic rules. The model's risk score is an input, and the rules can only raise or cap it. Each step is recorded so the result can be reproduced.</p>
+    <ol>
+      <li><span class="status s-model">MODEL</span> Initial risk score [from run record]. <span class="note">Model output, not evidence.</span></li>
+      <li><span class="status s-inferred">RULE</span> Floor raised to 65 because SMS send and read permissions appear together with C2-classified endpoints. <span class="note">Rule: sms_fraud plus C2. Fires on declared permissions, not on observed SMS use.</span></li>
+      <li><span class="status s-inferred">RULE</span> No cap applied. C2 endpoints are present, so the "no C2" cap does not apply.</li>
+    </ol>
+    <p class="note" style="margin-top:10px"><b>Why the rating could be wrong:</b> the rule fires on declared permissions and on endpoints whose C2 label is not verified. If the SMS permissions are unused, or the hosts are benign, the rating should drop. Both checks are listed under next steps.</p>
+  </section>
+
+  <section>
+    <h2>Family attribution</h2>
+    <dl class="kv">
+      <dt>Family</dt><dd><b>FakeInst</b> <span class="status s-inferred">INFERRED</span> <span class="ev">E6</span></dd>
+      <dt>Method</dt><dd>signature_v3 (hand-written signatures). Deterministic.</dd>
+      <dt>Signals</dt><dd>4 of 4 required matched: C2 endpoint depositmobi.com; declared permissions (score 2.75); class boost (iq); 36 classes; no native code.</dd>
+      <dt>Confidence</dt><dd>0.95 from the signature rule. Not calibrated.</dd>
+      <dt>Dependency</dt><dd><span class="status s-unverified">UNVERIFIED</span> The C2 signal depends on the endpoint in the network table. If that endpoint is not confirmed, the match loses one of its four signals.</dd>
+      <dt>Certificate</dt><dd>Not analysed. The certificate signal did not run.</dd>
+      <dt>Caveat</dt><dd>Attribution is by signature, not by an AV label. Labels across engines agree at most about 29% of the time, so treat the family as a hypothesis to check.</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Network indicators</h2>
+    <div class="wrap"><table>
+      <thead><tr><th>Endpoint</th><th>Protocol</th><th>Pipeline label</th><th>Live check</th><th>Evidence</th></tr></thead>
+      <tbody>
+        <tr><td class="code">androids-market.ru:80/register/</td><td>HTTP</td><td>malware (unverified)</td><td><span class="status s-none">NOT RUN</span></td><td class="ev">E2</td></tr>
+        <tr><td class="code">androids-market.ru:80/unregister/</td><td>HTTP</td><td>malware (unverified)</td><td><span class="status s-none">NOT RUN</span></td><td class="ev">E2</td></tr>
+        <tr><td class="code">depositmobi.com:80/</td><td>HTTP</td><td>malware (unverified)</td><td><span class="status s-none">NOT RUN</span></td><td class="ev">E2</td></tr>
+        <tr><td class="code">www.minedu.kg:80/android/flashplayer.apk</td><td>HTTP</td><td>malware (unverified)</td><td><span class="status s-none">NOT RUN</span></td><td class="ev">E2</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:10px">The pipeline label is a classification, not a verdict on the endpoint. Only about 2.4% of raw indicators in our ground truth are confirmed malicious C2, so these are leads. Note: the endpoint path <span class="code">depositmobi.com:80/.</span> from the previous export has been removed as a malformed string. Source: extraction bug, tracked upstream.</p>
+  </section>
+
+  <section>
+    <h2>Permissions</h2>
+    <div class="wrap"><table>
+      <thead><tr><th>Permission</th><th>Group</th><th>Declared</th><th>Used in code</th></tr></thead>
+      <tbody>
+        <tr><td class="code">READ_SMS</td><td>Dangerous</td><td><span class="status s-observed">YES</span></td><td><span class="status s-unverified">NOT TRACED</span></td></tr>
+        <tr><td class="code">SEND_SMS</td><td>Dangerous</td><td><span class="status s-observed">YES</span></td><td><span class="status s-unverified">NOT TRACED</span></td></tr>
+        <tr><td class="code">RECEIVE_SMS</td><td>Dangerous</td><td><span class="status s-observed">YES</span></td><td><span class="status s-unverified">NOT TRACED</span></td></tr>
+        <tr><td class="code">READ_PHONE_STATE</td><td>Dangerous</td><td><span class="status s-observed">YES</span></td><td><span class="status s-unverified">NOT TRACED</span></td></tr>
+        <tr><td class="code">WRITE_EXTERNAL_STORAGE</td><td>Dangerous</td><td><span class="status s-observed">YES</span></td><td><span class="status s-unverified">NOT TRACED</span></td></tr>
+        <tr><td class="code">INTERNET, WAKE_LOCK, C2D_MESSAGE, RECEIVE</td><td>Normal or custom</td><td><span class="status s-observed">YES</span></td><td class="ph">not assessed</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:10px">Declared means present in the manifest (E1). It does not mean the app uses the permission.</p>
+  </section>
+
+  <section>
+    <h2>Obfuscation and packing</h2>
+    <dl class="kv">
+      <dt>Reflection, dynamic loading, crypto APIs</dt><dd>0 each <span class="ev">E3</span></dd>
+      <dt>Packer</dt><dd>None detected <span class="note">by the packer heuristics. Not a proof of absence.</span></dd>
+      <dt>Obfuscation score</dt><dd>60 (medium) <span class="status s-unverified">METHOD ISSUE</span> <span class="note">The score is computed from declared dangerous permissions. It does not measure obfuscation. Shown here for transparency; to be removed or relabelled.</span></dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>Unpacked content</h2>
+    <p class="note">Shown only when the sample is packed. Each recovered item keeps its own hash and its parent's hash, and is labelled with the stage that produced it. Nothing from an unpacked stage is merged into the outer APK's findings without that label.</p>
+    <dl class="kv" style="margin-top:10px">
+      <dt>Packer</dt><dd>Ijiami. Verdict packed_known, confidence 0.95, heuristic H1 hit (native share 0.10, 9 large assets). <span class="ev">E8</span></dd>
+      <dt>Unpacking method</dt><dd>Static ART emulation (Unicorn). 16 native libraries tried.</dd>
+      <dt>Payloads recovered</dt><dd>0 of 3 payload candidates</dd>
+    </dl>
+    <div class="wrap" style="margin-top:10px"><table>
+      <thead><tr><th>Item</th><th>Type</th><th>Path in stage</th><th>Parent</th><th>SHA-256</th><th>Analysed</th></tr></thead>
+      <tbody>
+        <tr><td class="code">assets/ijiami.dat</td><td>Payload candidate (8,030,086 bytes)</td><td class="code">assets/</td><td class="code">25ccc464516ffce3…</td><td><span class="status s-none">NOT PRODUCED</span></td><td><span class="status s-unverified">NOT RECOVERED</span></td></tr>
+        <tr><td class="code">assets/ijiami.ajm</td><td>Payload candidate (3,719,000 bytes)</td><td class="code">assets/</td><td class="code">25ccc464516ffce3…</td><td><span class="status s-none">NOT PRODUCED</span></td><td><span class="status s-unverified">NOT RECOVERED</span></td></tr>
+        <tr><td class="code">assets/google_fonts.json</td><td>Payload candidate (1,759,426 bytes). Name mimics a font resource.</td><td class="code">assets/</td><td class="code">25ccc464516ffce3…</td><td><span class="status s-none">NOT PRODUCED</span></td><td><span class="status s-none">NOT ANALYSED</span></td></tr>
+      </tbody>
+    </table></div>
+    <h3 style="font-size:13px;margin:14px 0 6px">Findings from unpacked content</h3>
+    <ul>
+      <li><span class="status s-none">NONE</span> No payload was recovered, so no findings come from unpacked content. The emulator reports "clean" for 8 of 16 libraries. "Clean" means the code ran without an exception. It does not mean a payload was recovered. <span class="ev">E8</span></li>
+    </ul>
+    <p class="note" style="margin-top:10px"><b>Not recovered:</b> assets/ijiami.dat and assets/ijiami.ajm, plus the native code. JNI_OnLoad is ciphertext at rest in both ABIs, and the phase 1 gate for the ART call-graph approach returned NO-GO. The rating does not account for these payloads.</p>
+  </section>
+
+  <section>
+    <h2>Build and metadata</h2>
+    <dl class="kv">
+      <dt>Version</dt><dd>1.0 (code 1)</dd>
+      <dt>Min / target SDK</dt><dd>5 / 5 <span class="status s-unverified">SUSPECT</span> <span class="note">Not plausible for a current build. Manifest parse to be re-checked before this value is used.</span></dd>
+      <dt>SHA-256</dt><dd class="code">0f5ca11ec61fac8547626fa6ce363584d547bfbbbdd016181052911b4295bbbb</dd>
+      <dt>MD5</dt><dd class="code">9e151cafa60df4da5e9e2af964f22ed4</dd>
+      <dt>Size</dt><dd>1,659,337 bytes</dd>
+      <dt>Decompiled classes</dt><dd>36</dd>
+      <dt>Signing certificate</dt><dd class="ph">[not extracted]</dd>
+    </dl>
+  </section>
+
+  <section>
+    <h2>What would change the assessment</h2>
+    <ol>
+      <li><b>Trace SMS call sites.</b> If no SMS API is reached from an entry point, the sms_fraud rule lacks its basis and the rating should drop.</li>
+      <li><b>Verify the four endpoints.</b> Check DNS, reputation and any live response, and record the date. If they resolve to benign services, the C2 rule lacks its basis.</li>
+      <li><b>Re-check SDK values.</b> Correct manifest parsing affects only the metadata, but it is a sign the parser is unreliable on this file.</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>Limitations</h2>
+    <ul>
+      <li>Static analysis only. No dynamic run, no network capture, no device behaviour.</li>
+      <li>Endpoints come from string extraction. None were tested live.</li>
+      <li>Packer detection is heuristic. Native code is not analysed.</li>
+      <li>Model output (E7) can be wrong. It was checked against the rules but not against evidence.</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Model disclosure</h2>
+    <p class="note">Narrative and recommended actions were drafted by <span class="code">[model and backend]</span> on <span class="code">[date]</span>, with prompt version <span class="code">[version]</span>. Model output is a draft for the examiner. It is not evidence.</p>
+  </section>
+
+  <section>
+    <h2>Evidence register</h2>
+    <div class="wrap"><table>
+      <thead><tr><th>ID</th><th>Item</th><th>Source</th></tr></thead>
+      <tbody>
+        <tr><td class="ev">E1</td><td>Declared permissions and components</td><td class="code">AndroidManifest.xml, step 2</td></tr>
+        <tr><td class="ev">E2</td><td>Host and endpoint strings</td><td class="code">DEX string tables, step [n]</td></tr>
+        <tr><td class="ev">E3</td><td>Reflection, loading, crypto and packer counts</td><td class="code">obfuscation_analysis, step 10</td></tr>
+        <tr><td class="ev">E4</td><td>Hashes, file size, intake record</td><td class="code">custody.jsonl seq 0; pipeline_result.json</td></tr>
+        <tr><td class="ev">E5</td><td>Pipeline C2 classification</td><td class="code">c2_infrastructure, step 7</td></tr>
+        <tr><td class="ev">E6</td><td>Family attribution (FakeInst, signature_v3)</td><td class="code">family.json</td></tr>
+        <tr><td class="ev">E7</td><td>Model narrative and actions</td><td class="code">llm_assessment, step 7</td></tr>
+        <tr><td class="ev">E8</td><td>Items recovered from packed stages, each with parent hash and stage label</td><td class="code">unpack output, step 10</td></tr>
+      </tbody>
+    </table></div>
+    <p class="note" style="margin-top:10px">Every ID above must resolve to a stored record before the report is issued. Missing IDs block rendering.</p>
+  </section>
+
+  <section>
+    <h2>Appendix A. Flagged methods</h2>
+    <p class="note">Quick export lists the top 30 methods by keyword score. Full export lists every flagged method. Methods rated benign by the model are shown separately, with the reason. Keyword matches alone are not evidence of malicious behaviour.</p>
+  </section>
+
+  <p class="note" style="margin-top:18px">DroidForensix · Full export · generated 2026-11-17 10:36 UTC · page layout is a mock</p>
+</main>

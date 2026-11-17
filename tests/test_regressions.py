@@ -89,7 +89,8 @@ class TestClassifyC2Verdicts:
 
         for rec in ({"domain": "a.example"}, {"domain": "cdn.example.com", "port": 443}):
             verdict, _ = classify_c2(rec)
-            assert verdict in ("malicious", "suspicious", "benign")
+            # "unknown" = no enrichment ran; it is deliberately not "benign".
+            assert verdict in ("malicious", "suspicious", "benign", "unknown")
 
 
 # ---------------------------------------------------------------------------
@@ -243,6 +244,73 @@ class TestPdfReport:
         assert isinstance(pdf, (bytes, bytearray))
         assert bytes(pdf)[:5] == b"%PDF-"
 
+    def test_c2_section_reads_threat_intel_c2s_key(self):
+        # build_threat_intel() returns C2s under "c2s"; the section must not report none.
+        from backend.pdf_report import _section_c2, _styles
+
+        story = []
+        _section_c2(story, _styles(), {"c2s": [{"domain": "example.test", "path": "/x"}]})
+        texts = [getattr(f, "text", "") for f in story]
+        assert not any("No C2 indicators" in t for t in texts)
+        assert any("1 indicator(s) identified" in t for t in texts)
+
+    def test_obfuscation_counts_come_from_techniques(self):
+        # build_obfuscation_view() exposes techniques[], not indicators{}; counts must reflect it.
+        from reportlab.platypus import Table
+
+        from backend.pdf_report import _section_obfuscation, _styles
+
+        obf = {"obfuscation_score": 60, "obfuscation_level": "medium",
+               "techniques": [{"key": "dangerous_permissions", "count": 5,
+                               "items": [{"raw": "android.permission.SEND_SMS"}]}]}
+        story = []
+        _section_obfuscation(story, _styles(), obf)
+        table = next(f for f in story if isinstance(f, Table))
+        cells = {row[0].text: row[1].text for row in table._cellvalues}
+        assert cells["Dangerous Perms"] == "5"
+
+
+class TestClipSummary:
+    def test_short_summary_is_unchanged(self):
+        from analysis.step7_llm_assessment import _clip_summary
+
+        assert _clip_summary("Short one.") == "Short one."
+
+    def test_long_summary_clips_at_sentence_boundary(self):
+        from analysis.step7_llm_assessment import _clip_summary
+
+        text = ("First sentence here. " * 40) + "Trailing words that get cut off mid"
+        out = _clip_summary(text, limit=200)
+        assert out.endswith("First sentence here.")
+        assert len(out) <= 200
+
+    def test_no_sentence_boundary_gets_ellipsis_not_bare_cut(self):
+        from analysis.step7_llm_assessment import _clip_summary
+
+        out = _clip_summary("x" * 50, limit=20)
+        assert out.endswith("…")
+
+
+class TestSmsFraudSanity:
+    def test_sms_fraud_with_c2_raises_low_to_high(self):
+        from analysis.step7_llm_assessment import sanity_check
+
+        obf = {"indicators": {"permission_behaviors": [{"group": "sms_fraud"}]}}
+        c2 = {"total_c2s": 2, "c2_infrastructure": [
+            {"domain": "x.test", "path": "/bot", "is_fallback": False, "confidence": 0.9}]}
+        out = sanity_check({"severity": "low", "risk_score": 20, "narrative": ""},
+                           {}, c2, obf, None)
+        assert out["severity"] == "high"
+        assert out["risk_score"] >= 65
+
+    def test_sms_fraud_without_c2_is_not_raised_here(self):
+        from analysis.step7_llm_assessment import sanity_check
+
+        obf = {"indicators": {"permission_behaviors": [{"group": "sms_fraud"}]}}
+        out = sanity_check({"severity": "low", "risk_score": 20, "narrative": ""},
+                           {}, {"total_c2s": 0}, obf, None)
+        assert out["severity"] != "high"
+
 
 # ---------------------------------------------------------------------------
 # T-11b: container repair must survive damaged ZIPs (defect found in review)
@@ -315,11 +383,17 @@ class TestFamilyKnowledgeGate:
         if len(tokens) < 3:
             pytest.skip("no family with >=3 KB tokens")
 
+        # Strings alone must not name a family: unseen families matched on shared strings
+        # in the open-set eval. A C2 domain hit is required for a non-toolkit family.
         result = {"strings": {"string_literals": [
             {"value": t, "category": "string_literal", "entropy": 3.0} for t in tokens]}}
-        match = _match_family_knowledge(result)
-        assert match is not None, "expected a KB match for 5 real tokens"
-        assert match.get("family") == fam
+        assert _match_family_knowledge(result) is None, "string-only tokens must not name a family"
+        domains = [d["token"] for d in kb[fam].get("domains", []) if isinstance(d, dict) and d.get("token")]
+        if domains:
+            result["c2_infrastructure"] = [{"domain": domains[0], "confidence": 0.9, "is_fallback": False}]
+            match = _match_family_knowledge(result)
+            assert match is not None, "expected a KB match for tokens plus a C2 domain"
+            assert match.get("family") == fam
 
     def test_single_generic_token_abstains(self):
         from backend.family_id import _match_family_knowledge

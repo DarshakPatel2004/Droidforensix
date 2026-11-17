@@ -70,6 +70,17 @@ BENIGN_DOMAINS = {
     "www.googleapis.com",
     "www.google.com",
     "google.com",
+    "googlemail.com",
+    "googleusercontent.com",
+    "root-servers.net",
+    "outlook.com",
+    # Logging library docs bundled in apps (SLF4J error-message links)
+    "slf4j.org",
+    # Mail-provider autoconfig hosts bundled by mail clients (K-9 Mail providers list)
+    "dwmail.jp",
+    "thundermail.com",
+    "willcom.com",
+    "mail.stage-thundermail.com",
     "youtube.com",
     "android.com",
     "www.android.com",
@@ -951,6 +962,30 @@ _COMMON_ENGLISH_WORDS = frozenset({
 })
 
 
+# Public resolvers are infrastructure the app queries, not C2. Labelled benign here.
+PUBLIC_RESOLVER_IPS = frozenset({"1.1.1.1", "1.0.0.1", "8.8.8.8", "8.8.4.4"})
+
+# Final labels of member-access expressions in code (data.fee, console.log). Also drops real .to domains; shortcut: replace with a TLD allowlist when one is shipped.
+CODE_MEMBER_TLDS = frozenset({
+    "log", "length", "value", "text", "textcontent", "style", "name", "class", "to", "from",
+    "fee", "chain", "lang", "total", "foreach", "key", "error", "get", "set", "id", "src",
+    "href", "type", "count", "size", "index", "path", "body", "title", "label", "parent",
+    "child", "node", "query", "display", "onload", "onclick", "svg", "png", "jpg", "json",
+    "xml", "css", "js", "io",
+})
+
+
+def _is_code_member_token(raw: str) -> bool:
+    """True for member-access tokens from code (console.log, data.fee), not hostnames."""
+    if any(c.isupper() for c in raw):  # hostnames from code carry case only as identifiers
+        return True
+    if any(label.isdigit() for label in raw.split(".")):  # version numbers: 0.25.sp
+        return True
+    if raw.startswith("vnd."):  # MIME types: vnd.sun.j2me.app
+        return True
+    return raw.rsplit(".", 1)[-1].lower() in CODE_MEMBER_TLDS
+
+
 def _is_likely_junk_domain(domain: str) -> bool:
     if not domain or '%' in domain:
         return True
@@ -1302,6 +1337,10 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
             # so the same allowlists and confidence rules apply.
             if artifact["type"] in ("url", "ip", "domain"):
                 raw_value = artifact["value"]
+                if artifact["type"] == "domain" and _is_code_member_token(raw_value):
+                    continue
+                if artifact["type"] == "ip" and raw_value in PUBLIC_RESOLVER_IPS:
+                    continue
                 url = raw_value if artifact["type"] == "url" else f"http://{raw_value}"
                 if url in seen_urls:
                     continue
@@ -1342,7 +1381,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": False,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "malware",
+                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "unverified",
                 }
                 if ip_legitimacy:
                     record["ip_legitimacy"] = ip_legitimacy
@@ -1402,7 +1441,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": False,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "malware",
+                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "unverified",
                 }
                 if ip_legitimacy:
                     record["ip_legitimacy"] = ip_legitimacy
@@ -1418,7 +1457,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                 if _is_code_reference(domain):
                     continue
                 # Filter out likely junk domains (file paths, single-word www, common words)
-                if _is_likely_junk_domain(domain):
+                if _is_code_member_token(domain) or _is_likely_junk_domain(domain):
                     continue
                 domain_lower = domain.lower()
                 if domain_lower in seen_domains:
@@ -1458,13 +1497,13 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": True,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "adware" if is_ad_network(domain_lower) else "malware",
+                    "threat_category": "adware" if is_ad_network(domain_lower) else "unverified",
                 }
                 c2_records.append(record)
                 c2_id += 1
 
             for ip_match in IP_RE.findall(value):
-                if ip_match in seen_ips:
+                if ip_match in seen_ips or ip_match in PUBLIC_RESOLVER_IPS:
                     continue
                 # Skip if this bare IP is already part of an extracted URL
                 if any(ip_match in extracted_url for extracted_url in value_urls):
@@ -1495,7 +1534,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": True,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "malware",
+                    "threat_category": "unverified",
                 }
                 c2_records.append(record)
                 c2_id += 1

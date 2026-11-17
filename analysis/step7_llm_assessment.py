@@ -268,11 +268,11 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         if critical_count > 0 and severity == "low":
             assessment["severity"] = "high"
             assessment["risk_score"] = max(risk_score, 70)
-            assessment["narrative"] += " [SANITY CHECK: elevated due to critical hardcoded secrets (private keys/credentials).]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to critical hardcoded secrets (private keys/credentials).]")
         elif (critical_count > 0 or high_count >= 3) and severity == "medium":
             assessment["severity"] = "high"
             assessment["risk_score"] = max(risk_score, 65)
-            assessment["narrative"] += " [SANITY CHECK: elevated due to multiple high-severity hardcoded secrets.]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to multiple high-severity hardcoded secrets.]")
         # Re-read: later rules must see the raised verdict, not the LLM's original one.
         severity = assessment["severity"]
         risk_score = assessment["risk_score"]
@@ -282,7 +282,7 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         if len(dangerous_perms) > 0 or obf_score > 70:
             assessment["severity"] = "medium"
             assessment["risk_score"] = max(risk_score, 30)
-            assessment["narrative"] += " [SANITY CHECK: elevated due to obfuscation indicators (score {:.0f}).]".format(obf_score)
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to obfuscation indicators (score {:.0f}).]".format(obf_score))
             severity = "medium"
             risk_score = assessment["risk_score"]
 
@@ -290,7 +290,23 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
     if c2_count > 0 and severity == "low":
         assessment["severity"] = "medium"
         assessment["risk_score"] = max(risk_score, 35)
-        assessment["narrative"] += " [SANITY CHECK: elevated due to detected C2 infrastructure.]"
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to detected C2 infrastructure.]")
+
+    # SMS send/intercept with C2 is a fraud pattern; the LLM alone under-rates it.
+    # Matches the sms_fraud group in obfuscation indicators.permission_behaviors.
+    sms_fraud = any(
+        b.get("group") == "sms_fraud"
+        for b in indicators.get("permission_behaviors", []) or []
+    )
+    # Only corroborated C2 counts here: a URL with a real path, from code, at confidence >= 0.8.
+    # Bare domain strings alone do not justify the fraud floor.
+    corroborated = _corroborated_c2(c2_result)
+    if sms_fraud and corroborated and assessment.get("severity") in ("low", "medium"):
+        assessment["severity"] = "high"
+        assessment["risk_score"] = max(assessment.get("risk_score", 0), 65)
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated to high — SMS send/intercept permissions combined with a corroborated C2 endpoint.]")
+    elif sms_fraud and c2_count > 0:
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: SMS permissions present, but C2 endpoints are uncorroborated. Severity not raised on that basis.]")
 
     # If no C2 was extracted, cap severity and risk_score
     if c2_count == 0:
@@ -301,12 +317,12 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         if current > max_sev or assessment.get("risk_score", 0) > 50:
             assessment["severity"] = rev_sev[max_sev]
             assessment["risk_score"] = min(assessment.get("risk_score", 0), 50)
-            assessment["narrative"] += " [SANITY CHECK: score capped — no C2 indicators extracted.]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: score capped — no C2 indicators extracted.]")
         c2_claim_keywords =["c2", "command and control", "command & control", "c&c", "c2 server", "c2 infrastructure", "c2 communication"]
         if any(kw in llm_narrative_lower for kw in c2_claim_keywords):
             assessment["severity"] = "low"
             assessment["risk_score"] = min(assessment.get("risk_score", 0), 25)
-            assessment["narrative"] += " [SANITY CHECK: narrative references C2 infrastructure, but no C2 indicators were extracted. Score reduced — C2 claims appear speculative.]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: narrative references C2 infrastructure, but no C2 indicators were extracted. Score reduced — C2 claims appear speculative.]")
 
     return assessment
 
@@ -314,6 +330,16 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
 # ============================================================================
 # Option 2: Conditional LLM Skip for Benign Apps
 # ============================================================================
+
+def _corroborated_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
+    """C2 entries seen as a full URL in code (not a bare string) with a real path."""
+    return [
+        c for c in c2_result.get("c2_infrastructure", []) or []
+        if not c.get("is_fallback")
+        and (c.get("confidence") or 0) >= min_confidence
+        and (c.get("path") or "/") != "/"
+    ]
+
 
 def _extract_high_confidence_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
     """Extract C2 infrastructure entries with confidence >= min_confidence."""
@@ -726,6 +752,18 @@ fallback_assessment = heuristic_fallback
 GENERIC_SYSTEM_PROMPT = "Follow the instructions in the user message exactly. Reply with a single JSON object only."
 
 
+def _clip_summary(text, limit: int = 1200) -> str:
+    """Clip an LLM summary at a sentence boundary so it never ends mid-word."""
+    s = str(text or "").strip()
+    if len(s) <= limit:
+        return s
+    cut = s[:limit]
+    end = max(cut.rfind(". "), cut.rfind("! "), cut.rfind("? "))
+    if end > limit // 2:
+        return cut[: end + 1]
+    return cut.rstrip() + "…"
+
+
 def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_retries: int = 2,
                      system_prompt: str = SYSTEM_PROMPT) -> Optional[str]:
     """Call NVIDIA NIM chat completions endpoint and return raw response text."""
@@ -753,7 +791,7 @@ def _call_nvidia_nim(context: str, model: str, base_url: str, api_key: str, max_
                 model=model,
                 messages=messages,
                 temperature=0.1,
-                max_tokens=512,
+                max_tokens=1024,  # 512 cut the JSON mid-summary on longer method explanations
                 # OpenRouter reasoning models otherwise spend the token budget on hidden reasoning.
                 extra_body={"reasoning": {"enabled": False}} if "openrouter" in base_url else None,
             )
@@ -1194,7 +1232,7 @@ def explain_threat_chain(chain: dict) -> dict:
         parsed = parse_llm_json(raw_output)
         if parsed and "summary" in parsed:
             return {
-                "summary": str(parsed.get("summary", ""))[:500],
+                "summary": _clip_summary(parsed.get("summary", "")),
                 "threat_type": str(parsed.get("threat_type", "unknown")),
                 "confidence": float(parsed.get("confidence", 0.5)),
             }
@@ -1269,7 +1307,7 @@ def explain_method(
         parsed = parse_llm_json(raw_output)
         if parsed and "summary" in parsed:
             return {
-                "summary": str(parsed.get("summary", ""))[:500],
+                "summary": _clip_summary(parsed.get("summary", "")),
                 "threat_type": str(parsed.get("threat_type", "unknown")),
                 "confidence": float(parsed.get("confidence", 0.5)),
             }
@@ -1519,7 +1557,7 @@ def summarize_dissection(dissection: dict, class_objects: list | None = None) ->
         return {
             "threat_level": threat_level,
             "risk_score": risk_score,
-            "summary": str(parsed.get("summary", ""))[:500],
+            "summary": _clip_summary(parsed.get("summary", "")),
             "key_behaviors": key_behaviors,
             "suspicious_methods": suspicious_methods,
             "c2_indicators": c2_indicators,
