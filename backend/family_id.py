@@ -1813,9 +1813,11 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
         # 5. Native libs
         if sig.has_native_libs is not None:
             has_libs = len(native_libs) > 0
-            if sig.has_native_libs == has_libs:
+            # Only a positive match counts. "no native libs" is shape, and shape alone
+            # must not reach min_matches (PixRevolution 0.7 came from perms + native:no).
+            if sig.has_native_libs and has_libs:
                 matched_signals += 1
-                signal_details.append(f"native:{'yes' if has_libs else 'no'}")
+                signal_details.append("native:yes")
 
         # 6. Native API pattern matching (JNI function symbols)
         native_api_match = _match_native_api(native_symbols, sig.family_name)
@@ -2091,6 +2093,10 @@ def _match_family_knowledge(result: Dict[str, Any],
         if len(hit_tokens) < _KB_MIN_TOKENS:
             continue
         if not any(fp <= _KB_ANCHOR_FP for fp in hit_fps):
+            continue
+        # Sentence-like strings (log and error messages) are not identifiers. A hit
+        # made only of them is a lookalike, not a family signal (K-9 Mail -> ICICI).
+        if not any(" " not in t or t.startswith(("op:", "c2:", "perm:")) for t in hit_tokens):
             continue
 
         if score > best_score:
