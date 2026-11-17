@@ -1381,7 +1381,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": False,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "malware",
+                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "unverified",
                 }
                 if ip_legitimacy:
                     record["ip_legitimacy"] = ip_legitimacy
@@ -1441,7 +1441,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": False,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "malware",
+                    "threat_category": "adware" if parsed["domain"] and is_ad_network(parsed["domain"]) else "unverified",
                 }
                 if ip_legitimacy:
                     record["ip_legitimacy"] = ip_legitimacy
@@ -1497,7 +1497,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": True,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "adware" if is_ad_network(domain_lower) else "malware",
+                    "threat_category": "adware" if is_ad_network(domain_lower) else "unverified",
                 }
                 c2_records.append(record)
                 c2_id += 1
@@ -1534,7 +1534,7 @@ def extract_c2_infrastructure(payloads_result: dict, strings_result: dict) -> di
                     "is_fallback": True,
                     "source_location": source_location,
                     "confidence": confidence,
-                    "threat_category": "malware",
+                    "threat_category": "unverified",
                 }
                 c2_records.append(record)
                 c2_id += 1

@@ -298,10 +298,15 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         b.get("group") == "sms_fraud"
         for b in indicators.get("permission_behaviors", []) or []
     )
-    if sms_fraud and c2_count > 0 and assessment.get("severity") in ("low", "medium"):
+    # Only corroborated C2 counts here: a URL with a real path, from code, at confidence >= 0.8.
+    # Bare domain strings alone do not justify the fraud floor.
+    corroborated = _corroborated_c2(c2_result)
+    if sms_fraud and corroborated and assessment.get("severity") in ("low", "medium"):
         assessment["severity"] = "high"
         assessment["risk_score"] = max(assessment.get("risk_score", 0), 65)
-        assessment["narrative"] += " [SANITY CHECK: elevated to high — SMS send/intercept permissions combined with C2 infrastructure.]"
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated to high — SMS send/intercept permissions combined with a corroborated C2 endpoint.]")
+    elif sms_fraud and c2_count > 0:
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: SMS permissions present, but C2 endpoints are uncorroborated. Severity not raised on that basis.]")
 
     # If no C2 was extracted, cap severity and risk_score
     if c2_count == 0:
@@ -325,6 +330,16 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
 # ============================================================================
 # Option 2: Conditional LLM Skip for Benign Apps
 # ============================================================================
+
+def _corroborated_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
+    """C2 entries seen as a full URL in code (not a bare string) with a real path."""
+    return [
+        c for c in c2_result.get("c2_infrastructure", []) or []
+        if not c.get("is_fallback")
+        and (c.get("confidence") or 0) >= min_confidence
+        and (c.get("path") or "/") != "/"
+    ]
+
 
 def _extract_high_confidence_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
     """Extract C2 infrastructure entries with confidence >= min_confidence."""
