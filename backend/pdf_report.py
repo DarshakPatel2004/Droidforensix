@@ -71,7 +71,7 @@ def _styles():
     return {
         'title':      s('DFTitle',    fontName='Helvetica-Bold',   fontSize=22, textColor=C_DARK,   spaceAfter=4, leading=28),
         'subtitle':   s('DFSub',      fontName='Helvetica',        fontSize=11, textColor=C_MUTED,  spaceAfter=2),
-        'h1':         s('DFH1',       fontName='Helvetica-Bold',   fontSize=14, textColor=C_DARK,   spaceBefore=14, spaceAfter=6),
+        'h1':         s('DFH1',       fontName='Helvetica-Bold',   fontSize=13, textColor=C_ACCENT, spaceBefore=16, spaceAfter=8),
         'h2':         s('DFH2',       fontName='Helvetica-Bold',   fontSize=11, textColor=C_ACCENT, spaceBefore=10, spaceAfter=4),
         'h3':         s('DFH3',       fontName='Helvetica-Bold',   fontSize=9,  textColor=C_MID,    spaceBefore=6,  spaceAfter=3),
         'body':       s('DFBody',     fontName='Helvetica',        fontSize=9,  textColor=C_DARK,   leading=14, spaceAfter=4),
@@ -125,21 +125,42 @@ def _section_cover(story, st, result, threat_data, sample_id):
     risk     = (result.get('llm_assessment') or {}).get('risk_score', 'N/A')
     generated = datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M UTC')
 
-    story.append(Spacer(1, 10 * mm))
-    story.append(Paragraph('DroidForensix', ParagraphStyle('brand', fontName='Helvetica-Bold', fontSize=10, textColor=C_ACCENT)))
-    story.append(Paragraph('Android Malware Analysis Report', st['title']))
-    story.append(Paragraph(f'Package: {_safe(pkg)}', st['subtitle']))
-    story.append(Spacer(1, 4))
+    usable = PAGE_W - 2 * MARGIN
+    brand = ParagraphStyle('brand', fontName='Helvetica-Bold', fontSize=9, textColor=colors.HexColor('#a5b4fc'))
+    head = ParagraphStyle('head', fontName='Helvetica-Bold', fontSize=20, textColor=C_WHITE, leading=24)
+    sub = ParagraphStyle('subh', fontName='Courier', fontSize=8, textColor=colors.HexColor('#cbd5e1'), leading=11)
+    banner = Table(
+        [[Paragraph('DROIDFORENSIX  ·  ANDROID MALWARE ANALYSIS REPORT', brand)],
+         [Paragraph(_safe(pkg, 120), head)],
+         [Paragraph(f'SHA-256 {_safe(sample_id)}', sub)]],
+        colWidths=[usable],
+    )
+    banner.setStyle(TableStyle([
+        ('BACKGROUND',    (0,0), (-1,-1), C_DARK),
+        ('LEFTPADDING',   (0,0), (-1,-1), 16),
+        ('RIGHTPADDING',  (0,0), (-1,-1), 16),
+        ('TOPPADDING',    (0,0), (0,0), 16),
+        ('BOTTOMPADDING', (0,-1), (-1,-1), 16),
+        ('LINEBELOW',     (0,-1), (-1,-1), 3, C_ACCENT),
+    ]))
+    story.append(banner)
+    story.append(Spacer(1, 10))
 
     sev_table = Table(
-        [[Paragraph(f'<b>Severity: {_safe(str(severity).upper())}</b>',
-            ParagraphStyle('sev', fontName='Helvetica-Bold', fontSize=13, textColor=C_WHITE, alignment=TA_CENTER))]],
-        colWidths=[PAGE_W - 2 * MARGIN]
+        [[Paragraph(f'<b>{_safe(str(severity).upper())}</b>',
+            ParagraphStyle('sev', fontName='Helvetica-Bold', fontSize=16, textColor=C_WHITE, alignment=TA_CENTER)),
+          Paragraph(f'Rule-based risk <b>{_safe(risk)} / 100</b><br/>'
+                    f'Assessment is a lead for the analyst. See the basis section.',
+            ParagraphStyle('sevtxt', fontName='Helvetica', fontSize=9, textColor=C_DARK, leading=13))]],
+        colWidths=[usable * 0.28, usable * 0.72],
     )
     sev_table.setStyle(TableStyle([
-        ('BACKGROUND',    (0,0), (-1,-1), sev_col),
-        ('TOPPADDING',    (0,0), (-1,-1), 10),
-        ('BOTTOMPADDING', (0,0), (-1,-1), 10),
+        ('BACKGROUND',    (0,0), (0,0), sev_col),
+        ('BACKGROUND',    (1,0), (1,0), C_LIGHT_BG),
+        ('VALIGN',        (0,0), (-1,-1), 'MIDDLE'),
+        ('TOPPADDING',    (0,0), (-1,-1), 12),
+        ('BOTTOMPADDING', (0,0), (-1,-1), 12),
+        ('LEFTPADDING',   (1,0), (1,0), 14),
     ]))
     story.append(sev_table)
     story.append(Spacer(1, 6))
@@ -301,7 +322,9 @@ def _section_c2(story, st, threat_data):
         _hr(story)
         return
 
-    story.append(Paragraph(f'{len(c2s)} indicator(s) identified.', st['body']))
+    story.append(Paragraph(
+        f'{len(c2s)} indicator(s) identified from static strings. None was observed live, '
+        'so each is an unverified lead.', st['body']))
     story.append(Spacer(1, 4))
 
     usable = PAGE_W - 2 * MARGIN
@@ -309,25 +332,29 @@ def _section_c2(story, st, threat_data):
     td = ParagraphStyle('td', fontName='Courier',        fontSize=7, textColor=C_DARK)
     ts = ParagraphStyle('ts', fontName='Helvetica',      fontSize=8, textColor=C_MUTED)
 
-    rows = [[Paragraph(h, th) for h in ['Indicator', 'Protocol', 'Category', 'Classification']]]
+    rows = [[Paragraph(h, th) for h in ['Indicator', 'Source', 'Confidence', 'Status']]]
     seen = set()
     for c2 in c2s[:50]:
-        indicator = c2.get('domain') or c2.get('ip') or 'unknown'
-        port = c2.get('port', '')
-        path = c2.get('path', '/')
-        detail = f'{indicator}:{port}{path}' if port else f'{indicator}{path}'
+        # Show the endpoint exactly as it appears in the code. Rebuilding it from parts drops the scheme.
+        detail = c2.get('raw_url') or c2.get('domain') or c2.get('ip') or 'unknown'
         # Same endpoint can be extracted from several sources; show it once.
         if detail in seen:
             continue
         seen.add(detail)
+        conf = max(0.0, min(1.0, float(c2.get('confidence') or 0)))
+        conf_col = '#4f46e5' if conf >= 0.8 else ('#b45309' if conf >= 0.5 else '#64748b')
+        bar = f'<font color="{conf_col}"><b>{round(conf * 100)}%</b></font>'
+        category = str(c2.get('threat_category') or 'unverified')
+        status_col = '#b45309' if category == 'unverified' else '#b91c1c'
+        status = f'<font color="{status_col}"><b>{_safe(category.upper())}</b></font>'
         rows.append([
-            Paragraph(_safe(detail, 60), td),
-            Paragraph(_safe(c2.get('protocol', 'N/A')), ts),
-            Paragraph(_safe(c2.get('threat_category', 'N/A')), ts),
-            Paragraph(_safe(c2.get('ip_classification', 'N/A')), ts),
+            Paragraph(_safe(detail, 300), td),
+            Paragraph(_safe(c2.get('source_location', 'N/A')), ts),
+            Paragraph(bar, ts),
+            Paragraph(status, ts),
         ])
 
-    t = Table(rows, colWidths=[usable*0.45, usable*0.15, usable*0.18, usable*0.22])
+    t = Table(rows, colWidths=[usable*0.42, usable*0.18, usable*0.22, usable*0.18])
     t.setStyle(TableStyle([
         ('BACKGROUND',    (0,0), (-1,0),  C_DARK),
         ('ROWBACKGROUNDS',(0,1), (-1,-1), [C_LIGHT_BG, C_WHITE]),
@@ -339,6 +366,11 @@ def _section_c2(story, st, threat_data):
         ('RIGHTPADDING',  (0,0), (-1,-1), 5),
     ]))
     story.append(t)
+    story.append(Spacer(1, 4))
+    story.append(Paragraph(
+        'Endpoints are shown as written in the code. Parts added at runtime (for example a bot token '
+        'or a query string built from device data) are not in static strings and cannot be recovered here.',
+        st['muted']))
     _hr(story)
 
 
