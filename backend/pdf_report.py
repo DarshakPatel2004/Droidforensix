@@ -181,6 +181,27 @@ def _section_metadata(story, st, result):
     _hr(story)
 
 
+def _section_family(story, st, family):
+    story.append(Paragraph('Family Attribution', st['h1']))
+    family = family or {}
+    name = family.get('family') or ''
+    if not name or name.lower() == 'unknown':
+        story.append(Paragraph('No family attributed. No identification layer produced a match.', st['muted']))
+        _hr(story)
+        return
+    story.append(_kv_table([
+        ('Family',     name),
+        ('Method',     family.get('method', 'unknown')),
+        ('Confidence', f"{round(float(family.get('confidence', 0)) * 100)}%"),
+        ('Basis',      family.get('reasoning', '')),
+    ]))
+    story.append(Spacer(1, 4))
+    story.append(Paragraph(
+        'Attribution is a hypothesis. Family labels from AV engines agree at most about 29% of the time.',
+        st['muted']))
+    _hr(story)
+
+
 def _section_llm_assessment(story, st, result):
     story.append(Paragraph('2. LLM Threat Assessment', st['h1']))
     llm = result.get('llm_assessment', {})
@@ -431,6 +452,7 @@ def generate_report(
     annotated_methods: list,
     mode: str = 'quick',
     selected_sections: Optional[dict] = None,
+    family: Optional[dict] = None,
 ) -> bytes:
     # Quick mode lets the caller pick which sections to include. Full mode
     # always renders everything (forensic record completeness rule).
@@ -463,6 +485,7 @@ def generate_report(
 
     if sections.get('metadata'):
         _section_metadata(story, st, sample_result)
+    _section_family(story, st, family)
     if sections.get('llm_assessment'):
         _section_llm_assessment(story, st, sample_result)
     if sections.get('obfuscation'):
