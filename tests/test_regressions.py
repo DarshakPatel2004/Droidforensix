@@ -89,7 +89,8 @@ class TestClassifyC2Verdicts:
 
         for rec in ({"domain": "a.example"}, {"domain": "cdn.example.com", "port": 443}):
             verdict, _ = classify_c2(rec)
-            assert verdict in ("malicious", "suspicious", "benign")
+            # "unknown" = no enrichment ran; it is deliberately not "benign".
+            assert verdict in ("malicious", "suspicious", "benign", "unknown")
 
 
 # ---------------------------------------------------------------------------

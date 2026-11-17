@@ -457,7 +457,7 @@ def classify_c2(c2: Dict[str, Any]) -> Tuple[str, str]:
         reasons.append('template/obfuscated domain')
 
     # 4. Junk domains (code fragments, sentence fragments)
-    if _is_junk_domain(domain):
+    if domain and _is_junk_domain(domain):  # IP-only indicators have no domain to judge
         return 'benign', 'junk domain (code fragment or sentence)'
 
     # 5. Suspicious TLD (only truly abused ones like .tk, .ml, .ga, .cf, .gq)
@@ -509,7 +509,11 @@ def classify_c2(c2: Dict[str, Any]) -> Tuple[str, str]:
         return 'suspicious', '; '.join(reasons)
     if reasons:  # Only weak signals (NXDOMAIN, no pDNS)
         return 'suspicious', '; '.join(reasons)
-    return 'benign', 'clean indicator'
+    # Benign needs positive evidence: a resolving domain with pDNS history.
+    # "No signals" alone is absence of evidence, so it stays unknown.
+    if live.get('resolves', False) and pdns_count > 0:
+        return 'benign', 'resolves with pDNS history'
+    return 'unknown', 'no positive benign evidence (enrichment missing or inconclusive)'
 
 
 def _status_bucket(c2: Dict[str, Any]) -> str:
@@ -529,7 +533,7 @@ def _ensure_classification(c2: Dict[str, Any]) -> str:
     """Return the C2's classification, computing it if the batch enrichment
     did not run for this sample."""
     label = c2.get('classification')
-    if label in ('benign', 'suspicious', 'malicious'):
+    if label in ('benign', 'suspicious', 'malicious', 'unknown'):
         return label
     label, _reason = classify_c2(c2)
     return label
@@ -776,7 +780,13 @@ def build_threat_intel(result: Dict[str, Any], sample_id: str) -> Dict[str, Any]
         'ips_geolocated': ips_geolocated,
         'family': family,
         'totals': {
+            # Rows: one per (domain, path) entry. Unique: one per domain or IP, the
+            # same count the Overview shows, so the two screens cannot disagree.
             'c2s': len(enriched_c2s),
+            'unique_indicators': len({
+                c.get('domain') or c.get('ip') for c in enriched_c2s
+                if (c.get('domain') or c.get('ip')) and not (c.get('domain') and _is_junk_domain(c['domain']))
+            }),
             'geolocated_ips': len(ips_geolocated),
         },
     }
@@ -877,8 +887,8 @@ def to_suricata(result: Dict[str, Any], sample_id: str) -> str:
     sid = _SURICATA_SID_BASE
     seen = set()
     for c2 in _export_c2s(result):
-        if c2.get('classification') == 'benign':
-            continue
+        if c2.get('classification') not in ('malicious', 'suspicious'):
+            continue  # unknown/benign indicators are not exported as IOCs
         domain = (c2.get('domain') or '').lower()
         ip = c2.get('ip') or ''
         if domain and _is_safe_domain(domain) and ('dns', domain) not in seen:
@@ -917,7 +927,7 @@ def to_yara(result: Dict[str, Any], sample_id: str) -> str:
     seen = set()
     idx = 0
     for c2 in _export_c2s(result):
-        if c2.get('classification') == 'benign':
+        if c2.get('classification') not in ('malicious', 'suspicious'):
             continue
         for value in (c2.get('domain'), c2.get('raw_url')):
             if not value or value in seen:
