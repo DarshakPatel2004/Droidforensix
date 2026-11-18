@@ -74,13 +74,6 @@ BENIGN_DOMAINS = {
     "googleusercontent.com",
     "root-servers.net",
     "outlook.com",
-    # Logging library docs bundled in apps (SLF4J error-message links)
-    "slf4j.org",
-    # Mail-provider autoconfig hosts bundled by mail clients (K-9 Mail providers list)
-    "dwmail.jp",
-    "thundermail.com",
-    "willcom.com",
-    "mail.stage-thundermail.com",
     "youtube.com",
     "android.com",
     "www.android.com",
@@ -1025,6 +1018,16 @@ def _is_likely_junk_domain(domain: str) -> bool:
         return True
 
     return False
+
+
+# Named benign categories, merged into BENIGN_DOMAINS. Each is reviewable on its own.
+# Logging library docs linked from error messages in bundled libraries.
+LIBRARY_DOC_DOMAINS = frozenset({"slf4j.org"})
+# Mail-provider autoconfig hosts that mail clients bundle for account setup.
+MAIL_PROVIDER_DOMAINS = frozenset({
+    "dwmail.jp", "thundermail.com", "mail.stage-thundermail.com", "willcom.com",
+})
+BENIGN_DOMAINS |= LIBRARY_DOC_DOMAINS | MAIL_PROVIDER_DOMAINS
 
 
 def _is_benign_domain(domain: str) -> bool:

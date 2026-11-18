@@ -2,10 +2,10 @@
   "summary": {
     "kb": "shipped",
     "eval_n": 51,
-    "predicted": 0,
+    "predicted": 3,
     "correct": 0,
     "recall": 0.0,
-    "precision": null
+    "precision": 0.0
   },
   "rows": [
     {
@@ -65,19 +65,19 @@
     {
       "sha256": "2b481eb2c3cf170c05b4bc74f55e2ec6aea57428821288312198045a498dddc3",
       "truth": "35wave",
-      "predicted": null,
+      "predicted": "SmsSend",
       "correct": false
     },
     {
       "sha256": "41071e3681dcce9127ec56379aedd49c6490f924c7db35f238f8be2183c151bd",
       "truth": "35wave",
-      "predicted": null,
+      "predicted": "SmsSend",
       "correct": false
     },
     {
       "sha256": "57a8e6e98f9309c7ac5bd3c3fb2b1118e14318d57879efc5e6dac9801a921249",
       "truth": "35wave",
-      "predicted": null,
+      "predicted": "SmsSend",
       "correct": false
     },
     {

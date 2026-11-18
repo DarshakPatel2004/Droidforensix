@@ -210,9 +210,14 @@ def _section_family(story, st, family):
         story.append(Paragraph('No family attributed. No identification layer produced a match.', st['muted']))
         _hr(story)
         return
+    # Label, do not hide: a family is shown as a lead unless it rests on a signature or a
+    # C2 domain at high confidence. Knowledge-base matches are leads by default.
+    method = family.get('method', 'unknown')
+    confident = method == 'signature_v3' and float(family.get('confidence', 0)) >= 0.8
+    status = 'SUPPORTED BY SIGNATURE' if confident else 'LEAD, NOT CONFIRMED'
     story.append(_kv_table([
-        ('Family',     name),
-        ('Method',     family.get('method', 'unknown')),
+        ('Family',     f'{name}  [{status}]'),
+        ('Method',     method),
         ('Confidence', f"{round(float(family.get('confidence', 0)) * 100)}%"),
         ('Basis',      family.get('reasoning', '')),
     ]))
@@ -230,6 +235,10 @@ def _section_llm_assessment(story, st, result):
         story.append(Paragraph('LLM assessment not available for this sample.', st['muted']))
         _hr(story)
         return
+    story.append(Paragraph(
+        '<font color="#b45309"><b>MODEL OUTPUT.</b></font> The narrative and actions below are '
+        'drafted by a language model. They are not evidence. Check each against the sections that follow.',
+        st['muted']))
 
     severity   = llm.get('severity', 'unknown')
     risk       = llm.get('risk_score', 'N/A')
