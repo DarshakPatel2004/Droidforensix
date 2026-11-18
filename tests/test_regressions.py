@@ -89,7 +89,8 @@ class TestClassifyC2Verdicts:
 
         for rec in ({"domain": "a.example"}, {"domain": "cdn.example.com", "port": 443}):
             verdict, _ = classify_c2(rec)
-            assert verdict in ("malicious", "suspicious", "benign")
+            # "unknown" = no enrichment ran; it is deliberately not "benign".
+            assert verdict in ("malicious", "suspicious", "benign", "unknown")
 
 
 # ---------------------------------------------------------------------------
@@ -295,8 +296,10 @@ class TestSmsFraudSanity:
         from analysis.step7_llm_assessment import sanity_check
 
         obf = {"indicators": {"permission_behaviors": [{"group": "sms_fraud"}]}}
+        c2 = {"total_c2s": 2, "c2_infrastructure": [
+            {"domain": "x.test", "path": "/bot", "is_fallback": False, "confidence": 0.9}]}
         out = sanity_check({"severity": "low", "risk_score": 20, "narrative": ""},
-                           {}, {"total_c2s": 2}, obf, None)
+                           {}, c2, obf, None)
         assert out["severity"] == "high"
         assert out["risk_score"] >= 65
 
@@ -380,11 +383,17 @@ class TestFamilyKnowledgeGate:
         if len(tokens) < 3:
             pytest.skip("no family with >=3 KB tokens")
 
+        # Strings alone must not name a family: unseen families matched on shared strings
+        # in the open-set eval. A C2 domain hit is required for a non-toolkit family.
         result = {"strings": {"string_literals": [
             {"value": t, "category": "string_literal", "entropy": 3.0} for t in tokens]}}
-        match = _match_family_knowledge(result)
-        assert match is not None, "expected a KB match for 5 real tokens"
-        assert match.get("family") == fam
+        assert _match_family_knowledge(result) is None, "string-only tokens must not name a family"
+        domains = [d["token"] for d in kb[fam].get("domains", []) if isinstance(d, dict) and d.get("token")]
+        if domains:
+            result["c2_infrastructure"] = [{"domain": domains[0], "confidence": 0.9, "is_fallback": False}]
+            match = _match_family_knowledge(result)
+            assert match is not None, "expected a KB match for tokens plus a C2 domain"
+            assert match.get("family") == fam
 
     def test_single_generic_token_abstains(self):
         from backend.family_id import _match_family_knowledge

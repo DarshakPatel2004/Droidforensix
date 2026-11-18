@@ -1813,9 +1813,11 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
         # 5. Native libs
         if sig.has_native_libs is not None:
             has_libs = len(native_libs) > 0
-            if sig.has_native_libs == has_libs:
+            # Only a positive match counts. "no native libs" is shape, and shape alone
+            # must not reach min_matches (PixRevolution 0.7 came from perms + native:no).
+            if sig.has_native_libs and has_libs:
                 matched_signals += 1
-                signal_details.append(f"native:{'yes' if has_libs else 'no'}")
+                signal_details.append("native:yes")
 
         # 6. Native API pattern matching (JNI function symbols)
         native_api_match = _match_native_api(native_symbols, sig.family_name)
@@ -1891,6 +1893,8 @@ _KB_TOOLKIT_FAMILIES = frozenset({"Ermac", "FluBot", "Hydra", "TeaBot", "Exobot"
 _KB_MIN_SCORE_TOOLKIT = 5.0   # ~14x the generic bar; separates real high-cluster fires
 _KB_MIN_TOKENS = 2            # at least 2 distinct matched tokens required
 _KB_ANCHOR_FP = 0.05          # at least one matched token must have fp <= this
+_KB_TIE_RATIO = 0.8           # abstain if a rival family reaches this share of the best score
+_KB_STRONG_STRING_HITS = 12   # without a C2 domain, a family needs this many matched strings
 _KB_PERM_WEIGHT = 0.3         # permission hits are weak; discount them
 # Accuracy Phase 1 unknown gate: weak KB hits on clean_static samples caused 23 FP (unknown→Adrd)
 # Require 2 tokens + anchor 0.05 + score 0.60 to avoid false family on unknown
@@ -2061,6 +2065,7 @@ def _match_family_knowledge(result: Dict[str, Any],
 
     best_score = 0.0
     best = None
+    scored: List[tuple] = []  # (score, family) for every family that passed the token gates
     for family_name, fingerprint in kb.items():
         score = 0.0
         hit_tokens: List[str] = []
@@ -2092,7 +2097,26 @@ def _match_family_knowledge(result: Dict[str, Any],
             continue
         if not any(fp <= _KB_ANCHOR_FP for fp in hit_fps):
             continue
+        # Sentence-like strings (log and error messages) are not identifiers. A hit
+        # made only of them is a lookalike, not a family signal (K-9 Mail -> ICICI).
+        if not any(" " not in t or t.startswith(("op:", "c2:", "perm:")) for t in hit_tokens):
+            continue
+        # Structural gate: a family needs a domain or code-level hit. Strings and
+        # permissions alone matched unseen families in the open-set eval (16-25 false).
+        # Opcode trigrams alone are shared code idioms; a non-toolkit family needs a C2 domain.
+        if family_name in _KB_TOOLKIT_FAMILIES:
+            if not any(t.startswith("op:") for t in hit_tokens):
+                continue
+        elif not any(t.startswith("c2:") for t in hit_tokens):
+            # Without a C2 domain, only a large string set counts: a few shared strings do not.
+            # Count only strings with real letters: numeric filler such as "1111111111" is not evidence.
+            string_hits = sum(1 for t in hit_tokens
+                              if not t.startswith(("op:", "c2:", "perm:"))
+                              and sum(ch.isalpha() for ch in t) >= 4)
+            if string_hits < _KB_STRONG_STRING_HITS:
+                continue
 
+        scored.append((score, family_name))  # only families that passed every gate can be rivals
         if score > best_score:
             best_score = score
             best = {
@@ -2103,6 +2127,10 @@ def _match_family_knowledge(result: Dict[str, Any],
             }
 
     if best is None or best_score < _kb_min_score_for(best["family"]):
+        return None
+    # Abstain when a rival family scores nearly as high: the evidence does not pick one.
+    rivals = [s for s, f in scored if f != best["family"]]
+    if rivals and max(rivals) >= _KB_TIE_RATIO * best_score:
         return None
     # Bytecode-anchor veto: toolkit loader families must carry at least one
     # opcode-trigram hit. Their string fingerprints are shared UI code that any

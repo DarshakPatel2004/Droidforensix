@@ -2,7 +2,7 @@
   "summary": {
     "kb": "shipped",
     "eval_n": 51,
-    "predicted": 25,
+    "predicted": 3,
     "correct": 0,
     "recall": 0.0,
     "precision": 0.0
@@ -11,25 +11,25 @@
     {
       "sha256": "00718ab320f688527d8901000593844cfa9f16664f17dc873f1cf10d0c1b7f2f",
       "truth": "cootek",
-      "predicted": "HyPay",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "00f13dc566b5c469d1e2e49cff2bba11f955aa8a8c92a074a97ab832d7d8170d",
       "truth": "cootek",
-      "predicted": "HyPay",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "035761335809cef4d86999efa860b9061a3a92076cff3a9f24a372dfbd4fc922",
       "truth": "cootek",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "064e31868539641c9b89e144f6de53737a15c5375425ab13e6637e6057b23332",
       "truth": "ubsod",
-      "predicted": "HyPay",
+      "predicted": null,
       "correct": false
     },
     {
@@ -41,7 +41,7 @@
     {
       "sha256": "2681c64976786c65d14bf52592b6315af12ecf5fe78e7a6293407db6fcf1c478",
       "truth": "ubsod",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
@@ -95,7 +95,7 @@
     {
       "sha256": "018dd0fdd2ffad17a6d0aff1849fa258865d14e1d921330ed978f2dcf0d4ca0f",
       "truth": "jsmshider",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
@@ -107,7 +107,7 @@
     {
       "sha256": "79823b850ca1327d605a6a6cda8067cea96d1c674e5f51a96359c08e19a0c049",
       "truth": "cashreward",
-      "predicted": "HyPay",
+      "predicted": null,
       "correct": false
     },
     {
@@ -119,7 +119,7 @@
     {
       "sha256": "06ec5474757cf80e21a531e9b0add395924ef8a6c680ad58153f03965a04c60d",
       "truth": "tispy",
-      "predicted": "Dowgin",
+      "predicted": null,
       "correct": false
     },
     {
@@ -131,19 +131,19 @@
     {
       "sha256": "099133359b85843b90fac8834e8df087d9d5189a5afecfff57d5d349d4652dbe",
       "truth": "tispy",
-      "predicted": "Adrd",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "0034ef6602baf259a7a89ca1c9ea1e1dcc568d9a136eec1d3bf40fbef82abe13",
       "truth": "xiny",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "004128efc8293a821486d55fda862e5117c80efe59d834a552eef756e124b35b",
       "truth": "xiny",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
@@ -155,7 +155,7 @@
     {
       "sha256": "000425e04b84356cd6d7527ec7e731eae390bbec5f2517e3b18d93a65ac74132",
       "truth": "domob",
-      "predicted": "Dowgin",
+      "predicted": null,
       "correct": false
     },
     {
@@ -173,7 +173,7 @@
     {
       "sha256": "001dddeb3446effd335f31cd7d8cbd57057192aade458a312ca875bcba27e1bc",
       "truth": "goldentouch",
-      "predicted": "GinMaster",
+      "predicted": null,
       "correct": false
     },
     {
@@ -185,13 +185,13 @@
     {
       "sha256": "00de93f94f948ee0319431843c9c60abf895c7f9fe6342efc754a3304ac3368e",
       "truth": "goldentouch",
-      "predicted": "GinMaster",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "000a0b1022ec485473dfaaca433f9548911bc7089b6a3c7b47f9ec5541005ca1",
       "truth": "madad",
-      "predicted": "SendPay",
+      "predicted": null,
       "correct": false
     },
     {
@@ -203,7 +203,7 @@
     {
       "sha256": "013ef65c30a032d01980cff0dde7bbd2f927edc7b25c52722d911dab84cb7f78",
       "truth": "madad",
-      "predicted": "DroidKungFu",
+      "predicted": null,
       "correct": false
     },
     {
@@ -215,13 +215,13 @@
     {
       "sha256": "03602d5b4299d556a9b7f04faa652aca358ca196767443de8f740c49325b1d57",
       "truth": "yuchanglou",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "0c8091baf7a4455865c9a92df2ba6e225a1f5c11810d8a9a49d1f242995bd049",
       "truth": "yuchanglou",
-      "predicted": "Dowgin",
+      "predicted": null,
       "correct": false
     },
     {
@@ -257,7 +257,7 @@
     {
       "sha256": "18112529f6a1402ffff1d1cf970f4f1bc02eed0916da0dc0e749f3f1c5e7c7de",
       "truth": "dingwe",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
@@ -299,19 +299,19 @@
     {
       "sha256": "192a252ae1f5e5ab5e23c74da6eeb3a0cb745b8e7ba450ea6454e8b8ceb5d226",
       "truth": "yiwan",
-      "predicted": "Plankton",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "1a060535c1cc89275680f671aa32d11ffb7ca3d1752a1798f8f83e4dd642d7b7",
       "truth": "yiwan",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     },
     {
       "sha256": "1f1d7df1f4f86468570371de2b9ac71e257930725634fb106a5189a7fd953285",
       "truth": "yiwan",
-      "predicted": "Cnzz",
+      "predicted": null,
       "correct": false
     }
   ]
