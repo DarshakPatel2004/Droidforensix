@@ -2103,17 +2103,20 @@ def _match_family_knowledge(result: Dict[str, Any],
             continue
         # Structural gate: a family needs a domain or code-level hit. Strings and
         # permissions alone matched unseen families in the open-set eval (16-25 false).
-        scored.append((score, family_name))
         # Opcode trigrams alone are shared code idioms; a non-toolkit family needs a C2 domain.
         if family_name in _KB_TOOLKIT_FAMILIES:
             if not any(t.startswith("op:") for t in hit_tokens):
                 continue
         elif not any(t.startswith("c2:") for t in hit_tokens):
             # Without a C2 domain, only a large string set counts: a few shared strings do not.
-            string_hits = sum(1 for t in hit_tokens if not t.startswith(("op:", "c2:", "perm:")))
+            # Count only strings with real letters: numeric filler such as "1111111111" is not evidence.
+            string_hits = sum(1 for t in hit_tokens
+                              if not t.startswith(("op:", "c2:", "perm:"))
+                              and sum(ch.isalpha() for ch in t) >= 4)
             if string_hits < _KB_STRONG_STRING_HITS:
                 continue
 
+        scored.append((score, family_name))  # only families that passed every gate can be rivals
         if score > best_score:
             best_score = score
             best = {

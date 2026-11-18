@@ -503,13 +503,13 @@ def benign_verdict_heuristic(
     if dangerous_perms or suspicious_apis:
         signal_count = len(dangerous_perms) + len(suspicious_apis)
         if signal_count >= 3:
-            risk_score = min(55, risk_score + 10)
+            risk_score = min(50, risk_score + 10)
         elif signal_count >= 1:
             risk_score = min(50, risk_score + 5)
     if reflection:
-        risk_score = min(55, risk_score + 5)
+        risk_score = min(50, risk_score + 5)
     if dynamic_loading:
-        risk_score = min(55, risk_score + 5)
+        risk_score = min(50, risk_score + 5)
     
     return {
         "severity": "low",
