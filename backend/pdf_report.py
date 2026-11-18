@@ -29,6 +29,8 @@ from reportlab.platypus import (
     TableStyle,
 )
 
+from backend.family_profiles import describe_family, evidence_lines
+
 # -- Colour palette -----------------------------------------------------------
 C_DARK      = colors.HexColor('#0f172a')
 C_MID       = colors.HexColor('#1e293b')
@@ -225,6 +227,29 @@ def _section_family(story, st, family):
     story.append(Paragraph(
         'Attribution is a hypothesis. Family labels from AV engines agree at most about 29% of the time.',
         st['muted']))
+
+    # What the family is. This describes the family in general, not this sample.
+    profile = describe_family(name)
+    story.append(Spacer(1, 6))
+    story.append(Paragraph('<b>What this family is</b>', st['label']))
+    if profile:
+        story.append(Paragraph(_safe(profile['what']), st['body']))
+        for behaviour in profile.get('typical_behaviour', []):
+            story.append(Paragraph(f'- {_safe(behaviour)}', st['finding']))
+        story.append(Paragraph(
+            'General description of the family. It is not evidence about this sample.', st['muted']))
+    else:
+        story.append(Paragraph('No profile is written for this family yet.', st['muted']))
+
+    # Why it was attributed: the matched evidence, shown as-is from the attribution.
+    evidence = evidence_lines(family.get('reasoning', ''))
+    story.append(Spacer(1, 6))
+    story.append(Paragraph('<b>Why it was attributed</b>', st['label']))
+    if evidence:
+        for item in evidence[:20]:
+            story.append(Paragraph(f'- {_safe(item, 300)}', st['mono_small']))
+    else:
+        story.append(Paragraph('No matched evidence was recorded for this attribution.', st['muted']))
     _hr(story)
 
 
