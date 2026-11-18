@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "low-contrast",
+        "value": "*",
+        "files": [
+          "docs/report-rework/mock.html"
+        ],
+        "createdAt": "2026-11-17T10:56:16.086Z",
+        "reason": "Scanner false positives on token-based colors (reads var() as unset, applies dark-theme amber to light background). Ratios checked by hand in both themes: text about 6:1 or better."
+      }
+    ]
+  }
+}

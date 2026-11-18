@@ -268,11 +268,11 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         if critical_count > 0 and severity == "low":
             assessment["severity"] = "high"
             assessment["risk_score"] = max(risk_score, 70)
-            assessment["narrative"] += " [SANITY CHECK: elevated due to critical hardcoded secrets (private keys/credentials).]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to critical hardcoded secrets (private keys/credentials).]")
         elif (critical_count > 0 or high_count >= 3) and severity == "medium":
             assessment["severity"] = "high"
             assessment["risk_score"] = max(risk_score, 65)
-            assessment["narrative"] += " [SANITY CHECK: elevated due to multiple high-severity hardcoded secrets.]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to multiple high-severity hardcoded secrets.]")
         # Re-read: later rules must see the raised verdict, not the LLM's original one.
         severity = assessment["severity"]
         risk_score = assessment["risk_score"]
@@ -282,7 +282,7 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         if len(dangerous_perms) > 0 or obf_score > 70:
             assessment["severity"] = "medium"
             assessment["risk_score"] = max(risk_score, 30)
-            assessment["narrative"] += " [SANITY CHECK: elevated due to obfuscation indicators (score {:.0f}).]".format(obf_score)
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to obfuscation indicators (score {:.0f}).]".format(obf_score))
             severity = "medium"
             risk_score = assessment["risk_score"]
 
@@ -290,7 +290,7 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
     if c2_count > 0 and severity == "low":
         assessment["severity"] = "medium"
         assessment["risk_score"] = max(risk_score, 35)
-        assessment["narrative"] += " [SANITY CHECK: elevated due to detected C2 infrastructure.]"
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to detected C2 infrastructure.]")
 
     # SMS send/intercept with C2 is a fraud pattern; the LLM alone under-rates it.
     # Matches the sms_fraud group in obfuscation indicators.permission_behaviors.
@@ -298,10 +298,15 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         b.get("group") == "sms_fraud"
         for b in indicators.get("permission_behaviors", []) or []
     )
-    if sms_fraud and c2_count > 0 and assessment.get("severity") in ("low", "medium"):
+    # Only corroborated C2 counts here: a URL with a real path, from code, at confidence >= 0.8.
+    # Bare domain strings alone do not justify the fraud floor.
+    corroborated = _corroborated_c2(c2_result)
+    if sms_fraud and corroborated and assessment.get("severity") in ("low", "medium"):
         assessment["severity"] = "high"
         assessment["risk_score"] = max(assessment.get("risk_score", 0), 65)
-        assessment["narrative"] += " [SANITY CHECK: elevated to high — SMS send/intercept permissions combined with C2 infrastructure.]"
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated to high — SMS send/intercept permissions combined with a corroborated C2 endpoint.]")
+    elif sms_fraud and c2_count > 0:
+        assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: SMS permissions present, but C2 endpoints are uncorroborated. Severity not raised on that basis.]")
 
     # If no C2 was extracted, cap severity and risk_score
     if c2_count == 0:
@@ -312,12 +317,12 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
         if current > max_sev or assessment.get("risk_score", 0) > 50:
             assessment["severity"] = rev_sev[max_sev]
             assessment["risk_score"] = min(assessment.get("risk_score", 0), 50)
-            assessment["narrative"] += " [SANITY CHECK: score capped — no C2 indicators extracted.]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: score capped — no C2 indicators extracted.]")
         c2_claim_keywords =["c2", "command and control", "command & control", "c&c", "c2 server", "c2 infrastructure", "c2 communication"]
         if any(kw in llm_narrative_lower for kw in c2_claim_keywords):
             assessment["severity"] = "low"
             assessment["risk_score"] = min(assessment.get("risk_score", 0), 25)
-            assessment["narrative"] += " [SANITY CHECK: narrative references C2 infrastructure, but no C2 indicators were extracted. Score reduced — C2 claims appear speculative.]"
+            assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: narrative references C2 infrastructure, but no C2 indicators were extracted. Score reduced — C2 claims appear speculative.]")
 
     return assessment
 
@@ -325,6 +330,16 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
 # ============================================================================
 # Option 2: Conditional LLM Skip for Benign Apps
 # ============================================================================
+
+def _corroborated_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
+    """C2 entries seen as a full URL in code (not a bare string) with a real path."""
+    return [
+        c for c in c2_result.get("c2_infrastructure", []) or []
+        if not c.get("is_fallback")
+        and (c.get("confidence") or 0) >= min_confidence
+        and (c.get("path") or "/") != "/"
+    ]
+
 
 def _extract_high_confidence_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
     """Extract C2 infrastructure entries with confidence >= min_confidence."""
@@ -488,13 +503,13 @@ def benign_verdict_heuristic(
     if dangerous_perms or suspicious_apis:
         signal_count = len(dangerous_perms) + len(suspicious_apis)
         if signal_count >= 3:
-            risk_score = min(55, risk_score + 10)
+            risk_score = min(50, risk_score + 10)
         elif signal_count >= 1:
             risk_score = min(50, risk_score + 5)
     if reflection:
-        risk_score = min(55, risk_score + 5)
+        risk_score = min(50, risk_score + 5)
     if dynamic_loading:
-        risk_score = min(55, risk_score + 5)
+        risk_score = min(50, risk_score + 5)
     
     return {
         "severity": "low",

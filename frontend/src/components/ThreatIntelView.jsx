@@ -99,7 +99,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
       </div>
 
       <div className="threat-stats">
-        <StatCard value={c2s.length} label="Total C2 Indicators" color="rose" />
+        <StatCard value={threatData.totals?.unique_indicators ?? c2s.length} label="Unique C2 Indicators" color="rose" />
         <StatCard value={geoIps.length} label="IPs Geo-Located" color="cyan" />
         <StatCard value={`${activeRate}%`} label="Active C2 Rate" color="amber" />
         <StatCard value={classification.malicious || 0} label="Malicious C2s" color="rose" />
@@ -124,7 +124,7 @@ export default function ThreatIntelView({ sample, apiUrl }) {
       </div>
 
       <div className="threat-card card c2-list-card">
-        <h3 className="section-title">C2 Indicators ({c2s.length})</h3>
+        <h3 className="section-title">C2 Entries ({c2s.length})</h3>
         {c2s.length === 0 ? (
           <p className="empty-state">No C2 indicators detected.</p>
         ) : (

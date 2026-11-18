@@ -1,0 +1,380 @@
+[
+  {
+    "score": 0.35,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 25
+  },
+  {
+    "score": 0.35,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 25
+  },
+  {
+    "score": 0.35,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 25
+  },
+  {
+    "score": 0.35,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.35,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.35,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.35,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.35,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.35,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.5,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 25
+  },
+  {
+    "score": 0.5,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 25
+  },
+  {
+    "score": 0.5,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 25
+  },
+  {
+    "score": 0.5,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.5,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.5,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.5,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.5,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.5,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.75,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 24
+  },
+  {
+    "score": 0.75,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 24
+  },
+  {
+    "score": 0.75,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 24
+  },
+  {
+    "score": 0.75,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.75,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.75,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 20
+  },
+  {
+    "score": 0.75,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.75,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 0.75,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 1.0,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 24
+  },
+  {
+    "score": 1.0,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 24
+  },
+  {
+    "score": 1.0,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 24
+  },
+  {
+    "score": 1.0,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 20
+  },
+  {
+    "score": 1.0,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 20
+  },
+  {
+    "score": 1.0,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 20
+  },
+  {
+    "score": 1.0,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 1.0,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 1.0,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 1.5,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 22
+  },
+  {
+    "score": 1.5,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 22
+  },
+  {
+    "score": 1.5,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 22
+  },
+  {
+    "score": 1.5,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 18
+  },
+  {
+    "score": 1.5,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 18
+  },
+  {
+    "score": 1.5,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 18
+  },
+  {
+    "score": 1.5,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 1.5,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 1.5,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 2.0,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 22
+  },
+  {
+    "score": 2.0,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 22
+  },
+  {
+    "score": 2.0,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 22
+  },
+  {
+    "score": 2.0,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 18
+  },
+  {
+    "score": 2.0,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 18
+  },
+  {
+    "score": 2.0,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 18
+  },
+  {
+    "score": 2.0,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 2.0,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 2.0,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 2,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 2,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 2,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 3,
+    "anchor": 0.05,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 3,
+    "anchor": 0.02,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 3,
+    "anchor": 0.01,
+    "false_attributions": 17
+  },
+  {
+    "score": 3.0,
+    "tokens": 4,
+    "anchor": 0.05,
+    "false_attributions": 16
+  },
+  {
+    "score": 3.0,
+    "tokens": 4,
+    "anchor": 0.02,
+    "false_attributions": 16
+  },
+  {
+    "score": 3.0,
+    "tokens": 4,
+    "anchor": 0.01,
+    "false_attributions": 16
+  }
+]
