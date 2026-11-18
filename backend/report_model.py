@@ -9,7 +9,7 @@ from datetime import datetime, timezone
 from typing import Any, Dict
 
 from analysis.custody import verify as verify_custody
-from backend import family_id
+from backend import family_id, family_profiles
 from backend import threat_intel as ti
 from backend.config import settings
 from backend.obfuscation_view import build_obfuscation_view
@@ -80,6 +80,8 @@ def build_report_model(sample_id: str) -> Dict[str, Any]:
             "method": family.get("method"),
             "confidence": family.get("confidence"),
             "reasoning": family.get("reasoning"),
+            "evidence": family_profiles.evidence_lines(family.get("reasoning")),
+            "profile": family_profiles.describe_family(family.get("family")),
         },
         "endpoints": endpoints,
         "endpoints_summary": {
