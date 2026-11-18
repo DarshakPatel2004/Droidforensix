@@ -287,7 +287,8 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
             risk_score = assessment["risk_score"]
 
     # If active C2 exists but severity is low, raise it
-    if c2_count > 0 and severity == "low":
+    # Only a corroborated endpoint raises severity; an unverified string lead does not.
+    if _corroborated_c2(c2_result) and severity == "low":
         assessment["severity"] = "medium"
         assessment["risk_score"] = max(risk_score, 35)
         assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to detected C2 infrastructure.]")

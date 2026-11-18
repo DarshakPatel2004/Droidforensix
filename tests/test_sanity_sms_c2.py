@@ -31,3 +31,13 @@ def test_no_c2_leaves_severity_alone():
     c2 = {"c2_infrastructure": [], "total_c2s": 0}
     out = sanity_check(_assessment(), {}, c2, SMS_OBF)
     assert out["severity"] == "low"
+
+
+def test_unverified_endpoint_does_not_raise_low_to_medium():
+    out = sanity_check(_assessment(), {}, _c2(path="/", fallback=True), {})
+    assert out["severity"] == "low"
+
+
+def test_corroborated_endpoint_raises_low_to_medium():
+    out = sanity_check(_assessment(), {}, _c2(path="/bot", fallback=False), {})
+    assert out["severity"] in ("medium", "high")
