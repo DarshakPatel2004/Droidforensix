@@ -291,3 +291,4 @@ evaluation/validation_359_rerun_errors_2026-10-31/
 evaluation/subset_baseline_2026-11-03/
 docs/report-rework/*.pdf
 docs/report-rework/*.png
+docs/report-rework/report_*.json
