@@ -159,6 +159,14 @@ def _pseed(j: int) -> int:
 
 
 _CHUNK = 8191
+MAX_DEX_READ_BYTES = 128 * 1024 * 1024  # zip-bomb guard: declared size is checked before inflating
+
+
+def _read_dex_capped(zf, name):
+    """zf.read, but refuse a DEX whose declared size is over the cap before inflating it."""
+    if zf.getinfo(name).file_size > MAX_DEX_READ_BYTES:
+        raise ValueError(f"{name} declared size exceeds {MAX_DEX_READ_BYTES} bytes")
+    return zf.read(name)
 
 
 def paranoid_get_string(idv: int, chunks: List[str]) -> str:
@@ -250,7 +258,7 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
         if dn not in zf.namelist():
             continue
         try:
-            key, cts = harvest_npstringfog(zf.read(dn))
+            key, cts = harvest_npstringfog(_read_dex_capped(zf, dn))
         except Exception as exc:
             logger.warning("Suppressed error in NPStringFog harvest of %s: %s", dn, exc)
             key, cts = None, []
@@ -285,7 +293,11 @@ def deobfuscate_strings(apk_path: str, work_dir: str,
             if found:
                 ids.update(int(x) for x in found)
         if ids:
-            chunks = load_paranoid_chunks_from_bytes(zf.read(primary_dex))
+            try:
+                chunks = load_paranoid_chunks_from_bytes(_read_dex_capped(zf, primary_dex))
+            except ValueError as exc:
+                logger.warning("Skipping paranoid decode: %s", exc)
+                chunks = []
             ok = {}
             for cid in sorted(ids) if chunks else []:
                 try:

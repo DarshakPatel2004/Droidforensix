@@ -8,11 +8,20 @@ source-literal escapes) -- see rto_analysis/hole1_czrr_definitive.md.
 
 import json
 
+import pytest
+
 from stage3_replay import (
     PROJECT_ROOT,
     decode_string,
     load_pool,
     run_replay,
+)
+
+# The recorded strings are a recovered payload, so .gitignore keeps them out of git (CI has no copy).
+EXPECTED_FIXTURE = PROJECT_ROOT / "rto_analysis" / "phase2" / "installer_deobfuscated_strings.json"
+requires_fixture = pytest.mark.skipif(
+    not EXPECTED_FIXTURE.exists(),
+    reason="rto_analysis/phase2 recorded fixture is git-ignored; present only on the analyst's machine",
 )
 
 DOCUMENTED_ARTIFACT_SEEDS = {
@@ -27,11 +36,11 @@ DOCUMENTED_ARTIFACT_SEEDS = {
 
 
 def _load_expected():
-    data = json.loads((PROJECT_ROOT / "rto_analysis" / "phase2"
-                       / "installer_deobfuscated_strings.json").read_text(encoding="utf-8"))
+    data = json.loads(EXPECTED_FIXTURE.read_text(encoding="utf-8"))
     return {int(k): v for k, v in data.items() if v is not None}
 
 
+@requires_fixture
 def test_replay_matches_recorded_fixture():
     pool = load_pool()
     expected = _load_expected()
@@ -45,6 +54,7 @@ def test_selective_spot_check():
     assert decode_string(-9154610674182, pool) == "app_installation"
 
 
+@requires_fixture
 def test_residual_mismatches_are_documented_artifacts():
     pool = load_pool()
     matches, _, detail = run_replay(pool, _load_expected())

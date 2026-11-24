@@ -312,8 +312,8 @@ async def api_get_sample_status(sample_id: str) -> dict:
         return {
             "sample_id": sample_id,
             "status": "completed",
-            "severity": result.get("llm_assessment", {}).get("severity"),
-            "risk_score": result.get("llm_assessment", {}).get("risk_score"),
+            "severity": (result.get("llm_assessment") or {}).get("severity"),
+            "risk_score": (result.get("llm_assessment") or {}).get("risk_score"),
         }
 
     raise HTTPException(status_code=404, detail="Sample or job not found")

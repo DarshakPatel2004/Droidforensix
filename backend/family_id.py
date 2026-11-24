@@ -2413,7 +2413,7 @@ def _llm_family(result: Dict[str, Any], max_tokens: int = 400) -> Optional[Dict[
     or_api_key = os.environ.get("OPENROUTER_API_KEY")
     use_nvidia = provider == "nvidia" or (provider == "auto" and nim_api_key)
     use_openrouter = provider == "openrouter" or (provider == "auto" and or_api_key and not nim_api_key)
-    context = _family_context(result, sample_id=result.get("sample_id") or result.get("metadata", {}).get("sha256"))
+    context = _family_context(result, sample_id=result.get("sample_id") or (result.get("metadata") or {}).get("sha256"))
     # An APK string containing the closing tag would end the untrusted-data fence early (B1-02).
     context = context.replace("</untrusted_apk_data>", "[removed closing tag]")
     raw = None

@@ -529,7 +529,7 @@ def _count_similar(family: str, exclude_id: str) -> int:
     for other in load_all_results():
         if other.get("sample_id", "") == exclude_id:
             continue
-        of = other.get("family_identification", {}).get("family", "unknown")
+        of = (other.get("family_identification") or {}).get("family", "unknown")
         if of == family:
             count += 1
     return count

@@ -29,6 +29,8 @@ kaggle/*.zip
 .github/code-review-graph.instruction.md
 .opencode.json
 AGENTS.md
+# CLAUDE.md requires AGENTS.md (coding standards), so it must be tracked.
+!AGENTS.md
 GEMINI.md
 QODER.md
 
@@ -289,3 +291,6 @@ evaluation/validation_359_rerun_errors_2026-10-31/
 
 # Regenerable pipeline outputs (exceed GitHub 100 MB file limit)
 evaluation/subset_baseline_2026-11-03/
+docs/report-rework/*.pdf
+docs/report-rework/*.png
+docs/report-rework/report_*.json
