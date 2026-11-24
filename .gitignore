@@ -29,6 +29,8 @@ kaggle/*.zip
 .github/code-review-graph.instruction.md
 .opencode.json
 AGENTS.md
+# CLAUDE.md requires AGENTS.md (coding standards), so it must be tracked.
+!AGENTS.md
 GEMINI.md
 QODER.md
 

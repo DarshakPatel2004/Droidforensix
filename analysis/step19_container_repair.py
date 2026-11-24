@@ -70,6 +70,20 @@ def _local_headers(data: bytes) -> List[Dict[str, Any]]:
     return heads
 
 
+MAX_MEMBER_INFLATE_BYTES = 256 * 1024 * 1024  # a few hundred bytes of deflate can expand to gigabytes
+
+
+def _inflate_capped(data: bytes) -> bytes:
+    """Raw-inflate `data`. Raises zlib.error if truncated or if output would exceed the cap."""
+    dobj = zlib.decompressobj(-15)
+    out = dobj.decompress(data, MAX_MEMBER_INFLATE_BYTES)
+    if dobj.unconsumed_tail:
+        raise zlib.error("inflate output exceeds MAX_MEMBER_INFLATE_BYTES")
+    if not dobj.eof:
+        raise zlib.error("incomplete deflate stream")
+    return out + dobj.flush()
+
+
 def _recover_member(entry: Dict[str, Any], region: bytes) -> bytes:
     """Stored-exact then inflate paths, preferring CRC-verified results."""
     cand = region[: entry["usize"]]
@@ -79,14 +93,13 @@ def _recover_member(entry: Dict[str, Any], region: bytes) -> bytes:
         if sz <= 0 or sz > len(region):
             continue
         try:
-            dec = zlib.decompress(region[:sz], -15)
+            dec = _inflate_capped(region[:sz])
             if not entry["crc"] or zlib.crc32(dec) == entry["crc"]:
                 return dec
         except zlib.error:
             continue
     try:
-        dec = zlib.decompress(region[: entry["csize"]], -15) if entry["csize"] else b""
-        return dec
+        return _inflate_capped(region[: entry["csize"]]) if entry["csize"] else b""
     except zlib.error:
         return b""
 

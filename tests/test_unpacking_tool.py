@@ -77,6 +77,10 @@ def test_collect_outputs_copies_artifacts_and_keys(tool, tmp_path):
     assert keys["seed"] == "myg0N2"
 
 
+@pytest.mark.skipif(
+    not (TOOL_PATH.parent / "phase2" / "installer_deobfuscated_strings.json").exists(),
+    reason="rto_analysis/phase2 recorded fixture is git-ignored; present only on the analyst's machine",
+)
 def test_run_stage3_materializes_strings_at_replay_bar(tool, tmp_path):
     result = tool.run_stage3(tmp_path)
     assert result["seeds"] == 180
