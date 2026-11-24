@@ -305,6 +305,9 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
     )
     # Only corroborated C2 counts here: a URL with a real path, from code, at confidence >= 0.8.
     # Bare domain strings alone do not justify the fraud floor.
+    # Deliberately NOT gated on behavior_confirmed: on the 104 local samples, 7 of the 14 SMS-fraud
+    # samples that get this floor lack the device-data signal, and all 7 are VT-confirmed malware
+    # (28-39 detections). SMS permissions are independent evidence; gating would under-rate them.
     corroborated = _corroborated_c2(c2_result)
     if sms_fraud and corroborated and assessment.get("severity") in ("low", "medium"):
         assessment["severity"] = "high"

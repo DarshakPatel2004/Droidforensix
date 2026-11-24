@@ -1356,6 +1356,9 @@ FAMILY_SIGNATURES: List[FamilySignature] = [
         has_native_libs=False,
         min_matches=2, confidence=0.7,
         require_c2=False,
+        # Its permissions (INTERNET, ACCESS_NETWORK_STATE) are on nearly every app, so without one of
+        # its own strings it named GinMaster and other unrelated samples PixRevolution.
+        require_string=True,
     ),
 
     # SMSreg — SMS registration/stealer (2 KB samples). fp=0 strings and domains.
@@ -1813,11 +1816,14 @@ def _match_family_signatures(result: Dict[str, Any]) -> Optional[Dict[str, Any]]
         # 5. Native libs
         if sig.has_native_libs is not None:
             has_libs = len(native_libs) > 0
-            # Only a positive match counts. "no native libs" is shape, and shape alone
-            # must not reach min_matches (PixRevolution 0.7 came from perms + native:no).
-            if sig.has_native_libs and has_libs:
+            # Shape (native libs present or absent) counts toward min_matches, which are calibrated
+            # for it. It can never name a family alone: the has_discriminator gate below rejects
+            # any match without a string, C2 or JNI signal unless the full permission cluster hits.
+            # Not counting "native:no" cut dev recall on real families from 88% to 59% (see
+            # evaluation/FAMILY_ATTRIBUTION_FINDINGS.md) with no precision gain.
+            if sig.has_native_libs == has_libs:
                 matched_signals += 1
-                signal_details.append("native:yes")
+                signal_details.append(f"native:{'yes' if has_libs else 'no'}")
 
         # 6. Native API pattern matching (JNI function symbols)
         native_api_match = _match_native_api(native_symbols, sig.family_name)
