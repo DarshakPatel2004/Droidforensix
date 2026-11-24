@@ -25,6 +25,10 @@ from typing import Any, Dict, Optional
 
 import requests
 
+from analysis.c2_corroboration import (
+    CORROBORATION_MIN_CONFIDENCE,
+    is_corroborated_endpoint,
+)
 from analysis.step8_obfuscation_analysis import _match_behavior_groups
 from backend.config import settings
 
@@ -332,13 +336,11 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
 # Option 2: Conditional LLM Skip for Benign Apps
 # ============================================================================
 
-def _corroborated_c2(c2_result: dict, min_confidence: float = 0.8) -> list:
-    """C2 entries seen as a full URL in code (not a bare string) with a real path."""
+def _corroborated_c2(c2_result: dict, min_confidence: float = CORROBORATION_MIN_CONFIDENCE) -> list:
+    """C2 entries that pass the shared corroboration rule (see analysis/c2_corroboration.py)."""
     return [
         c for c in c2_result.get("c2_infrastructure", []) or []
-        if not c.get("is_fallback")
-        and (c.get("confidence") or 0) >= min_confidence
-        and (c.get("path") or "/") != "/"
+        if is_corroborated_endpoint(c, min_confidence)
     ]
 
 
