@@ -1,0 +1,21 @@
+{
+  "_comment": "Registrable-domain suffixes of third-party ad networks, vendor SDK/API hosts, telemetry and documentation hosts. An endpoint on one of these is not corroborated as C2 by itself. Shared-hosting platforms (github.com, appspot.com, firebaseio.com, amazonaws.com, ...) are deliberately NOT listed: real C2 is hosted there.",
+  "ad_network": [
+    "adwo.com", "wiyun.com", "domob.cn", "guohead.com", "adwhirl.com", "mydas.mobi", "airpush.com", "admob.com",
+    "doubleclick.net", "googleadservices.com", "leadboltads.net", "ad.mail.ru", "mkhoj.com", "mobfox.com",
+    "heyzap.com", "appbrain.com", "apptornado.com", "imocha.com", "wapx.cn", "adsmoloco.com", "tradplusad.com",
+    "cooguo.com", "pixeltrack66.com"
+  ],
+  "vendor_sdk": [
+    "taptap.com", "tap.io", "ximalaya.com", "qq.com", "gtimg.cn", "qpic.cn", "taobao.com", "alipay.net",
+    "weibo.cn", "whatsapp.net", "cielo.com.br", "photoroom.com", "autonavi.com", "amap.com", "eoemarket.com",
+    "soso.com", "91.com", "qplus.com"
+  ],
+  "telemetry": [
+    "umengcloud.com", "bugsense.appspot.com", "bugly.qq.com"
+  ],
+  "docs_and_assets": [
+    "jivesoftware.com", "pyyaml.org", "ffmpeg.org", "winimage.com", "tizen.org", "atlassian.net",
+    "androidplatform.net", "google.cn", "unsplash.com", "truste.com", "emulab.it", "tendril.co.uk"
+  ]
+}
