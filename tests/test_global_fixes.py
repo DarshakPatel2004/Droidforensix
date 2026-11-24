@@ -32,7 +32,9 @@ def test_enriched_clean_c2_is_still_benign():
 
 def test_sanity_notes_stay_out_of_narrative():
     assessment = {"severity": "low", "risk_score": 10, "narrative": "Model narrative."}
-    c2_result = {"total_c2s": 2}
+    # Only a corroborated endpoint (full URL from code, real path) raises LOW to MEDIUM and adds a note.
+    corroborated = {"confidence": 0.9, "path": "/gate/data.php", "is_fallback": False}
+    c2_result = {"total_c2s": 2, "c2_infrastructure": [corroborated]}
     out = sanity_check(assessment, {}, c2_result)
     assert out["narrative"] == "Model narrative."
     assert any("SANITY CHECK" in note for note in out.get("sanity_notes", []))
