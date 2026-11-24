@@ -24,6 +24,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Callable, Optional
 
+from analysis.c2_corroboration import annotate_device_data_signal
 from analysis.custody import append_event, digest_value, file_digest
 from analysis.hardcoded_secrets import analyze_hardcoded_secrets
 from analysis.step1_apk_extraction import extract_apk
@@ -156,7 +157,7 @@ CACHE_META_NAME = "pipeline_meta.json"
 
 
 # Bump when step logic changes, so cached results from older code are not served (audit A1-24).
-PIPELINE_VERSION = "2026-11-12.2"  # bumped: closure fixes (A1-32 exfiltration group, A2-M12 PKCS#7 certs, A2-L1/L2/L5/L12/L13, step11 cluster cap)
+PIPELINE_VERSION = "2026-11-24.1"  # bumped: C2 records carry device_data_signal; earlier: closure fixes (A1-32 exfiltration group, A2-M12 PKCS#7 certs, A2-L1/L2/L5/L12/L13, step11 cluster cap)
 
 
 def _cache_signature(apk_path: Path, apk_size: int, stop_after: int, skip_steps: frozenset) -> dict:
@@ -696,6 +697,8 @@ def run_pipeline(apk_path: str, work_dir: Optional[str] = None,
         5, sample_id, apk_size, global_start, event_emitter, work_dir,
         extract_c2_infrastructure, payloads_result, strings_result
     )
+    # Record whether code that references each C2 host also reads a device identifier.
+    annotate_device_data_signal(c2_result.get("c2_infrastructure", []), extraction.get("apktool_output_dir"))
     _emit(event_emitter, "metric_updated", {
         "sample_id": sample_id,
         "metric_name": "c2_count",

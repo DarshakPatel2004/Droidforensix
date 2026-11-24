@@ -8,7 +8,7 @@ import json
 from datetime import datetime, timezone
 from typing import Any, Dict
 
-from analysis.c2_corroboration import is_corroborated_endpoint
+from analysis.c2_corroboration import is_behavior_confirmed, is_corroborated_endpoint
 from analysis.custody import verify as verify_custody
 from backend import family_id, family_profiles
 from backend import threat_intel as ti
@@ -34,6 +34,8 @@ def _endpoint(c2: Dict[str, Any]) -> Dict[str, Any]:
         "category": c2.get("threat_category", "unverified"),
         "status": "UNVERIFIED",           # never observed live; string-extracted only
         "corroborated": is_corroborated_endpoint(c2),
+        # True only when code referencing this host also reads a device identifier (see c2_corroboration).
+        "behavior_confirmed": is_behavior_confirmed(c2),
     }
 
 
