@@ -297,7 +297,7 @@ class TestSmsFraudSanity:
 
         obf = {"indicators": {"permission_behaviors": [{"group": "sms_fraud"}]}}
         c2 = {"total_c2s": 2, "c2_infrastructure": [
-            {"domain": "x.test", "path": "/bot", "is_fallback": False, "confidence": 0.9}]}
+            {"domain": "x.test", "path": "/gate.php", "is_fallback": False, "confidence": 0.9}]}
         out = sanity_check({"severity": "low", "risk_score": 20, "narrative": ""},
                            {}, c2, obf, None)
         assert out["severity"] == "high"

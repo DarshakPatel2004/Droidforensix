@@ -1,3 +1,6 @@
 # Changes to the live results page need the owner's review.
 /site/          @DarshakPatel2004
 /vercel.json     @DarshakPatel2004
+# CI workflows and ignore rules change what gets built and committed.
+/.github/        @DarshakPatel2004
+/.gitignore      @DarshakPatel2004

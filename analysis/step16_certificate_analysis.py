@@ -113,6 +113,9 @@ def parse_certificate_from_apk(apk_path: str) -> Optional[Dict[str, Any]]:
                           if n.startswith("META-INF/") and n.endswith((".RSA", ".DSA", ".EC"))]
             if not cert_files:
                 return None
+            # zip-bomb guard: a signature block is a few KB; refuse anything large before inflating it
+            if zf.getinfo(cert_files[0]).file_size > 1024 * 1024:
+                raise ValueError(f"{cert_files[0]} declared size exceeds 1 MiB")
             cert_data = zf.read(cert_files[0])
     except Exception as exc:
         logger.warning("Suppressed error in parse_certificate_from_apk: %s", exc)
