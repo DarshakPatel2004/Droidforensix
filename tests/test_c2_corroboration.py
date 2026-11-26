@@ -5,6 +5,7 @@ from analysis.c2_corroboration import (
     is_benign_sdk_host,
     is_corroborated_endpoint,
     is_endpoint_path,
+    record_host,
 )
 
 
@@ -99,3 +100,19 @@ def test_behavior_confirmed_needs_corroboration_and_signal(tmp_path):
     assert records[0]["device_data_signal"] is True and is_behavior_confirmed(records[0])
     # Vendor host has the signal but is never corroborated, so it is never behavior-confirmed.
     assert records[1]["device_data_signal"] is True and not is_behavior_confirmed(records[1])
+
+
+def test_comma_joined_hosts_use_the_first_host():
+    assert record_host({"domain": "sdk.appbrain.com,sdk-b.apptornado.com"}) == "sdk.appbrain.com"
+    assert record_host({"raw_url": "sdk.appbrain.com,http://sdk-b.apptornado.com"}) == "sdk.appbrain.com"
+
+
+def test_bracket_fragment_host_is_cleaned():
+    assert record_host({"raw_url": "http://www.motorola.com/Consumers/x.alt]"}) == "www.motorola.com"
+
+
+def test_comma_joined_ad_sdk_is_suppressed_not_confirmed():
+    rec = {"domain": "sdk.appbrain.com,sdk-b.apptornado.com", "path": "/sdk", "confidence": 0.9,
+           "is_fallback": False, "device_data_signal": True}
+    assert not is_corroborated_endpoint(rec)
+    assert not is_behavior_confirmed(rec)
