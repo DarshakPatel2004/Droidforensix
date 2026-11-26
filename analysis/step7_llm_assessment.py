@@ -265,6 +265,7 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
     llm_narrative_lower = assessment.get("narrative", "").lower()
 
     # If critical/high secrets found but severity is low, raise it
+    secrets_raised = False
     if secrets_result:
         secrets_findings = secrets_result.get("hardcoded_secrets", [])
         critical_count = sum(1 for s in secrets_findings if s.get("severity") == "critical")
@@ -277,6 +278,8 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
             assessment["severity"] = "high"
             assessment["risk_score"] = max(risk_score, 65)
             assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: elevated due to multiple high-severity hardcoded secrets.]")
+        # Secrets-based verdicts must survive the no-C2 cap below (audit A1-04).
+        secrets_raised = assessment["severity"] != severity
         # Re-read: later rules must see the raised verdict, not the LLM's original one.
         severity = assessment["severity"]
         risk_score = assessment["risk_score"]
@@ -316,8 +319,8 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
     elif sms_fraud and c2_count > 0:
         assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: SMS permissions present, but C2 endpoints are uncorroborated. Severity not raised on that basis.]")
 
-    # If no C2 was extracted, cap severity and risk_score
-    if c2_count == 0:
+    # If no C2 was extracted, cap severity and risk_score (not when secrets already raised it)
+    if c2_count == 0 and not secrets_raised:
         sev_map = {"critical": 4, "high": 3, "medium": 2, "low": 1}
         rev_sev = {4: "critical", 3: "high", 2: "medium", 1: "low"}
         current = sev_map.get(assessment.get("severity", "low"), 1)
@@ -326,8 +329,8 @@ def sanity_check(assessment: dict, chains_result: dict, c2_result: dict, obfusca
             assessment["severity"] = rev_sev[max_sev]
             assessment["risk_score"] = min(assessment.get("risk_score", 0), 50)
             assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: score capped — no C2 indicators extracted.]")
-        c2_claim_keywords =["c2", "command and control", "command & control", "c&c", "c2 server", "c2 infrastructure", "c2 communication"]
-        if any(kw in llm_narrative_lower for kw in c2_claim_keywords):
+        # Whole-token match: "rc2", "aes-c2x" etc. must not read as a C2 claim (audit A1-05).
+        if re.search(r"(?<![a-z0-9])(c2|c&c)(?![a-z0-9])|command (and|&) control", llm_narrative_lower):
             assessment["severity"] = "low"
             assessment["risk_score"] = min(assessment.get("risk_score", 0), 25)
             assessment.setdefault("sanity_notes", []).append("[SANITY CHECK: narrative references C2 infrastructure, but no C2 indicators were extracted. Score reduced — C2 claims appear speculative.]")
