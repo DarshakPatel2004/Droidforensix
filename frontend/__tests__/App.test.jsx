@@ -25,10 +25,6 @@ vi.mock('../src/components/LoadingSpinner', () => ({
   default: ({ message }) => <div data-testid="loading-spinner">{message}</div>,
 }))
 
-vi.mock('../src/components/ThreatBadge', () => ({
-  default: () => <span>ThreatBadge</span>,
-}))
-
 vi.mock('../src/components/AnalysisView', () => ({
   default: () => <div>AnalysisView</div>,
 }))
