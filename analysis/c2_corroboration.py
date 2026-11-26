@@ -15,6 +15,7 @@ cannot disagree about what is corroborated.
 import ipaddress
 import json
 import logging
+import re
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
@@ -62,9 +63,12 @@ def record_host(record: Dict[str, Any]) -> str:
     """Hostname of a C2 record (domain, ip, or the host of raw_url), lowercase, no port."""
     host = record.get("domain") or record.get("ip") or ""
     if not host and record.get("raw_url"):
-        raw = str(record["raw_url"])
-        host = urlparse(raw if "//" in raw else "http://" + raw).hostname or ""
-    return str(host).split(":")[0].lower().rstrip(".")
+        host = str(record["raw_url"])
+    # A value can hold several hosts ("a.example,b.example") or a bracketed fragment; take the first real one.
+    first = re.split(r"[,\s]+", str(host).strip())[0].strip("[]")
+    if "//" in first or "/" in first:
+        first = urlparse(first if "//" in first else "http://" + first).hostname or ""
+    return first.split(":")[0].lower().rstrip(".")
 
 
 def is_benign_sdk_host(host: str) -> bool:
