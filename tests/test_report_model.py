@@ -32,3 +32,14 @@ def test_truncated_prefix_is_not_corroborated_even_at_full_confidence():
     e = _endpoint({"raw_url": "https://api.telegram.org/bot", "is_fallback": False, "path": "/bot", "confidence": 1.0})
     assert e["corroborated"] is False
     assert e["status"] == "UNVERIFIED"
+
+
+def test_endpoint_tier_separates_confirmed_from_lead():
+    from backend.report_model import _endpoint
+    confirmed = _endpoint({"domain": "gate.example", "path": "/gate.php", "confidence": 1.0,
+                           "device_data_signal": True, "is_fallback": False})
+    lead = _endpoint({"domain": "gate.example", "path": "/gate.php", "confidence": 1.0,
+                      "device_data_signal": False, "is_fallback": False})
+    none = _endpoint({"domain": "r2.adwo.com", "path": "/adfs", "confidence": 1.0,
+                      "device_data_signal": True, "is_fallback": False})
+    assert (confirmed["tier"], lead["tier"], none["tier"]) == ("confirmed", "lead", "none")

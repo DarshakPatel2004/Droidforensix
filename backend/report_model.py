@@ -36,7 +36,17 @@ def _endpoint(c2: Dict[str, Any]) -> Dict[str, Any]:
         "corroborated": is_corroborated_endpoint(c2),
         # True only when code referencing this host also reads a device identifier (see c2_corroboration).
         "behavior_confirmed": is_behavior_confirmed(c2),
+        # Tier shown in the report. "confirmed" may raise a verdict; "lead" is shown for the analyst only.
+        "tier": _tier(c2),
     }
+
+
+def _tier(c2: Dict[str, Any]) -> str:
+    if is_behavior_confirmed(c2):
+        return "confirmed"
+    if is_corroborated_endpoint(c2):
+        return "lead"
+    return "none"
 
 
 def build_report_model(sample_id: str) -> Dict[str, Any]:
