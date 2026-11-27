@@ -287,7 +287,8 @@ function AppInner() {
   // load its result and seed the state with the real verdict.
   useEffect(() => {
     let cancelled = false
-    apiFetch('/api/samples?limit=50')
+    // shortcut: seeds the sidebar with the backend's max page (1000); beyond 1000 samples the list needs paging.
+    apiFetch('/api/samples?limit=1000')
       .then((body) => {
         if (cancelled) return
         const saved = (body.samples || []).map((s) => ({
