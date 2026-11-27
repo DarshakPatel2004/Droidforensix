@@ -27,7 +27,7 @@ The family evaluation uses the 352-sample corrected ground truth (`ground_truth_
 
 ### Malware vs. benign classifier
 
-A 15-feature random forest scores each APK from static features only. The retrained model (`evaluation/malben_eval/malben_rf_retrained.pkl`) is not yet committed, and the CLI's default model is the older `evaluation/classifier_data/malben_rf.pkl` at threshold 0.5. Results below use the retrained model at threshold 0.7.
+A 15-feature random forest scores each APK from static features only. The retrained model (`evaluation/malben_eval/malben_rf_retrained.pkl`) is kept out of the repo by decision, so the CLI's default is the committed older model `evaluation/classifier_data/malben_rf.pkl` at threshold 0.5. Results below use the retrained model at threshold 0.7, and a clone cannot reproduce them without that file.
 
 - **Training:** 509 original APKs, plus 100 added in the retrain.
 - **Threshold:** 0.7, chosen on a separate 100-APK validation split (98% accuracy, 0 benign flagged). The retrain raised validation AUC from 0.9816 to 0.9944.

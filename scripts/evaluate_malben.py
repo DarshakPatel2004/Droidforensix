@@ -158,6 +158,7 @@ def load_manifest(manifest: Path, root: Path = ROOT) -> list[Sample]:
     return samples
 
 
+ORIGINAL_TRAIN = ROOT / "evaluation" / "classifier_data" / "features.csv"
 TRAIN_EXTRA = ROOT / "evaluation" / "malben_eval" / "train_extra.csv"
 VALIDATION_SPLIT = ROOT / "evaluation" / "malben_eval" / "validation_split.csv"
 
@@ -174,7 +175,7 @@ def check_no_training_overlap(samples: list[Sample], train_map: Path) -> None:
     # training hashes, so the guard missed the rest (audit E5). Validation is included
     # because the threshold was chosen on it.
     trained = set(json.loads(train_map.read_text(encoding="utf-8")))
-    trained |= _csv_hashes(TRAIN_EXTRA) | _csv_hashes(VALIDATION_SPLIT)
+    trained |= _csv_hashes(ORIGINAL_TRAIN) | _csv_hashes(TRAIN_EXTRA) | _csv_hashes(VALIDATION_SPLIT)
     overlap = sorted(s.sha256 for s in samples if s.sha256 in trained)
     if overlap:
         raise ManifestError([f"{len(overlap)} manifest samples are in the training set, e.g. {overlap[0]}"])

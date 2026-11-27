@@ -17,3 +17,12 @@ def test_overlap_with_train_extra_is_rejected(tmp_path):
     sample = em.Sample(sha256=train_hash, path="x", label="benign", source="holdout")
     with pytest.raises(em.ManifestError):
         em.check_no_training_overlap([sample], empty_map)
+
+
+def test_overlap_with_original_training_features_is_rejected(tmp_path):
+    train_hash = next(iter(em._csv_hashes(em.ORIGINAL_TRAIN)))
+    empty_map = tmp_path / "map.json"
+    empty_map.write_text("{}", encoding="utf-8")
+    sample = em.Sample(sha256=train_hash, path="x", label="benign", source="holdout")
+    with pytest.raises(em.ManifestError):
+        em.check_no_training_overlap([sample], empty_map)

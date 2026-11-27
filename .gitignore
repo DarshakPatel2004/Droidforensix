@@ -294,3 +294,6 @@ evaluation/subset_baseline_2026-11-03/
 docs/report-rework/*.pdf
 docs/report-rework/*.png
 docs/report-rework/report_*.json
+
+# Retrained malben model: kept local, not in the repo (see README)
+evaluation/malben_eval/malben_rf_retrained.pkl
